@@ -33,7 +33,7 @@ const posts = [
     title: "Lúpus: convivendo com a doença",
     excerpt: "O lúpus é uma doença autoimune complexa. Conheça os sintomas mais comuns e como o tratamento pode melhorar sua qualidade de vida.",
     category: "Autoimunes",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/lupus-reumatologia.webp",
+    image: "https://julianalealreumato.com.br/imagens/blog-lupus.jpg",
   },
   {
     title: "Fibromialgia: mais do que 'apenas dor'",
