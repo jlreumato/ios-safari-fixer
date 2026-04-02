@@ -25,9 +25,10 @@ const features = [
 ];
 
 const clinicImages = [
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-1.webp",
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-2.webp",
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-3.webp",
+  { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção da clínica" },
+  { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório médico" },
+  { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
+  { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center" },
 ];
 
 export default function Clinic() {
