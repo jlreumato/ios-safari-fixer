@@ -54,11 +54,11 @@ export default function Clinic() {
 
         {/* Gallery */}
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {clinicImages.map((src, i) => (
+          {clinicImages.map((img, i) => (
             <div key={i} className="group relative overflow-hidden rounded-xl shadow-md">
               <img
-                src={src}
-                alt={`Consultório da Dra. Juliana Leal - foto ${i + 1}`}
+                src={img.src}
+                alt={img.alt}
                 className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-64"
                 loading="lazy"
               />
