@@ -19,10 +19,14 @@ export default function Footer() {
           {/* Contact */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-white">Contato</h3>
-            <ul className="mt-4 space-y-3 text-sm">
+            <ul className="mt-4 space-y-4 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                <span>Harmony Trade Center, Sala 318<br />Maceió — AL</span>
+                <span><strong className="text-white">Harmony Trade Center</strong><br />Sala 318, 3º Andar — Maceió, AL</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+                <span><strong className="text-white">Clínica Reumatos</strong><br />Centro Médico Imagem Plena<br />Av. João Davino, 766 — Mangabeiras, Maceió, AL</span>
               </li>
               <li className="flex items-center gap-2">
                 <PhoneIcon className="h-4 w-4 flex-shrink-0 text-primary" />
