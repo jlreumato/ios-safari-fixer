@@ -21,7 +21,7 @@ const posts = [
     title: "Gota: causas, sintomas e tratamento",
     excerpt: "Entenda o que é a gota, como ela se manifesta e quais são as opções de tratamento disponíveis para controlar as crises.",
     category: "Artrites",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/gota-reumatologia.webp",
+    image: "https://julianalealreumato.com.br/imagens/gota.jpg",
   },
   {
     title: "Artrite Reumatoide: diagnóstico precoce faz a diferença",
