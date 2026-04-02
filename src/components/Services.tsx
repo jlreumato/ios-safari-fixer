@@ -21,22 +21,17 @@ const areas = [
   {
     icon: Bone,
     title: "Artrites",
-    desc: "Artrite reumatoide, artrite psoriásica, gota e outras artropatias inflamatórias, com diagnóstico precoce e tratamento personalizado.",
+    desc: "Diagnóstico e manejo de Artrite Reumatoide, Artrite Psoriásica, Espondilite Anquilosante e outras artropatias inflamatórias.",
   },
   {
     icon: ShieldCheck,
     title: "Doenças Autoimunes",
-    desc: "Lúpus eritematoso sistêmico, esclerose sistêmica, vasculites, síndrome de Sjögren e outras doenças autoimunes.",
+    desc: "Acompanhamento de Lúpus Eritematoso Sistêmico (LES), Síndrome de Sjögren, Esclerose Sistêmica e Vasculites.",
   },
   {
     icon: Activity,
-    title: "Fibromialgia",
-    desc: "Abordagem multidisciplinar para controle da dor, melhora do sono e qualidade de vida dos pacientes com fibromialgia.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Dores Crônicas",
-    desc: "Investigação e tratamento de dores musculoesqueléticas, osteoporose, tendinites, bursites e outras condições de dor crônica.",
+    title: "Fibromialgia e Dores",
+    desc: "Abordagem multidisciplinar para o controle da Fibromialgia e outras síndromes dolorosas crônicas difusas.",
   },
 ];
 

@@ -24,20 +24,20 @@ function useReveal() {
 
 const faqs = [
   {
-    q: "Quando devo procurar um reumatologista?",
-    a: "Você deve procurar um reumatologista quando sentir dores articulares persistentes, inchaço nas articulações, rigidez matinal prolongada, fadiga inexplicável ou quando houver suspeita de doenças autoimunes. O diagnóstico precoce é fundamental para um tratamento eficaz.",
+    q: "Quando devo procurar um Reumatologista?",
+    a: "Você deve procurar um reumatologista se sentir dores persistentes nas articulações, músculos ou ossos, especialmente se acompanhadas de inchaço, vermelhidão, rigidez matinal ou fadiga intensa. Sintomas como dificuldade para movimentar-se, febre de origem desconhecida e lesões de pele também são sinais de alerta.",
   },
   {
-    q: "Quais exames são necessários na primeira consulta?",
-    a: "Na primeira consulta, a Dra. Juliana fará uma avaliação clínica completa. Dependendo dos sintomas, poderão ser solicitados exames de sangue (como fator reumatoide, VHS, PCR, FAN), exames de imagem (raio-X, ultrassonografia, ressonância) e outros específicos para cada caso.",
+    q: '"Reumatismo" é uma doença única?',
+    a: 'Não. O termo "reumatismo" é popularmente usado para descrever dores no corpo, mas na verdade, ele engloba mais de 120 doenças diferentes que afetam o aparelho locomotor (articulações, ossos, músculos, tendões). Artrite reumatoide, artrose, gota e lúpus são exemplos de doenças reumáticas, cada uma com diagnóstico e tratamento específicos.',
   },
   {
-    q: "A fibromialgia tem cura?",
-    a: "A fibromialgia é uma condição crônica que não tem cura, mas tem tratamento eficaz. Com uma abordagem multidisciplinar — que inclui medicação adequada, atividade física, higiene do sono e acompanhamento psicológico — é possível controlar os sintomas e ter excelente qualidade de vida.",
+    q: "Artrite e Artrose são a mesma coisa?",
+    a: "Não. Embora ambas afetem as articulações, a artrite é uma doença inflamatória (como a artrite reumatoide), onde o próprio sistema imune ataca as articulações. Já a artrose (ou osteoartrite) é uma doença degenerativa, causada pelo desgaste da cartilagem ao longo do tempo. Os tratamentos são diferentes para cada caso.",
   },
   {
-    q: "Como funciona o agendamento de consultas?",
-    a: "O agendamento pode ser feito pelo WhatsApp (82) 99987-2509 ou presencialmente no Harmony Trade Center, Sala 318. Trabalhamos com horários flexíveis para melhor atender nossos pacientes.",
+    q: "O tratamento reumatológico é para a vida toda?",
+    a: "Muitas doenças reumáticas são crônicas, o que significa que não têm cura, mas têm controle. O tratamento visa controlar a inflamação, aliviar os sintomas, prevenir danos às articulações e manter a qualidade de vida. Com o acompanhamento correto, é possível entrar em remissão, período em que a doença fica inativa e a medicação pode ser ajustada ou até suspensa, sempre sob orientação médica.",
   },
 ];
 
