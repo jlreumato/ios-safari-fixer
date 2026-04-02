@@ -53,12 +53,12 @@ export default function About() {
               CRM/AL: 6717 · RQE: 4857
             </p>
             <div className="mt-6 space-y-4 text-base leading-relaxed text-muted-foreground lg:max-w-xl">
-              <p>
-                Sou médica reumatologista formada pela Universidade Federal de Alagoas (UFAL), com residência em Clínica Médica pelo Hospital Universitário Prof. Alberto Antunes e residência em Reumatologia pelo Hospital das Clínicas da Faculdade de Medicina da USP (HC-FMUSP).
-              </p>
-              <p>
-                Possuo pós-graduação em Dor pelo Hospital das Clínicas da USP e sou membro titular da Sociedade Brasileira de Reumatologia. Minha missão é oferecer um atendimento humanizado, acolhedor e baseado nas melhores evidências científicas, para que cada paciente encontre qualidade de vida e bem-estar.
-              </p>
+               <p>
+                Formada em Medicina pela FAMENE, com residência em Clínica Médica na Santa Casa de Misericórdia de Maceió e especialização em Reumatologia pelo Hospital Universitário Prof. Alberto Antunes. Com Pós-Graduação em Dor pela USP-SP, possui um olhar aprofundado para o manejo de dores crônicas e complexas.
+               </p>
+               <p>
+                Sua prática é pautada na escuta atenta e na construção de uma relação de confiança com o paciente. Acredita que o tratamento vai além dos medicamentos, envolvendo educação sobre a doença, promoção de hábitos saudáveis e um plano de cuidado individualizado para restaurar a qualidade de vida.
+               </p>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ const posts = [
     title: "Fibromialgia: mais do que 'apenas dor'",
     excerpt: "A fibromialgia vai além da dor muscular. Descubra como uma abordagem multidisciplinar pode transformar seu dia a dia.",
     category: "Dor Crônica",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/fibromialgia-tratamento.webp",
+    image: "https://julianalealreumato.com.br/imagens/blog-fibromialgia.jpg",
   },
 ];
 

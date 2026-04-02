@@ -67,7 +67,7 @@ export default function Hero() {
           <div className="relative">
             <div className="absolute inset-0 rounded-b-[2rem] bg-gradient-to-t from-primary/10 to-transparent lg:rounded-[2rem]" />
             <img
-              src="https://julianalealreumato.com.br/wp-content/uploads/2024/10/dra-juliana-leal-reumatologista-maceio-alagoas.webp"
+              src="https://julianalealreumato.com.br/imagens/fotos/drajulianaleal.webp"
               alt="Dra. Juliana Leal — Reumatologista em Maceió"
               className="relative h-[340px] w-auto object-contain sm:h-[420px] lg:h-[560px]"
               loading="eager"
