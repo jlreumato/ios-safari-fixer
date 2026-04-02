@@ -32,7 +32,7 @@ export default function About() {
           <div className="flex-shrink-0">
             <div className="relative h-80 w-72 overflow-hidden rounded-2xl shadow-xl shadow-primary/10 sm:h-96 sm:w-80">
               <img
-                src="https://julianalealreumato.com.br/wp-content/uploads/2024/10/dra-juliana-leal-reumatologista-maceio-alagoas.webp"
+                src="https://julianalealreumato.com.br/imagens/fotos/perfil-dra-juliana-leal.webp"
                 alt="Dra. Juliana Leal no consultório"
                 className="h-full w-full object-cover object-top"
                 loading="lazy"
