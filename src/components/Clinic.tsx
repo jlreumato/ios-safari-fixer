@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { AirVent, MapPin, Stethoscope, Clock } from "lucide-react";
+import { AirVent, MapPin, Stethoscope, Clock, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
