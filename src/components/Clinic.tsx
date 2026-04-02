@@ -25,9 +25,10 @@ const features = [
 ];
 
 const clinicImages = [
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-1.webp",
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-2.webp",
-  "https://julianalealreumato.com.br/wp-content/uploads/2024/10/consultorio-reumatologista-maceio-3.webp",
+  { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção da clínica" },
+  { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório médico" },
+  { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
+  { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center" },
 ];
 
 export default function Clinic() {
@@ -52,12 +53,12 @@ export default function Clinic() {
         </div>
 
         {/* Gallery */}
-        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {clinicImages.map((src, i) => (
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {clinicImages.map((img, i) => (
             <div key={i} className="group relative overflow-hidden rounded-xl shadow-md">
               <img
-                src={src}
-                alt={`Consultório da Dra. Juliana Leal - foto ${i + 1}`}
+                src={img.src}
+                alt={img.alt}
                 className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-64"
                 loading="lazy"
               />

@@ -18,28 +18,28 @@ function useReveal() {
 
 const posts = [
   {
-    title: "Gota: causas, sintomas e tratamento",
-    excerpt: "Entenda o que é a gota, como ela se manifesta e quais são as opções de tratamento disponíveis para controlar as crises.",
+    title: "Gota: A Doença do Ácido Úrico",
+    excerpt: "A Gota é uma das formas mais antigas de artrite conhecidas, frequentemente associada a um estilo de vida de excessos. Hoje sabemos que ela pode afetar qualquer pessoa, sendo uma artropatia inflamatória causada pelo acúmulo de ácido úrico no organismo.",
     category: "Artrites",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/gota-reumatologia.webp",
+    image: "https://julianalealreumato.com.br/imagens/gota.jpg",
   },
   {
-    title: "Artrite Reumatoide: diagnóstico precoce faz a diferença",
-    excerpt: "Saiba por que identificar a artrite reumatoide nos estágios iniciais é fundamental para preservar suas articulações.",
+    title: "Entendendo a Artrite Reumatoide",
+    excerpt: "A Artrite Reumatoide (AR) é uma doença autoimune crônica que causa inflamação nas articulações, levando a dor, inchaço e rigidez. O diagnóstico precoce e o tratamento adequado são cruciais para controlar a doença e preservar a qualidade de vida.",
     category: "Artrites",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/artrite-reumatoide.webp",
+    image: "https://julianalealreumato.com.br/imagens/blog-artrite.jpg",
   },
   {
-    title: "Lúpus: convivendo com a doença",
-    excerpt: "O lúpus é uma doença autoimune complexa. Conheça os sintomas mais comuns e como o tratamento pode melhorar sua qualidade de vida.",
-    category: "Autoimunes",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/lupus-reumatologia.webp",
+    title: "O que é Lúpus (LES)?",
+    excerpt: "O Lúpus Eritematoso Sistêmico (LES) é uma doença autoimune complexa em que o sistema imunológico ataca tecidos saudáveis. Pode afetar pele, articulações, rins, cérebro e outros órgãos.",
+    category: "Doenças Autoimunes",
+    image: "https://julianalealreumato.com.br/imagens/blog-lupus.jpg",
   },
   {
-    title: "Fibromialgia: mais do que 'apenas dor'",
-    excerpt: "A fibromialgia vai além da dor muscular. Descubra como uma abordagem multidisciplinar pode transformar seu dia a dia.",
-    category: "Dor Crônica",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/fibromialgia-tratamento.webp",
+    title: "Fibromialgia: muito além da dor",
+    excerpt: "A fibromialgia é uma síndrome caracterizada por dor muscular generalizada e crônica. Além da dor, os pacientes frequentemente sentem fadiga intensa, distúrbios do sono, ansiedade e dificuldades de memória.",
+    category: "Dores Crônicas",
+    image: "https://julianalealreumato.com.br/imagens/blog-fibromialgia.jpg",
   },
 ];
 
