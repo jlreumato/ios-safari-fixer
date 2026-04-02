@@ -24,10 +24,10 @@ export default function Hero() {
           </p>
 
           <h1
-            className="text-balance text-4xl font-bold leading-[1.1] tracking-tight text-foreground opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl"
+            className="text-balance text-4xl font-normal leading-[1.1] tracking-tight text-foreground opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
-            Dra. Juliana Leal
+            Dra. <span className="uppercase">Juliana Leal</span>
           </h1>
 
           <p className="mt-3 text-lg font-medium text-primary opacity-0 animate-[fadeInUp_0.7s_ease-out_0.4s_forwards] sm:text-xl">
