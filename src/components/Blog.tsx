@@ -27,7 +27,7 @@ const posts = [
     title: "Artrite Reumatoide: diagnóstico precoce faz a diferença",
     excerpt: "Saiba por que identificar a artrite reumatoide nos estágios iniciais é fundamental para preservar suas articulações.",
     category: "Artrites",
-    image: "https://julianalealreumato.com.br/wp-content/uploads/2024/10/artrite-reumatoide.webp",
+    image: "https://julianalealreumato.com.br/imagens/blog-artrite.jpg",
   },
   {
     title: "Lúpus: convivendo com a doença",
