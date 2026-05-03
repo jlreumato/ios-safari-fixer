@@ -1,5 +1,6 @@
 import { Phone, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import draJulianaImg from "@/assets/dra-juliana-leal.webp";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -67,7 +68,7 @@ export default function Hero() {
           <div className="relative">
             <div className="absolute inset-0 rounded-b-[2rem] bg-gradient-to-t from-primary/10 to-transparent lg:rounded-[2rem]" />
             <img
-              src="https://julianalealreumato.com.br/imagens/fotos/drajulianaleal.webp"
+              src={draJulianaImg}
               alt="Dra. Juliana Leal — Reumatologista em Maceió"
               className="relative h-[340px] w-auto object-contain sm:h-[420px] lg:h-[560px]"
               loading="eager"
