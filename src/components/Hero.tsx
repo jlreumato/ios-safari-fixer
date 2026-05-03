@@ -1,5 +1,6 @@
 import { Phone, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import draJulianaImg from "@/assets/dra-juliana-leal.webp";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
