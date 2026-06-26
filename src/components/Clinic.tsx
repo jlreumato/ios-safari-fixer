@@ -40,7 +40,9 @@ const locations: ClinicLocation[] = [
       { icon: Stethoscope, title: "Atendimento Especializado", desc: "Foco em reumatologia com equipe multidisciplinar." },
       { icon: Clock, title: "Horários Flexíveis", desc: "Agenda compatível com diferentes perfis de pacientes." },
     ],
-    images: [],
+    images: [
+      { src: reumatosFachada.url, alt: "Fachada do Centro Médico Imagem Plena — Clínica Reumatos" },
+    ],
   },
   {
     id: "harmony",
