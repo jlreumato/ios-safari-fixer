@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AirVent, MapPin, Stethoscope, Clock, X, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
