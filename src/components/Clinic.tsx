@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AirVent, MapPin, Stethoscope, Clock, X, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,7 +40,9 @@ const locations: ClinicLocation[] = [
       { icon: Stethoscope, title: "Atendimento Especializado", desc: "Foco em reumatologia com equipe multidisciplinar." },
       { icon: Clock, title: "Horários Flexíveis", desc: "Agenda compatível com diferentes perfis de pacientes." },
     ],
-    images: [],
+    images: [
+      { src: reumatosFachada.url, alt: "Fachada do Centro Médico Imagem Plena — Clínica Reumatos" },
+    ],
   },
   {
     id: "harmony",
