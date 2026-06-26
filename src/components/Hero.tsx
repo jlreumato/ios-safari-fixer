@@ -1,26 +1,21 @@
 import { Phone, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import draJulianaImg from "@/assets/dra-juliana-leal.webp";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[hsl(280_40%_97%)] via-[hsl(270_35%_95%)] to-[hsl(249_30%_92%)]">
-      {/* Decorative shapes */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-primary/5" />
-        <div className="absolute bottom-0 left-0 h-[300px] w-[300px] rounded-full bg-primary/[0.03] translate-y-1/2 -translate-x-1/3" />
-        <div className="absolute top-1/3 left-1/4 h-2 w-2 rounded-full bg-primary/20" />
-        <div className="absolute top-1/2 right-1/3 h-3 w-3 rounded-full bg-primary/15" />
-      </div>
+    <section
+      className="relative min-h-[100dvh] overflow-hidden bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${heroBg})` }}
+    >
+      {/* Subtle overlay for text contrast on mobile */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent lg:from-white/40 lg:via-transparent" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col-reverse items-center px-4 pt-24 pb-12 sm:px-6 md:pt-28 lg:flex-row lg:gap-12 lg:px-8 lg:pt-0 lg:pb-0 lg:min-h-[100dvh]">
-        {/* Text side */}
-        <div className="flex-1 text-center lg:text-left lg:py-24">
-          <p
-            className="mb-3 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]"
-          >
+      <div className="relative mx-auto flex max-w-7xl items-center px-4 pt-28 pb-16 sm:px-6 lg:px-8 lg:min-h-[100dvh]">
+        <div className="max-w-xl text-center lg:text-left">
+          <p className="mb-3 inline-block rounded-full bg-white/70 -webkit-backdrop-filter backdrop-filter backdrop-blur-sm px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
             CRM/AL: 6717 · RQE: 4857
           </p>
 
@@ -39,7 +34,7 @@ export default function Hero() {
             Especialista em Dor · Pós-graduada pela USP-SP
           </p>
 
-          <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-muted-foreground opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] lg:mx-0">
+          <p className="mx-auto mt-6 max-w-lg text-base leading-relaxed text-foreground/80 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] lg:mx-0">
             Cuidado humanizado e especializado para quem convive com dores crônicas e doenças reumáticas. Seu bem-estar é a minha prioridade.
           </p>
 
@@ -62,30 +57,12 @@ export default function Hero() {
             </a>
           </div>
         </div>
-
-        {/* Image side */}
-        <div className="flex-1 flex items-end justify-center lg:justify-end opacity-0 animate-[fadeIn_1s_ease-out_0.3s_forwards]">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-b-[2rem] bg-gradient-to-t from-primary/10 to-transparent lg:rounded-[2rem]" />
-            <img
-              src={draJulianaImg}
-              alt="Dra. Juliana Leal — Reumatologista em Maceió"
-              className="relative h-[340px] w-auto object-contain sm:h-[420px] lg:h-[560px]"
-              loading="eager"
-            />
-          </div>
-        </div>
       </div>
 
-      {/* Keyframes */}
       <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
           to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-        @keyframes fadeIn {
-          from { opacity: 0; filter: blur(4px); }
-          to { opacity: 1; filter: blur(0); }
         }
       `}</style>
     </section>
