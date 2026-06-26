@@ -29,6 +29,19 @@ interface ClinicLocation {
 
 const locations: ClinicLocation[] = [
   {
+    id: "reumatos",
+    name: "Clínica Reumatos",
+    address: "Centro Médico Imagem Plena, Av. João Davino, 766 — Mangabeiras, Maceió, AL",
+    cep: "CEP 57037-590",
+    features: [
+      { icon: Building2, title: "Centro Médico Completo", desc: "Dentro do Centro Médico Imagem Plena, com infraestrutura de ponta." },
+      { icon: MapPin, title: "Bairro Mangabeiras", desc: "Localização acessível com estacionamento disponível." },
+      { icon: Stethoscope, title: "Atendimento Especializado", desc: "Foco em reumatologia com equipe multidisciplinar." },
+      { icon: Clock, title: "Horários Flexíveis", desc: "Agenda compatível com diferentes perfis de pacientes." },
+    ],
+    images: [],
+  },
+  {
     id: "harmony",
     name: "Harmony Trade Center",
     address: "Harmony Trade Center, 3º Andar, Sala 318 — Maceió, AL",
@@ -45,19 +58,6 @@ const locations: ClinicLocation[] = [
       { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
       { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center — fachada" },
     ],
-  },
-  {
-    id: "reumatos",
-    name: "Clínica Reumatos",
-    address: "Centro Médico Imagem Plena, Av. João Davino, 766 — Mangabeiras, Maceió, AL",
-    cep: "CEP 57037-590",
-    features: [
-      { icon: Building2, title: "Centro Médico Completo", desc: "Dentro do Centro Médico Imagem Plena, com infraestrutura de ponta." },
-      { icon: MapPin, title: "Bairro Mangabeiras", desc: "Localização acessível com estacionamento disponível." },
-      { icon: Stethoscope, title: "Atendimento Especializado", desc: "Foco em reumatologia com equipe multidisciplinar." },
-      { icon: Clock, title: "Horários Flexíveis", desc: "Agenda compatível com diferentes perfis de pacientes." },
-    ],
-    images: [],
   },
 ];
 
