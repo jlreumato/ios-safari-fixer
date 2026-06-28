@@ -14,7 +14,7 @@ export default function Hero() {
         {/* Video card — 2/3 of viewport */}
         <div
           className="relative w-full overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
-          style={{ height: "calc(100dvh - 7rem)" }}
+          style={{ height: "66dvh" }}
         >
           <video
             src={heroVideo.url}
