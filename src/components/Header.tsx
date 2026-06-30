@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import logoNome from "@/assets/nome-header.png.asset.json";
 
 const navLinks = [
   { label: "Sobre Mim", href: "#sobre" },
@@ -35,13 +36,13 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between md:h-20">
           {/* Logo */}
-          <a href="#" className="flex flex-col leading-tight">
-            <span className="font-serif text-lg font-semibold tracking-tight text-foreground md:text-xl">
-              Dra. Juliana Leal
-            </span>
-            <span className="text-[0.65rem] font-medium uppercase tracking-[0.15em] text-primary">
-              Reumatologia
-            </span>
+          <a href="#" className="flex items-center" aria-label="Dra. Juliana Leal — Reumatologia">
+            <img
+              src={logoNome.url}
+              alt="Dra. Juliana Leal — Reumatologia"
+              className="h-10 w-auto md:h-12"
+              loading="eager"
+            />
           </a>
 
           {/* Desktop nav */}
