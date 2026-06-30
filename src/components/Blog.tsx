@@ -59,11 +59,11 @@ export default function Blog() {
         }`}
       >
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Blog</p>
-          <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Blog</p>
+          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Artigos e informações
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground sm:text-xl">
             Passe o mouse sobre cada artigo para saber mais.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function Blog() {
                   {p.category}
                 </span>
                 <h3
-                  className="mt-3 text-xl font-semibold leading-snug drop-shadow"
+                  className="mt-3 text-2xl sm:text-3xl font-semibold leading-snug drop-shadow"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {p.title}
@@ -103,7 +103,7 @@ export default function Blog() {
                 {/* Expandable content */}
                 <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-focus-within:mt-3">
                   <div className="overflow-hidden">
-                    <p className="text-sm leading-relaxed text-white/90">{p.excerpt}</p>
+                    <p className="text-base leading-relaxed text-white/90">{p.excerpt}</p>
                     <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
                       Saiba mais
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

@@ -5,6 +5,7 @@ import Clinic from "@/components/Clinic";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
 import Blog from "@/components/Blog";
+import Instagram from "@/components/Instagram";
 import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -21,6 +22,7 @@ const Index = () => {
         <Services />
         <Testimonials />
         <Blog />
+        <Instagram />
         <FAQ />
         <CTASection />
       </main>
