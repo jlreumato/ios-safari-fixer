@@ -50,13 +50,13 @@ export default function Services() {
         }`}
       >
         <div className="text-center max-w-2xl mx-auto">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
             Áreas de Atuação
           </p>
-          <h2 className="mt-3 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Cuidado especializado para você
           </h2>
-          <p className="mt-4 text-muted-foreground text-sm sm:text-base leading-relaxed">
+          <p className="mt-5 text-muted-foreground text-lg sm:text-xl leading-relaxed">
             Atendimento humanizado e baseado em evidências nas principais áreas da reumatologia.
           </p>
         </div>
@@ -84,11 +84,11 @@ export default function Services() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
 
-                <h3 className="mt-7 text-xl sm:text-2xl font-semibold text-foreground" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                <h3 className="mt-7 text-2xl sm:text-3xl font-semibold text-foreground" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
                   {a.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                <p className="mt-4 text-base lg:text-lg leading-relaxed text-muted-foreground">
                   {a.desc}
                 </p>
 

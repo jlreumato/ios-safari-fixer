@@ -47,8 +47,8 @@ export default function Testimonials() {
         }`}
       >
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Depoimentos</p>
-          <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Depoimentos</p>
+          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             O que dizem os pacientes
           </h2>
         </div>
@@ -67,12 +67,12 @@ export default function Testimonials() {
                   <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
                 ))}
               </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground italic">"{t.text}"</p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+              <p className="mt-5 text-base lg:text-lg leading-relaxed text-muted-foreground italic">"{t.text}"</p>
+              <div className="mt-6 flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary">
                   {t.name.charAt(0)}
                 </div>
-                <span className="text-sm font-semibold text-foreground">{t.name}</span>
+                <span className="text-base font-semibold text-foreground">{t.name}</span>
               </div>
             </div>
           ))}

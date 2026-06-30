@@ -127,11 +127,11 @@ export default function Clinic() {
         }`}
       >
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.15em] text-primary">Locais de Atendimento</p>
-          <h2 className="mt-2 text-balance text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
+          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Seu conforto é nossa prioridade
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground sm:text-xl">
             Espaços pensados para oferecer acolhimento e cuidado desde o primeiro momento.
           </p>
         </div>
