@@ -178,8 +178,8 @@ export default function Clinic() {
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 text-sm font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
+              <h3 className="mt-4 text-base lg:text-lg font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-sm lg:text-base leading-relaxed text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
