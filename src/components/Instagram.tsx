@@ -383,10 +383,12 @@ export default function Instagram() {
   return (
     <section
       id="instagram"
-      className="relative overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28"
+      className="relative bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28"
     >
-      <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-amber-200/30 to-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-amber-200/30 to-primary/10 blur-3xl" />
+      </div>
 
       <div
         ref={ref}
