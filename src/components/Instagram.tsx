@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2 } from "lucide-react";
+import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2, X } from "lucide-react";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
 
