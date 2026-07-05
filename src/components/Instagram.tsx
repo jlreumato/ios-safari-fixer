@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2 } from "lucide-react";
+import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2, X } from "lucide-react";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
 
@@ -347,6 +347,19 @@ function IPhoneMockup({ feed }: { feed: BeholdFeed }) {
 export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
+  const [activePost, setActivePost] = useState<BeholdPost | null>(null);
+
+  useEffect(() => {
+    if (!activePost) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActivePost(null);
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [activePost]);
 
   useEffect(() => {
     if (!BEHOLD_FEED_URL) return;
@@ -459,12 +472,12 @@ export default function Instagram() {
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-3 sm:h-[520px]">
             {reels.map((p, i) => (
-              <a
+              <button
                 key={p.id}
-                href={p.permalink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.6] sm:focus-within:flex-[2.6] h-80 sm:h-full ${
+                type="button"
+                onClick={() => setActivePost(p)}
+                aria-label={`Reproduzir: ${shortCaption(p)}`}
+                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.6] sm:focus-within:flex-[2.6] h-80 sm:h-full text-left cursor-pointer ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: visible ? `${200 + i * 90}ms` : "0ms" }}
@@ -534,28 +547,59 @@ export default function Instagram() {
                         </div>
                       )}
                       <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
-                        Ver no Instagram
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M5 12h14M13 5l7 7-7 7" />
-                        </svg>
+                        {p.isReel ? "Assistir vídeo" : "Ver publicação"}
+                        <Play className="h-3 w-3 fill-current" />
                       </span>
                     </div>
                   </div>
                 </div>
-              </a>
+              </button>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Modal de vídeo/post */}
+      {activePost && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setActivePost(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            type="button"
+            onClick={() => setActivePost(null)}
+            aria-label="Fechar"
+            className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <div
+            className="relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-black shadow-2xl"
+            style={{ aspectRatio: "9 / 16", maxHeight: "90vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`${activePost.permalink.replace(/\/?$/, "/")}embed/captioned/`}
+              title="Instagram"
+              className="absolute inset-0 h-full w-full"
+              frameBorder={0}
+              scrolling="no"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          <a
+            href={activePost.permalink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/15 backdrop-blur px-4 py-2 text-xs font-semibold text-white hover:bg-white/25"
+          >
+            Abrir no Instagram ↗
+          </a>
+        </div>
+      )}
     </section>
   );
 }
