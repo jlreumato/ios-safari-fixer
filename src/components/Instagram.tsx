@@ -603,10 +603,3 @@ export default function Instagram() {
     </section>
   );
 }
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
