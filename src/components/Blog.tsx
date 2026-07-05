@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import MobileParallaxStack from "./MobileParallaxStack";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -68,12 +69,52 @@ export default function Blog() {
           </p>
         </div>
 
-        <div className="mt-14 flex flex-col gap-4 sm:flex-row sm:gap-3 sm:h-[460px]">
+        {/* Mobile: parallax stack — cada post entra da direita sobrepondo o anterior */}
+        <div className="mt-14 sm:hidden">
+          <MobileParallaxStack stepVh={85}>
+            {posts.map((p, i) => (
+              <a
+                key={i}
+                href={p.href}
+                className="group relative block h-[68vh] overflow-hidden rounded-2xl shadow-2xl"
+              >
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                <div className="relative flex h-full flex-col justify-end p-6 text-white">
+                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider">
+                    {p.category}
+                  </span>
+                  <h3
+                    className="mt-3 text-3xl font-semibold leading-snug drop-shadow"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="mt-3 text-base leading-relaxed text-white/90">{p.excerpt}</p>
+                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                    Saiba mais
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14M13 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </MobileParallaxStack>
+        </div>
+
+        {/* Desktop: layout expansivo lado a lado (mantido) */}
+        <div className="mt-14 hidden sm:flex flex-row gap-3 h-[460px]">
           {posts.map((p, i) => (
             <a
               key={i}
               href={p.href}
-              className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.2] sm:focus-within:flex-[2.2] h-72 sm:h-full ${
+              className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 hover:flex-[2.2] focus-within:flex-[2.2] h-full ${
                 visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
               style={{ transitionDelay: visible ? `${200 + i * 100}ms` : "0ms" }}
@@ -84,9 +125,7 @@ export default function Blog() {
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-[600ms] group-hover:grayscale-0 group-hover:scale-105"
               />
-              {/* Tinted overlay */}
               <div className="absolute inset-0 bg-primary/40 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0" />
-              {/* Bottom gradient for legibility */}
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
               <div className="relative flex h-full flex-col justify-end p-6 text-white">
@@ -100,7 +139,6 @@ export default function Blog() {
                   {p.title}
                 </h3>
 
-                {/* Expandable content */}
                 <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-focus-within:mt-3">
                   <div className="overflow-hidden">
                     <p className="text-base leading-relaxed text-white/90">{p.excerpt}</p>
@@ -116,6 +154,7 @@ export default function Blog() {
             </a>
           ))}
         </div>
+
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2, X } from "lucide-react";
+import MobileParallaxStack from "./MobileParallaxStack";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
 
@@ -382,10 +383,12 @@ export default function Instagram() {
   return (
     <section
       id="instagram"
-      className="relative overflow-hidden bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28"
+      className="relative bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28"
     >
-      <div className="pointer-events-none absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-amber-200/30 to-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-amber-200/30 to-primary/10 blur-3xl" />
+      </div>
 
       <div
         ref={ref}
@@ -470,14 +473,86 @@ export default function Instagram() {
             </a>
           </div>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-3 sm:h-[520px]">
+          {/* Mobile: parallax stack — cada reel entra da direita sobrepondo o anterior */}
+          <div className="mt-10 sm:hidden">
+            <MobileParallaxStack stepVh={85}>
+              {reels.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => setActivePost(p)}
+                  aria-label={`Reproduzir: ${shortCaption(p)}`}
+                  className="group relative block h-[70vh] w-full overflow-hidden rounded-2xl text-left shadow-2xl cursor-pointer"
+                >
+                  <img
+                    src={getCover(p)}
+                    alt={shortCaption(p)}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+
+                  <div className="absolute left-4 top-4 flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/25 backdrop-blur px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
+                      {p.isReel ? (<><Film className="h-3 w-3" /> Reel</>) : (<><InstagramIcon className="h-3 w-3" /> Post</>)}
+                    </span>
+                  </div>
+
+                  {p.isReel && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="rounded-full bg-white/90 p-4 backdrop-blur-sm shadow-lg">
+                        <Play className="h-7 w-7 fill-black text-black" />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="relative flex h-full flex-col justify-end p-6 text-white">
+                    <div className="flex items-center gap-4 text-xs font-semibold text-white/90">
+                      <span className="inline-flex items-center gap-1">
+                        <Heart className="h-3.5 w-3.5 fill-current" />
+                        {p.likeCount}
+                      </span>
+                      {typeof p.commentsCount === "number" && (
+                        <span className="inline-flex items-center gap-1">💬 {p.commentsCount}</span>
+                      )}
+                    </div>
+                    <h4
+                      className="mt-2 text-2xl font-semibold leading-snug drop-shadow line-clamp-3"
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    >
+                      {shortCaption(p)}
+                    </h4>
+                    {p.hashtags && p.hashtags.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {p.hashtags.slice(0, 4).map((h) => (
+                          <span
+                            key={h}
+                            className="rounded-full bg-white/15 backdrop-blur px-2 py-0.5 text-[10px] font-medium text-white/90"
+                          >
+                            #{h}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                      {p.isReel ? "Assistir vídeo" : "Ver publicação"}
+                      <Play className="h-3 w-3 fill-current" />
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </MobileParallaxStack>
+          </div>
+
+          {/* Desktop: galeria expansiva lado a lado (mantida) */}
+          <div className="mt-10 hidden sm:flex flex-row gap-3 h-[520px]">
             {reels.map((p, i) => (
               <button
                 key={p.id}
                 type="button"
                 onClick={() => setActivePost(p)}
                 aria-label={`Reproduzir: ${shortCaption(p)}`}
-                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.6] sm:focus-within:flex-[2.6] h-80 sm:h-full text-left cursor-pointer ${
+                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 hover:flex-[2.6] focus-within:flex-[2.6] h-full text-left cursor-pointer ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: visible ? `${200 + i * 90}ms` : "0ms" }}
@@ -491,22 +566,12 @@ export default function Instagram() {
                 <div className="absolute inset-0 bg-primary/40 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0" />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
-                {/* top badge */}
                 <div className="absolute left-4 top-4 flex items-center gap-2">
                   <span className="inline-flex items-center gap-1 rounded-full bg-white/25 backdrop-blur px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
-                    {p.isReel ? (
-                      <>
-                        <Film className="h-3 w-3" /> Reel
-                      </>
-                    ) : (
-                      <>
-                        <InstagramIcon className="h-3 w-3" /> Post
-                      </>
-                    )}
+                    {p.isReel ? (<><Film className="h-3 w-3" /> Reel</>) : (<><InstagramIcon className="h-3 w-3" /> Post</>)}
                   </span>
                 </div>
 
-                {/* play icon center for reels */}
                 {p.isReel && (
                   <div className="absolute inset-0 flex items-center justify-center opacity-70 transition-opacity duration-300 group-hover:opacity-0">
                     <div className="rounded-full bg-white/85 p-3 backdrop-blur-sm">
@@ -557,6 +622,7 @@ export default function Instagram() {
             ))}
           </div>
         </div>
+
       </div>
 
       {/* Modal de vídeo/post */}
