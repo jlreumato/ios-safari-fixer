@@ -547,24 +547,62 @@ export default function Instagram() {
                         </div>
                       )}
                       <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
-                        Ver no Instagram
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path d="M5 12h14M13 5l7 7-7 7" />
-                        </svg>
+                        {p.isReel ? "Assistir vídeo" : "Ver publicação"}
+                        <Play className="h-3 w-3 fill-current" />
                       </span>
                     </div>
                   </div>
                 </div>
-              </a>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Modal de vídeo/post */}
+      {activePost && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setActivePost(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            type="button"
+            onClick={() => setActivePost(null)}
+            aria-label="Fechar"
+            className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <div
+            className="relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-black shadow-2xl"
+            style={{ aspectRatio: "9 / 16", maxHeight: "90vh" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`${activePost.permalink.replace(/\/?$/, "/")}embed/captioned/`}
+              title="Instagram"
+              className="absolute inset-0 h-full w-full"
+              frameBorder={0}
+              scrolling="no"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+          <a
+            href={activePost.permalink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/15 backdrop-blur px-4 py-2 text-xs font-semibold text-white hover:bg-white/25"
+          >
+            Abrir no Instagram ↗
+          </a>
+        </div>
+      )}
+    </section>
+  );
+}
             ))}
           </div>
         </div>
