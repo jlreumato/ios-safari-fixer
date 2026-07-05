@@ -347,6 +347,19 @@ function IPhoneMockup({ feed }: { feed: BeholdFeed }) {
 export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
+  const [activePost, setActivePost] = useState<BeholdPost | null>(null);
+
+  useEffect(() => {
+    if (!activePost) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActivePost(null);
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [activePost]);
 
   useEffect(() => {
     if (!BEHOLD_FEED_URL) return;
