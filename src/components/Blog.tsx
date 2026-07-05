@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import MobileParallaxStack from "./MobileParallaxStack";
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
