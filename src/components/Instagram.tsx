@@ -472,12 +472,12 @@ export default function Instagram() {
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-3 sm:h-[520px]">
             {reels.map((p, i) => (
-              <a
+              <button
                 key={p.id}
-                href={p.permalink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.6] sm:focus-within:flex-[2.6] h-80 sm:h-full ${
+                type="button"
+                onClick={() => setActivePost(p)}
+                aria-label={`Reproduzir: ${shortCaption(p)}`}
+                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 sm:hover:flex-[2.6] sm:focus-within:flex-[2.6] h-80 sm:h-full text-left cursor-pointer ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                 }`}
                 style={{ transitionDelay: visible ? `${200 + i * 90}ms` : "0ms" }}
