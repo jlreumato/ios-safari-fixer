@@ -21,7 +21,7 @@ export default function Hero() {
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col items-center justify-center px-4 pt-24 pb-16 sm:px-6 lg:px-8">
         {/* Video card — 2/3 of viewport */}
         <div
-          className="relative w-full overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
+          className="relative w-full overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/5"
           style={{ height: "66dvh" }}
         >
           <video
@@ -84,7 +84,7 @@ export default function Hero() {
         {/* Scroll indicator */}
         <a
           href="#sobre"
-          className="mt-8 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-white/60 transition-colors hover:text-white"
+          className="mt-8 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#5a5568]/60 transition-colors hover:text-[#3a3548]"
         >
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
