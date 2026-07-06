@@ -98,10 +98,11 @@ export default function Header() {
                   className="mt-4"
                   onClick={() => setOpen(false)}
                 >
-                  <Button className="w-full gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)]">
+                  <Button className="btn-glow-ring w-full gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)]">
                     <Phone className="h-4 w-4" />
                     Agendar Consulta
                   </Button>
+
                 </a>
               </nav>
             </SheetContent>
