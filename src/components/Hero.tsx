@@ -64,12 +64,13 @@ export default function Hero() {
                 <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
                   <Button
                     size="lg"
-                    className="gap-2 bg-[hsl(var(--whatsapp))] px-8 text-base text-white shadow-lg shadow-[hsl(142_70%_49%/0.25)] hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all"
+                    className="btn-glow-ring gap-2 bg-[hsl(var(--whatsapp))] px-8 text-base text-white shadow-lg shadow-[hsl(142_70%_49%/0.25)] hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all"
                   >
                     <Phone className="h-5 w-5" />
                     Agendar Consulta
                   </Button>
                 </a>
+
                 <a
                   href="#sobre"
                   className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium text-white/90 transition-colors hover:bg-white/10"
