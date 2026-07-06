@@ -73,3 +73,47 @@
     text-wrap: balance;
   }
 }
+
+/* Animated glowing ring around booking buttons */
+@property --btn-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.btn-glow-ring {
+  position: relative;
+  border-radius: 9999px !important;
+  isolation: isolate;
+}
+.btn-glow-ring::before,
+.btn-glow-ring::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  padding: 3px;
+  background: conic-gradient(
+    from var(--btn-angle),
+    hsl(142 70% 49%),
+    hsl(249 22% 61%),
+    hsl(35 55% 70%),
+    hsl(330 45% 70%),
+    hsl(142 70% 49%)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite: exclude;
+  animation: btn-glow-spin 4s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+.btn-glow-ring::after {
+  filter: blur(8px);
+  opacity: 0.75;
+}
+@keyframes btn-glow-spin {
+  to { --btn-angle: 360deg; }
+}
+
