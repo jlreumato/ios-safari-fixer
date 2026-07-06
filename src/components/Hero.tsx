@@ -6,14 +6,22 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
 
 export default function Hero() {
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden bg-[#0e0a1a]">
-      {/* Subtle ambient background behind the video card */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_hsl(249_30%_25%/0.6),_transparent_60%),radial-gradient(ellipse_at_bottom,_hsl(330_40%_20%/0.4),_transparent_60%)]" />
+    <section className="relative min-h-[100dvh] overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#f5f0e8] to-[#ebe5db]">
+      {/* Subtle ambient glow in lilac/pink tones */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(249_22%_61%/0.08),_transparent_55%),radial-gradient(ellipse_at_bottom_left,_hsl(330_30%_55%/0.06),_transparent_55%)]" />
+
+      {/* Fine decorative lines */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: `repeating-linear-gradient(90deg, transparent, transparent 119px, rgba(142,130,184,0.10) 119px, rgba(142,130,184,0.10) 120px)`,
+        }}
+      />
 
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col items-center justify-center px-4 pt-24 pb-16 sm:px-6 lg:px-8">
         {/* Video card — 2/3 of viewport */}
         <div
-          className="relative w-full overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] ring-1 ring-white/10"
+          className="relative w-full overflow-hidden rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)] ring-1 ring-black/5"
           style={{ height: "66dvh" }}
         >
           <video
@@ -76,7 +84,7 @@ export default function Hero() {
         {/* Scroll indicator */}
         <a
           href="#sobre"
-          className="mt-8 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-white/60 transition-colors hover:text-white"
+          className="mt-8 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#5a5568]/60 transition-colors hover:text-[#3a3548]"
         >
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
