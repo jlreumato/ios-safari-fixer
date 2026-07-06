@@ -5,13 +5,15 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logoNome from "@/assets/nome-header.png.asset.json";
 
 const navLinks = [
-  { label: "Sobre Mim", href: "#sobre" },
-  { label: "A Clínica", href: "#clinica" },
-  { label: "Atuação", href: "#atuacao" },
-  { label: "Depoimentos", href: "#depoimentos" },
-  { label: "Blog", href: "#blog" },
-  { label: "Contato", href: "#contato" },
+  { label: "Sobre Mim", href: "/#sobre" },
+  { label: "A Clínica", href: "/#clinica" },
+  { label: "Atuação", href: "/#atuacao" },
+  { label: "Tratamentos", href: "/tratamentos" },
+  { label: "Depoimentos", href: "/#depoimentos" },
+  { label: "Blog", href: "/#blog" },
+  { label: "Contato", href: "/#contato" },
 ];
+
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
