@@ -65,10 +65,11 @@ export default function Header() {
             rel="noopener noreferrer"
             className="hidden lg:inline-flex"
           >
-            <Button className="gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all">
+            <Button className="btn-glow-ring gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all">
               <Phone className="h-4 w-4" />
               Agendar Consulta
             </Button>
+
           </a>
 
           {/* Mobile menu */}
