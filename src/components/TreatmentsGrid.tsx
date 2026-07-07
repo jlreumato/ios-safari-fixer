@@ -100,7 +100,7 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br ${treatment.gradient} p-8 sm:p-12 lg:p-16 shadow-[0_30px_80px_-30px_rgba(60,50,90,0.35)] transition-transform duration-500 hover:shadow-[0_40px_90px_-25px_rgba(60,50,90,0.45)]`}
+      className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br ${treatment.gradient} p-8 sm:p-12 lg:p-16 shadow-[0_18px_40px_-24px_rgba(60,50,90,0.28)] transition-transform duration-500`}
     >
       {/* accent glow */}
       <div
