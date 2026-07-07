@@ -53,8 +53,16 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
     font-family: 'DM Sans', system-ui, sans-serif;
+    background-color: #ffffff;
+    background-image:
+      radial-gradient(ellipse 90% 60% at 15% 12%, rgba(200, 187, 226, 0.35), transparent 60%),
+      radial-gradient(ellipse 80% 55% at 85% 35%, rgba(240, 220, 185, 0.35), transparent 60%),
+      radial-gradient(ellipse 100% 60% at 20% 62%, rgba(214, 195, 227, 0.30), transparent 60%),
+      radial-gradient(ellipse 90% 55% at 90% 82%, rgba(245, 228, 200, 0.32), transparent 60%),
+      linear-gradient(180deg, #ffffff 0%, #f8f2fb 20%, #fbf4e8 45%, #f4ecfa 70%, #fbf5ea 88%, #ffffff 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
