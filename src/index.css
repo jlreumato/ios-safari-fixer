@@ -63,6 +63,49 @@
       radial-gradient(ellipse 90% 55% at 90% 82%, rgba(245, 228, 200, 0.32), transparent 60%),
       linear-gradient(180deg, #ffffff 0%, #f8f2fb 20%, #fbf4e8 45%, #f4ecfa 70%, #fbf5ea 88%, #ffffff 100%);
     background-attachment: fixed;
+    position: relative;
+  }
+
+  /* Subtle animated thin lines + drifting orbs across the whole page */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: -20% -10%;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      repeating-linear-gradient(115deg, transparent 0 78px, rgba(142, 130, 184, 0.05) 78px 79px),
+      repeating-linear-gradient(65deg, transparent 0 140px, rgba(200, 170, 120, 0.045) 140px 141px);
+    animation: bg-lines-drift 40s linear infinite;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 75%);
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(180, 160, 210, 0.18), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(230, 205, 165, 0.16), transparent 42%);
+    animation: bg-orbs-float 22s ease-in-out infinite alternate;
+    filter: blur(20px);
+  }
+  #root { position: relative; z-index: 1; }
+
+  @keyframes bg-lines-drift {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-79px, -141px, 0); }
+  }
+  @keyframes bg-orbs-float {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(2%, -1.5%, 0) scale(1.05); }
+    100% { transform: translate3d(-1.5%, 2%, 0) scale(0.98); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body::before, body::after { animation: none; }
   }
 
   h1, h2, h3, h4, h5, h6 {
