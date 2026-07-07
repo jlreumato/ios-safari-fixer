@@ -1,4 +1,5 @@
 import { MapPin, Phone as PhoneIcon, Clock, Instagram } from "lucide-react";
+import logoNome from "@/assets/nome-header.png.asset.json";
 
 export default function Footer() {
   return (
@@ -7,9 +8,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <span className="text-xl font-bold text-white" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-              Dra. Juliana Leal
-            </span>
+            <img
+              src={logoNome.url}
+              alt="Dra. Juliana Leal — Reumatologia"
+              className="h-12 w-auto brightness-0 invert md:h-14"
+              loading="lazy"
+            />
             <p className="mt-1 text-xs font-medium uppercase tracking-[0.15em] text-primary">Reumatologia</p>
             <p className="mt-4 text-sm leading-relaxed">
               Reumatologista em Maceió — AL. Atendimento humanizado e baseado em evidências científicas.
