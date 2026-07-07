@@ -42,7 +42,7 @@ export default function Services() {
   const { ref, visible } = useReveal();
 
   return (
-    <section id="atuacao" className="py-20 lg:py-28 bg-secondary/40">
+    <section id="atuacao" className="py-20 lg:py-28">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
