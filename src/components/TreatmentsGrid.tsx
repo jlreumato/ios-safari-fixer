@@ -73,7 +73,7 @@ export default function TreatmentsGrid() {
                 key={t.slug}
                 className="absolute inset-0"
                 style={{
-                  transform: `translate3d(${offsets[i] ?? 0}%, 0, 0)`,
+                  transform: `translate3d(0, ${offsets[i] ?? 0}%, 0)`,
                   zIndex: i + 1,
                   willChange: "transform",
                 }}
