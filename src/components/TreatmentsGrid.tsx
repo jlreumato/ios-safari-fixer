@@ -100,60 +100,73 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br ${treatment.gradient} p-8 sm:p-12 lg:p-16 shadow-[0_18px_40px_-24px_rgba(60,50,90,0.28)] transition-transform duration-500`}
+      className={`group relative flex h-full w-full overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br ${treatment.gradient} shadow-[0_10px_24px_-18px_rgba(60,50,90,0.22)] transition-transform duration-500`}
     >
       {/* accent glow */}
       <div
-        className="pointer-events-none absolute -right-24 -top-24 h-[50vmin] w-[50vmin] rounded-full opacity-30 blur-3xl"
+        className="pointer-events-none absolute -right-24 -top-24 h-[50vmin] w-[50vmin] rounded-full opacity-25 blur-3xl"
         style={{ backgroundColor: treatment.accent }}
       />
-      {/* thin decorative lines */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(90deg, transparent 0 118px, rgba(255,255,255,0.5) 118px 119px)",
-        }}
-      />
 
-      <div className="relative flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#5a4d7a]">
-        <span>
-          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-        </span>
-        <span
-          className="h-px flex-1 mx-4 max-w-[240px]"
-          style={{ backgroundColor: `${treatment.accent}55` }}
-        />
-        <span>Tratamento</span>
+      {/* Text side */}
+      <div className="relative flex flex-1 flex-col justify-between p-8 sm:p-12 lg:p-16">
+        <div className="flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#5a4d7a]">
+          <span>
+            {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
+          <span
+            className="h-px flex-1 mx-4 max-w-[180px]"
+            style={{ backgroundColor: `${treatment.accent}55` }}
+          />
+          <span>Tratamento</span>
+        </div>
+
+        <div className="max-w-xl">
+          <span
+            className="inline-block h-1.5 w-12 rounded-full"
+            style={{ backgroundColor: treatment.accent }}
+          />
+          <h3
+            className="mt-4 text-balance text-3xl font-normal leading-[1.05] tracking-tight text-[#2b2540] sm:text-4xl lg:text-5xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            {treatment.title}
+          </h3>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-[#4a4560] sm:text-lg">
+            {treatment.shortDesc}
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#3a3548]/70">
+            Saiba mais
+          </span>
+          <span
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:bg-white"
+            style={{ color: treatment.accent }}
+          >
+            <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
+          </span>
+        </div>
       </div>
 
-      <div className="relative max-w-3xl">
-        <span
-          className="inline-block h-1.5 w-12 rounded-full"
-          style={{ backgroundColor: treatment.accent }}
-        />
-        <h3
-          className="mt-4 text-balance text-3xl font-normal leading-[1.05] tracking-tight text-[#2b2540] sm:text-5xl lg:text-6xl"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      {/* Square image side */}
+      <div className="relative hidden md:flex items-center justify-center p-6 lg:p-8">
+        <div
+          className="relative aspect-square h-[min(60vh,520px)] overflow-hidden rounded-[1.5rem] ring-1 ring-white/60"
+          style={{ boxShadow: `0 12px 28px -20px ${treatment.accent}` }}
         >
-          {treatment.title}
-        </h3>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-[#4a4560] sm:text-lg">
-          {treatment.shortDesc}
-        </p>
-      </div>
-
-      <div className="relative flex items-center justify-between">
-        <span className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#3a3548]/70">
-          Saiba mais
-        </span>
-        <span
-          className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-[#3a3548] shadow-md transition-all duration-500 group-hover:scale-110 group-hover:bg-white"
-          style={{ color: treatment.accent }}
-        >
-          <ArrowUpRight className="h-5 w-5 transition-transform duration-500 group-hover:rotate-45" />
-        </span>
+          <img
+            src={treatment.image}
+            alt={treatment.title}
+            width={1024}
+            height={1024}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        </div>
       </div>
     </Link>
   );
 }
+

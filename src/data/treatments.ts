@@ -1,15 +1,36 @@
+import fibromialgiaImg from "@/assets/treatments/fibromialgia.jpg.asset.json";
+import lupusImg from "@/assets/treatments/lupus.jpg.asset.json";
+import artriteImg from "@/assets/treatments/artrite.jpg.asset.json";
+import sjogrenImg from "@/assets/treatments/sjogren.jpg.asset.json";
+import muscularesImg from "@/assets/treatments/musculares.jpg.asset.json";
+import artroseImg from "@/assets/treatments/artrose.jpg.asset.json";
+import osteoporoseImg from "@/assets/treatments/osteoporose.jpg.asset.json";
+import tendoesImg from "@/assets/treatments/tendoes.jpg.asset.json";
+
+const IMAGES: Record<string, string> = {
+  fibromialgia: fibromialgiaImg.url,
+  lupus: lupusImg.url,
+  "artrite-reumatoide": artriteImg.url,
+  "sindrome-de-sjogren": sjogrenImg.url,
+  "lesoes-musculares": muscularesImg.url,
+  artrose: artroseImg.url,
+  osteoporose: osteoporoseImg.url,
+  "lesoes-nos-tendoes": tendoesImg.url,
+};
+
 export type Treatment = {
   slug: string;
   title: string;
   shortDesc: string;
   gradient: string; // tailwind gradient classes
   accent: string; // hex for accent bits
+  image: string;
   overview: string;
   symptoms: string[];
   approach: string[];
 };
 
-export const treatments: Treatment[] = [
+const _treatments: Omit<Treatment, "image">[] = [
   {
     slug: "fibromialgia",
     title: "Fibromialgia",
@@ -188,5 +209,11 @@ export const treatments: Treatment[] = [
   },
 ];
 
+export const treatments: Treatment[] = _treatments.map((t) => ({
+  ...t,
+  image: IMAGES[t.slug],
+}));
+
 export const getTreatment = (slug: string) =>
   treatments.find((t) => t.slug === slug);
+

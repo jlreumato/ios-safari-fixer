@@ -17,8 +17,14 @@ const Index = () => {
     <>
       <Header />
       <main>
-        <Hero />
-        <About />
+        <div className="relative">
+          <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+            <Hero />
+          </div>
+          <div className="about-parallax relative z-10">
+            <About />
+          </div>
+        </div>
         <Clinic />
         <Services />
         <TreatmentsGrid />
