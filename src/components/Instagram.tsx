@@ -378,7 +378,7 @@ export default function Instagram() {
     };
   }, []);
 
-  const reels = feed.posts.slice(0, 6);
+  const reels = feed.posts.filter((p) => p.isReel).slice(0, 4);
 
   return (
     <section
