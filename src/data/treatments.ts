@@ -209,5 +209,11 @@ const _treatments: Omit<Treatment, "image">[] = [
   },
 ];
 
+export const treatments: Treatment[] = _treatments.map((t) => ({
+  ...t,
+  image: IMAGES[t.slug],
+}));
+
 export const getTreatment = (slug: string) =>
   treatments.find((t) => t.slug === slug);
+
