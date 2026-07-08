@@ -17,8 +17,14 @@ const Index = () => {
     <>
       <Header />
       <main>
-        <Hero />
-        <About />
+        <div className="relative">
+          <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+            <Hero />
+          </div>
+          <div className="relative z-10 -mt-[100dvh]">
+            <About />
+          </div>
+        </div>
         <Clinic />
         <Services />
         <TreatmentsGrid />
