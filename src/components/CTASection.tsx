@@ -11,10 +11,10 @@ export default function CTASection() {
         <div className="absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-white/5" />
       </div>
       <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-        <h2 className="text-balance text-3xl font-bold tracking-tight text-white sm:text-4xl">
+        <h2 className="text-balance text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           Pronta para cuidar de você!
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/80">
+        <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl lg:text-2xl">
           Agende sua consulta e dê o primeiro passo rumo a uma vida com menos dor e mais qualidade.
         </p>
         <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block">
