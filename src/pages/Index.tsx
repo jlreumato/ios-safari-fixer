@@ -21,7 +21,7 @@ const Index = () => {
           <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
             <Hero />
           </div>
-          <div className="relative z-10 -mt-[100dvh]">
+          <div className="about-parallax relative z-10">
             <About />
           </div>
         </div>
