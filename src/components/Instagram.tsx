@@ -480,226 +480,142 @@ export default function Instagram() {
           </div>
         </div>
 
-        {/* Reels — galeria expansiva estilo Blog */}
+        {/* Direto do Instagram — player central + carrossel horizontal */}
         <div className="mt-24">
-          <div className="flex flex-col items-center text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-                Últimas publicações
-              </p>
-              <h3
-                className="mt-2 text-3xl font-normal text-foreground sm:text-4xl lg:text-5xl"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-              >
-                Direto do Instagram
-              </h3>
-              <p className="mt-3 text-base text-muted-foreground">
-                Passe o mouse sobre cada post para ver a legenda.
-              </p>
-            </div>
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 text-sm font-semibold text-primary underline-offset-4 hover:underline sm:mt-0"
+          <div className="text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+              Últimos 7 vídeos
+            </p>
+            <h3
+              className="mt-2 text-3xl font-normal text-foreground sm:text-4xl lg:text-5xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              Ver todos →
-            </a>
+              Direto do Instagram
+            </h3>
+            <p className="mt-3 text-base text-muted-foreground">
+              Deslize o carrossel — o vídeo no centro é reproduzido na tela principal.
+            </p>
           </div>
 
-          {/* Mobile: parallax stack — cada reel entra da direita sobrepondo o anterior */}
-          <div className="mt-10 sm:hidden">
-            <MobileParallaxStack stepVh={85}>
-              {reels.map((p) => (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => setActivePost(p)}
-                  aria-label={`Reproduzir: ${shortCaption(p)}`}
-                  className="group relative block h-[70vh] w-full overflow-hidden rounded-2xl text-left shadow-2xl cursor-pointer"
-                >
-                  <img
-                    src={getCover(p)}
-                    alt={shortCaption(p)}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
-
-                  <div className="absolute left-4 top-4 flex items-center gap-2">
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/25 backdrop-blur px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
-                      {p.isReel ? (<><Film className="h-3 w-3" /> Reel</>) : (<><InstagramIcon className="h-3 w-3" /> Post</>)}
-                    </span>
-                  </div>
-
-                  {p.isReel && (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="rounded-full bg-white/90 p-4 backdrop-blur-sm shadow-lg">
-                        <Play className="h-7 w-7 fill-black text-black" />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                    <div className="flex items-center gap-4 text-xs font-semibold text-white/90">
-                      <span className="inline-flex items-center gap-1">
-                        <Heart className="h-3.5 w-3.5 fill-current" />
-                        {p.likeCount}
-                      </span>
-                      {typeof p.commentsCount === "number" && (
-                        <span className="inline-flex items-center gap-1">💬 {p.commentsCount}</span>
-                      )}
-                    </div>
-                    <h4
-                      className="mt-2 text-2xl font-semibold leading-snug drop-shadow line-clamp-3"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                    >
-                      {shortCaption(p)}
-                    </h4>
-                    {p.hashtags && p.hashtags.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {p.hashtags.slice(0, 4).map((h) => (
-                          <span
-                            key={h}
-                            className="rounded-full bg-white/15 backdrop-blur px-2 py-0.5 text-[10px] font-medium text-white/90"
-                          >
-                            #{h}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
-                      {p.isReel ? "Assistir vídeo" : "Ver publicação"}
-                      <Play className="h-3 w-3 fill-current" />
-                    </span>
-                  </div>
-                </button>
-              ))}
-            </MobileParallaxStack>
-          </div>
-
-          {/* Desktop: galeria expansiva lado a lado (mantida) */}
-          <div className="mt-10 hidden sm:flex flex-row gap-3 h-[520px]">
-            {reels.map((p, i) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => setActivePost(p)}
-                aria-label={`Reproduzir: ${shortCaption(p)}`}
-                className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 hover:flex-[2.6] focus-within:flex-[2.6] h-full text-left cursor-pointer ${
-                  visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-                }`}
-                style={{ transitionDelay: visible ? `${200 + i * 90}ms` : "0ms" }}
-              >
-                <img
-                  src={getCover(p)}
-                  alt={shortCaption(p)}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover grayscale transition-all duration-[600ms] group-hover:grayscale-0 group-hover:scale-105"
+          {/* Player principal */}
+          <div className="mt-10 mx-auto w-full max-w-[400px]">
+            <div
+              className="relative w-full overflow-hidden rounded-3xl bg-black shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
+              style={{ aspectRatio: "9 / 16" }}
+            >
+              {active && (
+                <iframe
+                  key={active.id}
+                  src={`${active.permalink.replace(/\/?$/, "/")}embed/captioned/`}
+                  title={shortCaption(active) || "Instagram reel"}
+                  className="absolute inset-0 h-full w-full"
+                  frameBorder={0}
+                  scrolling="no"
+                  allow="autoplay; encrypted-media; picture-in-picture; web-share"
+                  allowFullScreen
                 />
-                <div className="absolute inset-0 bg-primary/40 mix-blend-multiply transition-opacity duration-500 group-hover:opacity-0" />
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+              )}
+            </div>
+            {active && (
+              <p className="mx-auto mt-4 max-w-md text-center text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                {shortCaption(active)}
+              </p>
+            )}
+          </div>
 
-                <div className="absolute left-4 top-4 flex items-center gap-2">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-white/25 backdrop-blur px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white">
-                    {p.isReel ? (<><Film className="h-3 w-3" /> Reel</>) : (<><InstagramIcon className="h-3 w-3" /> Post</>)}
-                  </span>
-                </div>
+          {/* Carrossel horizontal */}
+          <div className="relative mt-10">
+            {/* Máscara lateral */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-24" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-24" />
 
-                {p.isReel && (
-                  <div className="absolute inset-0 flex items-center justify-center opacity-70 transition-opacity duration-300 group-hover:opacity-0">
-                    <div className="rounded-full bg-white/85 p-3 backdrop-blur-sm">
-                      <Play className="h-6 w-6 fill-black text-black" />
-                    </div>
-                  </div>
-                )}
+            <button
+              type="button"
+              onClick={() => scrollToIdx(Math.max(0, activeIdx - 1))}
+              aria-label="Anterior"
+              className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-md backdrop-blur transition hover:bg-white sm:block"
+            >
+              <ChevronLeft className="h-5 w-5 text-primary" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollToIdx(Math.min(reels.length - 1, activeIdx + 1))}
+              aria-label="Próximo"
+              className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-md backdrop-blur transition hover:bg-white sm:block"
+            >
+              <ChevronRight className="h-5 w-5 text-primary" />
+            </button>
 
-                <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                  <div className="flex items-center gap-4 text-xs font-semibold text-white/90">
-                    <span className="inline-flex items-center gap-1">
-                      <Heart className="h-3.5 w-3.5 fill-current" />
-                      {p.likeCount}
-                    </span>
-                    {typeof p.commentsCount === "number" && (
-                      <span className="inline-flex items-center gap-1">💬 {p.commentsCount}</span>
-                    )}
-                  </div>
-                  <h4
-                    className="mt-2 text-xl sm:text-2xl font-semibold leading-snug drop-shadow line-clamp-3"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            <div
+              ref={scrollerRef}
+              className="flex items-center gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              style={{
+                paddingLeft: "calc(50% - 90px)",
+                paddingRight: "calc(50% - 90px)",
+              }}
+            >
+              {reels.map((p, i) => {
+                const isActive = i === activeIdx;
+                return (
+                  <button
+                    key={p.id}
+                    ref={(el) => (itemRefs.current[i] = el)}
+                    type="button"
+                    onClick={() => scrollToIdx(i)}
+                    aria-label={`Selecionar vídeo: ${shortCaption(p)}`}
+                    className={`group relative snap-center shrink-0 overflow-hidden rounded-2xl transition-all duration-500 ease-out ${
+                      isActive
+                        ? "h-[320px] w-[180px] shadow-[0_20px_50px_-20px_rgba(60,50,90,0.5)] ring-2 ring-primary"
+                        : "h-[240px] w-[135px] opacity-55 hover:opacity-80"
+                    }`}
                   >
-                    {shortCaption(p)}
-                  </h4>
-
-                  <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-focus-within:mt-3">
-                    <div className="overflow-hidden">
-                      {p.hashtags && p.hashtags.length > 0 && (
-                        <div className="mb-3 flex flex-wrap gap-1.5">
-                          {p.hashtags.slice(0, 4).map((h) => (
-                            <span
-                              key={h}
-                              className="rounded-full bg-white/15 backdrop-blur px-2 py-0.5 text-[10px] font-medium text-white/90"
-                            >
-                              #{h}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
-                        {p.isReel ? "Assistir vídeo" : "Ver publicação"}
-                        <Play className="h-3 w-3 fill-current" />
-                      </span>
+                    <img
+                      src={getCover(p)}
+                      alt={shortCaption(p)}
+                      loading="lazy"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/25 px-2 py-0.5 text-[0.55rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
+                      <Film className="h-2.5 w-2.5" /> Reel
+                    </span>
+                    <div
+                      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                        isActive ? "opacity-0" : "opacity-90"
+                      }`}
+                    >
+                      <div className="rounded-full bg-white/90 p-3 shadow-md backdrop-blur-sm">
+                        <Play className="h-4 w-4 fill-black text-black" />
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </button>
-            ))}
+                    {isActive && (
+                      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-[0.55rem] font-semibold uppercase tracking-wider text-white shadow">
+                        Tocando
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Dots */}
+            <div className="mt-2 flex justify-center gap-1.5">
+              {reels.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => scrollToIdx(i)}
+                  aria-label={`Ir para vídeo ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
       </div>
-
-      {/* Modal de vídeo/post */}
-      {activePost && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-in fade-in duration-200"
-          onClick={() => setActivePost(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button
-            type="button"
-            onClick={() => setActivePost(null)}
-            aria-label="Fechar"
-            className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
-          >
-            <X className="h-6 w-6" />
-          </button>
-          <div
-            className="relative w-full max-w-[420px] overflow-hidden rounded-2xl bg-black shadow-2xl"
-            style={{ aspectRatio: "9 / 16", maxHeight: "90vh" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <iframe
-              src={`${activePost.permalink.replace(/\/?$/, "/")}embed/captioned/`}
-              title="Instagram"
-              className="absolute inset-0 h-full w-full"
-              frameBorder={0}
-              scrolling="no"
-              allow="autoplay; encrypted-media; picture-in-picture; web-share"
-              allowFullScreen
-            />
-          </div>
-          <a
-            href={activePost.permalink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/15 backdrop-blur px-4 py-2 text-xs font-semibold text-white hover:bg-white/25"
-          >
-            Abrir no Instagram ↗
-          </a>
-        </div>
-      )}
     </section>
   );
 }
