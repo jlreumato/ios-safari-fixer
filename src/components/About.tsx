@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import draJulianaAbout from "@/assets/dra-juliana-about.jpg.asset.json";
+
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -27,19 +29,25 @@ export default function About() {
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
+        <div className="flex flex-col items-center gap-12 lg:flex-row-reverse lg:gap-16">
           {/* Photo */}
           <div className="flex-shrink-0">
-            <div className="relative h-80 w-72 overflow-hidden rounded-2xl shadow-xl shadow-primary/10 sm:h-96 sm:w-80">
+            <div className="relative h-[26rem] w-80 sm:h-[30rem] sm:w-96">
               <img
-                src="https://julianalealreumato.com.br/imagens/fotos/perfil-dra-juliana-leal.webp"
-                alt="Dra. Juliana Leal no consultório"
+                src={draJulianaAbout.url}
+                alt="Dra. Juliana Leal"
                 className="h-full w-full object-cover object-top"
+                style={{
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, #000 0%, #000 65%, rgba(0,0,0,0.35) 92%, rgba(0,0,0,0) 100%)",
+                  maskImage:
+                    "linear-gradient(to bottom, #000 0%, #000 65%, rgba(0,0,0,0.35) 92%, rgba(0,0,0,0) 100%)",
+                }}
                 loading="lazy"
               />
-              <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl" />
             </div>
           </div>
+
 
           {/* Text */}
           <div className="flex-1 text-center lg:text-left">

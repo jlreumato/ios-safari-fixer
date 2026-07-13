@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AirVent, MapPin, Stethoscope, Clock, X, ChevronLeft, ChevronRight, Building2 } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { AirVent, MapPin, Stethoscope, Clock, Building2, Sparkles } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
@@ -30,6 +29,24 @@ interface ClinicLocation {
 
 const locations: ClinicLocation[] = [
   {
+    id: "ampla",
+    name: "AMPLA Consultórios",
+    address: "AMPLA Consultórios — Maceió, AL",
+    cep: "Local principal de atendimento",
+    features: [
+      { icon: Sparkles, title: "Estrutura Premium", desc: "Ambiente sofisticado, silencioso e pensado para o bem-estar." },
+      { icon: MapPin, title: "Localização Central", desc: "Acesso fácil, estacionamento amplo e área de espera acolhedora." },
+      { icon: Stethoscope, title: "Equipe Multidisciplinar", desc: "Suporte completo dentro do próprio consultório." },
+      { icon: Clock, title: "Atendimento Pontual", desc: "Agenda organizada para respeitar o seu tempo." },
+    ],
+    images: [
+      { src: reumatosFachada.url, alt: "AMPLA Consultórios — fachada" },
+      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção AMPLA" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório AMPLA" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Detalhe do consultório AMPLA" },
+    ],
+  },
+  {
     id: "reumatos",
     name: "Clínica Reumatos",
     address: "Centro Médico Imagem Plena, Av. João Davino, 766 — Mangabeiras, Maceió, AL",
@@ -42,6 +59,9 @@ const locations: ClinicLocation[] = [
     ],
     images: [
       { src: reumatosFachada.url, alt: "Fachada do Centro Médico Imagem Plena — Clínica Reumatos" },
+      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Reumatos" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Reumatos" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento moderno — Reumatos" },
     ],
   },
   {
@@ -56,51 +76,81 @@ const locations: ClinicLocation[] = [
       { icon: Clock, title: "Pontualidade", desc: "Respeito ao seu tempo com atendimento dentro do horário." },
     ],
     images: [
-      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção da clínica — Harmony Trade Center" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório médico — Harmony Trade Center" },
+      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Harmony Trade Center" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Harmony Trade Center" },
       { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
       { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center — fachada" },
     ],
   },
 ];
 
-function GalleryGrid({ images, onImageClick }: { images: { src: string; alt: string }[]; onImageClick: (i: number) => void }) {
-  if (images.length === 0) {
-    return (
-      <div className="mt-12 flex items-center justify-center rounded-xl border-2 border-dashed border-primary/20 bg-primary/5 p-12">
-        <div className="text-center">
-          <Building2 className="mx-auto h-12 w-12 text-primary/40" />
-          <p className="mt-4 text-sm font-medium text-muted-foreground">
-            Fotos do espaço em breve
-          </p>
-        </div>
-      </div>
-    );
-  }
+/** Carrossel em cubo 3D com rotação automática no eixo Y. */
+function Cube3DCarousel({ images }: { images: { src: string; alt: string }[] }) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(360);
+  const [rotation, setRotation] = useState(0);
+
+  // 4 faces do cubo — repete imagens caso haja menos de 4
+  const faces = [0, 1, 2, 3].map((i) => images[i % Math.max(images.length, 1)]);
+
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const update = () => setSize(el.clientWidth);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const id = window.setInterval(() => setRotation((r) => r - 90), 3800);
+    return () => window.clearInterval(id);
+  }, [images]);
+
+  const half = size / 2;
 
   return (
-    <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {images.map((img, i) => (
-        <div
-          key={i}
-          className="group relative cursor-pointer overflow-hidden rounded-xl shadow-md"
-          onClick={() => onImageClick(i)}
-        >
-          <img
-            src={img.src}
-            alt={img.alt}
-            className="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105 sm:h-64"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20 rounded-xl" />
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <span className="rounded-full bg-background/80 p-2 text-foreground backdrop-blur-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-            </span>
+    <div className="mt-12 flex justify-center">
+      <div
+        ref={wrapperRef}
+        className="relative w-full max-w-md"
+        style={{ perspective: "1600px", WebkitPerspective: "1600px" }}
+      >
+        <div className="relative w-full" style={{ paddingBottom: "100%" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              transformStyle: "preserve-3d",
+              WebkitTransformStyle: "preserve-3d",
+              transform: `translateZ(-${half}px) rotateY(${rotation}deg)`,
+              WebkitTransform: `translateZ(-${half}px) rotateY(${rotation}deg)`,
+              transition: "transform 1.4s cubic-bezier(0.65, 0, 0.35, 1)",
+              WebkitTransition: "-webkit-transform 1.4s cubic-bezier(0.65, 0, 0.35, 1)",
+            }}
+          >
+            {faces.map((img, i) => (
+              <div
+                key={i}
+                className="absolute inset-0 overflow-hidden rounded-2xl shadow-[0_20px_50px_-25px_rgba(60,50,90,0.4)] ring-1 ring-white/40"
+                style={{
+                  transform: `rotateY(${i * 90}deg) translateZ(${half}px)`,
+                  WebkitTransform: `rotateY(${i * 90}deg) translateZ(${half}px)`,
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                }}
+              >
+                <img
+                  src={img?.src}
+                  alt={img?.alt ?? ""}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
-          <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-xl" />
         </div>
-      ))}
+      </div>
     </div>
   );
 }
@@ -108,15 +158,8 @@ function GalleryGrid({ images, onImageClick }: { images: { src: string; alt: str
 export default function Clinic() {
   const { ref, visible } = useReveal();
   const [activeTab, setActiveTab] = useState(0);
-  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const currentLocation = locations[activeTab];
-  const currentImages = currentLocation.images;
-
-  const openLightbox = (i: number) => setLightbox(i);
-  const closeLightbox = () => setLightbox(null);
-  const prev = () => setLightbox((v) => (v !== null ? (v - 1 + currentImages.length) % currentImages.length : null));
-  const next = () => setLightbox((v) => (v !== null ? (v + 1) % currentImages.length : null));
 
   return (
     <section id="clinica" className="bg-secondary/50 py-20 lg:py-28">
@@ -138,11 +181,11 @@ export default function Clinic() {
 
         {/* Tabs */}
         <div className="mt-10 flex justify-center">
-          <div className="inline-flex rounded-xl bg-background p-1 shadow-sm">
+          <div className="inline-flex flex-wrap justify-center gap-1 rounded-xl bg-background p-1 shadow-sm">
             {locations.map((loc, i) => (
               <button
                 key={loc.id}
-                onClick={() => { setActiveTab(i); setLightbox(null); }}
+                onClick={() => setActiveTab(i)}
                 className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
                   activeTab === i
                     ? "bg-primary text-primary-foreground shadow-sm"
@@ -150,6 +193,11 @@ export default function Clinic() {
                 }`}
               >
                 {loc.name}
+                {i === 0 && (
+                  <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                    Principal
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -164,8 +212,8 @@ export default function Clinic() {
           <p className="mt-1 text-xs text-muted-foreground">{currentLocation.cep}</p>
         </div>
 
-        {/* Gallery */}
-        <GalleryGrid images={currentImages} onImageClick={openLightbox} />
+        {/* 3D Cube Carousel */}
+        <Cube3DCarousel key={currentLocation.id} images={currentLocation.images} />
 
         {/* Features */}
         <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -184,47 +232,6 @@ export default function Clinic() {
           ))}
         </div>
       </div>
-
-      {/* Lightbox Dialog */}
-      {currentImages.length > 0 && (
-        <Dialog open={lightbox !== null} onOpenChange={(open) => !open && closeLightbox()}>
-          <DialogContent className="max-w-4xl border-none bg-transparent p-0 shadow-none [&>button]:hidden">
-            <DialogTitle className="sr-only">
-              {lightbox !== null ? currentImages[lightbox].alt : "Foto da clínica"}
-            </DialogTitle>
-            {lightbox !== null && (
-              <div className="relative flex items-center justify-center">
-                <img
-                  src={currentImages[lightbox].src}
-                  alt={currentImages[lightbox].alt}
-                  className="max-h-[85vh] w-auto rounded-xl object-contain"
-                />
-                <button
-                  onClick={closeLightbox}
-                  className="absolute -top-3 -right-3 z-10 rounded-full bg-background/90 p-1.5 text-foreground shadow-md backdrop-blur-sm transition-colors hover:bg-background"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); prev(); }}
-                  className="absolute left-2 rounded-full bg-background/80 p-2 text-foreground shadow-md backdrop-blur-sm transition-colors hover:bg-background"
-                >
-                  <ChevronLeft className="h-5 w-5" />
-                </button>
-                <button
-                  onClick={(e) => { e.stopPropagation(); next(); }}
-                  className="absolute right-2 rounded-full bg-background/80 p-2 text-foreground shadow-md backdrop-blur-sm transition-colors hover:bg-background"
-                >
-                  <ChevronRight className="h-5 w-5" />
-                </button>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-background/80 px-3 py-1 text-xs font-medium text-foreground backdrop-blur-sm">
-                  {lightbox + 1} / {currentImages.length}
-                </div>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
-      )}
     </section>
   );
 }
