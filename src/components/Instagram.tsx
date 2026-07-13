@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram as InstagramIcon, Play, Heart, Grid3x3, Film, Bookmark, UserSquare2, X } from "lucide-react";
-import MobileParallaxStack from "./MobileParallaxStack";
+import { Instagram as InstagramIcon, Play, Film, Grid3x3, Bookmark, UserSquare2, ChevronLeft, ChevronRight } from "lucide-react";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
 
