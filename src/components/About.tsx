@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import draJulianaAbout from "@/assets/dra-juliana-about.jpg.asset.json";
+
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
