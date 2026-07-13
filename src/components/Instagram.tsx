@@ -347,19 +347,9 @@ function IPhoneMockup({ feed }: { feed: BeholdFeed }) {
 export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
-  const [activePost, setActivePost] = useState<BeholdPost | null>(null);
-
-  useEffect(() => {
-    if (!activePost) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setActivePost(null);
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [activePost]);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   useEffect(() => {
     if (!BEHOLD_FEED_URL) return;
@@ -377,7 +367,52 @@ export default function Instagram() {
     };
   }, []);
 
-  const reels = feed.posts.filter((p) => p.isReel).slice(0, 4);
+  const reels = feed.posts.filter((p) => p.mediaType === "VIDEO").slice(0, 7);
+  const active = reels[activeIdx];
+
+  // Detecta qual item está no centro do scroller e o marca como ativo
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    let raf = 0;
+    const update = () => {
+      const rect = scroller.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      itemRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const c = r.left + r.width / 2;
+        const d = Math.abs(c - centerX);
+        if (d < bestDist) {
+          bestDist = d;
+          best = i;
+        }
+      });
+      setActiveIdx((prev) => (prev === best ? prev : best));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    scroller.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      scroller.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reels.length]);
+
+  const scrollToIdx = (i: number) => {
+    const el = itemRefs.current[i];
+    const scroller = scrollerRef.current;
+    if (!el || !scroller) return;
+    const target = el.offsetLeft - (scroller.clientWidth - el.clientWidth) / 2;
+    scroller.scrollTo({ left: target, behavior: "smooth" });
+  };
 
   return (
     <section
