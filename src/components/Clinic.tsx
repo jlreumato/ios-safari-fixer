@@ -96,10 +96,11 @@ function Cube3DCarousel({ images }: { images: { src: string; alt: string }[] }) 
     <div className="mt-12 flex justify-center">
       <div
         ref={wrapperRef}
-        className="relative w-full max-w-md"
-        style={{ perspective: "1600px", WebkitPerspective: "1600px" }}
+        className="relative w-full max-w-5xl"
+        style={{ perspective: "2200px", WebkitPerspective: "2200px" }}
       >
-        <div className="relative w-full" style={{ paddingBottom: "100%" }}>
+        {/* 16:9 stage */}
+        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
           <div
             className="absolute inset-0"
             style={{
