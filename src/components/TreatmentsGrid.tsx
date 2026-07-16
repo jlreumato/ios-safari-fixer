@@ -98,7 +98,7 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full w-full overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br ${treatment.gradient} shadow-[0_10px_24px_-18px_rgba(60,50,90,0.22)] transition-transform duration-500`}
+      className={`group relative flex h-screen w-full overflow-hidden bg-gradient-to-br ${treatment.gradient} transition-transform duration-500`}
     >
       {/* accent glow */}
       <div
