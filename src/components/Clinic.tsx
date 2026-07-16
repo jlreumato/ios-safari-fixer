@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AirVent, MapPin, Stethoscope, Clock, Building2, Sparkles } from "lucide-react";
+import { AirVent, MapPin, Stethoscope, Clock, Building2 } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
