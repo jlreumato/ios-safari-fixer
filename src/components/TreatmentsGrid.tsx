@@ -149,9 +149,9 @@ function TreatmentCard({
       </div>
 
       {/* Square image side */}
-      <div className="relative hidden md:flex items-center justify-center p-6 lg:p-8">
+      <div className="relative hidden md:flex items-center justify-center p-8 lg:p-12">
         <div
-          className="relative aspect-square h-[min(60vh,520px)] overflow-hidden rounded-[1.5rem] ring-1 ring-white/60"
+          className="relative aspect-square h-[min(72vh,640px)] overflow-hidden rounded-[1.5rem] ring-1 ring-white/60"
           style={{ boxShadow: `0 12px 28px -20px ${treatment.accent}` }}
         >
           <img
