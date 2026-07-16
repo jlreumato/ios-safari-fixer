@@ -64,24 +64,22 @@ export default function TreatmentsGrid() {
         </p>
       </div>
 
-      {/* Parallax stack */}
+      {/* Parallax stack — fullscreen cards */}
       <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-          <div className="relative mx-auto h-[78vh] w-[88%] sm:w-[85%] lg:w-[80%] max-w-[1400px]">
-            {treatments.map((t, i) => (
-              <div
-                key={t.slug}
-                className="absolute inset-0"
-                style={{
-                  transform: `translate3d(0, ${offsets[i] ?? 0}%, 0)`,
-                  zIndex: i + 1,
-                  willChange: "transform",
-                }}
-              >
-                <TreatmentCard index={i} total={treatments.length} treatment={t} />
-              </div>
-            ))}
-          </div>
+        <div className="sticky top-0 h-screen w-full overflow-hidden">
+          {treatments.map((t, i) => (
+            <div
+              key={t.slug}
+              className="absolute inset-0"
+              style={{
+                transform: `translate3d(0, ${offsets[i] ?? 0}%, 0)`,
+                zIndex: i + 1,
+                willChange: "transform",
+              }}
+            >
+              <TreatmentCard index={i} total={treatments.length} treatment={t} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
