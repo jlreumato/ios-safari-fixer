@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AirVent, MapPin, Stethoscope, Clock, Building2, Sparkles } from "lucide-react";
+import { AirVent, MapPin, Stethoscope, Clock, Building2 } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
@@ -29,21 +29,21 @@ interface ClinicLocation {
 
 const locations: ClinicLocation[] = [
   {
-    id: "ampla",
-    name: "AMPLA Consultórios",
-    address: "AMPLA Consultórios — Maceió, AL",
-    cep: "Local principal de atendimento",
+    id: "harmony",
+    name: "Harmony Trade Center",
+    address: "Harmony Trade Center, 3º Andar, Sala 318 — Maceió, AL",
+    cep: "CEP 57036-510 — Local principal de atendimento",
     features: [
-      { icon: Sparkles, title: "Estrutura Premium", desc: "Ambiente sofisticado, silencioso e pensado para o bem-estar." },
-      { icon: MapPin, title: "Localização Central", desc: "Acesso fácil, estacionamento amplo e área de espera acolhedora." },
-      { icon: Stethoscope, title: "Equipe Multidisciplinar", desc: "Suporte completo dentro do próprio consultório." },
-      { icon: Clock, title: "Atendimento Pontual", desc: "Agenda organizada para respeitar o seu tempo." },
+      { icon: AirVent, title: "Ambiente Climatizado", desc: "Consultório confortável e acolhedor para seu bem-estar." },
+      { icon: MapPin, title: "Localização Privilegiada", desc: "Fácil acesso e estacionamento no local." },
+      { icon: Stethoscope, title: "Equipamentos Modernos", desc: "Tecnologia de ponta para diagnóstico e acompanhamento." },
+      { icon: Clock, title: "Pontualidade", desc: "Respeito ao seu tempo com atendimento dentro do horário." },
     ],
     images: [
-      { src: reumatosFachada.url, alt: "AMPLA Consultórios — fachada" },
-      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção AMPLA" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório AMPLA" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Detalhe do consultório AMPLA" },
+      { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center — fachada" },
+      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Harmony Trade Center" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Harmony Trade Center" },
+      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
     ],
   },
   {
@@ -62,24 +62,6 @@ const locations: ClinicLocation[] = [
       { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Reumatos" },
       { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Reumatos" },
       { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento moderno — Reumatos" },
-    ],
-  },
-  {
-    id: "harmony",
-    name: "Harmony Trade Center",
-    address: "Harmony Trade Center, 3º Andar, Sala 318 — Maceió, AL",
-    cep: "CEP 57036-510",
-    features: [
-      { icon: AirVent, title: "Ambiente Climatizado", desc: "Consultório confortável e acolhedor para seu bem-estar." },
-      { icon: MapPin, title: "Localização Privilegiada", desc: "Fácil acesso e estacionamento no local." },
-      { icon: Stethoscope, title: "Equipamentos Modernos", desc: "Tecnologia de ponta para diagnóstico e acompanhamento." },
-      { icon: Clock, title: "Pontualidade", desc: "Respeito ao seu tempo com atendimento dentro do horário." },
-    ],
-    images: [
-      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Harmony Trade Center" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Harmony Trade Center" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
-      { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center — fachada" },
     ],
   },
 ];
@@ -114,10 +96,11 @@ function Cube3DCarousel({ images }: { images: { src: string; alt: string }[] }) 
     <div className="mt-12 flex justify-center">
       <div
         ref={wrapperRef}
-        className="relative w-full max-w-md"
-        style={{ perspective: "1600px", WebkitPerspective: "1600px" }}
+        className="relative w-full max-w-5xl"
+        style={{ perspective: "2200px", WebkitPerspective: "2200px" }}
       >
-        <div className="relative w-full" style={{ paddingBottom: "100%" }}>
+        {/* 16:9 stage */}
+        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
           <div
             className="absolute inset-0"
             style={{

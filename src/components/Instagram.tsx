@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram as InstagramIcon, Play, Film, Grid3x3, Bookmark, UserSquare2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Instagram as InstagramIcon, Play, Film, ChevronLeft, ChevronRight } from "lucide-react";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
 
@@ -212,138 +212,6 @@ function shortCaption(p: BeholdPost) {
   return text.length > 130 ? text.slice(0, 127) + "…" : text;
 }
 
-function IPhoneMockup({ feed }: { feed: BeholdFeed }) {
-  const gridPosts = feed.posts.slice(0, 6);
-  return (
-    <div className="relative mx-auto" style={{ width: 340 }}>
-      <div className="absolute -inset-10 -z-10 rounded-full bg-gradient-to-br from-primary/30 via-pink-300/20 to-amber-200/20 blur-3xl" />
-
-      <div
-        className="relative rounded-[3rem] bg-gradient-to-b from-zinc-800 to-zinc-950 p-[3px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.45)]"
-        style={{ aspectRatio: "9 / 19.5" }}
-      >
-        <div className="relative h-full w-full overflow-hidden rounded-[2.85rem] bg-black">
-          <span className="absolute left-[-3px] top-24 h-8 w-[3px] rounded-l bg-zinc-700" />
-          <span className="absolute left-[-3px] top-36 h-14 w-[3px] rounded-l bg-zinc-700" />
-          <span className="absolute left-[-3px] top-56 h-14 w-[3px] rounded-l bg-zinc-700" />
-          <span className="absolute right-[-3px] top-40 h-20 w-[3px] rounded-r bg-zinc-700" />
-
-          <div className="relative flex h-full w-full flex-col bg-white">
-            <div className="pointer-events-none absolute left-1/2 top-2 z-30 h-7 w-28 -translate-x-1/2 rounded-full bg-black" />
-
-            <div className="flex items-center justify-between px-6 pt-3 pb-1 text-[11px] font-semibold text-black">
-              <span>9:41</span>
-              <span className="w-28" />
-              <span className="flex items-center gap-1">
-                <svg width="14" height="10" viewBox="0 0 14 10" fill="currentColor">
-                  <rect x="0" y="6" width="2" height="4" rx="0.5" />
-                  <rect x="3.5" y="4" width="2" height="6" rx="0.5" />
-                  <rect x="7" y="2" width="2" height="8" rx="0.5" />
-                  <rect x="10.5" y="0" width="2" height="10" rx="0.5" />
-                </svg>
-              </span>
-            </div>
-
-            <div className="mt-3 flex items-center justify-between border-b border-zinc-100 px-4 pb-2">
-              <span className="text-base font-semibold text-black">julianalealreumato</span>
-              <InstagramIcon className="h-5 w-5 text-black" />
-            </div>
-
-            <div className="flex items-center gap-4 px-4 pt-4">
-              <div className="rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
-                <div className="rounded-full bg-white p-[2px]">
-                  <img
-                    src={feed.profilePictureUrl}
-                    alt="Dra. Juliana Leal"
-                    className="h-16 w-16 rounded-full object-cover object-top"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-1 justify-around text-center text-[11px] text-black">
-                <div>
-                  <div className="text-sm font-semibold">{feed.posts.length}+</div>
-                  <div className="text-zinc-500">posts</div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">
-                    {feed.followersCount?.toLocaleString("pt-BR")}
-                  </div>
-                  <div className="text-zinc-500">seguidores</div>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">
-                    {feed.followsCount?.toLocaleString("pt-BR")}
-                  </div>
-                  <div className="text-zinc-500">seguindo</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="px-4 pt-3 text-[11px] leading-snug text-black whitespace-pre-line">
-              <div className="font-semibold">Dra. Juliana Leal · Reumatologista</div>
-              <div className="text-zinc-700">{feed.biography}</div>
-            </div>
-
-            <div className="mt-3 flex gap-2 px-4">
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 rounded-md bg-[#0095f6] py-1.5 text-center text-[11px] font-semibold text-white"
-              >
-                Seguir
-              </a>
-              <button className="flex-1 rounded-md bg-zinc-100 py-1.5 text-[11px] font-semibold text-black">
-                Mensagem
-              </button>
-              <button className="rounded-md bg-zinc-100 px-2 py-1.5 text-[11px] font-semibold text-black">▾</button>
-            </div>
-
-            <div className="mt-3 flex border-t border-zinc-200 text-zinc-500">
-              <div className="flex flex-1 justify-center border-t-2 border-black py-2 text-black">
-                <Grid3x3 className="h-4 w-4" />
-              </div>
-              <div className="flex flex-1 justify-center py-2">
-                <Film className="h-4 w-4" />
-              </div>
-              <div className="flex flex-1 justify-center py-2">
-                <UserSquare2 className="h-4 w-4" />
-              </div>
-              <div className="flex flex-1 justify-center py-2">
-                <Bookmark className="h-4 w-4" />
-              </div>
-            </div>
-
-            <div className="grid flex-1 grid-cols-3 gap-[2px] overflow-hidden">
-              {gridPosts.map((p) => (
-                <a
-                  key={p.id}
-                  href={p.permalink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="relative block bg-zinc-100"
-                >
-                  <img
-                    src={getCover(p)}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                  {p.isReel && <Film className="absolute right-1 top-1 h-3 w-3 text-white drop-shadow" />}
-                </a>
-              ))}
-            </div>
-
-            <div className="flex justify-center pb-2 pt-1">
-              <span className="h-1 w-24 rounded-full bg-black" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
@@ -359,16 +227,13 @@ export default function Instagram() {
       .then((data: BeholdFeed) => {
         if (!cancelled && data?.posts?.length) setFeed(data);
       })
-      .catch(() => {
-        /* mantém snapshot */
-      });
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
   }, []);
 
   const reels = feed.posts.filter((p) => p.mediaType === "VIDEO").slice(0, 7);
-  const active = reels[activeIdx];
 
   // Detecta qual item está no centro do scroller e o marca como ativo
   useEffect(() => {
@@ -438,183 +303,125 @@ export default function Instagram() {
             className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
-            Acompanhe no Instagram
+            Direto do Instagram
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Conteúdo educativo sobre reumatologia, bastidores do consultório e dicas para conviver melhor com dores crônicas.
+            Deslize o carrossel — o vídeo no centro é reproduzido automaticamente.
           </p>
         </div>
 
-        <div className="mt-16 grid items-center gap-12 lg:grid-cols-2">
-          <div className="flex justify-center">
-            <IPhoneMockup feed={feed} />
-          </div>
+        {/* Carrossel horizontal — centro é o player ativo */}
+        <div className="relative mt-14">
+          {/* Máscara lateral */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
 
-          <div className="text-center lg:text-left">
-            <h3
-              className="text-3xl font-normal text-foreground sm:text-4xl"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              Informação que cuida de você
-            </h3>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              No perfil <strong className="text-foreground">@julianalealreumato</strong> você encontra explicações
-              acessíveis sobre artrite, lúpus, fibromialgia e outras doenças reumáticas — direto da consulta da
-              especialista para o seu dia a dia.
-            </p>
+          <button
+            type="button"
+            onClick={() => scrollToIdx(Math.max(0, activeIdx - 1))}
+            aria-label="Anterior"
+            className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white sm:block"
+          >
+            <ChevronLeft className="h-6 w-6 text-primary" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToIdx(Math.min(reels.length - 1, activeIdx + 1))}
+            aria-label="Próximo"
+            className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white sm:block"
+          >
+            <ChevronRight className="h-6 w-6 text-primary" />
+          </button>
 
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:items-start lg:items-center lg:justify-start">
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-pink-500/25 transition-transform hover:scale-[1.03] active:scale-[0.97]"
-              >
-                <InstagramIcon className="h-5 w-5" />
-                Seguir no Instagram
-              </a>
-              <span className="text-sm text-muted-foreground">
-                +{feed.followersCount?.toLocaleString("pt-BR")} seguidores
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Direto do Instagram — player central + carrossel horizontal */}
-        <div className="mt-24">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-              Últimos 7 vídeos
-            </p>
-            <h3
-              className="mt-2 text-3xl font-normal text-foreground sm:text-4xl lg:text-5xl"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              Direto do Instagram
-            </h3>
-            <p className="mt-3 text-base text-muted-foreground">
-              Deslize o carrossel — o vídeo no centro é reproduzido na tela principal.
-            </p>
-          </div>
-
-          {/* Player principal */}
-          <div className="mt-10 mx-auto w-full max-w-[400px]">
-            <div
-              className="relative w-full overflow-hidden rounded-3xl bg-black shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
-              style={{ aspectRatio: "9 / 16" }}
-            >
-              {active && (
-                <iframe
-                  key={active.id}
-                  src={`${active.permalink.replace(/\/?$/, "/")}embed/captioned/`}
-                  title={shortCaption(active) || "Instagram reel"}
-                  className="absolute inset-0 h-full w-full"
-                  frameBorder={0}
-                  scrolling="no"
-                  allow="autoplay; encrypted-media; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              )}
-            </div>
-            {active && (
-              <p className="mx-auto mt-4 max-w-md text-center text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                {shortCaption(active)}
-              </p>
-            )}
-          </div>
-
-          {/* Carrossel horizontal */}
-          <div className="relative mt-10">
-            {/* Máscara lateral */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-24" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-24" />
-
-            <button
-              type="button"
-              onClick={() => scrollToIdx(Math.max(0, activeIdx - 1))}
-              aria-label="Anterior"
-              className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-md backdrop-blur transition hover:bg-white sm:block"
-            >
-              <ChevronLeft className="h-5 w-5 text-primary" />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollToIdx(Math.min(reels.length - 1, activeIdx + 1))}
-              aria-label="Próximo"
-              className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-md backdrop-blur transition hover:bg-white sm:block"
-            >
-              <ChevronRight className="h-5 w-5 text-primary" />
-            </button>
-
-            <div
-              ref={scrollerRef}
-              className="flex items-center gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              style={{
-                paddingLeft: "calc(50% - 90px)",
-                paddingRight: "calc(50% - 90px)",
-              }}
-            >
-              {reels.map((p, i) => {
-                const isActive = i === activeIdx;
-                return (
-                  <button
-                    key={p.id}
-                    ref={(el) => (itemRefs.current[i] = el)}
-                    type="button"
-                    onClick={() => scrollToIdx(i)}
-                    aria-label={`Selecionar vídeo: ${shortCaption(p)}`}
-                    className={`group relative snap-center shrink-0 overflow-hidden rounded-2xl transition-all duration-500 ease-out ${
-                      isActive
-                        ? "h-[320px] w-[180px] shadow-[0_20px_50px_-20px_rgba(60,50,90,0.5)] ring-2 ring-primary"
-                        : "h-[240px] w-[135px] opacity-55 hover:opacity-80"
-                    }`}
-                  >
-                    <img
-                      src={getCover(p)}
-                      alt={shortCaption(p)}
-                      loading="lazy"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                    <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-white/25 px-2 py-0.5 text-[0.55rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
-                      <Film className="h-2.5 w-2.5" /> Reel
-                    </span>
-                    <div
-                      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-                        isActive ? "opacity-0" : "opacity-90"
-                      }`}
-                    >
-                      <div className="rounded-full bg-white/90 p-3 shadow-md backdrop-blur-sm">
-                        <Play className="h-4 w-4 fill-black text-black" />
-                      </div>
-                    </div>
-                    {isActive && (
-                      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-[0.55rem] font-semibold uppercase tracking-wider text-white shadow">
-                        Tocando
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Dots */}
-            <div className="mt-2 flex justify-center gap-1.5">
-              {reels.map((_, i) => (
+          <div
+            ref={scrollerRef}
+            className="flex items-center gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            style={{
+              paddingLeft: "calc(50% - 200px)",
+              paddingRight: "calc(50% - 200px)",
+            }}
+          >
+            {reels.map((p, i) => {
+              const isActive = i === activeIdx;
+              return (
                 <button
-                  key={i}
+                  key={p.id}
+                  ref={(el) => (itemRefs.current[i] = el)}
                   type="button"
                   onClick={() => scrollToIdx(i)}
-                  aria-label={`Ir para vídeo ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
+                  aria-label={`Selecionar vídeo: ${shortCaption(p)}`}
+                  className={`group relative snap-center shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out ${
+                    isActive
+                      ? "h-[640px] w-[360px] shadow-[0_30px_80px_-30px_rgba(60,50,90,0.6)] ring-2 ring-primary"
+                      : "h-[440px] w-[248px] opacity-55 hover:opacity-80"
                   }`}
-                />
-              ))}
-            </div>
+                >
+                  {isActive ? (
+                    <iframe
+                      key={p.id}
+                      src={`${p.permalink.replace(/\/?$/, "/")}embed/captioned/`}
+                      title={shortCaption(p) || "Instagram reel"}
+                      className="absolute inset-0 h-full w-full"
+                      frameBorder={0}
+                      scrolling="no"
+                      allow="autoplay; encrypted-media; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <>
+                      <img
+                        src={getCover(p)}
+                        alt={shortCaption(p)}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                      <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
+                        <Film className="h-3 w-3" /> Reel
+                      </span>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="rounded-full bg-white/90 p-4 shadow-md backdrop-blur-sm transition group-hover:scale-110">
+                          <Play className="h-5 w-5 fill-black text-black" />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Dots */}
+          <div className="mt-4 flex justify-center gap-1.5">
+            {reels.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => scrollToIdx(i)}
+                aria-label={`Ir para vídeo ${i + 1}`}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
+                }`}
+              />
+            ))}
           </div>
         </div>
 
+        {/* CTA seguir */}
+        <div className="mt-14 flex flex-col items-center gap-3">
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-pink-500/25 transition-transform hover:scale-[1.03] active:scale-[0.97]"
+          >
+            <InstagramIcon className="h-5 w-5" />
+            Seguir @julianalealreumato
+          </a>
+          <span className="text-sm text-muted-foreground">
+            +{feed.followersCount?.toLocaleString("pt-BR")} seguidores
+          </span>
+        </div>
       </div>
     </section>
   );
