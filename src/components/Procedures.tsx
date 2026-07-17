@@ -479,6 +479,3 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
     </div>
   );
 }
-
-  );
-}
