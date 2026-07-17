@@ -323,56 +323,13 @@ export default function Procedures() {
         </Accordion>
       </div>
 
-      {/* Journey / Protocolo Transformador */}
-      <div className="relative overflow-hidden pb-24 lg:pb-32">
-        {/* Decorative background */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
-          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
-          <svg
-            className="absolute left-0 top-1/2 h-full w-full -translate-y-1/2 opacity-[0.06]"
-            viewBox="0 0 1200 600"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,300 Q300,80 600,300 T1200,300"
-              fill="none"
-              stroke="currentColor"
-              className="text-primary"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M0,340 Q300,120 600,340 T1200,340"
-              fill="none"
-              stroke="currentColor"
-              className="text-primary"
-              strokeWidth="1"
-            />
-          </svg>
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              Protocolo Transformador
-            </p>
-            <h3
-              className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              A jornada completa do paciente
-            </h3>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-              psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
-            </p>
-          </div>
-        </div>
-
-        <JourneyCylinder steps={journey} />
+      {/* Journey / Protocolo TransformaDOR */}
+      <div className="relative">
+        <ZoomIntro />
+        <JourneyStage steps={journey} />
 
         {/* Rede Multidisciplinar — pillars */}
-        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
               Rede Multidisciplinar
@@ -427,25 +384,19 @@ type JourneyStep = {
   desc: string;
 };
 
-/**
- * Cylindrical vertical roll — steps rotate through a fixed viewport as the
- * user scrolls. Only the active step is fully opaque and scaled; others fade
- * and slide into the distance like slats on a cylinder.
- */
-function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
+/** Reusable scroll-progress hook: 0 → 1 while element passes the viewport. */
+function useScrollProgress() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [p, setP] = useState(0);
   useEffect(() => {
     let raf = 0;
     const update = () => {
-      const el = stageRef.current;
+      const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = el.offsetHeight - vh;
-      const p = Math.max(0, Math.min(1, -rect.top / total));
-      setProgress(p);
+      const total = Math.max(1, el.offsetHeight - vh);
+      setP(Math.max(0, Math.min(1, -rect.top / total)));
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
@@ -460,20 +411,106 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
+  return { ref, progress: p };
+}
 
-  // continuous index across steps
+/**
+ * "Protocolo TransformaDOR" — the word DOR zooms until it fills the screen,
+ * suggesting that the transformation of pain takes over the whole experience.
+ */
+function ZoomIntro() {
+  const { ref, progress } = useScrollProgress();
+
+  // Scale DOR aggressively; from 1× to ~40× across the scroll.
+  const scale = 1 + progress * 40;
+  // Fade out the "Protocolo Transforma" prefix as DOR takes over.
+  const prefixOpacity = Math.max(0, 1 - progress * 2.2);
+  // Fade the whole intro at the very end so JourneyStage below appears clean.
+  const stageOpacity = Math.max(0, 1 - Math.max(0, progress - 0.85) * 6);
+  // Hint fades in initially then leaves.
+  const hintOpacity = Math.max(0, 1 - progress * 3.5);
+
+  return (
+    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+      <div
+        className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
+        style={{ opacity: stageOpacity }}
+      >
+        {/* Ambient decor */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
+          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
+        </div>
+
+        <div className="relative mx-auto max-w-6xl px-4 text-center">
+          <p
+            className="text-sm font-semibold uppercase tracking-[0.28em] text-primary"
+            style={{ opacity: prefixOpacity }}
+          >
+            Protocolo
+          </p>
+          <h3
+            className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            <span
+              className="text-4xl sm:text-6xl lg:text-7xl transition-opacity duration-200"
+              style={{ opacity: prefixOpacity }}
+            >
+              Transforma
+            </span>
+            <span
+              className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-5xl font-semibold text-transparent sm:text-7xl lg:text-8xl"
+              style={{
+                transform: `scale(${scale})`,
+                transformOrigin: "center center",
+                transition: "transform 120ms linear",
+                willChange: "transform",
+              }}
+            >
+              DOR
+            </span>
+          </h3>
+          <p
+            className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+            style={{ opacity: prefixOpacity }}
+          >
+            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+            psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
+          </p>
+          <p
+            className="mt-10 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70"
+            style={{ opacity: hintOpacity }}
+          >
+            role para atravessar a dor ↓
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Journey stage — sticky viewport where cards slide vertically synced with
+ * scroll while the left rail indicator moves through the steps. After the
+ * last card, the page continues scrolling normally.
+ */
+function JourneyStage({ steps }: { steps: JourneyStep[] }) {
+  const { ref, progress } = useScrollProgress();
+
+  // Continuous index across steps (0 → steps.length - 1).
   const pos = progress * (steps.length - 1);
-  const active = Math.round(pos);
+  const active = Math.min(steps.length - 1, Math.max(0, Math.round(pos)));
 
   return (
     <div
-      ref={stageRef}
-      className="relative mt-8"
-      style={{ height: `${steps.length * 80}vh` }}
+      ref={ref}
+      className="relative"
+      style={{ height: `${steps.length * 90 + 40}vh` }}
     >
-      <div className="sticky top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] w-full overflow-hidden">
+      <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden">
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
-          {/* Left rail — timeline of all steps */}
+          {/* Left rail */}
           <aside className="relative hidden lg:block">
             <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70">
               Etapas do protocolo
@@ -522,34 +559,25 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
             </div>
           </aside>
 
-          {/* Right stage — cylinder cards */}
-          <div className="relative h-full" style={{ perspective: "1200px" }}>
-            <div
-              className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
-              aria-hidden
-            />
-            <div
-              className="absolute inset-0 flex items-center justify-center"
-              style={{ transformStyle: "preserve-3d" }}
-            >
+          {/* Right stage — vertical slide of cards */}
+          <div className="relative h-full overflow-hidden">
+            <div className="absolute inset-0 flex items-center justify-center">
               {steps.map((step, i) => {
                 const delta = i - pos;
                 const abs = Math.abs(delta);
-                const rotX = Math.max(-80, Math.min(80, delta * 45));
-                const ty = delta * 90;
-                const tz = -abs * 120;
-                const opacity = Math.max(0, 1 - abs * 0.55);
-                const scale = 1 - Math.min(0.35, abs * 0.15);
+                const ty = delta * 105; // % of stage height
+                const opacity = Math.max(0, 1 - abs * 0.8);
+                const scale = 1 - Math.min(0.15, abs * 0.08);
                 const isActive = i === active;
                 return (
                   <div
                     key={step.title}
                     className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-0"
                     style={{
-                      transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
+                      transform: `translateY(${ty}%) scale(${scale})`,
                       opacity,
                       transition:
-                        "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
+                        "transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms linear",
                       willChange: "transform, opacity",
                       zIndex: 100 - Math.round(abs * 10),
                       pointerEvents: isActive ? "auto" : "none",
@@ -586,13 +614,13 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
               })}
             </div>
 
-            {/* Mobile progress dots on the right */}
+            {/* Mobile progress dots */}
             <div className="pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-2 lg:hidden">
               {steps.map((_, i) => (
                 <span
                   key={i}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
+                  className={`rounded-full transition-all duration-300 ${
+                    i === active ? "h-6 w-1.5 bg-primary" : "h-1.5 w-1.5 bg-primary/25"
                   }`}
                 />
               ))}
@@ -603,4 +631,5 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
     </div>
   );
 }
+
 

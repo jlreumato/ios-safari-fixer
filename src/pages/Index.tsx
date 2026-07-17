@@ -7,7 +7,6 @@ import Testimonials from "@/components/Testimonials";
 import TreatmentsGrid from "@/components/TreatmentsGrid";
 import Procedures from "@/components/Procedures";
 import Blog from "@/components/Blog";
-import Instagram from "@/components/Instagram";
 import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -32,7 +31,6 @@ const Index = () => {
         <Procedures />
         <Testimonials />
         <Blog />
-        <Instagram />
         <FAQ />
         <CTASection />
       </main>
