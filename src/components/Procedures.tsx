@@ -341,7 +341,7 @@ export default function Procedures() {
           </p>
         </div>
 
-        <JourneyFloat steps={journey} />
+        <JourneyCylinder steps={journey} />
 
       </div>
     </section>
