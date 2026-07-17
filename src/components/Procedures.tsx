@@ -472,83 +472,135 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
       style={{ height: `${steps.length * 80}vh` }}
     >
       <div className="sticky top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] w-full overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-3xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
-          aria-hidden
-        />
-        <div
-          className="relative mx-auto h-full max-w-3xl px-4 sm:px-6 lg:px-8"
-          style={{ perspective: "1200px" }}
-        >
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {steps.map((step, i) => {
-              const delta = i - pos; // negative = above, positive = below
-              const abs = Math.abs(delta);
-              const rotX = Math.max(-80, Math.min(80, delta * 45));
-              const ty = delta * 90;
-              const tz = -abs * 120;
-              const opacity = Math.max(0, 1 - abs * 0.55);
-              const scale = 1 - Math.min(0.35, abs * 0.15);
-              const isActive = i === active;
-              return (
-                <div
-                  key={step.title}
-                  className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8"
-                  style={{
-                    transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
-                    opacity,
-                    transition: "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
-                    willChange: "transform, opacity",
-                    zIndex: 100 - Math.round(abs * 10),
-                    pointerEvents: isActive ? "auto" : "none",
-                  }}
-                >
-                  <div
-                    className={`mx-auto rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
-                      isActive
-                        ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
-                        : "border-primary/10 bg-card/60"
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                        <step.icon className="h-6 w-6" />
-                      </span>
-                      <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
-                        Etapa {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h4
-                      className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
+          {/* Left rail — timeline of all steps */}
+          <aside className="relative hidden lg:block">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70">
+              Etapas do protocolo
+            </p>
+            <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
+              {steps.map((s, i) => {
+                const isActive = i === active;
+                const isPast = i < active;
+                return (
+                  <li key={s.title} className="relative">
+                    <span
+                      className={`absolute -left-[30px] top-1 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
+                        isActive
+                          ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
+                          : isPast
+                          ? "border-primary/50 bg-primary/60"
+                          : "border-primary/25 bg-background"
+                      }`}
                     >
-                      {step.title}
-                    </h4>
-                    <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                      {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                    </span>
+                    <span
+                      className={`block text-[0.65rem] font-semibold uppercase tracking-[0.22em] transition-colors ${
+                        isActive ? "text-primary" : "text-muted-foreground/70"
+                      }`}
+                    >
+                      Etapa {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={`mt-0.5 block text-sm leading-snug transition-colors ${
+                        isActive
+                          ? "font-medium text-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {s.title}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+            <div className="mt-8 flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-primary/70">
+              <span>{String(active + 1).padStart(2, "0")}</span>
+              <span className="h-px flex-1 bg-primary/20" />
+              <span>{String(steps.length).padStart(2, "0")}</span>
+            </div>
+          </aside>
 
-          {/* Progress dots on the right */}
-          <div className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-2 sm:flex">
-            {steps.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
-                }`}
-              />
-            ))}
+          {/* Right stage — cylinder cards */}
+          <div className="relative h-full" style={{ perspective: "1200px" }}>
+            <div
+              className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
+              aria-hidden
+            />
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {steps.map((step, i) => {
+                const delta = i - pos;
+                const abs = Math.abs(delta);
+                const rotX = Math.max(-80, Math.min(80, delta * 45));
+                const ty = delta * 90;
+                const tz = -abs * 120;
+                const opacity = Math.max(0, 1 - abs * 0.55);
+                const scale = 1 - Math.min(0.35, abs * 0.15);
+                const isActive = i === active;
+                return (
+                  <div
+                    key={step.title}
+                    className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-0"
+                    style={{
+                      transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
+                      opacity,
+                      transition:
+                        "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
+                      willChange: "transform, opacity",
+                      zIndex: 100 - Math.round(abs * 10),
+                      pointerEvents: isActive ? "auto" : "none",
+                    }}
+                  >
+                    <div
+                      className={`mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
+                        isActive
+                          ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
+                          : "border-primary/10 bg-card/60"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                          <step.icon className="h-6 w-6" />
+                        </span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                          Etapa {String(i + 1).padStart(2, "0")} /{" "}
+                          {String(steps.length).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h4
+                        className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
+                        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                      >
+                        {step.title}
+                      </h4>
+                      <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile progress dots on the right */}
+            <div className="pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-2 lg:hidden">
+              {steps.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
