@@ -360,62 +360,8 @@ export default function Procedures() {
         {/* Vertical circular carousel — joints */}
         <JointsWheel />
 
-        {/* Substâncias + Equipamentos — accordion */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="substances" className="border-primary/10">
-              <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:no-underline">
-                Substâncias utilizadas
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-3 pt-2 sm:grid-cols-2">
-                  {substances.map((s) => (
-                    <div
-                      key={s.title}
-                      className="flex gap-3 rounded-2xl border border-primary/10 bg-card/60 p-4"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <s.icon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">{s.title}</h4>
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                          {s.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+        <div className="pb-16" />
 
-            <AccordionItem value="equipment" className="border-primary/10">
-              <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:no-underline">
-                Equipamentos
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-3 pt-2 sm:grid-cols-2">
-                  {equipment.map((e) => (
-                    <div
-                      key={e.title}
-                      className="flex gap-3 rounded-2xl border border-primary/10 bg-card/60 p-4"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <e.icon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">{e.title}</h4>
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                          {e.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
       </section>
     </>
   );
