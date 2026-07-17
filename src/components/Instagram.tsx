@@ -216,8 +216,9 @@ export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
   const [activeIdx, setActiveIdx] = useState(0);
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const [playing, setPlaying] = useState<BeholdPost | null>(null);
+  const [containerW, setContainerW] = useState(0);
+  const trackWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!BEHOLD_FEED_URL) return;
@@ -233,51 +234,41 @@ export default function Instagram() {
     };
   }, []);
 
+  useEffect(() => {
+    const el = trackWrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setContainerW(el.clientWidth));
+    ro.observe(el);
+    setContainerW(el.clientWidth);
+    return () => ro.disconnect();
+  }, []);
+
   const reels = feed.posts.filter((p) => p.mediaType === "VIDEO").slice(0, 7);
 
-  // Detecta qual item está no centro do scroller e o marca como ativo
-  useEffect(() => {
-    const scroller = scrollerRef.current;
-    if (!scroller) return;
-    let raf = 0;
-    const update = () => {
-      const rect = scroller.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      let best = 0;
-      let bestDist = Infinity;
-      itemRefs.current.forEach((el, i) => {
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const c = r.left + r.width / 2;
-        const d = Math.abs(c - centerX);
-        if (d < bestDist) {
-          bestDist = d;
-          best = i;
-        }
-      });
-      setActiveIdx((prev) => (prev === best ? prev : best));
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-    update();
-    scroller.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(raf);
-      scroller.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [reels.length]);
+  // Sizing
+  const isNarrow = containerW < 640;
+  const activeW = isNarrow ? Math.min(300, containerW * 0.78) : 360;
+  const activeH = activeW * (16 / 9);
+  const sideW = activeW * 0.68;
+  const gap = isNarrow ? 16 : 28;
 
-  const scrollToIdx = (i: number) => {
-    const el = itemRefs.current[i];
-    const scroller = scrollerRef.current;
-    if (!el || !scroller) return;
-    const target = el.offsetLeft - (scroller.clientWidth - el.clientWidth) / 2;
-    scroller.scrollTo({ left: target, behavior: "smooth" });
+  const go = (i: number) => {
+    setActiveIdx(Math.max(0, Math.min(reels.length - 1, i)));
   };
+
+  // Keyboard
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (playing) {
+        if (e.key === "Escape") setPlaying(null);
+        return;
+      }
+      if (e.key === "ArrowLeft") go(activeIdx - 1);
+      if (e.key === "ArrowRight") go(activeIdx + 1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [activeIdx, reels.length, playing]);
 
   return (
     <section
@@ -306,69 +297,79 @@ export default function Instagram() {
             Direto do Instagram
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Deslize o carrossel — o vídeo no centro é reproduzido automaticamente.
+            Deslize o carrossel — clique em play no vídeo centralizado para assistir.
           </p>
         </div>
 
-        {/* Carrossel horizontal — centro é o player ativo */}
+        {/* Carrossel: moldura fixa no centro, vídeos deslizam lateralmente */}
         <div className="relative mt-14">
-          {/* Máscara lateral */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
-
           <button
             type="button"
-            onClick={() => scrollToIdx(Math.max(0, activeIdx - 1))}
+            onClick={() => go(activeIdx - 1)}
             aria-label="Anterior"
-            className="absolute left-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white sm:block"
+            className="absolute left-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40"
+            disabled={activeIdx === 0}
           >
             <ChevronLeft className="h-6 w-6 text-primary" />
           </button>
           <button
             type="button"
-            onClick={() => scrollToIdx(Math.min(reels.length - 1, activeIdx + 1))}
+            onClick={() => go(activeIdx + 1)}
             aria-label="Próximo"
-            className="absolute right-2 top-1/2 z-20 hidden -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white sm:block"
+            className="absolute right-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40"
+            disabled={activeIdx === reels.length - 1}
           >
             <ChevronRight className="h-6 w-6 text-primary" />
           </button>
 
           <div
-            ref={scrollerRef}
-            className="flex items-center gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 pt-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            style={{
-              paddingLeft: "calc(50% - 200px)",
-              paddingRight: "calc(50% - 200px)",
-            }}
+            ref={trackWrapRef}
+            className="relative mx-auto overflow-hidden"
+            style={{ height: activeH + 40 }}
           >
-            {reels.map((p, i) => {
-              const isActive = i === activeIdx;
-              return (
-                <button
-                  key={p.id}
-                  ref={(el) => (itemRefs.current[i] = el)}
-                  type="button"
-                  onClick={() => scrollToIdx(i)}
-                  aria-label={`Selecionar vídeo: ${shortCaption(p)}`}
-                  className={`group relative snap-center shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out ${
-                    isActive
-                      ? "h-[640px] w-[360px] shadow-[0_30px_80px_-30px_rgba(60,50,90,0.6)] ring-2 ring-primary"
-                      : "h-[440px] w-[248px] opacity-55 hover:opacity-80"
-                  }`}
-                >
-                  {isActive ? (
-                    <iframe
+            {/* Máscara lateral */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
+
+            {/* Moldura fixa no centro */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-[2.25rem] ring-2 ring-primary/80 shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
+              style={{ width: activeW + 12, height: activeH + 12 }}
+            />
+
+            {/* Track de vídeos */}
+            {containerW > 0 && (
+              <div
+                className="absolute top-1/2 left-1/2 flex items-center"
+                style={{
+                  gap,
+                  transform: `translate(-50%, -50%) translateX(${
+                    -activeIdx * (sideW + gap)
+                  }px)`,
+                  transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              >
+                {reels.map((p, i) => {
+                  const isActive = i === activeIdx;
+                  const w = isActive ? activeW : sideW;
+                  const h = isActive ? activeH : sideW * (16 / 9);
+                  // Compensate track step so active stays centered even though wider
+                  const compensate = isActive ? 0 : 0;
+                  return (
+                    <div
                       key={p.id}
-                      src={`${p.permalink.replace(/\/?$/, "/")}embed/captioned/`}
-                      title={shortCaption(p) || "Instagram reel"}
-                      className="absolute inset-0 h-full w-full"
-                      frameBorder={0}
-                      scrolling="no"
-                      allow="autoplay; encrypted-media; picture-in-picture; web-share"
-                      allowFullScreen
-                    />
-                  ) : (
-                    <>
+                      className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
+                      style={{
+                        width: w,
+                        height: h,
+                        opacity: isActive ? 1 : 0.5,
+                        transform: `translateX(${compensate}px)`,
+                      }}
+                      onClick={() => (isActive ? setPlaying(p) : go(i))}
+                      role="button"
+                      tabIndex={0}
+                    >
                       <img
                         src={getCover(p)}
                         alt={shortCaption(p)}
@@ -379,25 +380,40 @@ export default function Instagram() {
                       <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
                         <Film className="h-3 w-3" /> Reel
                       </span>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="rounded-full bg-white/90 p-4 shadow-md backdrop-blur-sm transition group-hover:scale-110">
-                          <Play className="h-5 w-5 fill-black text-black" />
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </button>
-              );
-            })}
+                      {isActive && (
+                        <>
+                          <button
+                            type="button"
+                            aria-label="Reproduzir vídeo"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setPlaying(p);
+                            }}
+                            className="absolute inset-0 flex items-center justify-center"
+                          >
+                            <span className="rounded-full bg-white/95 p-6 shadow-xl backdrop-blur-sm transition hover:scale-110">
+                              <Play className="h-8 w-8 fill-black text-black" />
+                            </span>
+                          </button>
+                          <p className="absolute inset-x-4 bottom-4 text-sm text-white/95 line-clamp-2 pointer-events-none">
+                            {shortCaption(p)}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Dots */}
-          <div className="mt-4 flex justify-center gap-1.5">
+          <div className="mt-6 flex justify-center gap-1.5">
             {reels.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => scrollToIdx(i)}
+                onClick={() => go(i)}
                 aria-label={`Ir para vídeo ${i + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
                   i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
@@ -423,6 +439,39 @@ export default function Instagram() {
           </span>
         </div>
       </div>
+
+      {/* Modal de reprodução */}
+      {playing && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur"
+          onClick={() => setPlaying(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setPlaying(null)}
+            aria-label="Fechar"
+            className="absolute right-4 top-4 rounded-full bg-white/10 p-3 text-white transition hover:bg-white/20"
+          >
+            ✕
+          </button>
+          <div
+            className="relative w-full max-w-[400px] overflow-hidden rounded-2xl bg-black shadow-2xl"
+            style={{ aspectRatio: "9 / 16" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <iframe
+              src={`${playing.permalink.replace(/\/?$/, "/")}embed/captioned/`}
+              title={shortCaption(playing) || "Instagram reel"}
+              className="absolute inset-0 h-full w-full"
+              frameBorder={0}
+              scrolling="no"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 }
+
