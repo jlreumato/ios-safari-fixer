@@ -1,24 +1,15 @@
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import {
   Syringe,
-  Waves,
-  Microscope,
   Stethoscope,
   HeartHandshake,
   Salad,
   Brain,
   Bone,
   ClipboardList,
-  Activity,
   CheckCircle2,
   ChevronRight,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 const joints = [
   {
@@ -43,46 +34,6 @@ const joints = [
   },
 ];
 
-const substances = [
-  {
-    icon: Syringe,
-    title: "Ácido Hialurônico",
-    desc: "Viscossuplementação que restaura a lubrificação articular e reduz a dor de forma prolongada.",
-  },
-  {
-    icon: Microscope,
-    title: "PRP (Plasma Rico em Plaquetas)",
-    desc: "Concentrado autólogo com fatores de crescimento que estimulam a regeneração tecidual.",
-  },
-  {
-    icon: Syringe,
-    title: "Corticoide de Depósito",
-    desc: "Ação anti-inflamatória potente e localizada, indicada em crises dolorosas selecionadas.",
-  },
-  {
-    icon: Syringe,
-    title: "Anestésicos e Bloqueios",
-    desc: "Alívio imediato e diagnóstico terapêutico das estruturas realmente responsáveis pela dor.",
-  },
-];
-
-const equipment = [
-  {
-    icon: Waves,
-    title: "Ultrassonografia Musculoesquelética",
-    desc: "Diagnóstico em tempo real e precisão milimétrica em cada infiltração guiada.",
-  },
-  {
-    icon: Activity,
-    title: "Ondas de Choque",
-    desc: "Estímulo mecânico para tendinopatias crônicas, esporão e lesões de difícil resolução.",
-  },
-  {
-    icon: Microscope,
-    title: "Materiais Descartáveis Premium",
-    desc: "Agulhas finas específicas, kits estéreis e insumos hospitalares de alto padrão.",
-  },
-];
 
 const journey = [
   {
