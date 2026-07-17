@@ -17,29 +17,76 @@ function useReveal() {
   return { ref, visible };
 }
 
-const testimonials = [
-  {
-    name: "Maria S.",
-    text: "A Dra. Juliana mudou minha vida! Depois de anos convivendo com dores e sem diagnóstico, ela identificou minha artrite reumatoide e iniciou o tratamento correto. Hoje vivo com muito mais qualidade de vida.",
-    stars: 5,
-  },
-  {
-    name: "João P.",
-    text: "Profissional extremamente competente e humana. Me senti acolhido desde a primeira consulta. Ela explica tudo com paciência e clareza, e o tratamento para minha gota está sendo muito eficaz.",
-    stars: 5,
-  },
-  {
-    name: "Ana L.",
-    text: "Sofri durante muitos anos com fibromialgia sem saber o que era. A Dra. Juliana não só fez o diagnóstico como montou um plano de tratamento completo. Recomendo de olhos fechados!",
-    stars: 5,
-  },
+type Testimonial = { name: string; text: string; avatar: string };
+
+const rowTop: Testimonial[] = [
+  { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://i.pravatar.cc/120?img=47" },
+  { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://i.pravatar.cc/120?img=12" },
+  { name: "Ana L.", text: "Descobri minha fibromialgia com ela. Hoje tenho um plano que realmente ajuda.", avatar: "https://i.pravatar.cc/120?img=45" },
+  { name: "Carlos M.", text: "Voltei a caminhar sem dor no joelho. Grato demais pelo cuidado.", avatar: "https://i.pravatar.cc/120?img=15" },
+  { name: "Beatriz R.", text: "Consulta calma, sem pressa. Me senti ouvida pela primeira vez.", avatar: "https://i.pravatar.cc/120?img=32" },
 ];
+
+const rowBottom: Testimonial[] = [
+  { name: "Roberto T.", text: "Diagnóstico certeiro do lúpus. Tratamento mudou minha rotina.", avatar: "https://i.pravatar.cc/120?img=13" },
+  { name: "Fernanda O.", text: "Profissional humana e competente. Recomendo a todos da família.", avatar: "https://i.pravatar.cc/120?img=44" },
+  { name: "Paulo H.", text: "Infiltração no ombro sem dor. Voltei aos treinos em semanas.", avatar: "https://i.pravatar.cc/120?img=68" },
+  { name: "Cláudia V.", text: "Explica tudo com carinho. Minha mãe adorou o atendimento.", avatar: "https://i.pravatar.cc/120?img=48" },
+  { name: "Eduardo N.", text: "Osteoporose sob controle. Exames melhoraram muito.", avatar: "https://i.pravatar.cc/120?img=8" },
+];
+
+function Card({ t }: { t: Testimonial }) {
+  return (
+    <div className="mx-3 inline-flex w-[300px] sm:w-[340px] shrink-0 flex-col rounded-2xl bg-white p-5 shadow-sm">
+      <div className="flex gap-0.5">
+        {Array.from({ length: 5 }).map((_, j) => (
+          <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
+        ))}
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground italic">"{t.text}"</p>
+      <div className="mt-4 flex items-center gap-3">
+        <img
+          src={t.avatar}
+          alt={t.name}
+          loading="lazy"
+          className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20"
+        />
+        <span className="text-sm font-semibold text-foreground">{t.name}</span>
+      </div>
+    </div>
+  );
+}
 
 export default function Testimonials() {
   const { ref, visible } = useReveal();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // progress: 0 when section enters bottom, 1 when it exits top
+      const progress = 1 - (rect.top + rect.height) / (vh + rect.height);
+      setOffset(Math.max(0, Math.min(1, progress)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const shift = 220; // px range of horizontal parallax
+  const topTx = -offset * shift;
+  const bottomTx = offset * shift - shift / 2;
 
   return (
-    <section id="depoimentos" className="bg-secondary/50 py-20 lg:py-28">
+    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 py-20 lg:py-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -52,30 +99,14 @@ export default function Testimonials() {
             O que dizem os pacientes
           </h2>
         </div>
+      </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {testimonials.map((t, i) => (
-            <div
-              key={i}
-              className={`rounded-2xl bg-white p-7 shadow-sm transition-all duration-500 hover:shadow-md ${
-                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-              }`}
-              style={{ transitionDelay: `${200 + i * 120}ms` }}
-            >
-              <div className="flex gap-0.5">
-                {Array.from({ length: t.stars }).map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="mt-5 text-base lg:text-lg leading-relaxed text-muted-foreground italic">"{t.text}"</p>
-              <div className="mt-6 flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary">
-                  {t.name.charAt(0)}
-                </div>
-                <span className="text-base font-semibold text-foreground">{t.name}</span>
-              </div>
-            </div>
-          ))}
+      <div className="mt-14 space-y-5">
+        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
+          {rowTop.map((t, i) => (<Card key={`t-${i}`} t={t} />))}
+        </div>
+        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
+          {rowBottom.map((t, i) => (<Card key={`b-${i}`} t={t} />))}
         </div>
       </div>
     </section>
