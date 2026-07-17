@@ -342,69 +342,84 @@ export default function Instagram() {
           />
 
           {/* Track de vídeos */}
-          {containerW > 0 && (
-            <div
-              className="absolute top-1/2 left-1/2 flex items-center"
-              style={{
-                gap,
-                transform: `translate(-50%, -50%) translateX(${
-                  -activeIdx * (sideW + gap)
-                }px)`,
-                transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
-              }}
-            >
-              {reels.map((p, i) => {
-                const isActive = i === activeIdx;
-                const w = isActive ? activeW : sideW;
-                const h = isActive ? activeH : sideW * (16 / 9);
-                const embedUrl = `${p.permalink.replace(/\/?$/, "/")}embed/captioned/?cr=1&autoplay=1`;
-                return (
-                  <div
-                    key={p.id}
-                    className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
-                    style={{
-                      width: w,
-                      height: h,
-                      opacity: isActive ? 1 : 0.45,
-                    }}
-                    onClick={() => !isActive && go(i)}
-                    role={isActive ? undefined : "button"}
-                    tabIndex={isActive ? -1 : 0}
-                  >
-                    {isActive ? (
-                      <iframe
-                        key={p.id}
-                        src={embedUrl}
-                        title={shortCaption(p) || "Reel"}
-                        allow="autoplay; encrypted-media; picture-in-picture"
-                        allowFullScreen
-                        className="absolute inset-0 h-full w-full border-0"
-                        style={{ background: "#000" }}
-                      />
-                    ) : (
-                      <>
-                        <img
-                          src={getCover(p)}
-                          alt={shortCaption(p)}
-                          loading="lazy"
-                          className="absolute inset-0 h-full w-full object-cover"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
-                          <Film className="h-3 w-3" /> Reel
-                        </span>
-                        <span className="absolute inset-0 flex items-center justify-center">
-                          <span className="rounded-full bg-white/85 p-3 shadow-lg">
-                            <Play className="h-5 w-5 fill-black text-black" />
+          {containerW > 0 && (() => {
+            // Cumulative offset to center the active card in the viewport
+            let offset = 0;
+            for (let k = 0; k < activeIdx; k++) {
+              offset += sideW + gap;
+            }
+            offset += activeW / 2;
+            return (
+              <div
+                className="absolute top-1/2 left-1/2 flex items-center"
+                style={{
+                  gap,
+                  transform: `translate(-50%, -50%) translateX(${-offset + activeW / 2}px)`,
+                  transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              >
+                {reels.map((p, i) => {
+                  const isActive = i === activeIdx;
+                  const w = isActive ? activeW : sideW;
+                  const h = isActive ? activeH : sideW * (16 / 9);
+                  const embedUrl = `${p.permalink.replace(/\/?$/, "/")}embed/captioned/?cr=1&autoplay=1`;
+                  // Instagram embed chrome: ~54px header + ~150px footer (caption+actions)
+                  const HEADER = 56;
+                  const FOOTER = 160;
+                  return (
+                    <div
+                      key={p.id}
+                      className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
+                      style={{
+                        width: w,
+                        height: h,
+                        opacity: isActive ? 1 : 0.45,
+                      }}
+                      onClick={() => !isActive && go(i)}
+                      role={isActive ? undefined : "button"}
+                      tabIndex={isActive ? -1 : 0}
+                    >
+                      {isActive ? (
+                        <div
+                          className="absolute inset-0 overflow-hidden"
+                          style={{ background: "#000" }}
+                        >
+                          <iframe
+                            key={p.id}
+                            src={embedUrl}
+                            title={shortCaption(p) || "Reel"}
+                            allow="autoplay; encrypted-media; picture-in-picture"
+                            allowFullScreen
+                            scrolling="no"
+                            className="absolute left-0 border-0"
+                            style={{
+                              top: -HEADER,
+                              width: "100%",
+                              height: h + HEADER + FOOTER,
+                              background: "#000",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <>
+                          <img
+                            src={getCover(p)}
+                            alt={shortCaption(p)}
+                            loading="lazy"
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
+                          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
+                            <Film className="h-3 w-3" /> Reel
                           </span>
-                        </span>
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
 
         {/* Dots */}
