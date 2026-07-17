@@ -324,29 +324,102 @@ export default function Procedures() {
       </div>
 
       {/* Journey / Protocolo Transformador */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            Protocolo Transformador
-          </p>
-          <h3
-            className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      <div className="relative overflow-hidden pb-24 lg:pb-32">
+        {/* Decorative background */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
+          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
+          <svg
+            className="absolute left-0 top-1/2 h-full w-full -translate-y-1/2 opacity-[0.06]"
+            viewBox="0 0 1200 600"
+            preserveAspectRatio="none"
           >
-            A jornada completa do paciente
-          </h3>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-            psicólogo e ortopedistas.
-          </p>
+            <path
+              d="M0,300 Q300,80 600,300 T1200,300"
+              fill="none"
+              stroke="currentColor"
+              className="text-primary"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M0,340 Q300,120 600,340 T1200,340"
+              fill="none"
+              stroke="currentColor"
+              className="text-primary"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Protocolo Transformador
+            </p>
+            <h3
+              className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              A jornada completa do paciente
+            </h3>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+              psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
+            </p>
+          </div>
         </div>
 
         <JourneyCylinder steps={journey} />
 
+        {/* Rede Multidisciplinar — pillars */}
+        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Rede Multidisciplinar
+            </p>
+            <h4
+              className="mt-3 text-3xl font-normal tracking-tight text-foreground sm:text-4xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              Quatro especialidades, um único objetivo
+            </h4>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: Stethoscope, name: "Reumatologia", desc: "Diagnóstico e conduta clínica de precisão." },
+              { icon: Bone, name: "Fisioterapia", desc: "Reabilitação funcional, mobilidade e força." },
+              { icon: Salad, name: "Nutrição", desc: "Alimentação anti-inflamatória e saúde óssea." },
+              { icon: Brain, name: "Psicologia", desc: "Manejo da dor crônica e bem-estar emocional." },
+            ].map((p, i) => (
+              <div
+                key={p.name}
+                className="group relative overflow-hidden rounded-3xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-25px_rgba(70,50,120,0.35)]"
+              >
+                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-transparent blur-2xl transition-opacity duration-500 group-hover:opacity-80" />
+                <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <p.icon className="h-6 w-6" />
+                </span>
+                <p className="relative mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-primary/60">
+                  0{i + 1}
+                </p>
+                <h5
+                  className="relative mt-1 text-2xl leading-tight text-foreground"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {p.name}
+                </h5>
+                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {p.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
+
 
 type JourneyStep = {
   icon: ComponentType<{ className?: string }>;
