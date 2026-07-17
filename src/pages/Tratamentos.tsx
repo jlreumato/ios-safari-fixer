@@ -186,10 +186,10 @@ function TreatmentCard({
 
         <div className="mt-2 flex items-center gap-3">
           <span
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-medium text-white shadow-lg transition-transform group-hover:translate-x-1"
+            className="inline-flex items-center gap-2 rounded-full border-2 px-6 py-3 text-base font-medium shadow-sm transition-all group-hover:translate-x-1 group-hover:bg-white/10"
             style={{
-              backgroundColor: treatment.accent,
-              boxShadow: `0 12px 30px -8px ${treatment.accent}80`,
+              borderColor: treatment.accent,
+              color: treatment.accent,
             }}
           >
             Ver detalhes

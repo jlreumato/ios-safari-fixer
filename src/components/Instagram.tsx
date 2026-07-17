@@ -272,11 +272,11 @@ export default function Instagram() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/25 transition-transform hover:scale-[1.03] active:scale-[0.97]"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[#8e82b8] bg-transparent px-6 py-3 text-sm font-semibold text-[#8e82b8] transition-all hover:scale-[1.03] hover:bg-[#8e82b8]/10 active:scale-[0.97]"
           >
             <InstagramIcon className="h-4 w-4" />
             Seguir perfil
-            <span className="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-[0.7rem]">
+            <span className="ml-1 rounded-full border border-[#8e82b8]/30 px-2 py-0.5 text-[0.7rem]">
               +{feed.followersCount?.toLocaleString("pt-BR")}
             </span>
           </a>
