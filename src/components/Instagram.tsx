@@ -273,7 +273,7 @@ export default function Instagram() {
   return (
     <section
       id="instagram"
-      className="relative bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28"
+      className="relative bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28 overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
@@ -297,131 +297,134 @@ export default function Instagram() {
             Direto do Instagram
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Deslize o carrossel — clique em play no vídeo centralizado para assistir.
+            O vídeo em destaque no centro já reproduz — deslize para trocar.
           </p>
         </div>
+      </div>
 
-        {/* Carrossel: moldura fixa no centro, vídeos deslizam lateralmente */}
-        <div className="relative mt-14">
-          <button
-            type="button"
-            onClick={() => go(activeIdx - 1)}
-            aria-label="Anterior"
-            className="absolute left-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40"
-            disabled={activeIdx === 0}
-          >
-            <ChevronLeft className="h-6 w-6 text-primary" />
-          </button>
-          <button
-            type="button"
-            onClick={() => go(activeIdx + 1)}
-            aria-label="Próximo"
-            className="absolute right-2 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40"
-            disabled={activeIdx === reels.length - 1}
-          >
-            <ChevronRight className="h-6 w-6 text-primary" />
-          </button>
+      {/* Carrossel full-width com faixa translúcida (80vw) */}
+      <div className="relative mt-14">
+        <div className="pointer-events-none absolute inset-x-[10vw] inset-y-6 rounded-[3rem] bg-white/40 backdrop-blur-sm ring-1 ring-white/60" />
 
+        <button
+          type="button"
+          onClick={() => go(activeIdx - 1)}
+          aria-label="Anterior"
+          className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40 sm:left-8"
+          disabled={activeIdx === 0}
+        >
+          <ChevronLeft className="h-6 w-6 text-primary" />
+        </button>
+        <button
+          type="button"
+          onClick={() => go(activeIdx + 1)}
+          aria-label="Próximo"
+          className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40 sm:right-8"
+          disabled={activeIdx === reels.length - 1}
+        >
+          <ChevronRight className="h-6 w-6 text-primary" />
+        </button>
+
+        <div
+          ref={trackWrapRef}
+          className="relative mx-auto w-full overflow-hidden"
+          style={{ height: activeH + 60 }}
+        >
+          {/* Máscara lateral suave */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-20 bg-gradient-to-r from-background to-transparent sm:w-40" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-20 bg-gradient-to-l from-background to-transparent sm:w-40" />
+
+          {/* Moldura fixa no centro */}
           <div
-            ref={trackWrapRef}
-            className="relative mx-auto overflow-hidden"
-            style={{ height: activeH + 40 }}
-          >
-            {/* Máscara lateral */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-16 bg-gradient-to-r from-background to-transparent sm:w-32" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-16 bg-gradient-to-l from-background to-transparent sm:w-32" />
+            aria-hidden
+            className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-[2.25rem] ring-2 ring-primary/80 shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
+            style={{ width: activeW + 12, height: activeH + 12 }}
+          />
 
-            {/* Moldura fixa no centro */}
+          {/* Track de vídeos */}
+          {containerW > 0 && (
             <div
-              aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-[2.25rem] ring-2 ring-primary/80 shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
-              style={{ width: activeW + 12, height: activeH + 12 }}
-            />
-
-            {/* Track de vídeos */}
-            {containerW > 0 && (
-              <div
-                className="absolute top-1/2 left-1/2 flex items-center"
-                style={{
-                  gap,
-                  transform: `translate(-50%, -50%) translateX(${
-                    -activeIdx * (sideW + gap)
-                  }px)`,
-                  transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-              >
-                {reels.map((p, i) => {
-                  const isActive = i === activeIdx;
-                  const w = isActive ? activeW : sideW;
-                  const h = isActive ? activeH : sideW * (16 / 9);
-                  // Compensate track step so active stays centered even though wider
-                  const compensate = isActive ? 0 : 0;
-                  return (
-                    <div
-                      key={p.id}
-                      className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
-                      style={{
-                        width: w,
-                        height: h,
-                        opacity: isActive ? 1 : 0.5,
-                        transform: `translateX(${compensate}px)`,
-                      }}
-                      onClick={() => (isActive ? setPlaying(p) : go(i))}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <img
-                        src={getCover(p)}
-                        alt={shortCaption(p)}
-                        loading="lazy"
-                        className="absolute inset-0 h-full w-full object-cover"
+              className="absolute top-1/2 left-1/2 flex items-center"
+              style={{
+                gap,
+                transform: `translate(-50%, -50%) translateX(${
+                  -activeIdx * (sideW + gap)
+                }px)`,
+                transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            >
+              {reels.map((p, i) => {
+                const isActive = i === activeIdx;
+                const w = isActive ? activeW : sideW;
+                const h = isActive ? activeH : sideW * (16 / 9);
+                const embedUrl = `${p.permalink.replace(/\/?$/, "/")}embed/captioned/?cr=1&autoplay=1`;
+                return (
+                  <div
+                    key={p.id}
+                    className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
+                    style={{
+                      width: w,
+                      height: h,
+                      opacity: isActive ? 1 : 0.45,
+                    }}
+                    onClick={() => !isActive && go(i)}
+                    role={isActive ? undefined : "button"}
+                    tabIndex={isActive ? -1 : 0}
+                  >
+                    {isActive ? (
+                      <iframe
+                        key={p.id}
+                        src={embedUrl}
+                        title={shortCaption(p) || "Reel"}
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                        className="absolute inset-0 h-full w-full border-0"
+                        style={{ background: "#000" }}
                       />
-                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-                      <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
-                        <Film className="h-3 w-3" /> Reel
-                      </span>
-                      {isActive && (
-                        <>
-                          <button
-                            type="button"
-                            aria-label="Reproduzir vídeo"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setPlaying(p);
-                            }}
-                            className="absolute inset-0 flex items-center justify-center"
-                          >
-                            <span className="rounded-full bg-white/95 p-6 shadow-xl backdrop-blur-sm transition hover:scale-110">
-                              <Play className="h-8 w-8 fill-black text-black" />
-                            </span>
-                          </button>
-                          <p className="absolute inset-x-4 bottom-4 text-sm text-white/95 line-clamp-2 pointer-events-none">
-                            {shortCaption(p)}
-                          </p>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Dots */}
-          <div className="mt-6 flex justify-center gap-1.5">
-            {reels.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => go(i)}
-                aria-label={`Ir para vídeo ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
-                }`}
-              />
-            ))}
-          </div>
+                    ) : (
+                      <>
+                        <img
+                          src={getCover(p)}
+                          alt={shortCaption(p)}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover"
+                        />
+                        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
+                          <Film className="h-3 w-3" /> Reel
+                        </span>
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="rounded-full bg-white/85 p-3 shadow-lg">
+                            <Play className="h-5 w-5 fill-black text-black" />
+                          </span>
+                        </span>
+                      </>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
+
+        {/* Dots */}
+        <div className="mt-6 flex justify-center gap-1.5">
+          {reels.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => go(i)}
+              aria-label={`Ir para vídeo ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
 
         {/* CTA seguir */}
         <div className="mt-14 flex flex-col items-center gap-3">
