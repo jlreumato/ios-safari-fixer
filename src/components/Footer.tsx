@@ -51,7 +51,7 @@ export default function Footer() {
                 href="https://www.instagram.com/dra.julianaleal/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-primary"
+                className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white/30 bg-transparent text-white transition-all hover:border-white hover:bg-white/10"
                 aria-label="Instagram"
               >
                 <Instagram className="h-6 w-6" />

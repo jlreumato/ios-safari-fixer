@@ -164,20 +164,20 @@ export default function Clinic() {
 
         {/* Tabs */}
         <div className="mt-10 flex justify-center">
-          <div className="inline-flex flex-wrap justify-center gap-1 rounded-xl bg-background p-1 shadow-sm">
+          <div className="inline-flex flex-wrap justify-center gap-2 rounded-xl bg-background/50 p-2 shadow-sm">
             {locations.map((loc, i) => (
               <button
                 key={loc.id}
                 onClick={() => setActiveTab(i)}
-                className={`rounded-lg px-5 py-2.5 text-base font-medium transition-all duration-200 ${
+                className={`rounded-lg border-2 px-5 py-2.5 text-base font-medium transition-all duration-200 ${
                   activeTab === i
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "border-primary bg-transparent text-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.10)]"
+                    : "border-transparent bg-transparent text-muted-foreground hover:border-primary/30 hover:text-foreground"
                 }`}
               >
                 {loc.name}
                 {i === 0 && (
-                  <span className={`ml-2 rounded-full px-2 py-0.5 text-sm font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                  <span className={`ml-2 rounded-full border px-2 py-0.5 text-sm font-semibold uppercase tracking-wider ${activeTab === i ? "border-primary/40 text-primary" : "border-primary/20 text-primary"}`}>
                     Principal
                   </span>
                 )}
