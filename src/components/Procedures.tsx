@@ -180,7 +180,40 @@ function JointsWheel() {
       style={{ height: `${joints.length * 60}vh` }}
     >
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
+        {/* Dynamic scroll-driven background */}
+        <div
+          className="pointer-events-none absolute inset-0 transition-[background] duration-700"
+          style={{
+            background: `
+              radial-gradient(circle at ${20 + progress * 60}% ${30 + Math.sin(progress * Math.PI * 2) * 20}%, hsl(${260 + progress * 80} 60% 78% / 0.55), transparent 55%),
+              radial-gradient(circle at ${80 - progress * 50}% ${70 - progress * 30}%, hsl(${30 + progress * 60} 70% 82% / 0.45), transparent 55%),
+              linear-gradient(${135 + progress * 180}deg, hsl(${250 + progress * 60} 40% 96%) 0%, hsl(${30 + progress * 40} 55% 95%) 100%)
+            `,
+          }}
+          aria-hidden
+        />
+        {/* Floating orbs that drift with scroll */}
+        <div
+          className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-3xl"
+          style={{
+            top: `${10 + progress * 60}%`,
+            left: `${5 + Math.sin(progress * Math.PI * 3) * 20}%`,
+            transform: `scale(${0.8 + progress * 0.6})`,
+            transition: "all 400ms ease-out",
+          }}
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute h-96 w-96 rounded-full blur-3xl"
+          style={{
+            background: `radial-gradient(circle, hsl(${40 + progress * 100} 70% 75% / 0.35), transparent 70%)`,
+            bottom: `${5 + progress * 40}%`,
+            right: `${5 + Math.cos(progress * Math.PI * 2) * 15}%`,
+            transition: "all 400ms ease-out",
+          }}
+          aria-hidden
+        />
+        <div className="relative mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
           {/* Radial navigator */}
           <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
             {/* SVG progress arc */}
