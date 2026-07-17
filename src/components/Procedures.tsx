@@ -324,29 +324,102 @@ export default function Procedures() {
       </div>
 
       {/* Journey / Protocolo Transformador */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            Protocolo Transformador
-          </p>
-          <h3
-            className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      <div className="relative overflow-hidden pb-24 lg:pb-32">
+        {/* Decorative background */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
+          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
+          <svg
+            className="absolute left-0 top-1/2 h-full w-full -translate-y-1/2 opacity-[0.06]"
+            viewBox="0 0 1200 600"
+            preserveAspectRatio="none"
           >
-            A jornada completa do paciente
-          </h3>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-            psicólogo e ortopedistas.
-          </p>
+            <path
+              d="M0,300 Q300,80 600,300 T1200,300"
+              fill="none"
+              stroke="currentColor"
+              className="text-primary"
+              strokeWidth="1.5"
+            />
+            <path
+              d="M0,340 Q300,120 600,340 T1200,340"
+              fill="none"
+              stroke="currentColor"
+              className="text-primary"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Protocolo Transformador
+            </p>
+            <h3
+              className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              A jornada completa do paciente
+            </h3>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+              psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
+            </p>
+          </div>
         </div>
 
         <JourneyCylinder steps={journey} />
 
+        {/* Rede Multidisciplinar — pillars */}
+        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Rede Multidisciplinar
+            </p>
+            <h4
+              className="mt-3 text-3xl font-normal tracking-tight text-foreground sm:text-4xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              Quatro especialidades, um único objetivo
+            </h4>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { icon: Stethoscope, name: "Reumatologia", desc: "Diagnóstico e conduta clínica de precisão." },
+              { icon: Bone, name: "Fisioterapia", desc: "Reabilitação funcional, mobilidade e força." },
+              { icon: Salad, name: "Nutrição", desc: "Alimentação anti-inflamatória e saúde óssea." },
+              { icon: Brain, name: "Psicologia", desc: "Manejo da dor crônica e bem-estar emocional." },
+            ].map((p, i) => (
+              <div
+                key={p.name}
+                className="group relative overflow-hidden rounded-3xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-25px_rgba(70,50,120,0.35)]"
+              >
+                <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-transparent blur-2xl transition-opacity duration-500 group-hover:opacity-80" />
+                <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <p.icon className="h-6 w-6" />
+                </span>
+                <p className="relative mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-primary/60">
+                  0{i + 1}
+                </p>
+                <h5
+                  className="relative mt-1 text-2xl leading-tight text-foreground"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {p.name}
+                </h5>
+                <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {p.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
 }
+
 
 type JourneyStep = {
   icon: ComponentType<{ className?: string }>;
@@ -399,83 +472,135 @@ function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
       style={{ height: `${steps.length * 80}vh` }}
     >
       <div className="sticky top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] w-full overflow-hidden">
-        <div
-          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-3xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
-          aria-hidden
-        />
-        <div
-          className="relative mx-auto h-full max-w-3xl px-4 sm:px-6 lg:px-8"
-          style={{ perspective: "1200px" }}
-        >
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            {steps.map((step, i) => {
-              const delta = i - pos; // negative = above, positive = below
-              const abs = Math.abs(delta);
-              const rotX = Math.max(-80, Math.min(80, delta * 45));
-              const ty = delta * 90;
-              const tz = -abs * 120;
-              const opacity = Math.max(0, 1 - abs * 0.55);
-              const scale = 1 - Math.min(0.35, abs * 0.15);
-              const isActive = i === active;
-              return (
-                <div
-                  key={step.title}
-                  className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8"
-                  style={{
-                    transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
-                    opacity,
-                    transition: "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
-                    willChange: "transform, opacity",
-                    zIndex: 100 - Math.round(abs * 10),
-                    pointerEvents: isActive ? "auto" : "none",
-                  }}
-                >
-                  <div
-                    className={`mx-auto rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
-                      isActive
-                        ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
-                        : "border-primary/10 bg-card/60"
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                        <step.icon className="h-6 w-6" />
-                      </span>
-                      <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
-                        Etapa {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h4
-                      className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
+          {/* Left rail — timeline of all steps */}
+          <aside className="relative hidden lg:block">
+            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70">
+              Etapas do protocolo
+            </p>
+            <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
+              {steps.map((s, i) => {
+                const isActive = i === active;
+                const isPast = i < active;
+                return (
+                  <li key={s.title} className="relative">
+                    <span
+                      className={`absolute -left-[30px] top-1 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
+                        isActive
+                          ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
+                          : isPast
+                          ? "border-primary/50 bg-primary/60"
+                          : "border-primary/25 bg-background"
+                      }`}
                     >
-                      {step.title}
-                    </h4>
-                    <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                      {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                    </span>
+                    <span
+                      className={`block text-[0.65rem] font-semibold uppercase tracking-[0.22em] transition-colors ${
+                        isActive ? "text-primary" : "text-muted-foreground/70"
+                      }`}
+                    >
+                      Etapa {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={`mt-0.5 block text-sm leading-snug transition-colors ${
+                        isActive
+                          ? "font-medium text-foreground"
+                          : "text-muted-foreground"
+                      }`}
+                    >
+                      {s.title}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+            <div className="mt-8 flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-primary/70">
+              <span>{String(active + 1).padStart(2, "0")}</span>
+              <span className="h-px flex-1 bg-primary/20" />
+              <span>{String(steps.length).padStart(2, "0")}</span>
+            </div>
+          </aside>
 
-          {/* Progress dots on the right */}
-          <div className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-2 sm:flex">
-            {steps.map((_, i) => (
-              <span
-                key={i}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
-                }`}
-              />
-            ))}
+          {/* Right stage — cylinder cards */}
+          <div className="relative h-full" style={{ perspective: "1200px" }}>
+            <div
+              className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
+              aria-hidden
+            />
+            <div
+              className="absolute inset-0 flex items-center justify-center"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              {steps.map((step, i) => {
+                const delta = i - pos;
+                const abs = Math.abs(delta);
+                const rotX = Math.max(-80, Math.min(80, delta * 45));
+                const ty = delta * 90;
+                const tz = -abs * 120;
+                const opacity = Math.max(0, 1 - abs * 0.55);
+                const scale = 1 - Math.min(0.35, abs * 0.15);
+                const isActive = i === active;
+                return (
+                  <div
+                    key={step.title}
+                    className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-0"
+                    style={{
+                      transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
+                      opacity,
+                      transition:
+                        "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
+                      willChange: "transform, opacity",
+                      zIndex: 100 - Math.round(abs * 10),
+                      pointerEvents: isActive ? "auto" : "none",
+                    }}
+                  >
+                    <div
+                      className={`mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
+                        isActive
+                          ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
+                          : "border-primary/10 bg-card/60"
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                          <step.icon className="h-6 w-6" />
+                        </span>
+                        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                          Etapa {String(i + 1).padStart(2, "0")} /{" "}
+                          {String(steps.length).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h4
+                        className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
+                        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                      >
+                        {step.title}
+                      </h4>
+                      <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                        {step.desc}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Mobile progress dots on the right */}
+            <div className="pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-2 lg:hidden">
+              {steps.map((_, i) => (
+                <span
+                  key={i}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+

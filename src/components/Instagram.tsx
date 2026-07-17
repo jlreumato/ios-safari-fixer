@@ -1,13 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Instagram as InstagramIcon, Play, Film, ChevronLeft, ChevronRight } from "lucide-react";
+import { Instagram as InstagramIcon, Play, Film, Heart, MessageCircle } from "lucide-react";
 
 const INSTAGRAM_URL = "https://instagram.com/julianalealreumato";
-
-/**
- * Behold feed URL — set here to fetch the latest posts dynamically.
- * Ex.: "https://feeds.behold.so/xxxxxxxx"
- * Se vazio, usa o snapshot embutido abaixo (última atualização manual).
- */
 const BEHOLD_FEED_URL = "";
 
 type BeholdPost = {
@@ -38,10 +32,9 @@ type BeholdFeed = {
   posts: BeholdPost[];
 };
 
-// Snapshot do feed (Behold) — 06/2026
 const FEED_SNAPSHOT: BeholdFeed = {
   biography:
-    "👩🏼‍⚕️ Médica • Maceió | União Palmares\n🩺 Reumatologista • RQE 4857\n🏥 Pós Graduação Dor Crônica USP\n👨‍👩‍👦‍👦 Mãe e esposa\n⬇️ Consultas",
+    "👩🏼‍⚕️ Médica • Maceió | União Palmares\n🩺 Reumatologista • RQE 4857\n🏥 Pós Graduação Dor Crônica USP",
   profilePictureUrl:
     "https://cdn2.behold.pictures/moP8GwHUGMgoUE6VwT2BrqOZmVy2/17841400873120857/profile.webp",
   followersCount: 1381,
@@ -52,16 +45,11 @@ const FEED_SNAPSHOT: BeholdFeed = {
       permalink: "https://www.instagram.com/reel/DaI6EtgRTxp/",
       mediaType: "VIDEO",
       isReel: true,
-      caption:
-        "Quem tem lúpus pode usar Mounjaro? Essa é uma dúvida muito comum no consultório.",
+      caption: "Quem tem lúpus pode usar Mounjaro? Essa é uma dúvida muito comum no consultório.",
       likeCount: 31,
       commentsCount: 2,
       hashtags: ["Lúpus", "Mounjaro"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODExOTUyMDk0OTY5OTc1MiIsImgiOiIxZzZoejh6In0.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODExOTUyMDk0OTY5OTc1MiIsImgiOiIxZzZoejh6In0.jpg?class=originalLarge",
@@ -73,16 +61,11 @@ const FEED_SNAPSHOT: BeholdFeed = {
       permalink: "https://www.instagram.com/reel/DaIjdxCgLBg/",
       mediaType: "VIDEO",
       isReel: true,
-      caption:
-        "Muita gente acha que a infiltração é o primeiro tratamento para o dedo em gatilho, mas nem sempre é assim.",
+      caption: "Muita gente acha que a infiltração é o primeiro tratamento para o dedo em gatilho, mas nem sempre é assim.",
       likeCount: 14,
       commentsCount: 1,
       hashtags: ["DedoEmGatilho", "Infiltração"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODEwNjQ5MTE3MDA4MDQ5MiIsImgiOiIxdnd1cGM4In0.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODEwNjQ5MTE3MDA4MDQ5MiIsImgiOiIxdnd1cGM4In0.jpg?class=originalLarge",
@@ -94,16 +77,11 @@ const FEED_SNAPSHOT: BeholdFeed = {
       permalink: "https://www.instagram.com/reel/DaIiF-pgvX8/",
       mediaType: "VIDEO",
       isReel: true,
-      caption:
-        "“Dra., por que corticoide engorda?” Uma das dúvidas que mais escuto no consultório.",
+      caption: "\u201CDra., por que corticoide engorda?\u201D Uma das dúvidas que mais escuto no consultório.",
       likeCount: 20,
       commentsCount: 10,
       hashtags: ["Corticoide"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODUzNjQxNDYzODA3MzQ4OSIsImgiOiJmMDBiZG0ifQ.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODUzNjQxNDYzODA3MzQ4OSIsImgiOiJmMDBiZG0ifQ.jpg?class=originalLarge",
@@ -115,16 +93,11 @@ const FEED_SNAPSHOT: BeholdFeed = {
       permalink: "https://www.instagram.com/reel/DaBxH9XNXbm/",
       mediaType: "VIDEO",
       isReel: true,
-      caption:
-        "Nem tudo que o corpo sente é “energia negativa” ou inveja. Investigue causas clínicas.",
+      caption: "Nem tudo que o corpo sente é \u201Cenergia negativa\u201D ou inveja. Investigue causas clínicas.",
       likeCount: 38,
       commentsCount: 7,
       hashtags: ["Reumatologia", "Autoimunes"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxNzk5MDYxMTM4NTgxNDAxNyIsImgiOiIxb3FzNmhxIn0.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxNzk5MDYxMTM4NTgxNDAxNyIsImgiOiIxb3FzNmhxIn0.jpg?class=originalLarge",
@@ -135,16 +108,11 @@ const FEED_SNAPSHOT: BeholdFeed = {
       id: "17899056315467262",
       permalink: "https://www.instagram.com/p/DZxtS77pbUu/",
       mediaType: "IMAGE",
-      caption:
-        "📢 Pneumo 20 agora disponível pelo SUS. Prevenção é parte fundamental do tratamento reumatológico.",
+      caption: "📢 Pneumo 20 agora disponível pelo SUS. Prevenção é parte fundamental do tratamento reumatológico.",
       likeCount: 17,
       commentsCount: 2,
       hashtags: ["Vacinação", "SUS"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxNzg5OTA1NjMxNTQ2NzI2MiIsImgiOiIxZzl4bDU1In0.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxNzg5OTA1NjMxNTQ2NzI2MiIsImgiOiIxZzl4bDU1In0.jpg?class=originalLarge",
@@ -156,19 +124,30 @@ const FEED_SNAPSHOT: BeholdFeed = {
       permalink: "https://www.instagram.com/reel/DZsRB9sJXsP/",
       mediaType: "VIDEO",
       isReel: true,
-      caption:
-        "Dedo travando, estalando ou causando dor ao movimentar? Infiltração pode ajudar quando indicada.",
+      caption: "Dedo travando, estalando ou causando dor ao movimentar? Infiltração pode ajudar quando indicada.",
       likeCount: 7,
       commentsCount: 0,
       hashtags: ["Infiltração", "Ortopedia"],
       sizes: {
-        medium: {
-          mediaUrl:
-            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODEyMTU2ODE3MDY3MjQzNiIsImgiOiIxZjg3MnIifQ.jpg?class=originalMedium",
-        },
         large: {
           mediaUrl:
             "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODEyMTU2ODE3MDY3MjQzNiIsImgiOiIxZjg3MnIifQ.jpg?class=originalLarge",
+        },
+      },
+    },
+    {
+      id: "18119520949699753",
+      permalink: "https://www.instagram.com/reel/DaI6EtgRTxp/",
+      mediaType: "VIDEO",
+      isReel: true,
+      caption: "Diagnóstico precoce muda a história de quem convive com doenças reumatológicas.",
+      likeCount: 22,
+      commentsCount: 3,
+      hashtags: ["DiagnósticoPrecoce"],
+      sizes: {
+        large: {
+          mediaUrl:
+            "https://hop.behold.pictures/eyJ1IjoibW9QOEd3SFVHTWdvVUU2VndUMkJycU9abVZ5MiIsImYiOiJHMDBMWUNqU2NtbnRxZW1GQlZmRyIsInAiOiIxODExOTUyMDk0OTY5OTc1MiIsImgiOiIxZzZoejh6In0.jpg?class=originalLarge",
         },
       },
     },
@@ -212,13 +191,21 @@ function shortCaption(p: BeholdPost) {
   return text.length > 130 ? text.slice(0, 127) + "…" : text;
 }
 
+// Bento layout: 7 tiles across a 4-col × 3-row grid on desktop
+const BENTO = [
+  "md:col-span-2 md:row-span-2", // 0 — feature
+  "md:col-span-1 md:row-span-1", // 1
+  "md:col-span-1 md:row-span-1", // 2
+  "md:col-span-1 md:row-span-1", // 3
+  "md:col-span-1 md:row-span-1", // 4
+  "md:col-span-2 md:row-span-1", // 5 — wide
+  "md:col-span-2 md:row-span-1", // 6 — wide
+];
+
 export default function Instagram() {
   const { ref, visible } = useReveal();
   const [feed, setFeed] = useState<BeholdFeed>(FEED_SNAPSHOT);
-  const [activeIdx, setActiveIdx] = useState(0);
   const [playing, setPlaying] = useState<BeholdPost | null>(null);
-  const [containerW, setContainerW] = useState(0);
-  const trackWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!BEHOLD_FEED_URL) return;
@@ -235,49 +222,26 @@ export default function Instagram() {
   }, []);
 
   useEffect(() => {
-    const el = trackWrapRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(() => setContainerW(el.clientWidth));
-    ro.observe(el);
-    setContainerW(el.clientWidth);
-    return () => ro.disconnect();
-  }, []);
-
-  const reels = feed.posts.filter((p) => p.mediaType === "VIDEO").slice(0, 7);
-
-  // Sizing — active card centered, 2 on each side visible
-  const isNarrow = containerW < 640;
-  const activeW = isNarrow ? Math.min(280, containerW * 0.7) : Math.min(380, containerW * 0.22);
-  const activeH = activeW * (16 / 9);
-  const sideW = activeW * 0.72;
-  const gap = isNarrow ? 14 : 28;
-
-  const go = (i: number) => {
-    setActiveIdx(Math.max(0, Math.min(reels.length - 1, i)));
-  };
-
-  // Keyboard
-  useEffect(() => {
+    if (!playing) return;
     const onKey = (e: KeyboardEvent) => {
-      if (playing) {
-        if (e.key === "Escape") setPlaying(null);
-        return;
-      }
-      if (e.key === "ArrowLeft") go(activeIdx - 1);
-      if (e.key === "ArrowRight") go(activeIdx + 1);
+      if (e.key === "Escape") setPlaying(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [activeIdx, reels.length, playing]);
+  }, [playing]);
+
+  const posts = feed.posts.slice(0, 7);
 
   return (
     <section
       id="instagram"
-      className="relative bg-gradient-to-b from-background via-secondary/30 to-background py-20 lg:py-28 overflow-hidden"
+      className="relative overflow-hidden py-24 lg:py-32"
     >
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-gradient-to-br from-pink-300/30 to-primary/20 blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-gradient-to-tr from-amber-200/30 to-primary/10 blur-3xl" />
+      {/* Decorative ambient orbs */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-32 left-[10%] h-96 w-96 rounded-full bg-gradient-to-br from-primary/25 to-transparent blur-3xl" />
+        <div className="absolute bottom-0 right-[5%] h-[28rem] w-[28rem] rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
+        <div className="absolute top-1/3 right-1/3 h-64 w-64 rounded-full bg-white/40 blur-3xl" />
       </div>
 
       <div
@@ -286,179 +250,122 @@ export default function Instagram() {
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            @julianalealreumato
-          </p>
-          <h2
-            className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-          >
-            Direto do Instagram
-          </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            O vídeo em destaque no centro já reproduz — deslize para trocar.
-          </p>
-        </div>
-      </div>
+        {/* Header */}
+        <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              @julianalealreumato
+            </p>
+            <h2
+              className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              Direto do Instagram
+            </h2>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Conteúdo autoral sobre reumatologia, dor crônica, infiltrações e cuidado
+              integrativo. Toque em qualquer publicação para assistir sem sair do site.
+            </p>
+          </div>
 
-      {/* Carrossel full-width com faixa translúcida (80vw) */}
-      <div className="relative mt-14">
-        <div className="pointer-events-none absolute inset-x-[10vw] inset-y-6 rounded-[3rem] bg-white/40 backdrop-blur-sm ring-1 ring-white/60" />
-
-        <button
-          type="button"
-          onClick={() => go(activeIdx - 1)}
-          aria-label="Anterior"
-          className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40 sm:left-8"
-          disabled={activeIdx === 0}
-        >
-          <ChevronLeft className="h-6 w-6 text-primary" />
-        </button>
-        <button
-          type="button"
-          onClick={() => go(activeIdx + 1)}
-          aria-label="Próximo"
-          className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-full bg-white/90 p-3 shadow-md backdrop-blur transition hover:bg-white disabled:opacity-40 sm:right-8"
-          disabled={activeIdx === reels.length - 1}
-        >
-          <ChevronRight className="h-6 w-6 text-primary" />
-        </button>
-
-        <div
-          ref={trackWrapRef}
-          className="relative mx-auto w-full overflow-hidden"
-          style={{ height: activeH + 60 }}
-        >
-          {/* Máscara lateral suave */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 z-20 w-20 bg-gradient-to-r from-background to-transparent sm:w-40" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 z-20 w-20 bg-gradient-to-l from-background to-transparent sm:w-40" />
-
-          {/* Moldura fixa no centro */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 rounded-[2.25rem] ring-2 ring-primary/80 shadow-[0_30px_80px_-30px_rgba(60,50,90,0.5)]"
-            style={{ width: activeW + 12, height: activeH + 12 }}
-          />
-
-          {/* Track de vídeos */}
-          {containerW > 0 && (() => {
-            // Cumulative offset to center the active card in the viewport
-            let offset = 0;
-            for (let k = 0; k < activeIdx; k++) {
-              offset += sideW + gap;
-            }
-            offset += activeW / 2;
-            return (
-              <div
-                className="absolute top-1/2 left-1/2 flex items-center"
-                style={{
-                  gap,
-                  transform: `translate(-50%, -50%) translateX(${-offset + activeW / 2}px)`,
-                  transition: "transform 500ms cubic-bezier(0.22, 1, 0.36, 1)",
-                }}
-              >
-                {reels.map((p, i) => {
-                  const isActive = i === activeIdx;
-                  const w = isActive ? activeW : sideW;
-                  const h = isActive ? activeH : sideW * (16 / 9);
-                  const embedUrl = `${p.permalink.replace(/\/?$/, "/")}embed/captioned/?cr=1&autoplay=1`;
-                  // Instagram embed chrome: ~54px header + ~150px footer (caption+actions)
-                  const HEADER = 56;
-                  const FOOTER = 160;
-                  return (
-                    <div
-                      key={p.id}
-                      className="relative shrink-0 overflow-hidden rounded-[2rem] bg-black transition-all duration-500 ease-out"
-                      style={{
-                        width: w,
-                        height: h,
-                        opacity: isActive ? 1 : 0.45,
-                      }}
-                      onClick={() => !isActive && go(i)}
-                      role={isActive ? undefined : "button"}
-                      tabIndex={isActive ? -1 : 0}
-                    >
-                      {isActive ? (
-                        <div
-                          className="absolute inset-0 overflow-hidden"
-                          style={{ background: "#000" }}
-                        >
-                          <iframe
-                            key={p.id}
-                            src={embedUrl}
-                            title={shortCaption(p) || "Reel"}
-                            allow="autoplay; encrypted-media; picture-in-picture"
-                            allowFullScreen
-                            scrolling="no"
-                            className="absolute left-0 border-0"
-                            style={{
-                              top: -HEADER,
-                              width: "100%",
-                              height: h + HEADER + FOOTER,
-                              background: "#000",
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <>
-                          <img
-                            src={getCover(p)}
-                            alt={shortCaption(p)}
-                            loading="lazy"
-                            className="absolute inset-0 h-full w-full object-cover"
-                          />
-                          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                          <span className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full bg-white/25 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-wider text-white backdrop-blur">
-                            <Film className="h-3 w-3" /> Reel
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
-        </div>
-
-        {/* Dots */}
-        <div className="mt-6 flex justify-center gap-1.5">
-          {reels.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => go(i)}
-              aria-label={`Ir para vídeo ${i + 1}`}
-              className={`h-1.5 rounded-full transition-all ${
-                i === activeIdx ? "w-6 bg-primary" : "w-1.5 bg-primary/30"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-
-        {/* CTA seguir */}
-        <div className="mt-14 flex flex-col items-center gap-3">
           <a
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 px-7 py-3.5 text-base font-semibold text-white shadow-lg shadow-pink-500/25 transition-transform hover:scale-[1.03] active:scale-[0.97]"
+            className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-pink-500/25 transition-transform hover:scale-[1.03] active:scale-[0.97]"
           >
-            <InstagramIcon className="h-5 w-5" />
-            Seguir @julianalealreumato
+            <InstagramIcon className="h-4 w-4" />
+            Seguir perfil
+            <span className="ml-1 rounded-full bg-white/20 px-2 py-0.5 text-[0.7rem]">
+              +{feed.followersCount?.toLocaleString("pt-BR")}
+            </span>
           </a>
-          <span className="text-sm text-muted-foreground">
-            +{feed.followersCount?.toLocaleString("pt-BR")} seguidores
-          </span>
+        </div>
+
+        {/* Bento grid */}
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:auto-rows-[16rem] md:grid-cols-4 lg:auto-rows-[18rem]">
+          {posts.map((p, i) => {
+            const span = BENTO[i] || "md:col-span-1 md:row-span-1";
+            const isFeature = i === 0;
+            const isVideo = p.mediaType === "VIDEO";
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => setPlaying(p)}
+                className={`group relative overflow-hidden rounded-3xl bg-black text-left shadow-[0_20px_50px_-30px_rgba(70,50,120,0.35)] ring-1 ring-white/40 transition-all duration-500 hover:shadow-[0_30px_70px_-25px_rgba(70,50,120,0.5)] hover:ring-primary/40 ${span} ${
+                  isFeature ? "min-h-[24rem] sm:min-h-0" : "min-h-[16rem] sm:min-h-0"
+                }`}
+                style={{
+                  animation: visible
+                    ? `fade-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) ${i * 80}ms both`
+                    : undefined,
+                }}
+              >
+                <img
+                  src={getCover(p)}
+                  alt={shortCaption(p) || "Publicação Instagram"}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                />
+
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-500 group-hover:from-black/90" />
+
+                {/* Top-left badge */}
+                <div className="absolute left-4 top-4 z-10 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-wider text-white backdrop-blur-md">
+                    {isVideo ? <Film className="h-3 w-3" /> : <InstagramIcon className="h-3 w-3" />}
+                    {isVideo ? "Reel" : "Post"}
+                  </span>
+                </div>
+
+                {/* Play button (center) */}
+                {isVideo && (
+                  <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 group-hover:scale-110">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-xl backdrop-blur ring-4 ring-white/30 group-hover:bg-white">
+                      <Play className={`h-5 w-5 fill-primary text-primary ${isFeature ? "translate-x-0.5" : "translate-x-0.5"}`} />
+                    </span>
+                  </span>
+                )}
+
+                {/* Caption + stats */}
+                <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6">
+                  <p
+                    className={`line-clamp-2 text-white ${
+                      isFeature ? "text-lg sm:text-xl" : "text-sm sm:text-[0.95rem]"
+                    }`}
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    {shortCaption(p)}
+                  </p>
+                  <div className="mt-3 flex items-center gap-4 text-[0.7rem] font-medium text-white/85">
+                    <span className="inline-flex items-center gap-1">
+                      <Heart className="h-3.5 w-3.5" /> {p.likeCount ?? 0}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <MessageCircle className="h-3.5 w-3.5" /> {p.commentsCount ?? 0}
+                    </span>
+                    {p.hashtags?.slice(0, 2).map((h) => (
+                      <span
+                        key={h}
+                        className="rounded-full bg-white/15 px-2 py-0.5 text-[0.65rem] backdrop-blur"
+                      >
+                        #{h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Hover accent border */}
+                <div className="pointer-events-none absolute inset-0 rounded-3xl ring-0 ring-primary/0 transition-all duration-500 group-hover:ring-2 group-hover:ring-primary/50" />
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Modal de reprodução */}
+      {/* Player modal */}
       {playing && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 p-4 backdrop-blur"
@@ -478,8 +385,8 @@ export default function Instagram() {
             onClick={(e) => e.stopPropagation()}
           >
             <iframe
-              src={`${playing.permalink.replace(/\/?$/, "/")}embed/captioned/`}
-              title={shortCaption(playing) || "Instagram reel"}
+              src={`${playing.permalink.replace(/\/?$/, "/")}embed/captioned/?cr=1&autoplay=1`}
+              title={shortCaption(playing) || "Instagram"}
               className="absolute inset-0 h-full w-full"
               frameBorder={0}
               scrolling="no"
@@ -492,4 +399,3 @@ export default function Instagram() {
     </section>
   );
 }
-
