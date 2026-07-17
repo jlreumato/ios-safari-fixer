@@ -131,7 +131,7 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full min-h-[38vh] flex-col overflow-hidden rounded-2xl bg-gradient-to-br ${treatment.gradient} p-4 sm:p-5 shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1`}
+      className={`group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-gradient-to-br ${treatment.gradient} p-3 sm:p-4 shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1`}
     >
       {/* accent glow */}
       <div
@@ -140,15 +140,15 @@ function TreatmentCard({
       />
 
       {/* Organic wavy image */}
-      <div className="relative mx-auto w-full">
+      <div className="relative mx-auto w-full min-h-0 flex-1 flex items-center justify-center">
         <div
-          className="mx-auto overflow-hidden ring-1 ring-white/50"
+          className="overflow-hidden ring-1 ring-white/50"
           style={{
             borderRadius: BLOB_KEYFRAMES[seed],
             animation: `blob-morph ${duration}s ease-in-out ${delay}s infinite`,
             aspectRatio: "1 / 1",
-            width: "100%",
-            maxWidth: "300px",
+            height: "100%",
+            maxHeight: "min(22vh, 200px)",
             boxShadow: `0 12px 28px -20px ${treatment.accent}`,
           }}
         >
@@ -163,32 +163,32 @@ function TreatmentCard({
         </div>
       </div>
 
-      <div className="mt-4 flex items-center justify-between text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[#5a4d7a]/80">
+      <div className="mt-3 flex items-center justify-between text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
         <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-        <span className="h-px flex-1 mx-3" style={{ backgroundColor: `${treatment.accent}55` }} />
+        <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
         <span>Tratamento</span>
       </div>
 
       <h3
-        className="mt-2 text-balance text-xl sm:text-2xl leading-tight tracking-tight text-[#2b2540]"
+        className="mt-1.5 text-balance text-lg sm:text-xl leading-tight tracking-tight text-[#2b2540]"
         style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
       >
         {treatment.title}
       </h3>
 
-      <p className="mt-2 line-clamp-3 text-xs sm:text-sm leading-relaxed text-[#4a4560]">
+      <p className="mt-1 line-clamp-2 text-xs leading-snug text-[#4a4560]">
         {treatment.shortDesc}
       </p>
 
-      <div className="mt-auto pt-3 flex items-center justify-between">
-        <span className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-[#3a3548]/70">
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
           Saiba mais
         </span>
         <span
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:bg-white"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:bg-white"
           style={{ color: treatment.accent }}
         >
-          <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-45" />
         </span>
       </div>
     </Link>
