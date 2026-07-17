@@ -341,7 +341,7 @@ export default function Procedures() {
           </p>
         </div>
 
-        <JourneyFloat steps={journey} />
+        <JourneyCylinder steps={journey} />
 
       </div>
     </section>
@@ -355,30 +355,24 @@ type JourneyStep = {
 };
 
 /**
- * Dynamic floating journey — each card starts scattered (rotated, off-axis,
- * transparent) and floats/snaps into its docked position as the user scrolls.
- * Uses a scroll listener + per-card progress based on the item's viewport
- * center. No IntersectionObserver — we need continuous progress, not a flag.
+ * Cylindrical vertical roll — steps rotate through a fixed viewport as the
+ * user scrolls. Only the active step is fully opaque and scaled; others fade
+ * and slide into the distance like slats on a cylinder.
  */
-function JourneyFloat({ steps }: { steps: JourneyStep[] }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
-  const [progress, setProgress] = useState<number[]>(() => steps.map(() => 0));
+function JourneyCylinder({ steps }: { steps: JourneyStep[] }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     let raf = 0;
     const update = () => {
+      const el = stageRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      const next = steps.map((_, i) => {
-        const el = itemsRef.current[i];
-        if (!el) return 0;
-        const r = el.getBoundingClientRect();
-        const center = r.top + r.height / 2;
-        // 0 when entering from bottom, 1 when centered, then stays 1.
-        const raw = 1 - Math.max(0, (center - vh * 0.35) / (vh * 0.55));
-        return Math.max(0, Math.min(1, raw));
-      });
-      setProgress(next);
+      const total = el.offsetHeight - vh;
+      const p = Math.max(0, Math.min(1, -rect.top / total));
+      setProgress(p);
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
@@ -392,74 +386,96 @@ function JourneyFloat({ steps }: { steps: JourneyStep[] }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [steps]);
+  }, []);
 
-  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+  // continuous index across steps
+  const pos = progress * (steps.length - 1);
+  const active = Math.round(pos);
 
   return (
-    <div ref={wrapRef} className="relative mt-14">
-      <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-primary/30 to-transparent lg:block" />
-
-      <ol className="space-y-10 lg:space-y-16">
-        {steps.map((step, i) => {
-          const p = easeOut(progress[i] ?? 0);
-          const left = i % 2 === 0;
-          // Start: floating far out, rotated, small; End: docked.
-          const tx = (1 - p) * (left ? -140 : 140);
-          const ty = (1 - p) * 60;
-          const rot = (1 - p) * (left ? -8 : 8);
-          const scale = 0.85 + 0.15 * p;
-          const opacity = 0.1 + 0.9 * p;
-          // subtle idle float once docked
-          const floatY = p > 0.95 ? Math.sin((Date.now() / 1400) + i) * 3 : 0;
-
-          return (
-            <li
-              key={step.title}
-              ref={(el) => (itemsRef.current[i] = el)}
-              className={`relative flex flex-col lg:flex-row lg:items-center ${
-                left ? "" : "lg:flex-row-reverse"
-              }`}
-            >
-              <div
-                className="lg:w-1/2 lg:px-8"
-                style={{
-                  transform: `translate3d(${tx}px, ${ty + floatY}px, 0) rotate(${rot}deg) scale(${scale})`,
-                  opacity,
-                  transition: "transform 200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms linear",
-                  willChange: "transform, opacity",
-                }}
-              >
-                <div className="rounded-2xl border border-primary/10 bg-card/80 p-6 backdrop-blur shadow-[0_20px_50px_-30px_rgba(70,50,120,0.35)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:bg-card">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                      <step.icon className="h-5 w-5" />
-                    </span>
+    <div
+      ref={stageRef}
+      className="relative mt-8"
+      style={{ height: `${steps.length * 80}vh` }}
+    >
+      <div className="sticky top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] w-full overflow-hidden">
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/2 mx-auto h-px max-w-3xl -translate-y-1/2 bg-gradient-to-r from-transparent via-primary/25 to-transparent"
+          aria-hidden
+        />
+        <div
+          className="relative mx-auto h-full max-w-3xl px-4 sm:px-6 lg:px-8"
+          style={{ perspective: "1200px" }}
+        >
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            {steps.map((step, i) => {
+              const delta = i - pos; // negative = above, positive = below
+              const abs = Math.abs(delta);
+              const rotX = Math.max(-80, Math.min(80, delta * 45));
+              const ty = delta * 90;
+              const tz = -abs * 120;
+              const opacity = Math.max(0, 1 - abs * 0.55);
+              const scale = 1 - Math.min(0.35, abs * 0.15);
+              const isActive = i === active;
+              return (
+                <div
+                  key={step.title}
+                  className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-8"
+                  style={{
+                    transform: `translate3d(0, ${ty}px, ${tz}px) rotateX(${rotX}deg) scale(${scale})`,
+                    opacity,
+                    transition: "transform 220ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms linear",
+                    willChange: "transform, opacity",
+                    zIndex: 100 - Math.round(abs * 10),
+                    pointerEvents: isActive ? "auto" : "none",
+                  }}
+                >
+                  <div
+                    className={`mx-auto rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
+                      isActive
+                        ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
+                        : "border-primary/10 bg-card/60"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                        <step.icon className="h-6 w-6" />
+                      </span>
+                      <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                        Etapa {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+                      </span>
+                    </div>
                     <h4
-                      className="text-2xl text-foreground"
+                      className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                     >
-                      {i + 1}. {step.title}
+                      {step.title}
                     </h4>
+                    <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                      {step.desc}
+                    </p>
                   </div>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {step.desc}
-                  </p>
                 </div>
-              </div>
+              );
+            })}
+          </div>
+
+          {/* Progress dots on the right */}
+          <div className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 flex-col gap-2 sm:flex">
+            {steps.map((_, i) => (
               <span
-                className="pointer-events-none absolute left-1/2 hidden h-3 w-3 -translate-x-1/2 rounded-full bg-primary ring-4 ring-background lg:block"
-                style={{
-                  transform: `translateX(-50%) scale(${0.4 + 0.6 * p})`,
-                  opacity: p,
-                  transition: "transform 200ms ease-out, opacity 200ms linear",
-                }}
+                key={i}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === active ? "h-6 w-1.5 bg-primary" : "w-1.5 bg-primary/25"
+                }`}
               />
-              <div className="hidden lg:block lg:w-1/2" />
-            </li>
-          );
-        })}
-      </ol>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
