@@ -227,7 +227,7 @@ function JointsWheel() {
               >
                 {String(active + 1).padStart(2, "0")}
               </p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
                 de {String(joints.length).padStart(2, "0")}
               </p>
             </div>

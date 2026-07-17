@@ -163,7 +163,7 @@ function TreatmentCard({
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
+      <div className="mt-3 flex items-center justify-between text-sm font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
         <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
         <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
         <span>Tratamento</span>
@@ -181,7 +181,7 @@ function TreatmentCard({
       </p>
 
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
+        <span className="text-sm font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
           Saiba mais
         </span>
         <span

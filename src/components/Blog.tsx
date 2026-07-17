@@ -86,7 +86,7 @@ export default function Blog() {
                 />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                 <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-xs font-semibold uppercase tracking-wider">
+                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-sm font-semibold uppercase tracking-wider">
                     {p.category}
                   </span>
                   <h3
@@ -129,7 +129,7 @@ export default function Blog() {
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
               <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-xs font-semibold uppercase tracking-wider">
+                <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-sm font-semibold uppercase tracking-wider">
                   {p.category}
                 </span>
                 <h3

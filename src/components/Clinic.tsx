@@ -177,7 +177,7 @@ export default function Clinic() {
               >
                 {loc.name}
                 {i === 0 && (
-                  <span className={`ml-2 rounded-full px-2 py-0.5 text-xs font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                  <span className={`ml-2 rounded-full px-2 py-0.5 text-sm font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
                     Principal
                   </span>
                 )}
