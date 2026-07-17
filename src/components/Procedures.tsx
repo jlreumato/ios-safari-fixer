@@ -334,8 +334,9 @@ export default function Procedures() {
           <JourneyStage steps={journey} />
 
           <div className="pb-24 lg:pb-32" />
-
+        </div>
       </section>
+
 
       {/* Procedimentos */}
       <section id="procedimentos" className="relative bg-background">
