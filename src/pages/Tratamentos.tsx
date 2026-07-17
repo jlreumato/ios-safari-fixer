@@ -74,7 +74,7 @@ export default function Tratamentos() {
             }}
           />
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
               Tratamentos Reumatológicos
             </p>
             <h1
@@ -87,7 +87,7 @@ export default function Tratamentos() {
             <p className="mt-5 max-w-xl text-base leading-relaxed text-[#5a5568] sm:text-lg">
               Deslize para conhecer os tratamentos. Clique em um card para ver os detalhes.
             </p>
-            <div className="mt-8 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#5a5568]/70">
+            <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-[#5a5568]/70">
               Role para explorar
               <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
             </div>
@@ -165,7 +165,7 @@ function TreatmentCard({
       />
 
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-6">
-        <div className="flex items-center justify-between text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#5a4d7a]">
+        <div className="flex items-center justify-between text-sm font-semibold uppercase tracking-[0.24em] text-[#5a4d7a]">
           <span>Tratamento {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
           <span
             className="hidden h-px flex-1 max-w-[280px] sm:block"
@@ -186,7 +186,7 @@ function TreatmentCard({
 
         <div className="mt-2 flex items-center gap-3">
           <span
-            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-white shadow-lg transition-transform group-hover:translate-x-1"
+            className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-medium text-white shadow-lg transition-transform group-hover:translate-x-1"
             style={{
               backgroundColor: treatment.accent,
               boxShadow: `0 12px 30px -8px ${treatment.accent}80`,
