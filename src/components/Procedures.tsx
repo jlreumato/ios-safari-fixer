@@ -341,44 +341,8 @@ export default function Procedures() {
           </p>
         </div>
 
-        <div className="relative mt-14">
-          <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-primary/30 to-transparent lg:block" />
+        <JourneyFloat steps={journey} />
 
-          <ol className="space-y-6 lg:space-y-10">
-            {journey.map((step, i) => {
-              const left = i % 2 === 0;
-              return (
-                <li
-                  key={step.title}
-                  className={`relative flex flex-col lg:flex-row lg:items-center ${
-                    left ? "" : "lg:flex-row-reverse"
-                  }`}
-                >
-                  <div className="lg:w-1/2 lg:px-8">
-                    <div className="rounded-2xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:bg-card">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                          <step.icon className="h-5 w-5" />
-                        </span>
-                        <h4
-                          className="text-2xl text-foreground"
-                          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                        >
-                          {i + 1}. {step.title}
-                        </h4>
-                      </div>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="pointer-events-none absolute left-1/2 hidden h-3 w-3 -translate-x-1/2 rounded-full bg-primary ring-4 ring-background lg:block" />
-                  <div className="hidden lg:block lg:w-1/2" />
-                </li>
-              );
-            })}
-          </ol>
-        </div>
       </div>
     </section>
   );
