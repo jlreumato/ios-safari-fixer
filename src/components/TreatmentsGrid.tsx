@@ -71,7 +71,7 @@ export default function TreatmentsGrid() {
           Cuidado para cada condição
         </h2>
         <p className="mt-5 mx-auto max-w-2xl text-muted-foreground text-lg leading-relaxed">
-          Role a página — os cards deslizam lateralmente e se encaixam como peças em movimento.
+          Atendimento humanizado e baseado em evidências nas principais áreas da reumatologia.
         </p>
       </div>
 

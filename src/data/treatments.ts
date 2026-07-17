@@ -1,29 +1,29 @@
 import fibromialgiaImg from "@/assets/treatments/fibromialgia.jpg.asset.json";
-import lupusImg from "@/assets/treatments/lupus.jpg.asset.json";
-import artriteImg from "@/assets/treatments/artrite.jpg.asset.json";
-import sjogrenImg from "@/assets/treatments/sjogren.jpg.asset.json";
-import muscularesImg from "@/assets/treatments/musculares.jpg.asset.json";
 import artroseImg from "@/assets/treatments/artrose.jpg.asset.json";
 import osteoporoseImg from "@/assets/treatments/osteoporose.jpg.asset.json";
-import tendoesImg from "@/assets/treatments/tendoes.jpg.asset.json";
+import muscularesImg from "@/assets/treatments/musculares.jpg.asset.json";
+import artriteImg from "@/assets/treatments/artrite.jpg.asset.json";
+import gotaImg from "@/assets/treatments/gota.jpg.asset.json";
+import psoriasicaImg from "@/assets/treatments/psoriasica.jpg.asset.json";
+import outrasImg from "@/assets/treatments/outras.jpg.asset.json";
 
 const IMAGES: Record<string, string> = {
   fibromialgia: fibromialgiaImg.url,
-  lupus: lupusImg.url,
-  "artrite-reumatoide": artriteImg.url,
-  "sindrome-de-sjogren": sjogrenImg.url,
-  "lesoes-musculares": muscularesImg.url,
   artrose: artroseImg.url,
   osteoporose: osteoporoseImg.url,
-  "lesoes-nos-tendoes": tendoesImg.url,
+  "dores-musculares": muscularesImg.url,
+  "artrite-reumatoide": artriteImg.url,
+  gota: gotaImg.url,
+  "artrite-psoriasica": psoriasicaImg.url,
+  "outras-doencas-imunologicas": outrasImg.url,
 };
 
 export type Treatment = {
   slug: string;
   title: string;
   shortDesc: string;
-  gradient: string; // tailwind gradient classes
-  accent: string; // hex for accent bits
+  gradient: string;
+  accent: string;
   image: string;
   overview: string;
   symptoms: string[];
@@ -51,94 +51,6 @@ const _treatments: Omit<Treatment, "image">[] = [
       "Plano medicamentoso individualizado",
       "Orientação de exercícios progressivos",
       "Suporte para sono, humor e manejo do estresse",
-    ],
-  },
-  {
-    slug: "lupus",
-    title: "Lúpus Eritematoso Sistêmico",
-    shortDesc:
-      "Doença autoimune que pode acometer pele, articulações, rins e outros órgãos. Diagnóstico precoce muda tudo.",
-    gradient: "from-[#fde2e4] via-[#fbeff1] to-[#eee0f5]",
-    accent: "#c8778c",
-    overview:
-      "O Lúpus é uma doença autoimune sistêmica em que o organismo produz anticorpos contra as próprias células. O acompanhamento reumatológico regular permite controle da atividade da doença e preservação da qualidade de vida.",
-    symptoms: [
-      "Manchas na pele, especialmente no rosto",
-      "Dor e inchaço nas articulações",
-      "Febre, cansaço extremo e queda de cabelo",
-      "Sensibilidade à luz solar",
-    ],
-    approach: [
-      "Investigação laboratorial e imunológica completa",
-      "Terapia imunomoduladora personalizada",
-      "Monitoramento renal, cardiovascular e ósseo",
-      "Orientação sobre gestação, vacinas e fotoproteção",
-    ],
-  },
-  {
-    slug: "artrite-reumatoide",
-    title: "Artrite Reumatoide",
-    shortDesc:
-      "Inflamação articular crônica que, tratada precocemente, evita deformidades e mantém sua funcionalidade.",
-    gradient: "from-[#dde7fb] via-[#eaf0fb] to-[#e2defc]",
-    accent: "#6a86c3",
-    overview:
-      "A Artrite Reumatoide é uma doença inflamatória crônica que ataca principalmente as articulações. O tratamento moderno com drogas modificadoras do curso da doença (DMARDs) e biológicos permite remissão em grande parte dos pacientes.",
-    symptoms: [
-      "Dor e inchaço simétrico em pequenas articulações",
-      "Rigidez matinal prolongada (>1 hora)",
-      "Cansaço e mal-estar geral",
-      "Deformidades progressivas se não tratada",
-    ],
-    approach: [
-      "Diagnóstico precoce com exames de imagem e laboratório",
-      "DMARDs sintéticos e biológicos quando indicados",
-      "Reavaliação periódica com escores de atividade",
-      "Integração com fisioterapia e terapia ocupacional",
-    ],
-  },
-  {
-    slug: "sindrome-de-sjogren",
-    title: "Síndrome de Sjögren",
-    shortDesc:
-      "Doença autoimune que causa secura ocular e bucal e pode envolver outros órgãos.",
-    gradient: "from-[#dff3ea] via-[#eaf5ee] to-[#e3edf7]",
-    accent: "#5aa080",
-    overview:
-      "A Síndrome de Sjögren é uma doença autoimune que afeta principalmente as glândulas produtoras de lágrima e saliva. O acompanhamento previne complicações oculares, dentárias e sistêmicas.",
-    symptoms: [
-      "Olhos e boca secos persistentes",
-      "Dificuldade para engolir alimentos secos",
-      "Cansaço e dores articulares",
-      "Aumento das parótidas",
-    ],
-    approach: [
-      "Confirmação diagnóstica com sorologia e testes específicos",
-      "Substitutos de lágrima e saliva",
-      "Tratamento sistêmico quando há acometimento de órgãos",
-      "Prevenção de cáries e cuidado oftalmológico contínuo",
-    ],
-  },
-  {
-    slug: "lesoes-musculares",
-    title: "Lesões Musculares",
-    shortDesc:
-      "Diagnóstico preciso das dores musculares — do estiramento à miosite inflamatória.",
-    gradient: "from-[#fdead0] via-[#fbf1de] to-[#f6e3d0]",
-    accent: "#c68a4a",
-    overview:
-      "Dor muscular pode ter causas mecânicas, metabólicas ou inflamatórias (miopatias). Uma avaliação reumatológica completa identifica a origem e direciona o tratamento adequado.",
-    symptoms: [
-      "Dor muscular localizada ou difusa",
-      "Fraqueza para subir escadas ou levantar objetos",
-      "Cãibras frequentes",
-      "Elevação de enzimas musculares em exames",
-    ],
-    approach: [
-      "Anamnese focada e exame físico neuromuscular",
-      "Exames laboratoriais e de imagem direcionados",
-      "Encaminhamento a fisioterapia e reabilitação",
-      "Tratamento medicamentoso quando indicado",
     ],
   },
   {
@@ -186,25 +98,113 @@ const _treatments: Omit<Treatment, "image">[] = [
     ],
   },
   {
-    slug: "lesoes-nos-tendoes",
-    title: "Lesões nos Tendões",
+    slug: "dores-musculares",
+    title: "Dores Musculares e Lesões nos Tendões",
     shortDesc:
-      "Tendinites, tenossinovites e entesites — dor que limita a rotina tem tratamento.",
-    gradient: "from-[#fce3e8] via-[#faeced] to-[#f0e2ee]",
-    accent: "#b6799a",
+      "Dor lombar, ombro, tendinites e entesites — diagnóstico preciso e tratamento que devolve movimento.",
+    gradient: "from-[#fdead0] via-[#fbf1de] to-[#f6e3d0]",
+    accent: "#c68a4a",
     overview:
-      "Tendinopatias podem ter causa mecânica (sobrecarga) ou inflamatória (espondiloartrites). A avaliação reumatológica define a origem e o tratamento correto — de reabilitação a medicações específicas.",
+      "Dores musculares e tendinopatias podem ter causa mecânica, metabólica ou inflamatória. A avaliação reumatológica identifica a origem — de sobrecarga a doenças sistêmicas — e direciona o tratamento correto, de reabilitação a medicações específicas.",
     symptoms: [
-      "Dor localizada em ombro, cotovelo, joelho ou tornozelo",
-      "Piora com movimentos específicos",
-      "Inchaço e calor local",
-      "Limitação funcional progressiva",
+      "Dor localizada em ombro, cotovelo, coluna ou joelho",
+      "Piora com movimentos específicos ou esforço",
+      "Fraqueza, cãibras e limitação funcional",
+      "Inchaço, calor local e rigidez",
     ],
     approach: [
       "Exame físico e ultrassonografia dirigida",
-      "Repouso relativo e fisioterapia",
+      "Repouso relativo e fisioterapia integrada",
       "Infiltrações guiadas em casos selecionados",
       "Tratamento sistêmico quando há doença de base",
+    ],
+  },
+  {
+    slug: "artrite-reumatoide",
+    title: "Artrite Reumatoide",
+    shortDesc:
+      "Inflamação articular crônica que, tratada precocemente, evita deformidades e mantém sua funcionalidade.",
+    gradient: "from-[#dde7fb] via-[#eaf0fb] to-[#e2defc]",
+    accent: "#6a86c3",
+    overview:
+      "A Artrite Reumatoide é uma doença inflamatória crônica que ataca principalmente as articulações. O tratamento moderno com drogas modificadoras do curso da doença (DMARDs) e biológicos permite remissão em grande parte dos pacientes.",
+    symptoms: [
+      "Dor e inchaço simétrico em pequenas articulações",
+      "Rigidez matinal prolongada (>1 hora)",
+      "Cansaço e mal-estar geral",
+      "Deformidades progressivas se não tratada",
+    ],
+    approach: [
+      "Diagnóstico precoce com exames de imagem e laboratório",
+      "DMARDs sintéticos e biológicos quando indicados",
+      "Reavaliação periódica com escores de atividade",
+      "Integração com fisioterapia e terapia ocupacional",
+    ],
+  },
+  {
+    slug: "gota",
+    title: "Gota",
+    shortDesc:
+      "Crises intensas de dor articular pelo acúmulo de ácido úrico — controle e prevenção são possíveis.",
+    gradient: "from-[#fde2d4] via-[#fbeadd] to-[#f6d9c8]",
+    accent: "#c67a5c",
+    overview:
+      "A gota é uma artrite inflamatória causada pelo depósito de cristais de ácido úrico nas articulações. Um plano bem conduzido interrompe as crises, dissolve os cristais acumulados e previne novas manifestações.",
+    symptoms: [
+      "Crise súbita de dor intensa, geralmente no dedão do pé",
+      "Vermelhidão, calor e inchaço da articulação",
+      "Ataques recorrentes desencadeados por dieta ou álcool",
+      "Formação de tofos em casos crônicos",
+    ],
+    approach: [
+      "Confirmação diagnóstica e dosagem de ácido úrico",
+      "Tratamento da crise com anti-inflamatórios específicos",
+      "Terapia hipouricemiante contínua quando indicada",
+      "Orientação alimentar e revisão de medicamentos",
+    ],
+  },
+  {
+    slug: "artrite-psoriasica",
+    title: "Artrite Psoriásica",
+    shortDesc:
+      "Inflamação articular associada à psoríase — tratamento moderno controla pele e articulações.",
+    gradient: "from-[#fce3e8] via-[#faeced] to-[#f0e2ee]",
+    accent: "#b6799a",
+    overview:
+      "A artrite psoriásica é uma doença inflamatória crônica que combina manifestações articulares e cutâneas. Terapias-alvo modernas controlam a inflamação, preservam as articulações e melhoram as lesões de pele.",
+    symptoms: [
+      "Placas descamativas em cotovelos, joelhos e couro cabeludo",
+      "Dor e inchaço em articulações e dedos (dactilite)",
+      "Dor lombar inflamatória e rigidez matinal",
+      "Alterações ungueais (pitting, onicólise)",
+    ],
+    approach: [
+      "Avaliação conjunta pele-articulações",
+      "DMARDs sintéticos e imunobiológicos direcionados",
+      "Fisioterapia e cuidado dermatológico integrado",
+      "Reavaliação regular com escores de atividade",
+    ],
+  },
+  {
+    slug: "outras-doencas-imunologicas",
+    title: "Outras Doenças Imunológicas",
+    shortDesc:
+      "Lúpus, Síndrome de Sjögren, esclerose sistêmica, vasculites e outras condições autoimunes.",
+    gradient: "from-[#fde2e4] via-[#fbeff1] to-[#eee0f5]",
+    accent: "#c8778c",
+    overview:
+      "Doenças autoimunes sistêmicas exigem diagnóstico preciso e acompanhamento contínuo. Investigamos e conduzimos condições como Lúpus, Síndrome de Sjögren, esclerose sistêmica e vasculites, com terapias imunomoduladoras personalizadas.",
+    symptoms: [
+      "Manchas na pele, especialmente no rosto (rash malar)",
+      "Olhos e boca secos, febre e queda de cabelo",
+      "Dor e inchaço articular associados a sintomas sistêmicos",
+      "Sensibilidade à luz solar e cansaço extremo",
+    ],
+    approach: [
+      "Investigação imunológica e laboratorial completa",
+      "Terapia imunomoduladora individualizada",
+      "Monitoramento renal, cardiovascular e ósseo",
+      "Orientação sobre gestação, vacinas e fotoproteção",
     ],
   },
 ];
@@ -216,4 +216,3 @@ export const treatments: Treatment[] = _treatments.map((t) => ({
 
 export const getTreatment = (slug: string) =>
   treatments.find((t) => t.slug === slug);
-

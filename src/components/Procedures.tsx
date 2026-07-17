@@ -127,7 +127,7 @@ const journey = [
   },
 ];
 
-/** Vertical circular carousel for the joint areas. */
+/** Interactive radial navigator for the joint areas — driven by scroll and clickable. */
 function JointsWheel() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -140,7 +140,7 @@ function JointsWheel() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = el.offsetHeight - vh;
+      const total = Math.max(1, el.offsetHeight - vh);
       const p = Math.max(0, Math.min(1, -rect.top / total));
       setProgress(p);
       setActive(Math.min(joints.length - 1, Math.floor(p * joints.length * 0.9999)));
@@ -159,55 +159,94 @@ function JointsWheel() {
     };
   }, []);
 
-  const rotation = -progress * (joints.length - 1) * (360 / joints.length);
+  const scrollToIndex = (i: number) => {
+    const el = stageRef.current;
+    if (!el) return;
+    const vh = window.innerHeight;
+    const total = el.offsetHeight - vh;
+    const target = el.offsetTop + (i / joints.length) * total + total / (joints.length * 2);
+    window.scrollTo({ top: target, behavior: "smooth" });
+  };
+
   const current = joints[active];
+  const R = 160;
+  const circumference = 2 * Math.PI * R;
+  const dash = circumference * progress;
 
   return (
     <div
       ref={stageRef}
       className="relative"
-      style={{ height: `${joints.length * 80}vh` }}
+      style={{ height: `${joints.length * 60}vh` }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-8 px-4 sm:px-6 lg:grid-cols-[420px_1fr] lg:px-8">
-          {/* Wheel */}
-          <div className="relative mx-auto h-[420px] w-[420px] max-w-full">
-            <div
-              className="absolute inset-0"
-              style={{
-                transform: `rotate(${rotation}deg)`,
-                transition: "transform 120ms linear",
-              }}
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
+          {/* Radial navigator */}
+          <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
+            {/* SVG progress arc */}
+            <svg
+              viewBox="0 0 400 400"
+              className="absolute inset-0 h-full w-full -rotate-90"
+              aria-hidden
             >
-              {joints.map((j, i) => {
-                const angle = (i / joints.length) * 360;
-                const isActive = i === active;
-                return (
-                  <div
-                    key={j.label}
-                    className="absolute left-1/2 top-1/2"
-                    style={{
-                      transform: `rotate(${angle}deg) translateY(-180px) rotate(${-angle - rotation}deg)`,
-                      transition: "transform 120ms linear",
-                    }}
+              <circle
+                cx="200" cy="200" r={R}
+                fill="none"
+                stroke="hsl(var(--primary) / 0.12)"
+                strokeWidth="2"
+                strokeDasharray="2 6"
+              />
+              <circle
+                cx="200" cy="200" r={R}
+                fill="none"
+                stroke="hsl(var(--primary))"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeDasharray={`${dash} ${circumference}`}
+                style={{ transition: "stroke-dasharray 120ms linear" }}
+              />
+            </svg>
+
+            {/* Labels around the ring */}
+            {joints.map((j, i) => {
+              const angle = (i / joints.length) * 2 * Math.PI - Math.PI / 2;
+              const x = 50 + (R / 200) * 50 * Math.cos(angle);
+              const y = 50 + (R / 200) * 50 * Math.sin(angle);
+              const isActive = i === active;
+              return (
+                <button
+                  key={j.label}
+                  type="button"
+                  onClick={() => scrollToIndex(i)}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none"
+                  style={{ left: `${x}%`, top: `${y}%` }}
+                >
+                  <span
+                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-xs sm:text-sm font-medium backdrop-blur transition-all duration-500 ${
+                      isActive
+                        ? "border-primary bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_hsl(var(--primary))] scale-110"
+                        : "border-primary/20 bg-card/80 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                    }`}
                   >
-                    <div
-                      className={`-translate-x-1/2 -translate-y-1/2 rounded-full border px-5 py-3 text-sm font-medium backdrop-blur transition-all duration-300 ${
-                        isActive
-                          ? "border-primary bg-primary text-primary-foreground shadow-lg scale-110"
-                          : "border-primary/20 bg-card/70 text-muted-foreground"
-                      }`}
-                    >
-                      {j.label}
-                    </div>
-                  </div>
-                );
-              })}
+                    {j.label}
+                  </span>
+                </button>
+              );
+            })}
+
+            {/* Center indicator */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+              <p
+                key={active}
+                className="text-5xl font-normal text-primary animate-in fade-in zoom-in-95 duration-500"
+                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              >
+                {String(active + 1).padStart(2, "0")}
+              </p>
+              <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+                de {String(joints.length).padStart(2, "0")}
+              </p>
             </div>
-            {/* Center dot */}
-            <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/40" />
-            {/* Guide ring */}
-            <div className="absolute inset-6 rounded-full border border-dashed border-primary/15" />
           </div>
 
           {/* Active detail */}
@@ -217,24 +256,32 @@ function JointsWheel() {
             </p>
             <h3
               key={current.label}
-              className="mt-3 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-2 duration-500"
+              className="mt-2 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-2 duration-500"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               {current.label}
             </h3>
             <p
               key={current.desc}
-              className="mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
+              className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
             >
               {current.desc}
             </p>
-            <div className="mt-8 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/60">
-              <span>
-                {String(active + 1).padStart(2, "0")} / {String(joints.length).padStart(2, "0")}
-              </span>
-              <span className="h-px flex-1 max-w-[120px] bg-primary/20" />
-              <span>role para avançar</span>
-              <ChevronRight className="h-4 w-4" />
+
+            {/* Progress bar + hint */}
+            <div className="mt-6 max-w-md">
+              <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
+                <div
+                  className="h-full rounded-full bg-primary transition-[width] duration-150"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              </div>
+              <div className="mt-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/60">
+                <span>role para avançar</span>
+                <ChevronRight className="h-4 w-4 animate-pulse" />
+                <span className="h-px flex-1 bg-primary/20" />
+                <span>ou clique</span>
+              </div>
             </div>
           </div>
         </div>
@@ -243,11 +290,12 @@ function JointsWheel() {
   );
 }
 
+
 export default function Procedures() {
   return (
     <section id="procedimentos" className="relative bg-background">
       {/* Intro */}
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 text-center">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
           Procedimentos
         </p>
