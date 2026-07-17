@@ -31,7 +31,6 @@ const Index = () => {
         <Procedures />
         <Testimonials />
         <Blog />
-        <Instagram />
         <FAQ />
         <CTASection />
       </main>
