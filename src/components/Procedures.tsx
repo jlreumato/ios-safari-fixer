@@ -333,51 +333,8 @@ export default function Procedures() {
           <ZoomIntro />
           <JourneyStage steps={journey} />
 
-          {/* Rede Multidisciplinar — pillars */}
-          <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                Rede Multidisciplinar
-              </p>
-              <h4
-                className="mt-3 text-3xl font-normal tracking-tight text-foreground sm:text-4xl"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-              >
-                Quatro especialidades, um único objetivo
-              </h4>
-            </div>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { icon: Stethoscope, name: "Reumatologia", desc: "Diagnóstico e conduta clínica de precisão." },
-                { icon: Bone, name: "Fisioterapia", desc: "Reabilitação funcional, mobilidade e força." },
-                { icon: Salad, name: "Nutrição", desc: "Alimentação anti-inflamatória e saúde óssea." },
-                { icon: Brain, name: "Psicologia", desc: "Manejo da dor crônica e bem-estar emocional." },
-              ].map((p, i) => (
-                <div
-                  key={p.name}
-                  className="group relative overflow-hidden rounded-3xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-25px_rgba(70,50,120,0.35)]"
-                >
-                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-transparent blur-2xl transition-opacity duration-500 group-hover:opacity-80" />
-                  <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <p.icon className="h-6 w-6" />
-                  </span>
-                  <p className="relative mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-primary/60">
-                    0{i + 1}
-                  </p>
-                  <h5
-                    className="relative mt-1 text-2xl leading-tight text-foreground"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                  >
-                    {p.name}
-                  </h5>
-                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {p.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          <div className="pb-24 lg:pb-32" />
+
       </section>
 
       {/* Procedimentos */}
