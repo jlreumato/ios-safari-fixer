@@ -185,8 +185,8 @@ function TreatmentCard({
           Saiba mais
         </span>
         <span
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow-md transition-all duration-500 group-hover:scale-110 group-hover:bg-white"
-          style={{ color: treatment.accent }}
+          className="flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20"
+          style={{ borderColor: treatment.accent, color: treatment.accent }}
         >
           <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-45" />
         </span>
