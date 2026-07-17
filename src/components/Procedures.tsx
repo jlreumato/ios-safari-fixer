@@ -206,7 +206,7 @@ function JointsWheel() {
                   style={{ left: `${x}%`, top: `${y}%` }}
                 >
                   <span
-                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-xs sm:text-sm font-medium backdrop-blur transition-all duration-500 ${
+                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-sm sm:text-base font-medium backdrop-blur transition-all duration-500 ${
                       isActive
                         ? "border-primary bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_hsl(var(--primary))] scale-110"
                         : "border-primary/20 bg-card/80 text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -227,7 +227,7 @@ function JointsWheel() {
               >
                 {String(active + 1).padStart(2, "0")}
               </p>
-              <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
                 de {String(joints.length).padStart(2, "0")}
               </p>
             </div>
@@ -235,7 +235,7 @@ function JointsWheel() {
 
           {/* Active detail */}
           <div className="relative">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
               Área em evidência
             </p>
             <h3
@@ -260,9 +260,9 @@ function JointsWheel() {
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
-              <div className="mt-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/60">
+              <div className="mt-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-primary/60">
                 <span>role para avançar</span>
-                <ChevronRight className="h-4 w-4 animate-pulse" />
+                <ChevronRight className="h-5 w-5 animate-pulse" />
                 <span className="h-px flex-1 bg-primary/20" />
                 <span>ou clique</span>
               </div>
@@ -293,7 +293,7 @@ export default function Procedures() {
       <section id="procedimentos" className="relative bg-background">
         {/* Intro */}
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
             Procedimentos
           </p>
           <h2
@@ -311,7 +311,7 @@ export default function Procedures() {
         {/* Vertical circular carousel — joints */}
         <JointsWheel />
 
-        <div className="pb-16" />
+        <div className="pb-0" />
 
       </section>
     </>
@@ -385,7 +385,7 @@ function ZoomIntro() {
 
         <div className="relative mx-auto max-w-6xl px-4 text-center">
           <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-primary"
+            className="text-base font-semibold uppercase tracking-[0.28em] text-primary"
             style={{ opacity: prefixOpacity }}
           >
             Protocolo
@@ -420,7 +420,7 @@ function ZoomIntro() {
             psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
           </p>
           <p
-            className="mt-10 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70"
+            className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70"
             style={{ opacity: hintOpacity }}
           >
             role para atravessar a dor ↓
