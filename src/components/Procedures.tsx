@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import {
   Syringe,
   Waves,
@@ -341,45 +341,125 @@ export default function Procedures() {
           </p>
         </div>
 
-        <div className="relative mt-14">
-          <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-primary/30 to-transparent lg:block" />
+        <JourneyFloat steps={journey} />
 
-          <ol className="space-y-6 lg:space-y-10">
-            {journey.map((step, i) => {
-              const left = i % 2 === 0;
-              return (
-                <li
-                  key={step.title}
-                  className={`relative flex flex-col lg:flex-row lg:items-center ${
-                    left ? "" : "lg:flex-row-reverse"
-                  }`}
-                >
-                  <div className="lg:w-1/2 lg:px-8">
-                    <div className="rounded-2xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:bg-card">
-                      <div className="flex items-center gap-3">
-                        <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                          <step.icon className="h-5 w-5" />
-                        </span>
-                        <h4
-                          className="text-2xl text-foreground"
-                          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                        >
-                          {i + 1}. {step.title}
-                        </h4>
-                      </div>
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <span className="pointer-events-none absolute left-1/2 hidden h-3 w-3 -translate-x-1/2 rounded-full bg-primary ring-4 ring-background lg:block" />
-                  <div className="hidden lg:block lg:w-1/2" />
-                </li>
-              );
-            })}
-          </ol>
-        </div>
       </div>
     </section>
+  );
+}
+
+type JourneyStep = {
+  icon: ComponentType<{ className?: string }>;
+  title: string;
+  desc: string;
+};
+
+/**
+ * Dynamic floating journey — each card starts scattered (rotated, off-axis,
+ * transparent) and floats/snaps into its docked position as the user scrolls.
+ * Uses a scroll listener + per-card progress based on the item's viewport
+ * center. No IntersectionObserver — we need continuous progress, not a flag.
+ */
+function JourneyFloat({ steps }: { steps: JourneyStep[] }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
+  const [progress, setProgress] = useState<number[]>(() => steps.map(() => 0));
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      const vh = window.innerHeight;
+      const next = steps.map((_, i) => {
+        const el = itemsRef.current[i];
+        if (!el) return 0;
+        const r = el.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        // 0 when entering from bottom, 1 when centered, then stays 1.
+        const raw = 1 - Math.max(0, (center - vh * 0.35) / (vh * 0.55));
+        return Math.max(0, Math.min(1, raw));
+      });
+      setProgress(next);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [steps]);
+
+  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  return (
+    <div ref={wrapRef} className="relative mt-14">
+      <div className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-primary/30 to-transparent lg:block" />
+
+      <ol className="space-y-10 lg:space-y-16">
+        {steps.map((step, i) => {
+          const p = easeOut(progress[i] ?? 0);
+          const left = i % 2 === 0;
+          // Start: floating far out, rotated, small; End: docked.
+          const tx = (1 - p) * (left ? -140 : 140);
+          const ty = (1 - p) * 60;
+          const rot = (1 - p) * (left ? -8 : 8);
+          const scale = 0.85 + 0.15 * p;
+          const opacity = 0.1 + 0.9 * p;
+          // subtle idle float once docked
+          const floatY = p > 0.95 ? Math.sin((Date.now() / 1400) + i) * 3 : 0;
+
+          return (
+            <li
+              key={step.title}
+              ref={(el) => (itemsRef.current[i] = el)}
+              className={`relative flex flex-col lg:flex-row lg:items-center ${
+                left ? "" : "lg:flex-row-reverse"
+              }`}
+            >
+              <div
+                className="lg:w-1/2 lg:px-8"
+                style={{
+                  transform: `translate3d(${tx}px, ${ty + floatY}px, 0) rotate(${rot}deg) scale(${scale})`,
+                  opacity,
+                  transition: "transform 200ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms linear",
+                  willChange: "transform, opacity",
+                }}
+              >
+                <div className="rounded-2xl border border-primary/10 bg-card/80 p-6 backdrop-blur shadow-[0_20px_50px_-30px_rgba(70,50,120,0.35)] transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:bg-card">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                      <step.icon className="h-5 w-5" />
+                    </span>
+                    <h4
+                      className="text-2xl text-foreground"
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    >
+                      {i + 1}. {step.title}
+                    </h4>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
+              <span
+                className="pointer-events-none absolute left-1/2 hidden h-3 w-3 -translate-x-1/2 rounded-full bg-primary ring-4 ring-background lg:block"
+                style={{
+                  transform: `translateX(-50%) scale(${0.4 + 0.6 * p})`,
+                  opacity: p,
+                  transition: "transform 200ms ease-out, opacity 200ms linear",
+                }}
+              />
+              <div className="hidden lg:block lg:w-1/2" />
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }

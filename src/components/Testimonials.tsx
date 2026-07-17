@@ -19,20 +19,21 @@ function useReveal() {
 
 type Testimonial = { name: string; text: string; avatar: string };
 
+// randomuser.me portraits — everyday-looking real people, mixed ages and backgrounds.
 const rowTop: Testimonial[] = [
-  { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://i.pravatar.cc/120?img=47" },
-  { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://i.pravatar.cc/120?img=12" },
-  { name: "Ana L.", text: "Descobri minha fibromialgia com ela. Hoje tenho um plano que realmente ajuda.", avatar: "https://i.pravatar.cc/120?img=45" },
-  { name: "Carlos M.", text: "Voltei a caminhar sem dor no joelho. Grato demais pelo cuidado.", avatar: "https://i.pravatar.cc/120?img=15" },
-  { name: "Beatriz R.", text: "Consulta calma, sem pressa. Me senti ouvida pela primeira vez.", avatar: "https://i.pravatar.cc/120?img=32" },
+  { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://randomuser.me/api/portraits/women/79.jpg" },
+  { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://randomuser.me/api/portraits/men/62.jpg" },
+  { name: "Ana L.", text: "Descobri minha fibromialgia com ela. Hoje tenho um plano que realmente ajuda.", avatar: "https://randomuser.me/api/portraits/women/68.jpg" },
+  { name: "Carlos M.", text: "Voltei a caminhar sem dor no joelho. Grato demais pelo cuidado.", avatar: "https://randomuser.me/api/portraits/men/75.jpg" },
+  { name: "Beatriz R.", text: "Consulta calma, sem pressa. Me senti ouvida pela primeira vez.", avatar: "https://randomuser.me/api/portraits/women/54.jpg" },
 ];
 
 const rowBottom: Testimonial[] = [
-  { name: "Roberto T.", text: "Diagnóstico certeiro do lúpus. Tratamento mudou minha rotina.", avatar: "https://i.pravatar.cc/120?img=13" },
-  { name: "Fernanda O.", text: "Profissional humana e competente. Recomendo a todos da família.", avatar: "https://i.pravatar.cc/120?img=44" },
-  { name: "Paulo H.", text: "Infiltração no ombro sem dor. Voltei aos treinos em semanas.", avatar: "https://i.pravatar.cc/120?img=68" },
-  { name: "Cláudia V.", text: "Explica tudo com carinho. Minha mãe adorou o atendimento.", avatar: "https://i.pravatar.cc/120?img=48" },
-  { name: "Eduardo N.", text: "Osteoporose sob controle. Exames melhoraram muito.", avatar: "https://i.pravatar.cc/120?img=8" },
+  { name: "Roberto T.", text: "Diagnóstico certeiro do lúpus. Tratamento mudou minha rotina.", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
+  { name: "Fernanda O.", text: "Profissional humana e competente. Recomendo a todos da família.", avatar: "https://randomuser.me/api/portraits/women/82.jpg" },
+  { name: "Paulo H.", text: "Infiltração no ombro sem dor. Voltei aos treinos em semanas.", avatar: "https://randomuser.me/api/portraits/men/83.jpg" },
+  { name: "Cláudia V.", text: "Explica tudo com carinho. Minha mãe adorou o atendimento.", avatar: "https://randomuser.me/api/portraits/women/61.jpg" },
+  { name: "Eduardo N.", text: "Osteoporose sob controle. Exames melhoraram muito.", avatar: "https://randomuser.me/api/portraits/men/54.jpg" },
 ];
 
 function Card({ t }: { t: Testimonial }) {
@@ -68,7 +69,6 @@ export default function Testimonials() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // progress: 0 when section enters bottom, 1 when it exits top
       const progress = 1 - (rect.top + rect.height) / (vh + rect.height);
       setOffset(Math.max(0, Math.min(1, progress)));
     };
@@ -81,7 +81,7 @@ export default function Testimonials() {
     };
   }, []);
 
-  const shift = 220; // px range of horizontal parallax
+  const shift = 220;
   const topTx = -offset * shift;
   const bottomTx = offset * shift - shift / 2;
 
