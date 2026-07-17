@@ -206,10 +206,10 @@ function JointsWheel() {
                   style={{ left: `${x}%`, top: `${y}%` }}
                 >
                   <span
-                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-sm sm:text-base font-medium backdrop-blur transition-all duration-500 ${
+                    className={`block whitespace-nowrap rounded-full border-2 px-3 py-1.5 text-sm sm:text-base font-medium backdrop-blur transition-all duration-500 ${
                       isActive
-                        ? "border-primary bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_hsl(var(--primary))] scale-110"
-                        : "border-primary/20 bg-card/80 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                        ? "border-primary bg-transparent text-primary scale-110 shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]"
+                        : "border-primary/25 bg-transparent text-muted-foreground hover:border-primary/50 hover:text-foreground"
                     }`}
                   >
                     {j.label}
