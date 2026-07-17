@@ -245,12 +245,12 @@ export default function Instagram() {
 
   const reels = feed.posts.filter((p) => p.mediaType === "VIDEO").slice(0, 7);
 
-  // Sizing
+  // Sizing — active card centered, 2 on each side visible
   const isNarrow = containerW < 640;
-  const activeW = isNarrow ? Math.min(300, containerW * 0.78) : 360;
+  const activeW = isNarrow ? Math.min(280, containerW * 0.7) : Math.min(380, containerW * 0.22);
   const activeH = activeW * (16 / 9);
-  const sideW = activeW * 0.68;
-  const gap = isNarrow ? 16 : 28;
+  const sideW = activeW * 0.72;
+  const gap = isNarrow ? 14 : 28;
 
   const go = (i: number) => {
     setActiveIdx(Math.max(0, Math.min(reels.length - 1, i)));
