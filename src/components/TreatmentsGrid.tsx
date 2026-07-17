@@ -77,8 +77,8 @@ export default function TreatmentsGrid() {
 
       {/* Tetris slide stage */}
       <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-        <div className="sticky top-16 md:top-20 h-[calc(100vh-4rem)] md:h-[calc(100vh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
-          <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-6 lg:p-8 content-center">
+        <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
+          <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6">
             {treatments.map((t, i) => {
               const p = easeOut(progress[i] ?? 0);
               const fromLeft = i % 2 === 0;
@@ -88,7 +88,7 @@ export default function TreatmentsGrid() {
               return (
                 <div
                   key={t.slug}
-                  className="relative"
+                  className="relative min-h-0"
                   style={{
                     transform: `translate3d(${tx}%,0,0) rotate(${rot}deg) scale(${scale})`,
                     opacity: 0.15 + 0.85 * p,
