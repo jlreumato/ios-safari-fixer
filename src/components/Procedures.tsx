@@ -323,56 +323,13 @@ export default function Procedures() {
         </Accordion>
       </div>
 
-      {/* Journey / Protocolo Transformador */}
-      <div className="relative overflow-hidden pb-24 lg:pb-32">
-        {/* Decorative background */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
-          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
-          <svg
-            className="absolute left-0 top-1/2 h-full w-full -translate-y-1/2 opacity-[0.06]"
-            viewBox="0 0 1200 600"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,300 Q300,80 600,300 T1200,300"
-              fill="none"
-              stroke="currentColor"
-              className="text-primary"
-              strokeWidth="1.5"
-            />
-            <path
-              d="M0,340 Q300,120 600,340 T1200,340"
-              fill="none"
-              stroke="currentColor"
-              className="text-primary"
-              strokeWidth="1"
-            />
-          </svg>
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              Protocolo Transformador
-            </p>
-            <h3
-              className="mt-3 text-balance text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              A jornada completa do paciente
-            </h3>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-              psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
-            </p>
-          </div>
-        </div>
-
-        <JourneyCylinder steps={journey} />
+      {/* Journey / Protocolo TransformaDOR */}
+      <div className="relative">
+        <ZoomIntro />
+        <JourneyStage steps={journey} />
 
         {/* Rede Multidisciplinar — pillars */}
-        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
               Rede Multidisciplinar
