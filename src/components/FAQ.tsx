@@ -53,7 +53,7 @@ export default function FAQ() {
         }`}
       >
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Dúvidas</p>
+          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Dúvidas</p>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Perguntas Frequentes
           </h2>
@@ -62,10 +62,10 @@ export default function FAQ() {
         <Accordion type="single" collapsible className="mt-12">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={`faq-${i}`} className="border-border/60">
-              <AccordionTrigger className="text-left text-lg lg:text-xl font-medium text-foreground hover:no-underline hover:text-primary">
+              <AccordionTrigger className="text-left text-xl lg:text-2xl font-medium text-foreground hover:no-underline hover:text-primary">
                 {f.q}
               </AccordionTrigger>
-              <AccordionContent className="text-base lg:text-lg leading-relaxed text-muted-foreground">
+              <AccordionContent className="text-lg lg:text-xl leading-relaxed text-muted-foreground">
                 {f.a}
               </AccordionContent>
             </AccordionItem>
