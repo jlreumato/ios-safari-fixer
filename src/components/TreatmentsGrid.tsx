@@ -64,7 +64,7 @@ export default function TreatmentsGrid() {
 
       {/* Intro */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-10 text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
           Tratamentos
         </p>
         <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
@@ -163,7 +163,7 @@ function TreatmentCard({
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
+      <div className="mt-3 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
         <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
         <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
         <span>Tratamento</span>
@@ -176,12 +176,12 @@ function TreatmentCard({
         {treatment.title}
       </h3>
 
-      <p className="mt-1 line-clamp-2 text-xs leading-snug text-[#4a4560]">
+      <p className="mt-1 line-clamp-2 text-sm leading-snug text-[#4a4560]">
         {treatment.shortDesc}
       </p>
 
       <div className="mt-2 flex items-center justify-between">
-        <span className="text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
+        <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
           Saiba mais
         </span>
         <span
