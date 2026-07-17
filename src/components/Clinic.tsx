@@ -153,7 +153,7 @@ export default function Clinic() {
         }`}
       >
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
+          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Seu conforto é nossa prioridade
           </h2>
@@ -169,7 +169,7 @@ export default function Clinic() {
               <button
                 key={loc.id}
                 onClick={() => setActiveTab(i)}
-                className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                className={`rounded-lg px-5 py-2.5 text-base font-medium transition-all duration-200 ${
                   activeTab === i
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
