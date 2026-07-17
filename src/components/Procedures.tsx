@@ -1,24 +1,15 @@
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import {
   Syringe,
-  Waves,
-  Microscope,
   Stethoscope,
   HeartHandshake,
   Salad,
   Brain,
   Bone,
   ClipboardList,
-  Activity,
   CheckCircle2,
   ChevronRight,
 } from "lucide-react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 const joints = [
   {
@@ -43,46 +34,6 @@ const joints = [
   },
 ];
 
-const substances = [
-  {
-    icon: Syringe,
-    title: "Ácido Hialurônico",
-    desc: "Viscossuplementação que restaura a lubrificação articular e reduz a dor de forma prolongada.",
-  },
-  {
-    icon: Microscope,
-    title: "PRP (Plasma Rico em Plaquetas)",
-    desc: "Concentrado autólogo com fatores de crescimento que estimulam a regeneração tecidual.",
-  },
-  {
-    icon: Syringe,
-    title: "Corticoide de Depósito",
-    desc: "Ação anti-inflamatória potente e localizada, indicada em crises dolorosas selecionadas.",
-  },
-  {
-    icon: Syringe,
-    title: "Anestésicos e Bloqueios",
-    desc: "Alívio imediato e diagnóstico terapêutico das estruturas realmente responsáveis pela dor.",
-  },
-];
-
-const equipment = [
-  {
-    icon: Waves,
-    title: "Ultrassonografia Musculoesquelética",
-    desc: "Diagnóstico em tempo real e precisão milimétrica em cada infiltração guiada.",
-  },
-  {
-    icon: Activity,
-    title: "Ondas de Choque",
-    desc: "Estímulo mecânico para tendinopatias crônicas, esporão e lesões de difícil resolução.",
-  },
-  {
-    icon: Microscope,
-    title: "Materiais Descartáveis Premium",
-    desc: "Agulhas finas específicas, kits estéreis e insumos hospitalares de alto padrão.",
-  },
-];
 
 const journey = [
   {
@@ -180,7 +131,40 @@ function JointsWheel() {
       style={{ height: `${joints.length * 60}vh` }}
     >
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
+        {/* Dynamic scroll-driven background */}
+        <div
+          className="pointer-events-none absolute inset-0 transition-[background] duration-700"
+          style={{
+            background: `
+              radial-gradient(circle at ${20 + progress * 60}% ${30 + Math.sin(progress * Math.PI * 2) * 20}%, hsl(${260 + progress * 80} 60% 78% / 0.55), transparent 55%),
+              radial-gradient(circle at ${80 - progress * 50}% ${70 - progress * 30}%, hsl(${30 + progress * 60} 70% 82% / 0.45), transparent 55%),
+              linear-gradient(${135 + progress * 180}deg, hsl(${250 + progress * 60} 40% 96%) 0%, hsl(${30 + progress * 40} 55% 95%) 100%)
+            `,
+          }}
+          aria-hidden
+        />
+        {/* Floating orbs that drift with scroll */}
+        <div
+          className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-3xl"
+          style={{
+            top: `${10 + progress * 60}%`,
+            left: `${5 + Math.sin(progress * Math.PI * 3) * 20}%`,
+            transform: `scale(${0.8 + progress * 0.6})`,
+            transition: "all 400ms ease-out",
+          }}
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute h-96 w-96 rounded-full blur-3xl"
+          style={{
+            background: `radial-gradient(circle, hsl(${40 + progress * 100} 70% 75% / 0.35), transparent 70%)`,
+            bottom: `${5 + progress * 40}%`,
+            right: `${5 + Math.cos(progress * Math.PI * 2) * 15}%`,
+            transition: "all 400ms ease-out",
+          }}
+          aria-hidden
+        />
+        <div className="relative mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
           {/* Radial navigator */}
           <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
             {/* SVG progress arc */}
@@ -300,52 +284,10 @@ export default function Procedures() {
           <ZoomIntro />
           <JourneyStage steps={journey} />
 
-          {/* Rede Multidisciplinar — pillars */}
-          <div className="relative mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8 pb-24 lg:pb-32">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-                Rede Multidisciplinar
-              </p>
-              <h4
-                className="mt-3 text-3xl font-normal tracking-tight text-foreground sm:text-4xl"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-              >
-                Quatro especialidades, um único objetivo
-              </h4>
-            </div>
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { icon: Stethoscope, name: "Reumatologia", desc: "Diagnóstico e conduta clínica de precisão." },
-                { icon: Bone, name: "Fisioterapia", desc: "Reabilitação funcional, mobilidade e força." },
-                { icon: Salad, name: "Nutrição", desc: "Alimentação anti-inflamatória e saúde óssea." },
-                { icon: Brain, name: "Psicologia", desc: "Manejo da dor crônica e bem-estar emocional." },
-              ].map((p, i) => (
-                <div
-                  key={p.name}
-                  className="group relative overflow-hidden rounded-3xl border border-primary/10 bg-card/70 p-6 backdrop-blur transition-all duration-500 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[0_20px_50px_-25px_rgba(70,50,120,0.35)]"
-                >
-                  <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-primary/15 to-transparent blur-2xl transition-opacity duration-500 group-hover:opacity-80" />
-                  <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <p.icon className="h-6 w-6" />
-                  </span>
-                  <p className="relative mt-4 text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-primary/60">
-                    0{i + 1}
-                  </p>
-                  <h5
-                    className="relative mt-1 text-2xl leading-tight text-foreground"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                  >
-                    {p.name}
-                  </h5>
-                  <p className="relative mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {p.desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="pb-24 lg:pb-32" />
         </div>
       </section>
+
 
       {/* Procedimentos */}
       <section id="procedimentos" className="relative bg-background">
@@ -369,62 +311,8 @@ export default function Procedures() {
         {/* Vertical circular carousel — joints */}
         <JointsWheel />
 
-        {/* Substâncias + Equipamentos — accordion */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="substances" className="border-primary/10">
-              <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:no-underline">
-                Substâncias utilizadas
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-3 pt-2 sm:grid-cols-2">
-                  {substances.map((s) => (
-                    <div
-                      key={s.title}
-                      className="flex gap-3 rounded-2xl border border-primary/10 bg-card/60 p-4"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <s.icon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">{s.title}</h4>
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                          {s.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+        <div className="pb-16" />
 
-            <AccordionItem value="equipment" className="border-primary/10">
-              <AccordionTrigger className="text-left text-lg font-semibold text-foreground hover:no-underline">
-                Equipamentos
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="grid gap-3 pt-2 sm:grid-cols-2">
-                  {equipment.map((e) => (
-                    <div
-                      key={e.title}
-                      className="flex gap-3 rounded-2xl border border-primary/10 bg-card/60 p-4"
-                    >
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                        <e.icon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <h4 className="text-sm font-semibold text-foreground">{e.title}</h4>
-                        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                          {e.desc}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
       </section>
     </>
   );
