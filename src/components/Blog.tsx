@@ -60,7 +60,7 @@ export default function Blog() {
         }`}
       >
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Blog</p>
+          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Blog</p>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Artigos e informações
           </h2>
@@ -86,7 +86,7 @@ export default function Blog() {
                 />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                 <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider">
+                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-xs font-semibold uppercase tracking-wider">
                     {p.category}
                   </span>
                   <h3
@@ -96,7 +96,7 @@ export default function Blog() {
                     {p.title}
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-white/90">{p.excerpt}</p>
-                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary">
+                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wider text-primary">
                     Saiba mais
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12h14M13 5l7 7-7 7" />
@@ -129,7 +129,7 @@ export default function Blog() {
               <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
 
               <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-[0.65rem] font-semibold uppercase tracking-wider">
+                <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-xs font-semibold uppercase tracking-wider">
                   {p.category}
                 </span>
                 <h3
@@ -142,7 +142,7 @@ export default function Blog() {
                 <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-500 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-3 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100 group-focus-within:mt-3">
                   <div className="overflow-hidden">
                     <p className="text-base leading-relaxed text-white/90">{p.excerpt}</p>
-                    <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
+                    <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold uppercase tracking-wider text-primary transition-transform hover:scale-105">
                       Saiba mais
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 12h14M13 5l7 7-7 7" />
