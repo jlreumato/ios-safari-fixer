@@ -247,7 +247,7 @@ export default function Procedures() {
   return (
     <section id="procedimentos" className="relative bg-background">
       {/* Intro */}
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-24 lg:pt-32 text-center">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-10 lg:pt-14 text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
           Procedimentos
         </p>

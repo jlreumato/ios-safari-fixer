@@ -38,7 +38,7 @@ const rowBottom: Testimonial[] = [
 
 function Card({ t }: { t: Testimonial }) {
   return (
-    <div className="mx-3 inline-flex w-[300px] sm:w-[340px] shrink-0 flex-col rounded-2xl bg-white p-5 shadow-sm">
+    <div className="mx-3 inline-flex w-[300px] sm:w-[340px] shrink-0 flex-col whitespace-normal rounded-2xl bg-white p-5 shadow-sm">
       <div className="flex gap-0.5">
         {Array.from({ length: 5 }).map((_, j) => (
           <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
