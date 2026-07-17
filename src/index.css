@@ -43,7 +43,7 @@
     --sidebar-border: 270 15% 91%;
     --sidebar-ring: 249 22% 61%;
 
-    --whatsapp: 142 70% 49%;
+    --whatsapp: 249 22% 61%;
   }
 }
 
@@ -158,11 +158,11 @@
   padding: 3px;
   background: conic-gradient(
     from var(--btn-angle),
-    hsl(142 70% 49%),
     hsl(249 22% 61%),
-    hsl(35 55% 70%),
-    hsl(330 45% 70%),
-    hsl(142 70% 49%)
+    hsl(270 25% 55%),
+    hsl(330 35% 65%),
+    hsl(35 50% 65%),
+    hsl(249 22% 61%)
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
