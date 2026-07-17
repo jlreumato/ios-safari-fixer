@@ -67,11 +67,10 @@ export default function Header() {
             rel="noopener noreferrer"
             className="hidden lg:inline-flex"
           >
-            <Button className="btn-glow-ring gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all">
+            <Button className="btn-glow-ring gap-2 bg-gradient-to-r from-[#8e82b8] to-[#7a6fa3] text-white hover:from-[#7a6fa3] hover:to-[#6b5b9a] active:scale-[0.97] transition-all">
               <Phone className="h-4 w-4" />
               Agendar Consulta
             </Button>
-
           </a>
 
           {/* Mobile menu */}
@@ -100,11 +99,10 @@ export default function Header() {
                   className="mt-4"
                   onClick={() => setOpen(false)}
                 >
-                  <Button className="btn-glow-ring w-full gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)]">
+                  <Button className="btn-glow-ring w-full gap-2 bg-gradient-to-r from-[#8e82b8] to-[#7a6fa3] text-white hover:from-[#7a6fa3] hover:to-[#6b5b9a]">
                     <Phone className="h-4 w-4" />
                     Agendar Consulta
                   </Button>
-
                 </a>
               </nav>
             </SheetContent>

@@ -155,7 +155,7 @@ export default function TratamentoDetalhe() {
                 >
                   <Button
                     size="lg"
-                    className="btn-glow-ring w-full gap-2 bg-[hsl(var(--whatsapp))] text-white hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all"
+                    className="btn-glow-ring w-full gap-2 bg-gradient-to-r from-[#8e82b8] to-[#7a6fa3] text-white hover:from-[#7a6fa3] hover:to-[#6b5b9a] active:scale-[0.97] transition-all"
                   >
                     <Phone className="h-5 w-5" />
                     Agendar Consulta

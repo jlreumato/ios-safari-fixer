@@ -20,12 +20,11 @@ export default function CTASection() {
         <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-block">
           <Button
             size="lg"
-            className="btn-glow-ring gap-3 bg-[hsl(var(--whatsapp))] px-12 py-7 text-lg sm:text-xl text-white shadow-lg shadow-black/20 hover:bg-[hsl(142_70%_42%)] active:scale-[0.97] transition-all"
+            className="btn-glow-ring gap-3 bg-gradient-to-r from-[#8e82b8] to-[#7a6fa3] px-12 py-7 text-lg sm:text-xl text-white shadow-lg shadow-black/20 hover:from-[#7a6fa3] hover:to-[#6b5b9a] active:scale-[0.97] transition-all"
           >
             <Phone className="h-6 w-6" />
             Agendar pelo WhatsApp
           </Button>
-
         </a>
       </div>
     </section>
