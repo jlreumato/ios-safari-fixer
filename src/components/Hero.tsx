@@ -26,7 +26,7 @@ export default function Hero() {
       {/* Content over the video */}
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="mb-4 inline-block rounded-full border border-white/25 bg-white/10 -webkit-backdrop-filter backdrop-filter backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#e7d9b5] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
+          <p className="mb-4 inline-block rounded-full border border-white/25 bg-white/10 -webkit-backdrop-filter backdrop-filter backdrop-blur-md px-4 py-1.5 text-sm font-semibold uppercase tracking-[0.18em] text-[#e7d9b5] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards]">
             Reumatologista · CRM/AL 6717 · RQE 4857
           </p>
 
@@ -56,7 +56,7 @@ export default function Hero() {
 
             <a
               href="#sobre"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 -webkit-backdrop-filter backdrop-filter backdrop-blur-sm px-5 py-2.5 text-sm font-medium text-white/90 transition-colors hover:bg-white/15"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 -webkit-backdrop-filter backdrop-filter backdrop-blur-sm px-5 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/15"
             >
               Conheça a Dra. Juliana
             </a>
