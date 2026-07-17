@@ -180,3 +180,10 @@
   to { --btn-angle: 360deg; }
 }
 
+
+@keyframes blob-morph {
+  0%,100% { border-radius: 62% 38% 41% 59% / 45% 42% 58% 55%; }
+  25%     { border-radius: 45% 55% 63% 37% / 55% 62% 38% 45%; }
+  50%     { border-radius: 55% 45% 38% 62% / 40% 55% 45% 60%; }
+  75%     { border-radius: 38% 62% 55% 45% / 60% 40% 55% 45%; }
+}
