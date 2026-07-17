@@ -453,7 +453,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
           {/* Left rail */}
           <aside className="relative hidden lg:block">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
               Etapas do protocolo
             </p>
             <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
@@ -474,14 +474,14 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                     </span>
                     <span
-                      className={`block text-[0.65rem] font-semibold uppercase tracking-[0.22em] transition-colors ${
+                      className={`block text-sm font-semibold uppercase tracking-[0.22em] transition-colors ${
                         isActive ? "text-primary" : "text-muted-foreground/70"
                       }`}
                     >
                       Etapa {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`mt-0.5 block text-sm leading-snug transition-colors ${
+                      className={`mt-0.5 block text-base leading-snug transition-colors ${
                         isActive
                           ? "font-medium text-foreground"
                           : "text-muted-foreground"
@@ -493,7 +493,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                 );
               })}
             </ol>
-            <div className="mt-8 flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-primary/70">
+            <div className="mt-8 flex items-center gap-3 text-sm font-medium uppercase tracking-[0.24em] text-primary/70">
               <span>{String(active + 1).padStart(2, "0")}</span>
               <span className="h-px flex-1 bg-primary/20" />
               <span>{String(steps.length).padStart(2, "0")}</span>
@@ -535,7 +535,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                           <step.icon className="h-6 w-6" />
                         </span>
-                        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                        <span className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
                           Etapa {String(i + 1).padStart(2, "0")} /{" "}
                           {String(steps.length).padStart(2, "0")}
                         </span>
@@ -546,7 +546,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       >
                         {step.title}
                       </h4>
-                      <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                      <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
                         {step.desc}
                       </p>
                     </div>
