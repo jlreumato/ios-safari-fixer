@@ -41,18 +41,18 @@ function Card({ t }: { t: Testimonial }) {
     <div className="mx-3 inline-flex w-[300px] sm:w-[340px] shrink-0 flex-col whitespace-normal rounded-2xl bg-white p-5 shadow-sm">
       <div className="flex gap-0.5">
         {Array.from({ length: 5 }).map((_, j) => (
-          <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
+          <Star key={j} className="h-5 w-5 fill-amber-400 text-amber-400" />
         ))}
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-muted-foreground italic">"{t.text}"</p>
+      <p className="mt-3 text-base leading-relaxed text-muted-foreground italic">"{t.text}"</p>
       <div className="mt-4 flex items-center gap-3">
         <img
           src={t.avatar}
           alt={t.name}
           loading="lazy"
-          className="h-10 w-10 rounded-full object-cover ring-2 ring-primary/20"
+          className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/20"
         />
-        <span className="text-sm font-semibold text-foreground">{t.name}</span>
+        <span className="text-base font-semibold text-foreground">{t.name}</span>
       </div>
     </div>
   );
@@ -86,7 +86,7 @@ export default function Testimonials() {
   const bottomTx = offset * shift - shift / 2;
 
   return (
-    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 py-20 lg:py-28 overflow-hidden">
+    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-4 pb-20 lg:pt-6 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -94,7 +94,7 @@ export default function Testimonials() {
         }`}
       >
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Depoimentos</p>
+          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Depoimentos</p>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             O que dizem os pacientes
           </h2>

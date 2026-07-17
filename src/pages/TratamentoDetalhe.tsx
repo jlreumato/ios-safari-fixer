@@ -51,12 +51,12 @@ export default function TratamentoDetalhe() {
           <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <Link
               to="/tratamentos"
-              className="inline-flex items-center gap-2 text-sm font-medium text-[#4a4560] transition-colors hover:text-[#2b2540]"
+              className="inline-flex items-center gap-2 text-base font-medium text-[#4a4560] transition-colors hover:text-[#2b2540]"
             >
               <ArrowLeft className="h-4 w-4" />
               Todos os tratamentos
             </Link>
-            <p className="mt-8 text-xs font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]">
+            <p className="mt-8 text-sm font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]">
               Tratamento reumatológico
             </p>
             <h1
@@ -135,7 +135,7 @@ export default function TratamentoDetalhe() {
             {/* Sidebar CTA */}
             <aside className="lg:sticky lg:top-28 h-fit">
               <div className="rounded-3xl border border-[#e6dfd3] bg-white p-8 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)]">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
                   Agende uma avaliação
                 </p>
                 <h3
@@ -144,7 +144,7 @@ export default function TratamentoDetalhe() {
                 >
                   Cuide de você com quem entende.
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-[#5a5568]">
+                <p className="mt-3 text-base leading-relaxed text-[#5a5568]">
                   Dra. Juliana Leal — Reumatologista com pós-graduação em Dor Crônica pela USP.
                 </p>
                 <a
@@ -173,7 +173,7 @@ export default function TratamentoDetalhe() {
                 className="group flex items-center justify-between gap-4"
               >
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">
+                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
                     Próximo tratamento
                   </p>
                   <p

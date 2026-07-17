@@ -206,7 +206,7 @@ function JointsWheel() {
                   style={{ left: `${x}%`, top: `${y}%` }}
                 >
                   <span
-                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-xs sm:text-sm font-medium backdrop-blur transition-all duration-500 ${
+                    className={`block whitespace-nowrap rounded-full border px-3 py-1.5 text-sm sm:text-base font-medium backdrop-blur transition-all duration-500 ${
                       isActive
                         ? "border-primary bg-primary text-primary-foreground shadow-[0_10px_30px_-10px_hsl(var(--primary))] scale-110"
                         : "border-primary/20 bg-card/80 text-muted-foreground hover:border-primary/40 hover:text-foreground"
@@ -227,7 +227,7 @@ function JointsWheel() {
               >
                 {String(active + 1).padStart(2, "0")}
               </p>
-              <p className="mt-1 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
                 de {String(joints.length).padStart(2, "0")}
               </p>
             </div>
@@ -235,7 +235,7 @@ function JointsWheel() {
 
           {/* Active detail */}
           <div className="relative">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
               Área em evidência
             </p>
             <h3
@@ -260,9 +260,9 @@ function JointsWheel() {
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
-              <div className="mt-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-primary/60">
+              <div className="mt-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-primary/60">
                 <span>role para avançar</span>
-                <ChevronRight className="h-4 w-4 animate-pulse" />
+                <ChevronRight className="h-5 w-5 animate-pulse" />
                 <span className="h-px flex-1 bg-primary/20" />
                 <span>ou clique</span>
               </div>
@@ -293,7 +293,7 @@ export default function Procedures() {
       <section id="procedimentos" className="relative bg-background">
         {/* Intro */}
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+          <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
             Procedimentos
           </p>
           <h2
@@ -311,7 +311,7 @@ export default function Procedures() {
         {/* Vertical circular carousel — joints */}
         <JointsWheel />
 
-        <div className="pb-16" />
+        <div className="pb-0" />
 
       </section>
     </>
@@ -385,7 +385,7 @@ function ZoomIntro() {
 
         <div className="relative mx-auto max-w-6xl px-4 text-center">
           <p
-            className="text-sm font-semibold uppercase tracking-[0.28em] text-primary"
+            className="text-base font-semibold uppercase tracking-[0.28em] text-primary"
             style={{ opacity: prefixOpacity }}
           >
             Protocolo
@@ -420,7 +420,7 @@ function ZoomIntro() {
             psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
           </p>
           <p
-            className="mt-10 text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70"
+            className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70"
             style={{ opacity: hintOpacity }}
           >
             role para atravessar a dor ↓
@@ -453,7 +453,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
           {/* Left rail */}
           <aside className="relative hidden lg:block">
-            <p className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-primary/70">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
               Etapas do protocolo
             </p>
             <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
@@ -474,14 +474,14 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                     </span>
                     <span
-                      className={`block text-[0.65rem] font-semibold uppercase tracking-[0.22em] transition-colors ${
+                      className={`block text-sm font-semibold uppercase tracking-[0.22em] transition-colors ${
                         isActive ? "text-primary" : "text-muted-foreground/70"
                       }`}
                     >
                       Etapa {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`mt-0.5 block text-sm leading-snug transition-colors ${
+                      className={`mt-0.5 block text-base leading-snug transition-colors ${
                         isActive
                           ? "font-medium text-foreground"
                           : "text-muted-foreground"
@@ -493,7 +493,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                 );
               })}
             </ol>
-            <div className="mt-8 flex items-center gap-3 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-primary/70">
+            <div className="mt-8 flex items-center gap-3 text-sm font-medium uppercase tracking-[0.24em] text-primary/70">
               <span>{String(active + 1).padStart(2, "0")}</span>
               <span className="h-px flex-1 bg-primary/20" />
               <span>{String(steps.length).padStart(2, "0")}</span>
@@ -535,7 +535,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                           <step.icon className="h-6 w-6" />
                         </span>
-                        <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary/70">
+                        <span className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
                           Etapa {String(i + 1).padStart(2, "0")} /{" "}
                           {String(steps.length).padStart(2, "0")}
                         </span>
@@ -546,7 +546,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       >
                         {step.title}
                       </h4>
-                      <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                      <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
                         {step.desc}
                       </p>
                     </div>

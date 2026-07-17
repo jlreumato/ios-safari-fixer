@@ -153,7 +153,7 @@ export default function Clinic() {
         }`}
       >
         <div className="text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
+          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
           <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             Seu conforto é nossa prioridade
           </h2>
@@ -169,7 +169,7 @@ export default function Clinic() {
               <button
                 key={loc.id}
                 onClick={() => setActiveTab(i)}
-                className={`rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                className={`rounded-lg px-5 py-2.5 text-base font-medium transition-all duration-200 ${
                   activeTab === i
                     ? "bg-primary text-primary-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -177,7 +177,7 @@ export default function Clinic() {
               >
                 {loc.name}
                 {i === 0 && (
-                  <span className={`ml-2 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
+                  <span className={`ml-2 rounded-full px-2 py-0.5 text-sm font-semibold uppercase tracking-wider ${activeTab === i ? "bg-primary-foreground/20 text-primary-foreground" : "bg-primary/10 text-primary"}`}>
                     Principal
                   </span>
                 )}
@@ -188,11 +188,11 @@ export default function Clinic() {
 
         {/* Address */}
         <div className="mt-6 text-center">
-          <p className="flex items-center justify-center gap-2 text-sm text-foreground font-medium">
-            <MapPin className="h-4 w-4 text-primary" />
+          <p className="flex items-center justify-center gap-2 text-base text-foreground font-medium">
+            <MapPin className="h-5 w-5 text-primary" />
             {currentLocation.address}
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">{currentLocation.cep}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{currentLocation.cep}</p>
         </div>
 
         {/* 3D Cube Carousel */}
@@ -209,8 +209,8 @@ export default function Clinic() {
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 text-base lg:text-lg font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2 text-sm lg:text-base leading-relaxed text-muted-foreground">{f.desc}</p>
+              <h3 className="mt-4 text-lg lg:text-xl font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-base lg:text-lg leading-relaxed text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>

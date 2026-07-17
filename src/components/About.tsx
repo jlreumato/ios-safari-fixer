@@ -51,7 +51,7 @@ export default function About() {
 
           {/* Text */}
           <div className="flex-1 text-center lg:text-left">
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">
               Sobre mim
             </p>
             <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
