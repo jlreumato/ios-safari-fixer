@@ -1,5 +1,5 @@
-import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -22,7 +22,7 @@ export default function CTASection() {
             size="lg"
             className="btn-champagne btn-glow-ring gap-3 px-12 py-7 text-lg sm:text-xl active:scale-[0.97]"
           >
-            <Phone className="h-6 w-6" />
+            <WhatsAppIcon size={24} />
             Agendar pelo WhatsApp
           </Button>
         </a>

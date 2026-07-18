@@ -50,7 +50,7 @@ export default function Hero() {
                 size="lg"
                 className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
               >
-                <Phone className="h-5 w-5" />
+                <WhatsAppIcon size={20} />
                 Agendar Consulta
               </Button>
             </a>
