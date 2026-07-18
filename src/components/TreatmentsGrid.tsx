@@ -276,36 +276,36 @@ function TreatmentCard({
       <div
         className={`flex flex-col ${
           isMobileCard
-            ? "h-[35%] px-5 pb-4 pt-3 justify-between"
+            ? "h-[35%] px-6 pb-5 pt-4 justify-between gap-2"
             : "mt-3 flex-1"
         }`}
       >
-        <div className="flex items-center justify-between text-sm font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80 sm:text-base">
+        <div className={`flex items-center justify-between font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80 ${isMobileCard ? "text-xs" : "text-[10px] sm:text-xs"}`}>
           <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
           <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
           <span>Tratamento</span>
         </div>
 
         <h3
-          className="mt-1 text-balance text-xl leading-tight tracking-tight text-[#2b2540] sm:text-2xl"
+          className={`text-balance leading-tight tracking-tight text-[#2b2540] ${isMobileCard ? "mt-0 text-[26px]" : "mt-1 text-lg sm:text-xl"}`}
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           {treatment.title}
         </h3>
 
-        <p className={`mt-0.5 text-base leading-snug text-[#4a4560] sm:text-lg ${isMobileCard ? "line-clamp-1" : "line-clamp-2"}`}>
+        <p className={`leading-snug text-[#4a4560] ${isMobileCard ? "text-[15px] line-clamp-2" : "mt-1 text-xs sm:text-sm line-clamp-2"}`}>
           {treatment.shortDesc}
         </p>
 
-        <div className="mt-1 flex items-center justify-between sm:mt-3">
-          <span className="text-base font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
+        <div className={`flex items-center justify-between ${isMobileCard ? "mt-1" : "mt-2 sm:mt-3"}`}>
+          <span className={`font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70 ${isMobileCard ? "text-xs" : "text-[10px] sm:text-xs"}`}>
             Saiba mais
           </span>
           <span
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20"
+            className={`flex items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20 ${isMobileCard ? "h-10 w-10" : "h-8 w-8"}`}
             style={{ borderColor: treatment.accent, color: treatment.accent }}
           >
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+            <ArrowUpRight className={isMobileCard ? "h-5 w-5" : "h-4 w-4"} />
           </span>
         </div>
       </div>
