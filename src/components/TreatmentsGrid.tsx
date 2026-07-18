@@ -66,13 +66,13 @@ export default function TreatmentsGrid() {
 
       {/* Intro */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-10 text-center">
-        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
+        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary sm:text-lg">
           Tratamentos
         </p>
         <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
           Cuidado para cada condição
         </h2>
-        <p className="mt-5 mx-auto max-w-2xl text-muted-foreground text-lg leading-relaxed">
+        <p className="mt-5 mx-auto max-w-2xl text-muted-foreground text-lg leading-relaxed sm:text-xl">
           Atendimento humanizado e baseado em evidências nas principais áreas da reumatologia.
         </p>
       </div>
@@ -164,7 +164,7 @@ function MobileStack() {
       >
         <div className="relative mx-auto h-full w-full max-w-md px-4 py-4">
           {treatments.map((t, i) => {
-            const stepPx = (window !== undefined && typeof window !== "undefined"
+            const stepPx = (typeof window !== "undefined"
               ? window.innerHeight
               : 800) * (stepVh / 100);
             // Progress of the NEXT card covering this one (0 → not covered, 1 → fully covered).
@@ -199,7 +199,7 @@ function MobileStack() {
                       : undefined,
                 }}
               >
-                <TreatmentCard index={i} total={total} treatment={t} />
+                <TreatmentCard index={i} total={total} treatment={t} layout="mobile-stack" />
               </div>
             );
           })}
@@ -220,11 +220,14 @@ function TreatmentCard({
   index,
   total,
   treatment,
+  layout = "default",
 }: {
   index: number;
   total: number;
   treatment: (typeof treatments)[number];
+  layout?: "default" | "mobile-stack";
 }) {
+  const isMobileCard = layout === "mobile-stack";
   // Randomized starting frame per card so undulation feels organic.
   const seed = (index * 7) % BLOB_KEYFRAMES.length;
   const duration = 14 + ((index * 3) % 6);
@@ -233,7 +236,9 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-gradient-to-br ${treatment.gradient} p-3 sm:p-4 shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1`}
+      className={`group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-gradient-to-br ${treatment.gradient} shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1 ${
+        isMobileCard ? "p-0" : "p-3 sm:p-4"
+      }`}
     >
       {/* accent glow */}
       <div
@@ -242,15 +247,18 @@ function TreatmentCard({
       />
 
       {/* Organic wavy image */}
-      <div className="relative mx-auto w-full min-h-0 flex-1 flex items-center justify-center">
+      <div
+        className={`relative w-full overflow-hidden ${
+          isMobileCard
+            ? "h-[65%]"
+            : "relative mx-auto min-h-0 flex-1 flex items-center justify-center"
+        }`}
+      >
         <div
-          className="overflow-hidden ring-1 ring-white/50"
+          className="h-full w-full overflow-hidden ring-1 ring-white/50"
           style={{
-            borderRadius: BLOB_KEYFRAMES[seed],
-            animation: `blob-morph ${duration}s ease-in-out ${delay}s infinite`,
-            aspectRatio: "1 / 1",
-            height: "100%",
-            maxHeight: "min(22vh, 200px)",
+            borderRadius: isMobileCard ? "1.5rem 1.5rem 0 0" : BLOB_KEYFRAMES[seed],
+            animation: isMobileCard ? undefined : `blob-morph ${duration}s ease-in-out ${delay}s infinite`,
             boxShadow: `0 12px 28px -20px ${treatment.accent}`,
           }}
         >
@@ -265,33 +273,41 @@ function TreatmentCard({
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-between text-sm font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80">
-        <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-        <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
-        <span>Tratamento</span>
-      </div>
-
-      <h3
-        className="mt-1.5 text-balance text-lg sm:text-xl leading-tight tracking-tight text-[#2b2540]"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      <div
+        className={`flex flex-col ${
+          isMobileCard
+            ? "h-[35%] px-5 pb-5 pt-4 justify-between"
+            : "mt-3 flex-1"
+        }`}
       >
-        {treatment.title}
-      </h3>
+        <div className="flex items-center justify-between text-sm font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80 sm:text-base">
+          <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
+          <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
+          <span>Tratamento</span>
+        </div>
 
-      <p className="mt-1 line-clamp-2 text-sm leading-snug text-[#4a4560]">
-        {treatment.shortDesc}
-      </p>
-
-      <div className="mt-2 flex items-center justify-between">
-        <span className="text-sm font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
-          Saiba mais
-        </span>
-        <span
-          className="flex h-8 w-8 items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20"
-          style={{ borderColor: treatment.accent, color: treatment.accent }}
+        <h3
+          className="mt-1.5 text-balance text-xl leading-tight tracking-tight text-[#2b2540] sm:text-2xl"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-500 group-hover:rotate-45" />
-        </span>
+          {treatment.title}
+        </h3>
+
+        <p className="mt-1 line-clamp-2 text-base leading-snug text-[#4a4560] sm:text-lg">
+          {treatment.shortDesc}
+        </p>
+
+        <div className="mt-2 flex items-center justify-between sm:mt-3">
+          <span className="text-base font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
+            Saiba mais
+          </span>
+          <span
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20"
+            style={{ borderColor: treatment.accent, color: treatment.accent }}
+          >
+            <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:rotate-45" />
+          </span>
+        </div>
       </div>
     </Link>
   );
