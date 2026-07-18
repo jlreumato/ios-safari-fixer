@@ -103,7 +103,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                 >
                   <Button className="btn-champagne btn-glow-ring w-full gap-2">
-                    <Phone className="h-4 w-4" />
+                    <WhatsAppIcon size={18} />
                     Agendar Consulta
                   </Button>
                 </a>
