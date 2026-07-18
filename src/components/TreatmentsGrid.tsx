@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
  */
 export default function TreatmentsGrid() {
   const stageRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   // progress per card, 0 → offscreen, 1 → docked
   const [progress, setProgress] = useState<number[]>(() => treatments.map(() => 0));
 
