@@ -154,7 +154,7 @@ function JointsWheel() {
         {/* Active detail — centered */}
         <div className="relative mx-auto flex flex-1 w-full max-w-4xl flex-col items-center justify-center px-6 text-center sm:px-10">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
-            Área em evidência
+            Procedimentos · Área em evidência
           </p>
           <h3
             key={current.label}
