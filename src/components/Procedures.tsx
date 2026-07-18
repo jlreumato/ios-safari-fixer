@@ -308,10 +308,20 @@ export default function Procedures() {
       </section>
 
 
-      {/* Procedimentos */}
-      <section id="procedimentos" className="relative bg-background">
+      {/* Procedimentos — framed in the same warm gradient as "Área em evidência" */}
+      <section
+        id="procedimentos"
+        className="relative"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 30%, hsl(260 60% 78% / 0.55), transparent 55%),
+            radial-gradient(circle at 80% 70%, hsl(30 70% 82% / 0.45), transparent 55%),
+            linear-gradient(135deg, hsl(250 40% 96%) 0%, hsl(30 55% 95%) 100%)
+          `,
+        }}
+      >
         {/* Intro */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 text-center">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 lg:pt-24 pb-4 text-center">
           <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
             Procedimentos
           </p>
@@ -333,6 +343,7 @@ export default function Procedures() {
         <div className="pb-0" />
 
       </section>
+
     </>
   );
 }
