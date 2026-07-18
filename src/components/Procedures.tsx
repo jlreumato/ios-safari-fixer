@@ -175,7 +175,7 @@ function JointsWheel() {
           }}
           aria-hidden
         />
-        <div className="relative mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
+        <div className="relative mx-auto grid h-full max-w-6xl grid-cols-1 items-center justify-items-center gap-8 px-6 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16">
           {/* Radial navigator */}
           <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
             {/* SVG progress arc */}
