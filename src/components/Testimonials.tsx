@@ -87,7 +87,7 @@ export default function Testimonials() {
   const bottomTx = offset * shift - shift / 2;
 
   return (
-    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-4 pb-20 lg:pt-6 lg:pb-28 overflow-hidden">
+    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
