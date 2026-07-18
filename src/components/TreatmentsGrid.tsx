@@ -66,13 +66,13 @@ export default function TreatmentsGrid() {
 
       {/* Intro */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 lg:pt-28 pb-10 text-center">
-        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary sm:text-lg">
+        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary sm:text-xs">
           Tratamentos
         </p>
-        <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           Cuidado para cada condição
         </h2>
-        <p className="mt-5 mx-auto max-w-2xl text-muted-foreground text-lg leading-relaxed sm:text-xl">
+        <p className="mt-5 mx-auto max-w-2xl text-muted-foreground text-lg leading-relaxed sm:text-base">
           Atendimento humanizado e baseado em evidências nas principais áreas da reumatologia.
         </p>
       </div>
