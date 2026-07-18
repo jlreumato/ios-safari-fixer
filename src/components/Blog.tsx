@@ -86,7 +86,7 @@ export default function Blog() {
                 />
                 <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
                 <div className="relative flex h-full flex-col justify-end p-6 text-white">
-                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-sm font-semibold uppercase tracking-wider">
+                  <span className="inline-block w-fit rounded-full bg-white/20 backdrop-blur px-3 py-0.5 text-base font-semibold uppercase tracking-wider">
                     {p.category}
                   </span>
                   <h3
@@ -95,8 +95,8 @@ export default function Blog() {
                   >
                     {p.title}
                   </h3>
-                  <p className="mt-3 text-base leading-relaxed text-white/90">{p.excerpt}</p>
-                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border-2 border-white/80 bg-transparent px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white backdrop-blur-sm transition-colors hover:bg-white/15">
+                  <p className="mt-3 text-lg leading-relaxed text-white/90">{p.excerpt}</p>
+                  <span className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border-2 border-white/80 bg-transparent px-4 py-2 text-base font-semibold uppercase tracking-wider text-white backdrop-blur-sm transition-colors hover:bg-white/15">
                     Saiba mais
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12h14M13 5l7 7-7 7" />

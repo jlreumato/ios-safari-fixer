@@ -45,7 +45,7 @@ function Card({ t }: { t: Testimonial }) {
           <Star key={j} className="h-5 w-5 fill-amber-400 text-amber-400" />
         ))}
       </div>
-      <p className="mt-3 text-base leading-relaxed text-muted-foreground italic">"{t.text}"</p>
+      <p className="mt-3 text-lg leading-relaxed text-muted-foreground italic">"{t.text}"</p>
       <div className="mt-4 flex items-center gap-3">
         <img
           src={t.avatar}
@@ -53,7 +53,7 @@ function Card({ t }: { t: Testimonial }) {
           loading="lazy"
           className="h-12 w-12 rounded-full object-cover ring-2 ring-primary/20"
         />
-        <span className="text-base font-semibold text-foreground">{t.name}</span>
+        <span className="text-lg font-semibold text-foreground">{t.name}</span>
       </div>
     </div>
   );

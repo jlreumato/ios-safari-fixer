@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-sm text-white/40">
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-base text-white/40">
           © {new Date().getFullYear()} Dra. Juliana Leal — Reumatologia. Todos os direitos reservados.
         </div>
       </div>
