@@ -77,34 +77,48 @@ export default function TreatmentsGrid() {
         </p>
       </div>
 
-      {/* Tetris slide stage */}
-      <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-        <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
-          <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6">
-            {treatments.map((t, i) => {
-              const p = easeOut(progress[i] ?? 0);
-              const fromLeft = i % 2 === 0;
-              const tx = (1 - p) * (fromLeft ? -120 : 120);
-              const rot = (1 - p) * (fromLeft ? -6 : 6);
-              const scale = 0.9 + 0.1 * p;
-              return (
-                <div
-                  key={t.slug}
-                  className="relative min-h-0"
-                  style={{
-                    transform: `translate3d(${tx}%,0,0) rotate(${rot}deg) scale(${scale})`,
-                    opacity: 0.15 + 0.85 * p,
-                    transition: "transform 120ms linear, opacity 120ms linear",
-                    willChange: "transform, opacity",
-                  }}
-                >
-                  <TreatmentCard index={i} total={total} treatment={t} />
-                </div>
-              );
-            })}
+      {/* Mobile — one full-screen card per view, stacked vertically */}
+      {isMobile ? (
+        <div className="flex flex-col">
+          {treatments.map((t, i) => (
+            <div
+              key={t.slug}
+              className="h-[calc(100dvh-4rem)] w-full px-4 py-4 bg-gradient-to-b from-secondary/30 to-background"
+            >
+              <TreatmentCard index={i} total={total} treatment={t} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* Desktop tetris slide stage */
+        <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
+          <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
+            <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6">
+              {treatments.map((t, i) => {
+                const p = easeOut(progress[i] ?? 0);
+                const fromLeft = i % 2 === 0;
+                const tx = (1 - p) * (fromLeft ? -120 : 120);
+                const rot = (1 - p) * (fromLeft ? -6 : 6);
+                const scale = 0.9 + 0.1 * p;
+                return (
+                  <div
+                    key={t.slug}
+                    className="relative min-h-0"
+                    style={{
+                      transform: `translate3d(${tx}%,0,0) rotate(${rot}deg) scale(${scale})`,
+                      opacity: 0.15 + 0.85 * p,
+                      transition: "transform 120ms linear, opacity 120ms linear",
+                      willChange: "transform, opacity",
+                    }}
+                  >
+                    <TreatmentCard index={i} total={total} treatment={t} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
