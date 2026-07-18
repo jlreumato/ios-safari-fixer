@@ -42,7 +42,9 @@ export default function Header() {
             <img
               src={logoNome.url}
               alt="Dra. Juliana Leal — Reumatologia"
-              className="h-10 w-auto md:h-12"
+              className={`h-10 w-auto md:h-12 transition-[filter] duration-300 ${
+                scrolled ? "" : "[filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
+              }`}
               loading="eager"
             />
           </a>
@@ -67,7 +69,7 @@ export default function Header() {
             rel="noopener noreferrer"
             className="hidden lg:inline-flex"
           >
-            <Button className="btn-glow-ring gap-2 border-2 border-[#8e82b8] bg-transparent text-[#8e82b8] hover:bg-[#8e82b8]/10 active:scale-[0.97] transition-all">
+            <Button className="btn-champagne btn-glow-ring gap-2 active:scale-[0.97]">
               <Phone className="h-4 w-4" />
               Agendar Consulta
             </Button>
@@ -99,7 +101,7 @@ export default function Header() {
                   className="mt-4"
                   onClick={() => setOpen(false)}
                 >
-                  <Button className="btn-glow-ring w-full gap-2 border-2 border-[#8e82b8] bg-transparent text-[#8e82b8] hover:bg-[#8e82b8]/10">
+                  <Button className="btn-champagne btn-glow-ring w-full gap-2">
                     <Phone className="h-4 w-4" />
                     Agendar Consulta
                   </Button>

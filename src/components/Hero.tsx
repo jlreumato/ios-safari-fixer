@@ -47,7 +47,7 @@ export default function Hero() {
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
-                className="btn-glow-ring gap-2 border-2 border-[#8e82b8] bg-transparent px-8 text-base text-[#d8d4e8] hover:bg-[#8e82b8]/15 hover:text-white active:scale-[0.97] transition-all"
+                className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
               >
                 <Phone className="h-5 w-5" />
                 Agendar Consulta
