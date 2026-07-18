@@ -71,7 +71,7 @@ export default function Header() {
             className="hidden lg:inline-flex"
           >
             <Button className="btn-champagne btn-glow-ring gap-2 active:scale-[0.97]">
-              <Phone className="h-4 w-4" />
+              <WhatsAppIcon size={18} />
               Agendar Consulta
             </Button>
           </a>
