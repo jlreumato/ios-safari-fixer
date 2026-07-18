@@ -229,19 +229,25 @@ function JointsWheel() {
               );
             })}
 
-            {/* Center indicator */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <p
-                key={active}
-                className="text-5xl font-normal text-primary animate-in fade-in zoom-in-95 duration-500"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            {/* Center indicator — image of the selected body part */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div
+                className="relative overflow-hidden rounded-full border border-primary/20 shadow-[0_20px_60px_-20px_rgba(70,50,120,0.45)]"
+                style={{ width: `${R * 1.35}px`, height: `${R * 1.35}px` }}
               >
-                {String(active + 1).padStart(2, "0")}
-              </p>
-              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-                de {String(joints.length).padStart(2, "0")}
-              </p>
+                <img
+                  key={current.label}
+                  src={current.image}
+                  alt={current.label}
+                  loading="lazy"
+                  width={512}
+                  height={512}
+                  className="h-full w-full object-cover animate-in fade-in zoom-in-95 duration-500"
+                />
+                <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/40" />
+              </div>
             </div>
+
           </div>
 
           {/* Active detail */}
