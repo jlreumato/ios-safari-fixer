@@ -89,7 +89,7 @@ const journey = [
   },
 ];
 
-/** Interactive radial navigator for the joint areas — driven by scroll and clickable. */
+/** Horizontal, scroll-driven joint gallery — the active image lifts out of the row. */
 function JointsWheel() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -121,19 +121,7 @@ function JointsWheel() {
     };
   }, []);
 
-  const scrollToIndex = (i: number) => {
-    const el = stageRef.current;
-    if (!el) return;
-    const vh = window.innerHeight;
-    const total = el.offsetHeight - vh;
-    const target = el.offsetTop + (i / joints.length) * total + total / (joints.length * 2);
-    window.scrollTo({ top: target, behavior: "smooth" });
-  };
-
   const current = joints[active];
-  const R = 160;
-  const circumference = 2 * Math.PI * R;
-  const dash = circumference * progress;
 
   return (
     <div
@@ -141,14 +129,13 @@ function JointsWheel() {
       className="relative"
       style={{ height: `${joints.length * 60}vh` }}
     >
-      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Floating orbs that drift with scroll (background layer is on the outer section for parallax) */}
+      <div className="sticky top-0 flex h-[100dvh] w-full flex-col overflow-hidden">
+        {/* Ambient orbs */}
         <div
           className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-3xl"
           style={{
-            top: `${10 + progress * 60}%`,
+            top: `${10 + progress * 50}%`,
             left: `${5 + Math.sin(progress * Math.PI * 3) * 20}%`,
-            transform: `scale(${0.8 + progress * 0.6})`,
             transition: "all 400ms ease-out",
           }}
           aria-hidden
@@ -157,173 +144,105 @@ function JointsWheel() {
           className="pointer-events-none absolute h-96 w-96 rounded-full blur-3xl"
           style={{
             background: `radial-gradient(circle, hsl(${40 + progress * 100} 70% 75% / 0.35), transparent 70%)`,
-            bottom: `${5 + progress * 40}%`,
+            bottom: `${8 + progress * 30}%`,
             right: `${5 + Math.cos(progress * Math.PI * 2) * 15}%`,
             transition: "all 400ms ease-out",
           }}
           aria-hidden
         />
 
-        {/* Floating diagonal image cards — sit in corners so they don't overlap wheel or text */}
-        {joints.map((j, i) => {
-          const isActive = i === active;
-          // Fixed floating positions per index, tilted diagonally.
-          const spots = [
-            { top: "6%",  left: "3%",  rot: -8,  size: 150 },
-            { top: "10%", right: "4%", rot: 7,   size: 170 },
-            { bottom: "8%", left: "5%", rot: 6,  size: 160 },
-            { bottom: "12%", right: "6%", rot: -9, size: 180 },
-            { top: "44%", left: "1.5%", rot: -4, size: 130 },
-          ] as const;
-          const s = spots[i % spots.length];
-          const { rot, size, ...pos } = s;
-          return (
-            <div
-              key={`float-${j.label}`}
-              className="pointer-events-none absolute hidden md:block"
-              style={{
-                ...pos,
-                width: size,
-                height: size,
-                transform: `rotate(${rot}deg) scale(${isActive ? 1 : 0.85})`,
-                opacity: isActive ? 1 : 0.35,
-                transition: "opacity 600ms ease, transform 600ms cubic-bezier(0.22,1,0.36,1)",
-                zIndex: isActive ? 5 : 1,
-                filter: isActive ? "none" : "grayscale(0.4)",
-              }}
-              aria-hidden
-            >
-              <div className="relative h-full w-full overflow-hidden rounded-[28px] border border-white/60 bg-white/40 shadow-[0_30px_60px_-30px_rgba(70,50,120,0.55)] backdrop-blur">
-                <img
-                  src={j.image}
-                  alt=""
-                  loading="lazy"
-                  width={512}
-                  height={512}
-                  className="h-full w-full object-cover"
-                />
-                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/50" />
-              </div>
+        {/* Active detail — centered */}
+        <div className="relative mx-auto flex flex-1 w-full max-w-4xl flex-col items-center justify-center px-6 text-center sm:px-10">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
+            Área em evidência
+          </p>
+          <h3
+            key={current.label}
+            className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            {current.label}
+          </h3>
+          <p
+            key={current.desc}
+            className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500 sm:text-xl"
+          >
+            {current.desc}
+          </p>
+
+          {/* Progress bar */}
+          <div className="mt-8 w-full max-w-md">
+            <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
+              <div
+                className="h-full rounded-full bg-primary transition-[width] duration-150"
+                style={{ width: `${progress * 100}%` }}
+              />
             </div>
-          );
-        })}
+            <div className="mt-3 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/60">
+              <span>{String(active + 1).padStart(2, "0")}</span>
+              <span className="h-px flex-1 bg-primary/20" />
+              <span>role para avançar</span>
+              <ChevronRight className="h-5 w-5 animate-pulse" />
+              <span className="h-px flex-1 bg-primary/20" />
+              <span>{String(joints.length).padStart(2, "0")}</span>
+            </div>
+          </div>
+        </div>
 
-        <div className="relative mx-auto grid h-full max-w-6xl grid-cols-1 items-center justify-items-center gap-8 px-6 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16">
-          {/* Radial navigator */}
-          <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
-            {/* SVG progress arc */}
-            <svg
-              viewBox="0 0 400 400"
-              className="absolute inset-0 h-full w-full -rotate-90"
-              aria-hidden
-            >
-              <circle
-                cx="200" cy="200" r={R}
-                fill="none"
-                stroke="hsl(var(--primary) / 0.12)"
-                strokeWidth="2"
-                strokeDasharray="2 6"
-              />
-              <circle
-                cx="200" cy="200" r={R}
-                fill="none"
-                stroke="hsl(var(--primary))"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeDasharray={`${dash} ${circumference}`}
-                style={{ transition: "stroke-dasharray 120ms linear" }}
-              />
-            </svg>
-
-            {/* Labels around the ring */}
+        {/* Sequential row of images — active one lifts out to the foreground */}
+        <div className="relative w-full pb-10 pt-6">
+          <div className="mx-auto flex max-w-6xl items-end justify-center gap-4 px-4 sm:gap-6 sm:px-8">
             {joints.map((j, i) => {
-              const angle = (i / joints.length) * 2 * Math.PI - Math.PI / 2;
-              const x = 50 + (R / 200) * 50 * Math.cos(angle);
-              const y = 50 + (R / 200) * 50 * Math.sin(angle);
               const isActive = i === active;
               return (
-                <button
+                <div
                   key={j.label}
-                  type="button"
-                  onClick={() => scrollToIndex(i)}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 focus:outline-none"
-                  style={{ left: `${x}%`, top: `${y}%` }}
+                  className="relative flex-1 select-none"
+                  style={{ maxWidth: 220 }}
+                  aria-hidden={!isActive}
                 >
-                  <span
-                    className={`block whitespace-nowrap rounded-full border-2 px-3 py-1.5 text-sm sm:text-base font-medium backdrop-blur transition-all duration-500 ${
-                      isActive
-                        ? "border-primary bg-transparent text-primary scale-110 shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]"
-                        : "border-primary/25 bg-transparent text-muted-foreground hover:border-primary/50 hover:text-foreground"
+                  <div
+                    className="relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-[0_18px_40px_-20px_rgba(70,50,120,0.45)] backdrop-blur"
+                    style={{
+                      aspectRatio: "3 / 4",
+                      transform: isActive
+                        ? "translateY(-42px) scale(1.28)"
+                        : "translateY(0) scale(1)",
+                      opacity: isActive ? 1 : 0.55,
+                      filter: isActive ? "none" : "grayscale(0.45) brightness(0.95)",
+                      zIndex: isActive ? 10 : 1,
+                      transition:
+                        "transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease, filter 500ms ease",
+                    }}
+                  >
+                    <img
+                      src={j.image}
+                      alt=""
+                      loading="lazy"
+                      width={512}
+                      height={680}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/50" />
+                  </div>
+                  <div
+                    className={`mt-3 text-center text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-colors duration-500 ${
+                      isActive ? "text-primary" : "text-muted-foreground/70"
                     }`}
+                    style={{ transform: isActive ? "translateY(38px)" : "none", transition: "transform 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease" }}
                   >
                     {j.label}
-                  </span>
-                </button>
+                  </div>
+                </div>
               );
             })}
-
-            {/* Center indicator — numeric progress "01 de 05" */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <div
-                key={`num-${active}`}
-                className="font-normal text-primary animate-in fade-in zoom-in-95 duration-500"
-                style={{
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
-                  lineHeight: 1,
-                }}
-              >
-                {String(active + 1).padStart(2, "0")}
-              </div>
-              <div className="mt-2 text-sm font-semibold uppercase tracking-[0.28em] text-primary/60">
-                de {String(joints.length).padStart(2, "0")}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Active detail */}
-          <div className="relative w-full max-w-xl text-center lg:text-left">
-
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
-              Área em evidência
-            </p>
-            <h3
-              key={current.label}
-              className="mt-2 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl animate-in fade-in slide-in-from-bottom-2 duration-500"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              {current.label}
-            </h3>
-            <p
-              key={current.desc}
-              className="mx-auto lg:mx-0 mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
-            >
-              {current.desc}
-            </p>
-
-            {/* Progress bar + hint */}
-            <div className="mx-auto lg:mx-0 mt-6 max-w-md">
-
-              <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
-                <div
-                  className="h-full rounded-full bg-primary transition-[width] duration-150"
-                  style={{ width: `${progress * 100}%` }}
-                />
-              </div>
-              <div className="mt-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.24em] text-primary/60">
-                <span>role para avançar</span>
-                <ChevronRight className="h-5 w-5 animate-pulse" />
-                <span className="h-px flex-1 bg-primary/20" />
-                <span>ou clique</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 export default function Procedures() {
