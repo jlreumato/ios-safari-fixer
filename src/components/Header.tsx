@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logoNome from "@/assets/nome-header.png.asset.json";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
