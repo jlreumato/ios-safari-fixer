@@ -155,7 +155,7 @@ export default function TratamentoDetalhe() {
                 >
                   <Button
                     size="lg"
-                    className="btn-glow-ring w-full gap-2 border-2 border-[#8e82b8] bg-transparent text-[#8e82b8] hover:bg-[#8e82b8]/10 active:scale-[0.97] transition-all"
+                    className="btn-champagne btn-glow-ring w-full gap-2 active:scale-[0.97]"
                   >
                     <Phone className="h-5 w-5" />
                     Agendar Consulta
