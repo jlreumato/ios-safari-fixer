@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { treatments } from "@/data/treatments";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 /**
  * Tetris-style horizontal encaixe:
