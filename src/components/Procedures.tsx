@@ -123,87 +123,136 @@ function JointsWheel() {
 
   const current = joints[active];
 
+  // Text slides from screen-center into the left column as user scrolls the section.
+  // 0 → text centered horizontally over the whole viewport
+  // 1 → text pinned inside the left column
+  const slide = Math.min(1, progress * 2);
+
   return (
     <div
       ref={stageRef}
       className="relative"
       style={{ height: `${joints.length * 60}vh` }}
     >
-      <div className="sticky top-0 flex h-[100dvh] w-full flex-col overflow-hidden">
-        {/* Full-bleed background images — the active joint becomes the scene */}
-        <div className="absolute inset-0" aria-hidden>
-          {joints.map((j, i) => (
-            <div
-              key={j.label}
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url(${j.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                opacity: i === active ? 1 : 0,
-                transform: i === active ? "scale(1)" : "scale(1.06)",
-                transition:
-                  "opacity 900ms ease, transform 1400ms cubic-bezier(0.22,1,0.36,1)",
-                willChange: "opacity, transform",
-              }}
-            />
-          ))}
-          {/* Readability overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/55 to-white/85" />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-transparent to-white/70" />
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        {/* Two-column layout */}
+        <div className="grid h-full w-full grid-cols-1 lg:grid-cols-2">
+          {/* LEFT column reserved for text (destination) */}
+          <div className="relative hidden h-full lg:block" aria-hidden />
+
+          {/* RIGHT column — full image */}
+          <div className="relative hidden h-full w-full overflow-hidden lg:block">
+            {joints.map((j, i) => (
+              <div
+                key={j.label}
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url(${j.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: i === active ? 1 : 0,
+                  transform: i === active ? "scale(1)" : "scale(1.06)",
+                  transition:
+                    "opacity 900ms ease, transform 1400ms cubic-bezier(0.22,1,0.36,1)",
+                  willChange: "opacity, transform",
+                }}
+              />
+            ))}
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/30" />
+          </div>
+
+          {/* Mobile — image as backdrop */}
+          <div className="absolute inset-0 lg:hidden" aria-hidden>
+            {joints.map((j, i) => (
+              <div
+                key={j.label}
+                className="absolute inset-0"
+                style={{
+                  backgroundImage: `url(${j.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  opacity: i === active ? 1 : 0,
+                  transition: "opacity 900ms ease",
+                }}
+              />
+            ))}
+            <div className="absolute inset-0 bg-white/70" />
+          </div>
         </div>
 
-        {/* Active detail — centered over the image */}
-        <div className="relative mx-auto flex flex-1 w-full max-w-4xl flex-col items-center justify-center px-6 text-center sm:px-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
-            Procedimentos · Área em evidência
-          </p>
-          <h3
-            key={current.label}
-            className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        {/* Text overlay — starts centered, slides into the LEFT column */}
+        <div className="pointer-events-none absolute inset-0 flex items-center">
+          <div
+            className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16"
+            style={{
+              transform: `translateX(${slide * 0}%)`,
+            }}
           >
-            {current.label}
-          </h3>
-          <p
-            key={current.desc}
-            className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80 animate-in fade-in duration-500 sm:text-xl"
-          >
-            {current.desc}
-          </p>
-
-          <div className="mt-10 w-full max-w-2xl">
-            <div className="h-1 w-full overflow-hidden rounded-full bg-primary/15">
+            {/* On lg+ the wrapper starts translated 50% to the right (centered on viewport)
+                and slides back to 0 (left column) as the user scrolls. */}
+            <div
+              className="mx-auto max-w-xl text-center lg:text-left"
+              style={{
+                transform: `translateX(var(--tx, 0px))`,
+              }}
+            >
               <div
-                className="h-full rounded-full bg-primary transition-[width] duration-150"
-                style={{ width: `${progress * 100}%` }}
-              />
-            </div>
-            <div className="mt-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
-              <span>{String(active + 1).padStart(2, "0")}</span>
-              <span className="h-px flex-1 bg-primary/25" />
-              <span>role para avançar</span>
-              <ChevronRight className="h-5 w-5 animate-pulse" />
-              <span className="h-px flex-1 bg-primary/25" />
-              <span>{String(joints.length).padStart(2, "0")}</span>
-            </div>
+                style={{
+                  // custom prop consumed above; only apply the horizontal offset on lg screens via inline vars
+                  ["--tx" as string]: `${(1 - slide) * 50}vw`,
+                }}
+              >
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
+                  Procedimentos · Área em evidência
+                </p>
+                <h3
+                  key={current.label}
+                  className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {current.label}
+                </h3>
+                <p
+                  key={current.desc}
+                  className="mt-5 text-lg leading-relaxed text-foreground/80 animate-in fade-in duration-500 sm:text-xl"
+                >
+                  {current.desc}
+                </p>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-              {joints.map((j, i) => {
-                const isActive = i === active;
-                return (
-                  <span
-                    key={j.label}
-                    className={`text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
-                      isActive
-                        ? "text-primary scale-110"
-                        : "text-muted-foreground/60"
-                    }`}
-                  >
-                    {j.label}
-                  </span>
-                );
-              })}
+                <div className="mt-10 w-full">
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-primary/15">
+                    <div
+                      className="h-full rounded-full bg-primary transition-[width] duration-150"
+                      style={{ width: `${progress * 100}%` }}
+                    />
+                  </div>
+                  <div className="mt-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/70 lg:justify-start">
+                    <span>{String(active + 1).padStart(2, "0")}</span>
+                    <span className="h-px flex-1 bg-primary/25" />
+                    <ChevronRight className="h-5 w-5 animate-pulse" />
+                    <span className="h-px flex-1 bg-primary/25" />
+                    <span>{String(joints.length).padStart(2, "0")}</span>
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start">
+                    {joints.map((j, i) => {
+                      const isActive = i === active;
+                      return (
+                        <span
+                          key={j.label}
+                          className={`text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
+                            isActive
+                              ? "text-primary scale-110"
+                              : "text-muted-foreground/60"
+                          }`}
+                        >
+                          {j.label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
