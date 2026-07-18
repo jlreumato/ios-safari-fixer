@@ -202,7 +202,7 @@ function JointsWheel() {
                   ["--tx" as string]: `${(1 - slide) * 50}vw`,
                 }}
               >
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
+                <p className="text-base font-semibold uppercase tracking-[0.24em] text-primary/80">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
@@ -226,7 +226,7 @@ function JointsWheel() {
                       style={{ width: `${progress * 100}%` }}
                     />
                   </div>
-                  <div className="mt-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/70 lg:justify-start">
+                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-primary/70 lg:justify-start">
                     <span>{String(active + 1).padStart(2, "0")}</span>
                     <span className="h-px flex-1 bg-primary/25" />
                     <ChevronRight className="h-5 w-5 animate-pulse" />
@@ -240,7 +240,7 @@ function JointsWheel() {
                       return (
                         <span
                           key={j.label}
-                          className={`text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
+                          className={`text-sm sm:text-base font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
                             isActive
                               ? "text-primary scale-110"
                               : "text-muted-foreground/60"
@@ -427,7 +427,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
           {/* Left rail */}
           <aside className="relative hidden lg:block">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
+            <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
               Etapas do protocolo
             </p>
             <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
@@ -448,7 +448,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                     </span>
                     <span
-                      className={`block text-sm font-semibold uppercase tracking-[0.22em] transition-colors ${
+                      className={`block text-base font-semibold uppercase tracking-[0.22em] transition-colors ${
                         isActive ? "text-primary" : "text-muted-foreground/70"
                       }`}
                     >
@@ -467,7 +467,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                 );
               })}
             </ol>
-            <div className="mt-8 flex items-center gap-3 text-sm font-medium uppercase tracking-[0.24em] text-primary/70">
+            <div className="mt-8 flex items-center gap-3 text-base font-medium uppercase tracking-[0.24em] text-primary/70">
               <span>{String(active + 1).padStart(2, "0")}</span>
               <span className="h-px flex-1 bg-primary/20" />
               <span>{String(steps.length).padStart(2, "0")}</span>
@@ -509,7 +509,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                           <step.icon className="h-6 w-6" />
                         </span>
-                        <span className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
+                        <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
                           Etapa {String(i + 1).padStart(2, "0")} /{" "}
                           {String(steps.length).padStart(2, "0")}
                         </span>
