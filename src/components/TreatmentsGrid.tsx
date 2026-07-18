@@ -115,99 +115,118 @@ export default function TreatmentsGrid() {
 }
 
 /**
- * Mobile 3D card stack driven by scroll.
- * Each card is absolutely positioned in a sticky viewport. As you scroll, the
- * next card slides up from the bottom while the current one scales down,
- * tilts back and dims — like a stack of cards being flipped through.
+ * Mobile Cover Flow 3D — horizontal swipeable carousel with the center card in
+ * focus and neighbours tilted back in perspective, like Apple's classic
+ * Cover Flow. Snap-scroll driven, GPU accelerated.
  */
 function MobileStack() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [scrollY, setScrollY] = useState(0);
-  const total = treatments.length;
-  const stepVh = 85; // scroll length per transition
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [scrollX, setScrollX] = useState(0);
+  const [cardW, setCardW] = useState(0);
 
   useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
     let raf = 0;
     const update = () => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      setScrollY(-rect.top);
+      setScrollX(el.scrollLeft);
+      const first = el.querySelector<HTMLElement>("[data-cf-card]");
+      if (first) setCardW(first.offsetWidth);
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    el.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      el.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", update);
     };
   }, []);
 
-  const totalHeight = `${(total - 1) * stepVh + 100}dvh`;
-  const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v));
-  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+  const total = treatments.length;
+  const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
   return (
-    <div
-      ref={ref}
-      className="relative"
-      style={{ height: totalHeight, perspective: "1200px" }}
-    >
+    <div className="relative w-full" style={{ perspective: "1400px" }}>
       <div
-        className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background"
-        style={{ perspective: "1200px" }}
+        ref={scrollerRef}
+        className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden pb-8 pt-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        style={{ scrollPaddingInline: "20%" }}
       >
-        <div className="relative mx-auto h-full w-full max-w-md px-4 py-4">
-          {treatments.map((t, i) => {
-            const stepPx = (typeof window !== "undefined"
-              ? window.innerHeight
-              : 800) * (stepVh / 100);
-            // Progress of the NEXT card covering this one (0 → not covered, 1 → fully covered).
-            const outP = easeOut(clamp((scrollY - i * stepPx) / stepPx));
-            // Entry progress of THIS card sliding in from below (0 → offscreen, 1 → docked).
-            const inP =
-              i === 0
-                ? 1
-                : easeOut(clamp((scrollY - (i - 1) * stepPx) / stepPx));
-
-            const translateY =
-              (1 - inP) * 100 + // enter from below
-              outP * -6;         // slight lift when being covered
-            const scale = 1 - outP * 0.12;
-            const rotateX = outP * -8; // tilt back
-            const opacity = 1 - outP * 0.45;
-
-            return (
+        {/* leading spacer to allow the first card to center */}
+        <div className="shrink-0" style={{ width: "20%" }} aria-hidden />
+        {treatments.map((t, i) => {
+          // distance from center of this card to viewport center, in card widths
+          const cardCenter = i * cardW + cardW / 2;
+          const viewportCenter = scrollX + (cardW * 0.6) * 2.5; // approx; refined below
+          // simpler: use scroller width
+          const scroller = scrollerRef.current;
+          const vc = scroller ? scrollX + scroller.clientWidth / 2 - scroller.clientWidth * 0.2 : 0;
+          const delta = cardW > 0 ? (cardCenter - vc) / cardW : 0;
+          const d = clamp(delta, -2, 2);
+          const abs = Math.abs(d);
+          const rotateY = -d * 45; // tilt neighbours
+          const translateZ = -abs * 120;
+          const translateX = -d * 12; // pull neighbours slightly toward center
+          const scale = 1 - abs * 0.08;
+          const opacity = 1 - abs * 0.25;
+          return (
+            <div
+              key={t.slug}
+              data-cf-card
+              className="shrink-0 snap-center px-2"
+              style={{ width: "60%" }}
+            >
               <div
-                key={t.slug}
-                className="absolute inset-0 px-4 py-4"
+                className="relative h-[70dvh] w-full"
                 style={{
-                  transform: `translate3d(0, ${translateY}%, 0) scale(${scale}) rotateX(${rotateX}deg)`,
-                  transformOrigin: "center 20%",
+                  transform: `translate3d(${translateX}%, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
+                  transformStyle: "preserve-3d",
+                  transition: "transform 200ms cubic-bezier(0.22,1,0.36,1), opacity 200ms linear",
                   opacity,
-                  zIndex: i + 1,
-                  transition: "transform 120ms linear, opacity 120ms linear",
                   willChange: "transform, opacity",
-                  boxShadow:
-                    outP > 0
-                      ? `0 -20px 40px -20px rgba(70,50,120,${0.25 * outP})`
-                      : undefined,
+                  boxShadow: `0 30px 60px -30px rgba(70,50,120,${0.35 - abs * 0.1})`,
+                  borderRadius: "1.75rem",
                 }}
               >
                 <TreatmentCard index={i} total={total} treatment={t} layout="mobile-stack" />
+                {/* Reflection under the focused card */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-6 -bottom-6 h-6 rounded-full bg-black/25 blur-2xl"
+                  style={{ opacity: (1 - abs) * 0.5 }}
+                />
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+        <div className="shrink-0" style={{ width: "20%" }} aria-hidden />
+      </div>
+
+      {/* Pagination dots */}
+      <div className="mt-2 flex items-center justify-center gap-1.5">
+        {treatments.map((_, i) => {
+          const active = cardW > 0 ? Math.round(scrollX / cardW) === i : i === 0;
+          return (
+            <span
+              key={i}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{
+                width: active ? 20 : 6,
+                backgroundColor: active ? "#8e82b8" : "rgba(142,130,184,0.35)",
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
+
 
 const BLOB_KEYFRAMES = [
   "58% 42% 47% 53% / 48% 46% 54% 52%",
