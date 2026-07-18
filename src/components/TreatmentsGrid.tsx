@@ -276,7 +276,7 @@ function TreatmentCard({
       <div
         className={`flex flex-col ${
           isMobileCard
-            ? "h-[35%] px-5 pb-5 pt-4 justify-between"
+            ? "h-[35%] px-5 pb-4 pt-3 justify-between"
             : "mt-3 flex-1"
         }`}
       >
@@ -287,17 +287,17 @@ function TreatmentCard({
         </div>
 
         <h3
-          className="mt-1.5 text-balance text-xl leading-tight tracking-tight text-[#2b2540] sm:text-2xl"
+          className="mt-1 text-balance text-xl leading-tight tracking-tight text-[#2b2540] sm:text-2xl"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           {treatment.title}
         </h3>
 
-        <p className="mt-1 line-clamp-2 text-base leading-snug text-[#4a4560] sm:text-lg">
+        <p className={`mt-0.5 text-base leading-snug text-[#4a4560] sm:text-lg ${isMobileCard ? "line-clamp-1" : "line-clamp-2"}`}>
           {treatment.shortDesc}
         </p>
 
-        <div className="mt-2 flex items-center justify-between sm:mt-3">
+        <div className="mt-1 flex items-center justify-between sm:mt-3">
           <span className="text-base font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70">
             Saiba mais
           </span>
