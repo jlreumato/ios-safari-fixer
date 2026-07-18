@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logoNome from "@/assets/nome-header.png.asset.json";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
@@ -70,7 +71,7 @@ export default function Header() {
             className="hidden lg:inline-flex"
           >
             <Button className="btn-champagne btn-glow-ring gap-2 active:scale-[0.97]">
-              <Phone className="h-4 w-4" />
+              <WhatsAppIcon size={18} />
               Agendar Consulta
             </Button>
           </a>
@@ -102,7 +103,7 @@ export default function Header() {
                   onClick={() => setOpen(false)}
                 >
                   <Button className="btn-champagne btn-glow-ring w-full gap-2">
-                    <Phone className="h-4 w-4" />
+                    <WhatsAppIcon size={18} />
                     Agendar Consulta
                   </Button>
                 </a>

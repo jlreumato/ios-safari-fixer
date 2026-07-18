@@ -1,5 +1,6 @@
-import { Phone, ArrowDown } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
@@ -49,7 +50,7 @@ export default function Hero() {
                 size="lg"
                 className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
               >
-                <Phone className="h-5 w-5" />
+                <WhatsAppIcon size={20} />
                 Agendar Consulta
               </Button>
             </a>
