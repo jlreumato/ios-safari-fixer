@@ -114,6 +114,101 @@ export default function TreatmentsGrid() {
   );
 }
 
+/**
+ * Mobile 3D card stack driven by scroll.
+ * Each card is absolutely positioned in a sticky viewport. As you scroll, the
+ * next card slides up from the bottom while the current one scales down,
+ * tilts back and dims — like a stack of cards being flipped through.
+ */
+function MobileStack() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+  const total = treatments.length;
+  const stepVh = 85; // scroll length per transition
+
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      setScrollY(-rect.top);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const totalHeight = `${(total - 1) * stepVh + 100}dvh`;
+  const clamp = (v: number, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      style={{ height: totalHeight, perspective: "1200px" }}
+    >
+      <div
+        className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background"
+        style={{ perspective: "1200px" }}
+      >
+        <div className="relative mx-auto h-full w-full max-w-md px-4 py-4">
+          {treatments.map((t, i) => {
+            const stepPx = (window !== undefined && typeof window !== "undefined"
+              ? window.innerHeight
+              : 800) * (stepVh / 100);
+            // Progress of the NEXT card covering this one (0 → not covered, 1 → fully covered).
+            const outP = easeOut(clamp((scrollY - i * stepPx) / stepPx));
+            // Entry progress of THIS card sliding in from below (0 → offscreen, 1 → docked).
+            const inP =
+              i === 0
+                ? 1
+                : easeOut(clamp((scrollY - (i - 1) * stepPx) / stepPx));
+
+            const translateY =
+              (1 - inP) * 100 + // enter from below
+              outP * -6;         // slight lift when being covered
+            const scale = 1 - outP * 0.12;
+            const rotateX = outP * -8; // tilt back
+            const opacity = 1 - outP * 0.45;
+
+            return (
+              <div
+                key={t.slug}
+                className="absolute inset-0 px-4 py-4"
+                style={{
+                  transform: `translate3d(0, ${translateY}%, 0) scale(${scale}) rotateX(${rotateX}deg)`,
+                  transformOrigin: "center 20%",
+                  opacity,
+                  zIndex: i + 1,
+                  transition: "transform 120ms linear, opacity 120ms linear",
+                  willChange: "transform, opacity",
+                  boxShadow:
+                    outP > 0
+                      ? `0 -20px 40px -20px rgba(70,50,120,${0.25 * outP})`
+                      : undefined,
+                }}
+              >
+                <TreatmentCard index={i} total={total} treatment={t} />
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const BLOB_KEYFRAMES = [
   "62% 38% 41% 59% / 45% 42% 58% 55%",
   "45% 55% 63% 37% / 55% 62% 38% 45%",
