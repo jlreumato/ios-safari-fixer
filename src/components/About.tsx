@@ -51,13 +51,13 @@ export default function About() {
 
           {/* Text */}
           <div className="flex-1 text-center lg:text-left">
-            <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">
+            <p className="text-lg font-semibold uppercase tracking-[0.18em] text-primary sm:text-xl">
               Sobre mim
             </p>
             <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
               Dra. Juliana Leal
             </h2>
-            <p className="mt-2 text-base font-medium text-primary">
+            <p className="mt-2 text-lg font-medium text-primary sm:text-xl">
               CRM/AL: 6717 · RQE: 4857
             </p>
             <div className="mt-7 space-y-5 text-lg leading-relaxed text-muted-foreground lg:max-w-xl lg:text-xl">

@@ -188,11 +188,11 @@ export default function Clinic() {
 
         {/* Address */}
         <div className="mt-6 text-center">
-          <p className="flex items-center justify-center gap-2 text-base text-foreground font-medium">
+          <p className="flex items-center justify-center gap-2 text-lg text-foreground font-medium sm:text-base">
             <MapPin className="h-5 w-5 text-primary" />
             {currentLocation.address}
           </p>
-          <p className="mt-1 text-sm text-muted-foreground">{currentLocation.cep}</p>
+          <p className="mt-1 text-base text-muted-foreground sm:text-sm">{currentLocation.cep}</p>
         </div>
 
         {/* 3D Cube Carousel */}
@@ -209,8 +209,8 @@ export default function Clinic() {
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 text-lg lg:text-xl font-semibold text-foreground">{f.title}</h3>
-              <p className="mt-2 text-base lg:text-lg leading-relaxed text-muted-foreground">{f.desc}</p>
+              <h3 className="mt-4 text-xl font-semibold text-foreground lg:text-xl">{f.title}</h3>
+              <p className="mt-2 text-lg leading-relaxed text-muted-foreground lg:text-lg">{f.desc}</p>
             </div>
           ))}
         </div>
