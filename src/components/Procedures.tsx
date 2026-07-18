@@ -130,30 +130,32 @@ function JointsWheel() {
       style={{ height: `${joints.length * 60}vh` }}
     >
       <div className="sticky top-0 flex h-[100dvh] w-full flex-col overflow-hidden">
-        {/* Ambient orbs */}
-        <div
-          className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-3xl"
-          style={{
-            top: `${10 + progress * 50}%`,
-            left: `${5 + Math.sin(progress * Math.PI * 3) * 20}%`,
-            transition: "all 400ms ease-out",
-          }}
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute h-96 w-96 rounded-full blur-3xl"
-          style={{
-            background: `radial-gradient(circle, hsl(${40 + progress * 100} 70% 75% / 0.35), transparent 70%)`,
-            bottom: `${8 + progress * 30}%`,
-            right: `${5 + Math.cos(progress * Math.PI * 2) * 15}%`,
-            transition: "all 400ms ease-out",
-          }}
-          aria-hidden
-        />
+        {/* Full-bleed background images — the active joint becomes the scene */}
+        <div className="absolute inset-0" aria-hidden>
+          {joints.map((j, i) => (
+            <div
+              key={j.label}
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url(${j.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                opacity: i === active ? 1 : 0,
+                transform: i === active ? "scale(1)" : "scale(1.06)",
+                transition:
+                  "opacity 900ms ease, transform 1400ms cubic-bezier(0.22,1,0.36,1)",
+                willChange: "opacity, transform",
+              }}
+            />
+          ))}
+          {/* Readability overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/85 via-white/55 to-white/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-transparent to-white/70" />
+        </div>
 
-        {/* Active detail — centered */}
+        {/* Active detail — centered over the image */}
         <div className="relative mx-auto flex flex-1 w-full max-w-4xl flex-col items-center justify-center px-6 text-center sm:px-10">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
             Procedimentos · Área em evidência
           </p>
           <h3
@@ -165,77 +167,44 @@ function JointsWheel() {
           </h3>
           <p
             key={current.desc}
-            className="mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500 sm:text-xl"
+            className="mt-5 max-w-2xl text-lg leading-relaxed text-foreground/80 animate-in fade-in duration-500 sm:text-xl"
           >
             {current.desc}
           </p>
 
-          {/* Progress bar */}
-          <div className="mt-8 w-full max-w-md">
-            <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
+          <div className="mt-10 w-full max-w-2xl">
+            <div className="h-1 w-full overflow-hidden rounded-full bg-primary/15">
               <div
                 className="h-full rounded-full bg-primary transition-[width] duration-150"
                 style={{ width: `${progress * 100}%` }}
               />
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/60">
+            <div className="mt-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
               <span>{String(active + 1).padStart(2, "0")}</span>
-              <span className="h-px flex-1 bg-primary/20" />
+              <span className="h-px flex-1 bg-primary/25" />
               <span>role para avançar</span>
               <ChevronRight className="h-5 w-5 animate-pulse" />
-              <span className="h-px flex-1 bg-primary/20" />
+              <span className="h-px flex-1 bg-primary/25" />
               <span>{String(joints.length).padStart(2, "0")}</span>
             </div>
-          </div>
-        </div>
 
-        {/* Sequential row of images — active one lifts out to the foreground */}
-        <div className="relative w-full pb-10 pt-6">
-          <div className="mx-auto flex max-w-6xl items-end justify-center gap-4 px-4 sm:gap-6 sm:px-8">
-            {joints.map((j, i) => {
-              const isActive = i === active;
-              return (
-                <div
-                  key={j.label}
-                  className="relative flex-1 select-none"
-                  style={{ maxWidth: 220 }}
-                  aria-hidden={!isActive}
-                >
-                  <div
-                    className="relative overflow-hidden rounded-2xl border border-white/60 bg-white/40 shadow-[0_18px_40px_-20px_rgba(70,50,120,0.45)] backdrop-blur"
-                    style={{
-                      aspectRatio: "3 / 4",
-                      transform: isActive
-                        ? "translateY(-42px) scale(1.28)"
-                        : "translateY(0) scale(1)",
-                      opacity: isActive ? 1 : 0.55,
-                      filter: isActive ? "none" : "grayscale(0.45) brightness(0.95)",
-                      zIndex: isActive ? 10 : 1,
-                      transition:
-                        "transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease, filter 500ms ease",
-                    }}
-                  >
-                    <img
-                      src={j.image}
-                      alt=""
-                      loading="lazy"
-                      width={512}
-                      height={680}
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/50" />
-                  </div>
-                  <div
-                    className={`mt-3 text-center text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-colors duration-500 ${
-                      isActive ? "text-primary" : "text-muted-foreground/70"
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+              {joints.map((j, i) => {
+                const isActive = i === active;
+                return (
+                  <span
+                    key={j.label}
+                    className={`text-xs sm:text-sm font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
+                      isActive
+                        ? "text-primary scale-110"
+                        : "text-muted-foreground/60"
                     }`}
-                    style={{ transform: isActive ? "translateY(38px)" : "none", transition: "transform 700ms cubic-bezier(0.22,1,0.36,1), color 500ms ease" }}
                   >
                     {j.label}
-                  </div>
-                </div>
-              );
-            })}
+                  </span>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
