@@ -154,7 +154,7 @@ function JointsWheel() {
         {/* Active detail — centered */}
         <div className="relative mx-auto flex flex-1 w-full max-w-4xl flex-col items-center justify-center px-6 text-center sm:px-10">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
-            Área em evidência
+            Procedimentos · Área em evidência
           </p>
           <h3
             key={current.label}
@@ -268,24 +268,7 @@ export default function Procedures() {
         <div className="pb-16 lg:pb-24" />
       </div>
 
-      {/* Intro — Áreas em evidência */}
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-4 text-center">
-        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
-          Procedimentos
-        </p>
-        <h2
-          className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-        >
-          Precisão que devolve movimento
-        </h2>
-        <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-          Infiltrações guiadas, terapias regenerativas e equipamentos de última geração
-          para tratar a dor onde ela realmente está.
-        </p>
-      </div>
-
-      {/* Vertical circular carousel — joints */}
+      {/* Procedimentos — Áreas em evidência (merged) */}
       <JointsWheel />
     </section>
   );
