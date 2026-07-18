@@ -251,7 +251,8 @@ function JointsWheel() {
           </div>
 
           {/* Active detail */}
-          <div className="relative">
+          <div className="relative w-full max-w-xl text-center lg:text-left">
+
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
               Área em evidência
             </p>
