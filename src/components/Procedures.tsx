@@ -169,22 +169,23 @@ function JointsWheel() {
           const isActive = i === active;
           // Fixed floating positions per index, tilted diagonally.
           const spots = [
-            { top: "6%",  left: "3%",  rotate: -8,  size: 150 },
-            { top: "10%", right: "4%", rotate: 7,   size: 170 },
-            { bottom: "8%", left: "5%", rotate: 6,  size: 160 },
-            { bottom: "12%", right: "6%", rotate: -9, size: 180 },
-            { top: "44%", left: "1.5%", rotate: -4, size: 130 },
+            { top: "6%",  left: "3%",  rot: -8,  size: 150 },
+            { top: "10%", right: "4%", rot: 7,   size: 170 },
+            { bottom: "8%", left: "5%", rot: 6,  size: 160 },
+            { bottom: "12%", right: "6%", rot: -9, size: 180 },
+            { top: "44%", left: "1.5%", rot: -4, size: 130 },
           ] as const;
           const s = spots[i % spots.length];
+          const { rot, size, ...pos } = s;
           return (
             <div
               key={`float-${j.label}`}
               className="pointer-events-none absolute hidden md:block"
               style={{
-                ...s,
-                width: s.size,
-                height: s.size,
-                transform: `rotate(${s.rotate}deg) scale(${isActive ? 1 : 0.85})`,
+                ...pos,
+                width: size,
+                height: size,
+                transform: `rotate(${rot}deg) scale(${isActive ? 1 : 0.85})`,
                 opacity: isActive ? 1 : 0.35,
                 transition: "opacity 600ms ease, transform 600ms cubic-bezier(0.22,1,0.36,1)",
                 zIndex: isActive ? 5 : 1,
