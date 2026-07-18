@@ -11,25 +11,36 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import quadrilImg from "@/assets/joints/quadril.jpg";
+import joelhoImg from "@/assets/joints/joelho.jpg";
+import ombroImg from "@/assets/joints/ombro.jpg";
+import maosImg from "@/assets/joints/maos.jpg";
+import pesImg from "@/assets/joints/pes.jpg";
+
 const joints = [
   {
     label: "Quadril",
+    image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
   },
   {
     label: "Joelho",
+    image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
   },
   {
     label: "Ombro",
+    image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
   },
   {
     label: "Punho e Mãos",
+    image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
   },
   {
     label: "Pés e Tornozelos",
+    image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
   },
 ];
@@ -164,7 +175,7 @@ function JointsWheel() {
           }}
           aria-hidden
         />
-        <div className="relative mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[minmax(380px,440px)_1fr] lg:px-8">
+        <div className="relative mx-auto grid h-full max-w-6xl grid-cols-1 items-center justify-items-center gap-8 px-6 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16">
           {/* Radial navigator */}
           <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
             {/* SVG progress arc */}
@@ -218,23 +229,30 @@ function JointsWheel() {
               );
             })}
 
-            {/* Center indicator */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-              <p
-                key={active}
-                className="text-5xl font-normal text-primary animate-in fade-in zoom-in-95 duration-500"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            {/* Center indicator — image of the selected body part */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div
+                className="relative overflow-hidden rounded-full border border-primary/20 shadow-[0_20px_60px_-20px_rgba(70,50,120,0.45)]"
+                style={{ width: `${R * 1.35}px`, height: `${R * 1.35}px` }}
               >
-                {String(active + 1).padStart(2, "0")}
-              </p>
-              <p className="mt-1 text-sm font-semibold uppercase tracking-[0.28em] text-muted-foreground">
-                de {String(joints.length).padStart(2, "0")}
-              </p>
+                <img
+                  key={current.label}
+                  src={current.image}
+                  alt={current.label}
+                  loading="lazy"
+                  width={512}
+                  height={512}
+                  className="h-full w-full object-cover animate-in fade-in zoom-in-95 duration-500"
+                />
+                <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/40" />
+              </div>
             </div>
+
           </div>
 
           {/* Active detail */}
-          <div className="relative">
+          <div className="relative w-full max-w-xl text-center lg:text-left">
+
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/70">
               Área em evidência
             </p>
@@ -247,13 +265,14 @@ function JointsWheel() {
             </h3>
             <p
               key={current.desc}
-              className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
+              className="mx-auto lg:mx-0 mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
             >
               {current.desc}
             </p>
 
             {/* Progress bar + hint */}
-            <div className="mt-6 max-w-md">
+            <div className="mx-auto lg:mx-0 mt-6 max-w-md">
+
               <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
                 <div
                   className="h-full rounded-full bg-primary transition-[width] duration-150"
@@ -289,10 +308,20 @@ export default function Procedures() {
       </section>
 
 
-      {/* Procedimentos */}
-      <section id="procedimentos" className="relative bg-background">
+      {/* Procedimentos — framed in the same warm gradient as "Área em evidência" */}
+      <section
+        id="procedimentos"
+        className="relative"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 30%, hsl(260 60% 78% / 0.55), transparent 55%),
+            radial-gradient(circle at 80% 70%, hsl(30 70% 82% / 0.45), transparent 55%),
+            linear-gradient(135deg, hsl(250 40% 96%) 0%, hsl(30 55% 95%) 100%)
+          `,
+        }}
+      >
         {/* Intro */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-6 lg:pt-8 text-center">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 lg:pt-24 pb-4 text-center">
           <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
             Procedimentos
           </p>
@@ -314,6 +343,7 @@ export default function Procedures() {
         <div className="pb-0" />
 
       </section>
+
     </>
   );
 }
