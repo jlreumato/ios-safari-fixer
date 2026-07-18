@@ -142,19 +142,7 @@ function JointsWheel() {
       style={{ height: `${joints.length * 60}vh` }}
     >
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Dynamic scroll-driven background */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-[background] duration-700"
-          style={{
-            background: `
-              radial-gradient(circle at ${20 + progress * 60}% ${30 + Math.sin(progress * Math.PI * 2) * 20}%, hsl(${260 + progress * 80} 60% 78% / 0.55), transparent 55%),
-              radial-gradient(circle at ${80 - progress * 50}% ${70 - progress * 30}%, hsl(${30 + progress * 60} 70% 82% / 0.45), transparent 55%),
-              linear-gradient(${135 + progress * 180}deg, hsl(${250 + progress * 60} 40% 96%) 0%, hsl(${30 + progress * 40} 55% 95%) 100%)
-            `,
-          }}
-          aria-hidden
-        />
-        {/* Floating orbs that drift with scroll */}
+        {/* Floating orbs that drift with scroll (background layer is on the outer section for parallax) */}
         <div
           className="pointer-events-none absolute h-72 w-72 rounded-full bg-primary/20 blur-3xl"
           style={{
@@ -175,6 +163,50 @@ function JointsWheel() {
           }}
           aria-hidden
         />
+
+        {/* Floating diagonal image cards — sit in corners so they don't overlap wheel or text */}
+        {joints.map((j, i) => {
+          const isActive = i === active;
+          // Fixed floating positions per index, tilted diagonally.
+          const spots = [
+            { top: "6%",  left: "3%",  rotate: -8,  size: 150 },
+            { top: "10%", right: "4%", rotate: 7,   size: 170 },
+            { bottom: "8%", left: "5%", rotate: 6,  size: 160 },
+            { bottom: "12%", right: "6%", rotate: -9, size: 180 },
+            { top: "44%", left: "1.5%", rotate: -4, size: 130 },
+          ] as const;
+          const s = spots[i % spots.length];
+          return (
+            <div
+              key={`float-${j.label}`}
+              className="pointer-events-none absolute hidden md:block"
+              style={{
+                ...s,
+                width: s.size,
+                height: s.size,
+                transform: `rotate(${s.rotate}deg) scale(${isActive ? 1 : 0.85})`,
+                opacity: isActive ? 1 : 0.35,
+                transition: "opacity 600ms ease, transform 600ms cubic-bezier(0.22,1,0.36,1)",
+                zIndex: isActive ? 5 : 1,
+                filter: isActive ? "none" : "grayscale(0.4)",
+              }}
+              aria-hidden
+            >
+              <div className="relative h-full w-full overflow-hidden rounded-[28px] border border-white/60 bg-white/40 shadow-[0_30px_60px_-30px_rgba(70,50,120,0.55)] backdrop-blur">
+                <img
+                  src={j.image}
+                  alt=""
+                  loading="lazy"
+                  width={512}
+                  height={512}
+                  className="h-full w-full object-cover"
+                />
+                <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/50" />
+              </div>
+            </div>
+          );
+        })}
+
         <div className="relative mx-auto grid h-full max-w-6xl grid-cols-1 items-center justify-items-center gap-8 px-6 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:px-16">
           {/* Radial navigator */}
           <div className="relative mx-auto aspect-square w-[min(88vw,420px)]">
@@ -229,22 +261,21 @@ function JointsWheel() {
               );
             })}
 
-            {/* Center indicator — image of the selected body part */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            {/* Center indicator — numeric progress "01 de 05" */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
               <div
-                className="relative overflow-hidden rounded-full border border-primary/20 shadow-[0_20px_60px_-20px_rgba(70,50,120,0.45)]"
-                style={{ width: `${R * 1.35}px`, height: `${R * 1.35}px` }}
+                key={`num-${active}`}
+                className="font-normal text-primary animate-in fade-in zoom-in-95 duration-500"
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
+                  lineHeight: 1,
+                }}
               >
-                <img
-                  key={current.label}
-                  src={current.image}
-                  alt={current.label}
-                  loading="lazy"
-                  width={512}
-                  height={512}
-                  className="h-full w-full object-cover animate-in fade-in zoom-in-95 duration-500"
-                />
-                <div className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-inset ring-white/40" />
+                {String(active + 1).padStart(2, "0")}
+              </div>
+              <div className="mt-2 text-sm font-semibold uppercase tracking-[0.28em] text-primary/60">
+                de {String(joints.length).padStart(2, "0")}
               </div>
             </div>
 
