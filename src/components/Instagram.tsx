@@ -127,7 +127,7 @@ const FEED_SNAPSHOT: BeholdFeed = {
       caption: "Dedo travando, estalando ou causando dor ao movimentar? Infiltração pode ajudar quando indicada.",
       likeCount: 7,
       commentsCount: 0,
-      hashtags: ["Infiltração", "Ortopedia"],
+      hashtags: ["Infiltração", "Psiquiatria"],
       sizes: {
         large: {
           mediaUrl:
