@@ -11,25 +11,36 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import quadrilImg from "@/assets/joints/quadril.jpg";
+import joelhoImg from "@/assets/joints/joelho.jpg";
+import ombroImg from "@/assets/joints/ombro.jpg";
+import maosImg from "@/assets/joints/maos.jpg";
+import pesImg from "@/assets/joints/pes.jpg";
+
 const joints = [
   {
     label: "Quadril",
+    image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
   },
   {
     label: "Joelho",
+    image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
   },
   {
     label: "Ombro",
+    image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
   },
   {
     label: "Punho e Mãos",
+    image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
   },
   {
     label: "Pés e Tornozelos",
+    image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
   },
 ];
