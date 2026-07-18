@@ -79,8 +79,8 @@ const journey = [
   },
   {
     icon: HeartHandshake,
-    title: "Ortopedia Colaborativa",
-    desc: "Discussão de casos com ortopedistas de confiança quando há indicação cirúrgica ou procedimentos avançados.",
+    title: "Psiquiatria Colaborativa",
+    desc: "Discussão de casos com psiquiatras de confiança quando há indicação para cuidado integrado da saúde mental.",
   },
   {
     icon: CheckCircle2,
@@ -390,7 +390,7 @@ function ZoomIntro() {
             style={{ opacity: prefixOpacity }}
           >
             Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-            psicólogo e ortopedistas — cada etapa cuidadosamente conectada.
+            psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
           </p>
           <p
             className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70"
