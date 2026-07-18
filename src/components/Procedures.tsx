@@ -265,13 +265,14 @@ function JointsWheel() {
             </h3>
             <p
               key={current.desc}
-              className="mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
+              className="mx-auto lg:mx-0 mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground animate-in fade-in duration-500"
             >
               {current.desc}
             </p>
 
             {/* Progress bar + hint */}
-            <div className="mt-6 max-w-md">
+            <div className="mx-auto lg:mx-0 mt-6 max-w-md">
+
               <div className="h-1 w-full overflow-hidden rounded-full bg-primary/10">
                 <div
                   className="h-full rounded-full bg-primary transition-[width] duration-150"
