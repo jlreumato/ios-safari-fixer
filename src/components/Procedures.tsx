@@ -161,8 +161,8 @@ function JointsWheel() {
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/30" />
           </div>
 
-          {/* Mobile — image as backdrop */}
-          <div className="absolute inset-0 lg:hidden" aria-hidden>
+          {/* Mobile — image occupies bottom half, below the text */}
+          <div className="absolute inset-x-0 bottom-0 top-1/2 overflow-hidden lg:hidden" aria-hidden>
             {joints.map((j, i) => (
               <div
                 key={j.label}
@@ -176,12 +176,12 @@ function JointsWheel() {
                 }}
               />
             ))}
-            <div className="absolute inset-0 bg-white/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-transparent" />
           </div>
         </div>
 
         {/* Text overlay — starts centered, slides into the LEFT column */}
-        <div className="pointer-events-none absolute inset-0 flex items-center">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-1/2 items-center lg:inset-0 lg:h-full">
           <div
             className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16"
             style={{

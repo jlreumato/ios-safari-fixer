@@ -87,7 +87,7 @@ export default function Testimonials() {
   const bottomTx = offset * shift - shift / 2;
 
   return (
-    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-4 pb-20 lg:pt-6 lg:pb-28 overflow-hidden">
+    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -103,10 +103,10 @@ export default function Testimonials() {
       </div>
 
       <div className="mt-14 space-y-5">
-        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
+        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
           {rowTop.map((t, i) => (<Card key={`t-${i}`} t={t} />))}
         </div>
-        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
+        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
           {rowBottom.map((t, i) => (<Card key={`b-${i}`} t={t} />))}
         </div>
       </div>
