@@ -371,7 +371,6 @@ export default function Procedures() {
     </section>
   );
 }
-}
 
 
 type JourneyStep = {
