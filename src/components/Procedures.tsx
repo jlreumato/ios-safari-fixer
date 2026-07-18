@@ -328,56 +328,49 @@ function JointsWheel() {
 
 export default function Procedures() {
   return (
-    <>
+    <section
+      id="procedimentos"
+      className="relative"
+      style={{
+        backgroundImage: `
+          radial-gradient(circle at 20% 15%, hsl(260 60% 78% / 0.55), transparent 55%),
+          radial-gradient(circle at 80% 40%, hsl(30 70% 82% / 0.5), transparent 55%),
+          radial-gradient(circle at 30% 85%, hsl(280 55% 82% / 0.45), transparent 55%),
+          linear-gradient(160deg, hsl(250 40% 96%) 0%, hsl(30 55% 95%) 55%, hsl(270 40% 95%) 100%)
+        `,
+        backgroundAttachment: "fixed",
+        backgroundSize: "cover",
+      }}
+    >
       {/* Journey / Protocolo TransformaDOR */}
-      <section id="protocolo" className="relative bg-background">
-        <div className="relative">
-          <ZoomIntro />
-          <JourneyStage steps={journey} />
+      <div id="protocolo" className="relative">
+        <ZoomIntro />
+        <JourneyStage steps={journey} />
+        <div className="pb-16 lg:pb-24" />
+      </div>
 
-          <div className="pb-24 lg:pb-32" />
-        </div>
-      </section>
+      {/* Intro — Áreas em evidência */}
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 pb-4 text-center">
+        <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
+          Procedimentos
+        </p>
+        <h2
+          className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        >
+          Precisão que devolve movimento
+        </h2>
+        <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+          Infiltrações guiadas, terapias regenerativas e equipamentos de última geração
+          para tratar a dor onde ela realmente está.
+        </p>
+      </div>
 
-
-      {/* Procedimentos — framed in the same warm gradient as "Área em evidência" */}
-      <section
-        id="procedimentos"
-        className="relative"
-        style={{
-          background: `
-            radial-gradient(circle at 20% 30%, hsl(260 60% 78% / 0.55), transparent 55%),
-            radial-gradient(circle at 80% 70%, hsl(30 70% 82% / 0.45), transparent 55%),
-            linear-gradient(135deg, hsl(250 40% 96%) 0%, hsl(30 55% 95%) 100%)
-          `,
-        }}
-      >
-        {/* Intro */}
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-16 lg:pt-24 pb-4 text-center">
-          <p className="text-base font-semibold uppercase tracking-[0.22em] text-primary">
-            Procedimentos
-          </p>
-          <h2
-            className="mt-3 text-balance text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-          >
-            Precisão que devolve movimento
-          </h2>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Infiltrações guiadas, terapias regenerativas e equipamentos de última geração
-            para tratar a dor onde ela realmente está.
-          </p>
-        </div>
-
-        {/* Vertical circular carousel — joints */}
-        <JointsWheel />
-
-        <div className="pb-0" />
-
-      </section>
-
-    </>
+      {/* Vertical circular carousel — joints */}
+      <JointsWheel />
+    </section>
   );
+}
 }
 
 
