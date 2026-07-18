@@ -20,20 +20,21 @@ function useReveal() {
 type Testimonial = { name: string; text: string; avatar: string };
 
 // randomuser.me portraits — everyday-looking real people, mixed ages and backgrounds.
+// Simpler, everyday faces — older/plainer portraits, not model-styled.
 const rowTop: Testimonial[] = [
-  { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://randomuser.me/api/portraits/women/79.jpg" },
-  { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://randomuser.me/api/portraits/men/62.jpg" },
-  { name: "Ana L.", text: "Descobri minha fibromialgia com ela. Hoje tenho um plano que realmente ajuda.", avatar: "https://randomuser.me/api/portraits/women/68.jpg" },
-  { name: "Carlos M.", text: "Voltei a caminhar sem dor no joelho. Grato demais pelo cuidado.", avatar: "https://randomuser.me/api/portraits/men/75.jpg" },
-  { name: "Beatriz R.", text: "Consulta calma, sem pressa. Me senti ouvida pela primeira vez.", avatar: "https://randomuser.me/api/portraits/women/54.jpg" },
+  { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://randomuser.me/api/portraits/women/90.jpg" },
+  { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
+  { name: "Ana L.", text: "Descobri minha fibromialgia com ela. Hoje tenho um plano que realmente ajuda.", avatar: "https://randomuser.me/api/portraits/women/74.jpg" },
+  { name: "Carlos M.", text: "Voltei a caminhar sem dor no joelho. Grato demais pelo cuidado.", avatar: "https://randomuser.me/api/portraits/men/45.jpg" },
+  { name: "Beatriz R.", text: "Consulta calma, sem pressa. Me senti ouvida pela primeira vez.", avatar: "https://randomuser.me/api/portraits/women/85.jpg" },
 ];
 
 const rowBottom: Testimonial[] = [
-  { name: "Roberto T.", text: "Diagnóstico certeiro do lúpus. Tratamento mudou minha rotina.", avatar: "https://randomuser.me/api/portraits/men/47.jpg" },
-  { name: "Fernanda O.", text: "Profissional humana e competente. Recomendo a todos da família.", avatar: "https://randomuser.me/api/portraits/women/82.jpg" },
-  { name: "Paulo H.", text: "Infiltração no ombro sem dor. Voltei aos treinos em semanas.", avatar: "https://randomuser.me/api/portraits/men/83.jpg" },
-  { name: "Cláudia V.", text: "Explica tudo com carinho. Minha mãe adorou o atendimento.", avatar: "https://randomuser.me/api/portraits/women/61.jpg" },
-  { name: "Eduardo N.", text: "Osteoporose sob controle. Exames melhoraram muito.", avatar: "https://randomuser.me/api/portraits/men/54.jpg" },
+  { name: "Roberto T.", text: "Diagnóstico certeiro do lúpus. Tratamento mudou minha rotina.", avatar: "https://randomuser.me/api/portraits/men/71.jpg" },
+  { name: "Fernanda O.", text: "Profissional humana e competente. Recomendo a todos da família.", avatar: "https://randomuser.me/api/portraits/women/72.jpg" },
+  { name: "Paulo H.", text: "Infiltração no ombro sem dor. Voltei aos treinos em semanas.", avatar: "https://randomuser.me/api/portraits/men/28.jpg" },
+  { name: "Cláudia V.", text: "Explica tudo com carinho. Minha mãe adorou o atendimento.", avatar: "https://randomuser.me/api/portraits/women/50.jpg" },
+  { name: "Eduardo N.", text: "Osteoporose sob controle. Exames melhoraram muito.", avatar: "https://randomuser.me/api/portraits/men/69.jpg" },
 ];
 
 function Card({ t }: { t: Testimonial }) {
