@@ -103,10 +103,10 @@ export default function Testimonials() {
       </div>
 
       <div className="mt-14 space-y-5">
-        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
+        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
           {rowTop.map((t, i) => (<Card key={`t-${i}`} t={t} />))}
         </div>
-        <div className="flex whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
+        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
           {rowBottom.map((t, i) => (<Card key={`b-${i}`} t={t} />))}
         </div>
       </div>
