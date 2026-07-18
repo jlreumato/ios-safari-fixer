@@ -77,18 +77,9 @@ export default function TreatmentsGrid() {
         </p>
       </div>
 
-      {/* Mobile — one full-screen card per view, stacked vertically */}
+      {/* Mobile — 3D stacked cards driven by scroll */}
       {isMobile ? (
-        <div className="flex flex-col">
-          {treatments.map((t, i) => (
-            <div
-              key={t.slug}
-              className="h-[calc(100dvh-4rem)] w-full px-4 py-4 bg-gradient-to-b from-secondary/30 to-background"
-            >
-              <TreatmentCard index={i} total={total} treatment={t} />
-            </div>
-          ))}
-        </div>
+        <MobileStack />
       ) : (
         /* Desktop tetris slide stage */
         <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
