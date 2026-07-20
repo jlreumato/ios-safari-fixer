@@ -68,7 +68,7 @@ export default function IntroCover() {
           {/* Row: DRA.  JULIANA LEAL */}
           <div className="flex items-start justify-center gap-3 sm:gap-4 md:gap-5">
             <span
-              className="mt-1 sm:mt-2 md:mt-3 text-sm font-normal uppercase tracking-[0.18em] text-white/90 sm:text-base md:text-lg lg:text-xl"
+              className="mt-2 sm:mt-3 md:mt-4 text-base font-normal uppercase tracking-[0.28em] text-white/90 sm:text-xl md:text-2xl lg:text-3xl"
               style={{
                 transform: mounted ? "translateX(0)" : "translateX(-110vw)",
                 opacity: mounted ? 1 : 0,
@@ -87,6 +87,12 @@ export default function IntroCover() {
                 transition:
                   "transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease-out",
                 transitionDelay: "150ms",
+                background:
+                  "linear-gradient(135deg, #f7ecc9 0%, #e7d3a3 45%, #c9ae74 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
               }}
             >
               Juliana Leal
@@ -106,6 +112,7 @@ export default function IntroCover() {
               Reumatologia
             </span>
           </div>
+
         </div>
 
         {/* Divider */}
