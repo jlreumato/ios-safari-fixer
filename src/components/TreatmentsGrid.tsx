@@ -159,23 +159,20 @@ function MobileStack() {
         className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden pb-8 pt-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
         style={{ scrollPaddingInline: "20%" }}
       >
-        {/* leading spacer to allow the first card to center */}
         <div className="shrink-0" style={{ width: "20%" }} aria-hidden />
         {treatments.map((t, i) => {
-          // distance from center of this card to viewport center, in card widths
           const cardCenter = i * cardW + cardW / 2;
-          const viewportCenter = scrollX + (cardW * 0.6) * 2.5; // approx; refined below
-          // simpler: use scroller width
           const scroller = scrollerRef.current;
           const vc = scroller ? scrollX + scroller.clientWidth / 2 - scroller.clientWidth * 0.2 : 0;
           const delta = cardW > 0 ? (cardCenter - vc) / cardW : 0;
           const d = clamp(delta, -2, 2);
           const abs = Math.abs(d);
-          const rotateY = -d * 45; // tilt neighbours
+          const rotateY = -d * 45;
           const translateZ = -abs * 120;
-          const translateX = -d * 12; // pull neighbours slightly toward center
+          const translateX = -d * 12;
           const scale = 1 - abs * 0.08;
           const opacity = 1 - abs * 0.25;
+          const isActive = abs < 0.35;
           return (
             <div
               key={t.slug}
@@ -195,13 +192,7 @@ function MobileStack() {
                   borderRadius: "1.75rem",
                 }}
               >
-                <TreatmentCard index={i} total={total} treatment={t} layout="mobile-stack" />
-                {/* Reflection under the focused card */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-6 -bottom-6 h-6 rounded-full bg-black/25 blur-2xl"
-                  style={{ opacity: (1 - abs) * 0.5 }}
-                />
+                <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
               </div>
             </div>
           );
@@ -230,106 +221,80 @@ function MobileStack() {
 }
 
 
-const BLOB_KEYFRAMES = [
-  "62% 38% 41% 59% / 45% 42% 58% 55%",
-  "45% 55% 63% 37% / 55% 62% 38% 45%",
-  "55% 45% 38% 62% / 40% 55% 45% 60%",
-  "38% 62% 55% 45% / 60% 40% 55% 45%",
-];
-
 function TreatmentCard({
   index,
   total,
   treatment,
-  layout = "default",
+  active = false,
 }: {
   index: number;
   total: number;
   treatment: (typeof treatments)[number];
-  layout?: "default" | "mobile-stack";
+  active?: boolean;
 }) {
-  const isMobileCard = layout === "mobile-stack";
-  // Randomized starting frame per card so undulation feels organic.
-  const seed = (index * 7) % BLOB_KEYFRAMES.length;
-  const duration = 14 + ((index * 3) % 6);
-  const delay = -((index * 2) % 10);
-
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className={`group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl bg-gradient-to-br ${treatment.gradient} shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1 ${
-        isMobileCard ? "p-0" : "p-3 sm:p-4"
-      }`}
+      className="group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1"
     >
-      {/* accent glow */}
-      <div
-        className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full opacity-30 blur-3xl"
-        style={{ backgroundColor: treatment.accent }}
+      {/* Full-bleed image */}
+      <img
+        src={treatment.image}
+        alt={treatment.title}
+        width={800}
+        height={800}
+        loading="lazy"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
+        style={{ transform: active ? "scale(1.02)" : "scale(1)" }}
       />
 
-      {/* Organic wavy image */}
+      {/* Bottom scrim only when active, to keep text legible */}
       <div
-        className={`relative w-full overflow-hidden ${
-          isMobileCard
-            ? "h-[65%]"
-            : "relative mx-auto min-h-0 flex-1 flex items-center justify-center"
-        }`}
-      >
-        <div
-          className="h-full w-full overflow-hidden ring-1 ring-white/50"
-          style={{
-            borderRadius: isMobileCard ? "1.5rem 1.5rem 0 0" : BLOB_KEYFRAMES[seed],
-            animation: isMobileCard ? undefined : `blob-morph ${duration}s ease-in-out ${delay}s infinite`,
-            boxShadow: `0 12px 28px -20px ${treatment.accent}`,
-          }}
-        >
-          <img
-            src={treatment.image}
-            alt={treatment.title}
-            width={512}
-            height={512}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-        </div>
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/45 to-transparent transition-opacity duration-700"
+        style={{ opacity: active ? 1 : 0 }}
+      />
+
+      {/* Top badge (index) always visible, floats over image */}
+      <div className="absolute left-4 top-4 z-10 rounded-full bg-white/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#2b2540] backdrop-blur sm:text-xs">
+        {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
       </div>
 
+      {/* Sliding text block — rises from bottom when the card becomes active */}
       <div
-        className={`flex flex-col ${
-          isMobileCard
-            ? "h-[35%] px-6 pb-5 pt-4 justify-between gap-2"
-            : "mt-3 flex-1"
-        }`}
+        className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 text-white"
+        style={{
+          transform: active ? "translateY(0%)" : "translateY(110%)",
+          opacity: active ? 1 : 0,
+          transition:
+            "transform 700ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out",
+          willChange: "transform, opacity",
+        }}
       >
-        <div className={`flex items-center justify-between font-semibold uppercase tracking-[0.22em] text-[#5a4d7a]/80 ${isMobileCard ? "text-xs" : "text-[10px] sm:text-xs"}`}>
-          <span>{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</span>
-          <span className="h-px flex-1 mx-2" style={{ backgroundColor: `${treatment.accent}55` }} />
+        <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] sm:text-xs">
+          <span className="h-px w-8 bg-[#e7d9b5]/70" />
           <span>Tratamento</span>
         </div>
-
         <h3
-          className={`text-balance leading-tight tracking-tight text-[#2b2540] ${isMobileCard ? "mt-0 text-[26px]" : "mt-1 text-lg sm:text-xl"}`}
+          className="mt-2 text-balance text-2xl leading-tight tracking-tight sm:text-3xl"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           {treatment.title}
         </h3>
-
-        <p className={`leading-snug text-[#4a4560] ${isMobileCard ? "text-[15px] line-clamp-2" : "mt-1 text-xs sm:text-sm line-clamp-2"}`}>
+        <p className="mt-2 line-clamp-2 text-sm leading-snug text-white/85 sm:text-base">
           {treatment.shortDesc}
         </p>
-
-        <div className={`flex items-center justify-between ${isMobileCard ? "mt-1" : "mt-2 sm:mt-3"}`}>
-          <span className={`font-semibold uppercase tracking-[0.22em] text-[#3a3548]/70 ${isMobileCard ? "text-xs" : "text-[10px] sm:text-xs"}`}>
+        <div className="mt-4 flex items-center justify-between">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/80 sm:text-xs">
             Saiba mais
           </span>
           <span
-            className={`flex items-center justify-center rounded-full border-2 bg-transparent shadow-sm transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20 ${isMobileCard ? "h-10 w-10" : "h-8 w-8"}`}
-            style={{ borderColor: treatment.accent, color: treatment.accent }}
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#e7d9b5] text-[#e7d9b5] transition-transform duration-500 group-hover:scale-110"
           >
-            <ArrowUpRight className={isMobileCard ? "h-5 w-5" : "h-4 w-4"} />
+            <ArrowUpRight className="h-4 w-4" />
           </span>
         </div>
       </div>
     </Link>
   );
 }
+
