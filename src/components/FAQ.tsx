@@ -113,7 +113,13 @@ export default function FAQ() {
           </h2>
         </div>
 
-        <Accordion type="single" collapsible className="mt-12">
+        <Accordion
+          type="single"
+          collapsible
+          className="mt-12"
+          value={activeIndex >= 0 ? `faq-${activeIndex}` : undefined}
+          onValueChange={() => {}}
+        >
           {faqs.map((f, i) => {
             const isActive = activeIndex === i;
             const isRevealed = revealed[i];
@@ -121,6 +127,7 @@ export default function FAQ() {
               <div
                 key={i}
                 ref={(el) => (itemRefs.current[i] = el)}
+                onMouseEnter={() => setActiveIndex(i)}
                 className="transition-all duration-700 ease-out will-change-transform"
                 style={{
                   opacity: isRevealed ? (activeIndex === -1 ? 1 : isActive ? 1 : 0.45) : 0,
