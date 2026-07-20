@@ -79,11 +79,12 @@ export default function Header() {
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="inline-flex items-center justify-center rounded-md p-2 text-foreground lg:hidden" aria-label="Menu">
+              <button className="inline-flex items-center justify-center rounded-md p-2 text-white lg:hidden" aria-label="Menu">
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-white pt-12">
+            <SheetContent side="right" className="w-72 bg-[#1a1229] pt-12 border-l border-primary/20">
+
               <nav className="flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <a
