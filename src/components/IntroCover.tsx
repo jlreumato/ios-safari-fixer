@@ -157,10 +157,8 @@ export default function IntroCover() {
       >
         <div className="pointer-events-none absolute -left-20 top-10 h-96 w-96 rounded-full bg-[#8e82b8]/25 blur-[120px]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e7d9b5]/50 to-transparent" />
-        {/* Full-viewport content, aligned to the left half */}
-        <div className="absolute inset-y-0 left-0 h-full w-[200vw]">
-          {content}
-        </div>
+        {/* Full-viewport content aligned to viewport left edge */}
+        <div className="absolute inset-y-0 left-0 h-full w-screen">{content}</div>
       </div>
 
       {/* RIGHT HALF — slides right on scroll */}
@@ -174,10 +172,8 @@ export default function IntroCover() {
       >
         <div className="pointer-events-none absolute -right-20 bottom-10 h-[28rem] w-[28rem] rounded-full bg-[#e7d9b5]/15 blur-[140px]" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e7d9b5]/50 to-transparent" />
-        {/* Full-viewport content, shifted so the right half of it shows here */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-[200vw]">
-          <div className="pointer-events-auto h-full w-full">{content}</div>
-        </div>
+        {/* Full-viewport content aligned to viewport right edge */}
+        <div className="absolute inset-y-0 right-0 h-full w-screen">{content}</div>
       </div>
     </div>
   );
