@@ -270,10 +270,10 @@ export default function Procedures() {
       className="relative"
       style={{
         backgroundImage: `
-          radial-gradient(circle at 20% 15%, hsl(260 60% 78% / 0.55), transparent 55%),
-          radial-gradient(circle at 80% 40%, hsl(30 70% 82% / 0.5), transparent 55%),
-          radial-gradient(circle at 30% 85%, hsl(280 55% 82% / 0.45), transparent 55%),
-          linear-gradient(160deg, hsl(250 40% 96%) 0%, hsl(30 55% 95%) 55%, hsl(270 40% 95%) 100%)
+          radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
+          radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
+          radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
+          linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
         `,
         backgroundAttachment: "fixed",
         backgroundSize: "cover",
@@ -291,6 +291,7 @@ export default function Procedures() {
     </section>
   );
 }
+
 
 
 type JourneyStep = {
