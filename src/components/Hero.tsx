@@ -1,24 +1,65 @@
+import { useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
+import heroPoster from "@/assets/hero-poster.jpg.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
+/** Decide se devemos pular o vídeo (mobile em conexão lenta / save-data). */
+function shouldSkipVideoInitially(): boolean {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+  const conn = (navigator as unknown as { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const slow = !!conn?.saveData || ["slow-2g", "2g", "3g"].includes(conn?.effectiveType ?? "");
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+  return isMobile && slow;
+}
+
 export default function Hero() {
+  const [videoReady, setVideoReady] = useState(false);
+  const [mountVideo, setMountVideo] = useState(false);
+
+  useEffect(() => {
+    if (shouldSkipVideoInitially()) return;
+    // Adia a montagem do vídeo para depois do primeiro paint,
+    // garantindo que o poster (LCP) apareça primeiro.
+    const idle = (cb: () => void) => {
+      const w = window as unknown as { requestIdleCallback?: (cb: () => void) => number };
+      if (typeof w.requestIdleCallback === "function") w.requestIdleCallback(cb);
+      else window.setTimeout(cb, 200);
+    };
+    idle(() => setMountVideo(true));
+  }, []);
+
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
-      {/* Full-viewport video — sits behind the fixed header */}
-      <video
-        src={heroVideo.url}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="metadata"
-        className="absolute inset-0 h-full w-full object-cover"
+      {/* Poster estático — LCP, aparece imediatamente */}
+      <img
+        src={heroPoster.url}
+        alt=""
         aria-hidden="true"
+        fetchPriority="high"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
       />
+
+      {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
+      {mountVideo && (
+        <video
+          src={heroVideo.url}
+          poster={heroPoster.url}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          onLoadedData={() => setVideoReady(true)}
+          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+          style={{ opacity: videoReady ? 1 : 0 }}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Legibility overlays */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
