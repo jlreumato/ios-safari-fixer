@@ -91,6 +91,7 @@ export default function TreatmentsGrid() {
                 const tx = (1 - p) * (fromLeft ? -120 : 120);
                 const rot = (1 - p) * (fromLeft ? -6 : 6);
                 const scale = 0.9 + 0.1 * p;
+                const isActive = p > 0.85;
                 return (
                   <div
                     key={t.slug}
@@ -102,7 +103,7 @@ export default function TreatmentsGrid() {
                       willChange: "transform, opacity",
                     }}
                   >
-                    <TreatmentCard index={i} total={total} treatment={t} />
+                    <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
                   </div>
                 );
               })}
@@ -113,6 +114,7 @@ export default function TreatmentsGrid() {
     </section>
   );
 }
+
 
 /**
  * Mobile Cover Flow 3D — horizontal swipeable carousel with the center card in
