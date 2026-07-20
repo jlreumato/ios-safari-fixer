@@ -5,7 +5,6 @@ import Clinic from "@/components/Clinic";
 import Testimonials from "@/components/Testimonials";
 import TreatmentsGrid from "@/components/TreatmentsGrid";
 import Procedures from "@/components/Procedures";
-import Blog from "@/components/Blog";
 import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
@@ -18,19 +17,12 @@ const Index = () => {
       <IntroCover />
       <Header />
       <main>
-        <div className="relative">
-          <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-            <Hero />
-          </div>
-          <div className="about-parallax relative z-10">
-            <About />
-          </div>
-        </div>
+        <Hero />
+        <About />
         <Clinic />
         <TreatmentsGrid />
         <Procedures />
         <Testimonials />
-        <Blog />
         <FAQ />
         <CTASection />
       </main>
@@ -41,3 +33,4 @@ const Index = () => {
 };
 
 export default Index;
+

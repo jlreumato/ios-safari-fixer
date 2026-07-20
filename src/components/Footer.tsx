@@ -14,7 +14,7 @@ export default function Footer() {
               className="h-12 w-auto brightness-0 invert md:h-14"
               loading="lazy"
             />
-            <p className="mt-1 text-sm font-medium uppercase tracking-[0.15em] text-primary">Reumatologia</p>
+            
             <p className="mt-4 text-base leading-relaxed">
               Reumatologista em Maceió — AL. Atendimento humanizado e baseado em evidências científicas.
             </p>

@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Atuação", href: "/#atuacao" },
   { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
-  { label: "Blog", href: "/#blog" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/#contato" },
 ];
 
@@ -32,7 +32,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 shadow-[0_2px_16px_hsl(249_22%_61%/0.08)] -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
+          ? "bg-[#1a1229]/90 shadow-[0_2px_20px_rgba(0,0,0,0.4)] -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -43,12 +43,11 @@ export default function Header() {
             <img
               src={logoNome.url}
               alt="Dra. Juliana Leal — Reumatologia"
-              className={`h-10 w-auto md:h-12 transition-[filter] duration-300 ${
-                scrolled ? "" : "[filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
-              }`}
+              className="h-10 w-auto md:h-12 [filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
               loading="eager"
             />
           </a>
+
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
@@ -56,10 +55,11 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-md px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:text-primary"
+                className="rounded-md px-3 py-2 text-base font-medium text-white/80 transition-colors hover:text-primary"
               >
                 {link.label}
               </a>
+
             ))}
           </nav>
 
@@ -79,11 +79,12 @@ export default function Header() {
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="inline-flex items-center justify-center rounded-md p-2 text-foreground lg:hidden" aria-label="Menu">
+              <button className="inline-flex items-center justify-center rounded-md p-2 text-white lg:hidden" aria-label="Menu">
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-white pt-12">
+            <SheetContent side="right" className="w-72 bg-[#1a1229] pt-12 border-l border-primary/20">
+
               <nav className="flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <a
