@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroVideo from "@/assets/hero-video.mp4.asset.json";
 import heroPoster from "@/assets/hero-poster.jpg.asset.json";
+import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -34,15 +35,18 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
-      {/* Poster estático — LCP, aparece imediatamente */}
-      <img
-        src={heroPoster.url}
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
-      />
+      {/* Poster estático — LCP, aparece imediatamente (mobile específico) */}
+      <picture>
+        <source media="(max-width: 767px)" srcSet={heroPosterMobile.url} />
+        <img
+          src={heroPoster.url}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
 
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
@@ -68,7 +72,7 @@ export default function Hero() {
       {/* Content over the video */}
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <p className="mb-4 inline-block rounded-full border border-white/25 bg-white/10 -webkit-backdrop-filter backdrop-filter backdrop-blur-md px-4 py-1.5 text-base font-semibold uppercase tracking-[0.18em] text-[#e7d9b5] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-lg">
+          <p className="mb-4 inline-block rounded-full border border-white/20 bg-white/5 -webkit-backdrop-filter backdrop-filter backdrop-blur-md px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-[#e7d9b5]/85 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-xs">
             Reumatologista · CRM/AL 6717 · RQE 4857
           </p>
 
