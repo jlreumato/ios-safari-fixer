@@ -32,7 +32,7 @@ export default function Hero() {
           </p>
 
           <h1
-            className="text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl xl:text-7xl"
+            className="text-balance text-2xl font-normal leading-[1.1] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-3xl lg:text-4xl xl:text-5xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             Cuidado especializado para quem convive com{" "}

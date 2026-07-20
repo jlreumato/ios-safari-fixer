@@ -3,7 +3,7 @@ import logoNome from "@/assets/nome-header.png.asset.json";
 
 export default function Footer() {
   return (
-    <footer id="contato" className="bg-foreground py-16 text-white/80">
+    <footer id="contato" className="bg-gradient-to-b from-[hsl(260_35%_18%)] to-[hsl(260_40%_10%)] py-16 text-white/80">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand */}
