@@ -2,15 +2,16 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Blog from "@/components/Blog";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { useEffect } from "react";
+import Seo from "@/components/Seo";
 
 const BlogPage = () => {
-  useEffect(() => {
-    document.title = "Blog — Dra. Juliana Leal Reumatologia";
-  }, []);
-
   return (
     <>
+      <Seo
+        title="Blog de Reumatologia — Dra. Juliana Leal | Maceió, AL"
+        description="Artigos sobre artrite reumatoide, lúpus, fibromialgia, artrose, osteoporose e gota escritos pela Dra. Juliana Leal, reumatologista em Maceió — Alagoas."
+        path="/blog"
+      />
       <Header />
       <main className="pt-24">
         <Blog />

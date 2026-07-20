@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import LoadingSplash from "@/components/LoadingSplash";
 import { treatments } from "@/data/treatments";
+import Seo from "@/components/Seo";
 
 /**
  * Grid horizontal com parallax:
