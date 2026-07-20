@@ -10,10 +10,12 @@ import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import IntroCover from "@/components/IntroCover";
 
 const Index = () => {
   return (
     <>
+      <IntroCover />
       <Header />
       <main>
         <div className="relative">
