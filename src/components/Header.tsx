@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Atuação", href: "/#atuacao" },
   { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
-  { label: "Blog", href: "/#blog" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/#contato" },
 ];
 
