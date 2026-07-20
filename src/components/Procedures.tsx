@@ -475,7 +475,6 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
               {steps.map((s, i) => {
                 const isActive = i === active;
                 const isPast = i < active;
-                const emphasizeTitle = i % 2 === 0;
                 return (
                   <li
                     key={s.title}
@@ -486,7 +485,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                     }
                   >
                     <span
-                      className={`absolute -left-[30px] top-1 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
+                      className={`absolute -left-[30px] top-2 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
                         isActive
                           ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
                           : isPast
@@ -497,26 +496,26 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                     </span>
                     <span
-                      className={`block font-semibold uppercase tracking-[0.22em] transition-colors ${
-                        emphasizeTitle ? "text-xs" : "text-base"
-                      } ${isActive ? "text-primary" : "text-muted-foreground/70"}`}
+                      className={`block text-[10px] font-semibold uppercase tracking-[0.28em] transition-colors ${
+                        isActive ? "text-primary" : "text-muted-foreground/70"
+                      }`}
                     >
                       Etapa {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`mt-0.5 block leading-snug transition-colors ${
-                        emphasizeTitle ? "text-lg" : "text-sm"
-                      } ${
+                      className={`mt-1 block text-2xl leading-tight tracking-tight transition-colors ${
                         isActive
-                          ? "font-medium text-foreground"
-                          : "text-muted-foreground"
+                          ? "text-foreground"
+                          : "text-muted-foreground/80"
                       }`}
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                     >
                       {s.title}
                     </span>
                   </li>
                 );
               })}
+
             </ol>
             <div className="mt-8 flex items-center gap-3 text-base font-medium uppercase tracking-[0.24em] text-primary/70">
               <span>{String(active + 1).padStart(2, "0")}</span>
