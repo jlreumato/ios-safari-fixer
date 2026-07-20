@@ -550,10 +550,10 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                     }}
                   >
                     <div
-                      className={`mx-auto max-w-2xl rounded-3xl border p-8 sm:p-10 backdrop-blur transition-colors duration-500 ${
+                      className={`mx-auto max-w-2xl rounded-3xl border-2 bg-transparent p-8 sm:p-10 transition-colors duration-500 ${
                         isActive
-                          ? "border-primary/40 bg-card shadow-[0_30px_60px_-30px_rgba(70,50,120,0.45)]"
-                          : "border-primary/10 bg-card/60"
+                          ? "border-[#2a2730] shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]"
+                          : "border-[#2a2730]/40"
                       }`}
                     >
                       <div className="flex items-center gap-4">
