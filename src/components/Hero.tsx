@@ -32,12 +32,13 @@ export default function Hero() {
           </p>
 
           <h1
-            className="text-balance text-2xl font-normal leading-[1.1] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-3xl lg:text-4xl xl:text-5xl"
+            className="text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-7xl xl:text-8xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
-            Cuidado especializado para quem convive com{" "}
-            <span className="italic text-[#e7d9b5]">dores crônicas</span>
-            <span className="text-white"> em Maceió.</span>
+            Humanidade para transformar sua{" "}
+            <span className="italic text-[#e7d9b5]">DOR</span>
+            <span className="text-white"> em </span>
+            <span className="italic text-[#e7d9b5]">LIBERDADE!</span>
           </h1>
 
           <p className="mt-5 max-w-lg text-base leading-relaxed text-white/80 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-lg">

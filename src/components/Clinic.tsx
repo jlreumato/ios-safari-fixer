@@ -145,7 +145,7 @@ export default function Clinic() {
   const currentLocation = locations[activeTab];
 
   return (
-    <section id="clinica" className="bg-secondary/50 py-20 lg:py-28">
+    <section id="clinica" className="relative py-20 lg:py-28">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
