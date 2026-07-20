@@ -412,10 +412,42 @@ function ZoomIntro() {
  */
 function JourneyStage({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [entry, setEntry] = useState(0);
+
+  // Entry animation: fade + zoom-in as the section approaches the viewport
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const e = Math.max(0, Math.min(1, 1 - rect.top / vh));
+      setEntry(e);
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [ref]);
 
   // Continuous index across steps (0 → steps.length - 1).
-  const pos = progress * (steps.length - 1);
-  const active = Math.min(steps.length - 1, Math.max(0, Math.round(pos)));
+  const scrollPos = progress * (steps.length - 1);
+  const scrollActive = Math.min(steps.length - 1, Math.max(0, Math.round(scrollPos)));
+  const active = hoverIndex ?? scrollActive;
+  const pos = hoverIndex !== null ? hoverIndex : scrollPos;
+
+  const introScale = 0.6 + entry * 0.4;
+  const introOpacity = entry;
 
   return (
     <div
@@ -423,19 +455,36 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
       className="relative"
       style={{ height: `${steps.length * 90 + 40}vh` }}
     >
-      <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden">
+      <div
+        className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden"
+        style={{
+          transform: `scale(${introScale})`,
+          opacity: introOpacity,
+          transformOrigin: "center center",
+          transition: "transform 120ms linear, opacity 120ms linear",
+          willChange: "transform, opacity",
+        }}
+      >
         <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
           {/* Left rail */}
           <aside className="relative hidden lg:block">
             <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
-              Etapas do protocolo
+              Etapas da Transformação
             </p>
             <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
               {steps.map((s, i) => {
                 const isActive = i === active;
                 const isPast = i < active;
+                const emphasizeTitle = i % 2 === 0;
                 return (
-                  <li key={s.title} className="relative">
+                  <li
+                    key={s.title}
+                    className="relative cursor-pointer"
+                    onMouseEnter={() => setHoverIndex(i)}
+                    onMouseLeave={() =>
+                      setHoverIndex((h) => (h === i ? null : h))
+                    }
+                  >
                     <span
                       className={`absolute -left-[30px] top-1 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
                         isActive
@@ -448,14 +497,16 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
                       {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                     </span>
                     <span
-                      className={`block text-base font-semibold uppercase tracking-[0.22em] transition-colors ${
-                        isActive ? "text-primary" : "text-muted-foreground/70"
-                      }`}
+                      className={`block font-semibold uppercase tracking-[0.22em] transition-colors ${
+                        emphasizeTitle ? "text-xs" : "text-base"
+                      } ${isActive ? "text-primary" : "text-muted-foreground/70"}`}
                     >
                       Etapa {String(i + 1).padStart(2, "0")}
                     </span>
                     <span
-                      className={`mt-0.5 block text-base leading-snug transition-colors ${
+                      className={`mt-0.5 block leading-snug transition-colors ${
+                        emphasizeTitle ? "text-lg" : "text-sm"
+                      } ${
                         isActive
                           ? "font-medium text-foreground"
                           : "text-muted-foreground"
