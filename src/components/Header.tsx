@@ -8,7 +8,7 @@ import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
   { label: "A Clínica", href: "/#clinica" },
-  { label: "Atuação", href: "/#atuacao" },
+  { label: "Atuação", href: "/#procedimentos" },
   { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Blog", href: "/blog" },
