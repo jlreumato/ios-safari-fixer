@@ -83,15 +83,15 @@ export default function Header() {
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72 bg-[#1a1229] pt-12 border-l border-primary/20">
-
-              <nav className="flex flex-col gap-1">
+            <SheetContent side="right" className="w-screen max-w-none bg-[#1a1229] pt-16 border-l-0 px-8">
+              <nav className="flex flex-col gap-2">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-secondary hover:text-primary"
+                    className="rounded-md px-4 py-4 text-3xl text-foreground transition-colors hover:text-primary"
+                    style={{ fontFamily: "'Dancing Script', 'Cormorant Garamond', cursive", fontWeight: 600 }}
                   >
                     {link.label}
                   </a>
@@ -100,7 +100,7 @@ export default function Header() {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4"
+                  className="mt-6"
                   onClick={() => setOpen(false)}
                 >
                   <Button className="btn-champagne btn-glow-ring w-full gap-2">
