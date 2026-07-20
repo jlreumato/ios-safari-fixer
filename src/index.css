@@ -4,46 +4,46 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 16%;
+    --background: 260 35% 10%;
+    --foreground: 42 55% 88%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 16%;
+    --card: 260 32% 14%;
+    --card-foreground: 42 55% 88%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 16%;
+    --popover: 260 32% 14%;
+    --popover-foreground: 42 55% 88%;
 
-    --primary: 249 22% 61%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 40 55% 72%;
+    --primary-foreground: 260 40% 12%;
 
-    --secondary: 270 30% 96%;
-    --secondary-foreground: 249 22% 41%;
+    --secondary: 260 25% 18%;
+    --secondary-foreground: 42 55% 88%;
 
-    --muted: 270 20% 96%;
-    --muted-foreground: 240 5% 46%;
+    --muted: 260 22% 20%;
+    --muted-foreground: 42 25% 75%;
 
-    --accent: 270 30% 94%;
-    --accent-foreground: 249 22% 41%;
+    --accent: 260 28% 22%;
+    --accent-foreground: 42 55% 88%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 15% 90%;
-    --input: 270 15% 90%;
-    --ring: 249 22% 61%;
+    --border: 260 22% 24%;
+    --input: 260 22% 24%;
+    --ring: 40 55% 72%;
 
     --radius: 0.625rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 249 22% 61%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 270 30% 96%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 270 15% 91%;
-    --sidebar-ring: 249 22% 61%;
+    --sidebar-background: 260 32% 12%;
+    --sidebar-foreground: 42 55% 88%;
+    --sidebar-primary: 40 55% 72%;
+    --sidebar-primary-foreground: 260 40% 12%;
+    --sidebar-accent: 260 28% 20%;
+    --sidebar-accent-foreground: 42 55% 88%;
+    --sidebar-border: 260 22% 24%;
+    --sidebar-ring: 40 55% 72%;
 
-    --whatsapp: 249 22% 61%;
+    --whatsapp: 40 55% 72%;
   }
 }
 
@@ -55,15 +55,16 @@
   body {
     @apply text-foreground antialiased;
     font-family: 'DM Sans', system-ui, sans-serif;
-    background-color: #ffffff;
+    background-color: #1a1229;
     background-image:
-      radial-gradient(ellipse 90% 60% at 15% 12%, rgba(200, 187, 226, 0.35), transparent 60%),
-      radial-gradient(ellipse 80% 55% at 85% 35%, rgba(240, 220, 185, 0.35), transparent 60%),
-      radial-gradient(ellipse 100% 60% at 20% 62%, rgba(214, 195, 227, 0.30), transparent 60%),
-      radial-gradient(ellipse 90% 55% at 90% 82%, rgba(245, 228, 200, 0.32), transparent 60%),
-      linear-gradient(180deg, #ffffff 0%, #f8f2fb 20%, #fbf4e8 45%, #f4ecfa 70%, #fbf5ea 88%, #ffffff 100%);
+      radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120, 95, 175, 0.30), transparent 60%),
+      radial-gradient(ellipse 80% 55% at 85% 35%, rgba(210, 175, 110, 0.14), transparent 60%),
+      radial-gradient(ellipse 100% 60% at 20% 62%, rgba(130, 100, 180, 0.22), transparent 60%),
+      radial-gradient(ellipse 90% 55% at 90% 82%, rgba(200, 170, 105, 0.12), transparent 60%),
+      linear-gradient(180deg, #1a1229 0%, #221740 25%, #1c1533 55%, #241a44 80%, #17102a 100%);
     background-attachment: fixed;
     position: relative;
+    color: hsl(var(--foreground));
   }
 
   /* Subtle animated thin lines + drifting orbs across the whole page */
@@ -74,8 +75,8 @@
     pointer-events: none;
     z-index: 0;
     background-image:
-      repeating-linear-gradient(115deg, transparent 0 78px, rgba(142, 130, 184, 0.05) 78px 79px),
-      repeating-linear-gradient(65deg, transparent 0 140px, rgba(200, 170, 120, 0.045) 140px 141px);
+      repeating-linear-gradient(115deg, transparent 0 78px, rgba(231, 211, 163, 0.05) 78px 79px),
+      repeating-linear-gradient(65deg, transparent 0 140px, rgba(180, 155, 220, 0.05) 140px 141px);
     animation: bg-lines-drift 40s linear infinite;
     mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 75%);
     -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9), rgba(0,0,0,0.25) 75%);
@@ -87,24 +88,13 @@
     pointer-events: none;
     z-index: 0;
     background-image:
-      radial-gradient(circle at 20% 30%, rgba(180, 160, 210, 0.18), transparent 40%),
-      radial-gradient(circle at 80% 70%, rgba(230, 205, 165, 0.16), transparent 42%);
+      radial-gradient(circle at 20% 30%, rgba(160, 130, 210, 0.18), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(231, 211, 163, 0.12), transparent 42%);
     animation: bg-orbs-float 22s ease-in-out infinite alternate;
     filter: blur(20px);
   }
   #root { position: relative; z-index: 1; }
 
-  /* About section slides up over the sticky Hero — needs an opaque background */
-  .about-parallax {
-    background-color: #ffffff;
-    background-image:
-      radial-gradient(ellipse 90% 60% at 15% 12%, rgba(200, 187, 226, 0.45), transparent 60%),
-      radial-gradient(ellipse 80% 55% at 85% 35%, rgba(240, 220, 185, 0.45), transparent 60%),
-      linear-gradient(180deg, #ffffff 0%, #f8f2fb 45%, #fbf5ea 100%);
-    box-shadow: 0 -30px 60px -30px rgba(60, 50, 90, 0.18);
-    border-top-left-radius: 2rem;
-    border-top-right-radius: 2rem;
-  }
 
   @keyframes bg-lines-drift {
     from { transform: translate3d(0, 0, 0); }
