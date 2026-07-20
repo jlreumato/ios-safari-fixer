@@ -10,10 +10,15 @@ import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import IntroCover from "@/components/IntroCover";
+import Seo from "@/components/Seo";
+
+const HOME_TITLE = "Dra. Juliana Leal — Reumatologista em Maceió (AL) | Especialista em Dor";
+const HOME_DESC = "Reumatologista em Maceió — Alagoas. Especialista em Dor pela USP-SP. Tratamento humanizado de artrite, lúpus, fibromialgia, artrose, osteoporose e doenças autoimunes. CRM/AL 6717 · RQE 4857. Agende sua consulta.";
 
 const Index = () => {
   return (
     <>
+      <Seo title={HOME_TITLE} description={HOME_DESC} path="/" />
       <IntroCover />
       <Header />
       <main>

@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import LoadingSplash from "@/components/LoadingSplash";
 import { treatments } from "@/data/treatments";
+import Seo from "@/components/Seo";
 
 /**
  * Grid horizontal com parallax:
@@ -62,8 +63,25 @@ export default function Tratamentos() {
 
   return (
     <>
+      <Seo
+        title="Tratamentos Reumatológicos em Maceió (AL) — Dra. Juliana Leal"
+        description="Conheça os tratamentos oferecidos pela Dra. Juliana Leal em Maceió — Alagoas: artrite reumatoide, lúpus, fibromialgia, artrose, osteoporose, gota e outras doenças autoimunes."
+        path="/tratamentos"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Tratamentos reumatológicos — Dra. Juliana Leal",
+          "itemListElement": treatments.map((t, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            url: `https://julianalealreumato.com.br/tratamentos/${t.slug}`,
+            name: t.title,
+          })),
+        }}
+      />
       <Header />
       <main className="bg-[#faf8f5]">
+
         {/* Intro */}
         <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#f5f0e8] to-[#ebe5db] pt-28 pb-14">
           <div
