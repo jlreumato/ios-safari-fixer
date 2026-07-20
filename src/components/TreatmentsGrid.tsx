@@ -117,104 +117,105 @@ export default function TreatmentsGrid() {
 
 
 /**
- * Mobile Cover Flow 3D — horizontal swipeable carousel with the center card in
- * focus and neighbours tilted back in perspective, like Apple's classic
- * Cover Flow. Snap-scroll driven, GPU accelerated.
+ * Mobile — horizontal scroll hijack. Vertical page scroll drives the cards
+ * sideways inside a sticky viewport; once the last card is passed the page
+ * resumes normal vertical scrolling.
  */
 function MobileStack() {
-  const scrollerRef = useRef<HTMLDivElement>(null);
-  const [scrollX, setScrollX] = useState(0);
-  const [cardW, setCardW] = useState(0);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  const total = treatments.length;
+  // How much vertical scroll per card slide (in vh).
+  const stepVh = 70;
+  const totalVh = total * stepVh + 20;
 
   useEffect(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
     let raf = 0;
     const update = () => {
-      setScrollX(el.scrollLeft);
-      const first = el.querySelector<HTMLElement>("[data-cf-card]");
-      if (first) setCardW(first.offsetWidth);
+      const el = stageRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const totalPx = el.offsetHeight - vh;
+      const scrolled = Math.max(0, Math.min(totalPx, -rect.top));
+      setProgress(totalPx > 0 ? scrolled / totalPx : 0);
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
     update();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
       cancelAnimationFrame(raf);
-      el.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", update);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
-  const total = treatments.length;
-  const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+  // Card width as % of viewport width (wider than before).
+  const cardVW = 84;
+  // Total translate distance so the last card ends aligned centered.
+  const gapVW = 4;
+  const stride = cardVW + gapVW;
+  const maxShiftVW = stride * (total - 1);
+  const shiftVW = progress * maxShiftVW;
+  const activeIndex = Math.round(progress * (total - 1));
 
   return (
-    <div className="relative w-full" style={{ perspective: "1400px" }}>
-      <div
-        ref={scrollerRef}
-        className="flex snap-x snap-mandatory overflow-x-auto overflow-y-hidden pb-8 pt-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-        style={{ scrollPaddingInline: "20%" }}
-      >
-        <div className="shrink-0" style={{ width: "20%" }} aria-hidden />
-        {treatments.map((t, i) => {
-          const cardCenter = i * cardW + cardW / 2;
-          const scroller = scrollerRef.current;
-          const vc = scroller ? scrollX + scroller.clientWidth / 2 - scroller.clientWidth * 0.2 : 0;
-          const delta = cardW > 0 ? (cardCenter - vc) / cardW : 0;
-          const d = clamp(delta, -2, 2);
-          const abs = Math.abs(d);
-          const rotateY = -d * 45;
-          const translateZ = -abs * 120;
-          const translateX = -d * 12;
-          const scale = 1 - abs * 0.08;
-          const opacity = 1 - abs * 0.25;
-          const isActive = abs < 0.35;
-          return (
-            <div
-              key={t.slug}
-              data-cf-card
-              className="shrink-0 snap-center px-2"
-              style={{ width: "60%" }}
-            >
+    <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
+      <div className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden">
+        <div
+          className="flex h-full items-center"
+          style={{
+            paddingLeft: `${(100 - cardVW) / 2}vw`,
+            paddingRight: `${(100 - cardVW) / 2}vw`,
+            gap: `${gapVW}vw`,
+            transform: `translate3d(-${shiftVW}vw, 0, 0)`,
+            transition: "transform 120ms linear",
+            willChange: "transform",
+          }}
+        >
+          {treatments.map((t, i) => {
+            const isActive = i === activeIndex;
+            return (
               <div
-                className="relative h-[70dvh] w-full"
-                style={{
-                  transform: `translate3d(${translateX}%, 0, ${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
-                  transformStyle: "preserve-3d",
-                  transition: "transform 200ms cubic-bezier(0.22,1,0.36,1), opacity 200ms linear",
-                  opacity,
-                  willChange: "transform, opacity",
-                  boxShadow: `0 30px 60px -30px rgba(70,50,120,${0.35 - abs * 0.1})`,
-                  borderRadius: "1.75rem",
-                }}
+                key={t.slug}
+                className="shrink-0"
+                style={{ width: `${cardVW}vw`, height: "78dvh" }}
               >
-                <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
+                <div
+                  className="relative h-full w-full overflow-hidden rounded-3xl transition-transform duration-500"
+                  style={{
+                    transform: isActive ? "scale(1)" : "scale(0.94)",
+                    boxShadow: "0 30px 60px -30px rgba(70,50,120,0.5)",
+                  }}
+                >
+                  <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
+                </div>
               </div>
-            </div>
-          );
-        })}
-        <div className="shrink-0" style={{ width: "20%" }} aria-hidden />
-      </div>
+            );
+          })}
+        </div>
 
-      {/* Pagination dots */}
-      <div className="mt-2 flex items-center justify-center gap-1.5">
-        {treatments.map((_, i) => {
-          const active = cardW > 0 ? Math.round(scrollX / cardW) === i : i === 0;
-          return (
-            <span
-              key={i}
-              className="h-1.5 rounded-full transition-all duration-300"
-              style={{
-                width: active ? 20 : 6,
-                backgroundColor: active ? "#8e82b8" : "rgba(142,130,184,0.35)",
-              }}
-            />
-          );
-        })}
+        {/* Pagination dots */}
+        <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-1.5">
+          {treatments.map((_, i) => {
+            const active = i === activeIndex;
+            return (
+              <span
+                key={i}
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{
+                  width: active ? 20 : 6,
+                  backgroundColor: active ? "#e7d9b5" : "rgba(231,217,181,0.35)",
+                }}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

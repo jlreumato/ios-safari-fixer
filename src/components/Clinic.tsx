@@ -198,22 +198,6 @@ export default function Clinic() {
         {/* 3D Cube Carousel */}
         <Cube3DCarousel key={currentLocation.id} images={currentLocation.images} />
 
-        {/* Features */}
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {currentLocation.features.map((f, i) => (
-            <div
-              key={i}
-              className="flex flex-col items-center rounded-xl bg-background p-6 text-center shadow-sm transition-shadow hover:shadow-md"
-              style={{ transitionDelay: `${i * 80}ms` }}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="mt-4 text-xl font-semibold text-foreground lg:text-xl">{f.title}</h3>
-              <p className="mt-2 text-lg leading-relaxed text-muted-foreground lg:text-lg">{f.desc}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

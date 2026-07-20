@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronUp } from "lucide-react";
 
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
@@ -12,30 +13,91 @@ const navLinks = [
 const GOLD = "#e7d9b5";
 
 /**
- * Full-screen intro cover. On scroll, the cover splits vertically down the
- * middle: the left half slides left, the right half slides right — like a
- * curtain opening — revealing the Hero video underneath.
+ * Full-screen intro cover. Page scroll is locked until the user "opens" the
+ * curtain (via wheel / touch). When fully opened, the halves stay off-screen
+ * and normal page scrolling begins.
  */
 export default function IntroCover() {
-  const [scrollY, setScrollY] = useState(0);
+  const [progress, setProgress] = useState(0); // 0 closed → 1 fully open
   const [mounted, setMounted] = useState(false);
   const [nameDone, setNameDone] = useState(false);
+  const progressRef = useRef(0);
+  const openRef = useRef(false);
 
   useEffect(() => {
     const t = requestAnimationFrame(() => setMounted(true));
     const done = window.setTimeout(() => setNameDone(true), 1600);
-    const onScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
     return () => {
       cancelAnimationFrame(t);
       window.clearTimeout(done);
-      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
-  const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const progress = Math.min(1, scrollY / vh);
+  // Lock page scroll while curtain is closed; drive progress via wheel/touch.
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtml = html.style.overflow;
+    const prevBody = body.style.overflow;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+
+    const OPEN_DISTANCE = 900; // px of accumulated delta needed to fully open
+    let touchY: number | null = null;
+
+    const bump = (delta: number) => {
+      if (openRef.current) return;
+      const next = Math.max(0, Math.min(1, progressRef.current + delta / OPEN_DISTANCE));
+      progressRef.current = next;
+      setProgress(next);
+      if (next >= 0.999) {
+        openRef.current = true;
+        html.style.overflow = prevHtml;
+        body.style.overflow = prevBody;
+        window.scrollTo(0, 0);
+      }
+    };
+
+    const onWheel = (e: WheelEvent) => {
+      if (openRef.current) return;
+      e.preventDefault();
+      bump(e.deltaY);
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      if (openRef.current) return;
+      touchY = e.touches[0]?.clientY ?? null;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (openRef.current || touchY == null) return;
+      e.preventDefault();
+      const y = e.touches[0]?.clientY ?? touchY;
+      const delta = touchY - y;
+      touchY = y;
+      bump(delta * 2.5);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (openRef.current) return;
+      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) {
+        e.preventDefault();
+        bump(120);
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("keydown", onKey);
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+    };
+  }, []);
+
   const hidden = progress >= 0.999;
   const shift = progress * 100; // percentage
 
@@ -122,23 +184,59 @@ export default function IntroCover() {
         ))}
       </nav>
 
-      <p
-        className="mt-10 text-center text-xs font-medium uppercase tracking-[0.35em] sm:text-sm"
+      <div
+        className="mt-10 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.35em] sm:text-sm"
         style={{
           color: GOLD,
           opacity: nameDone ? 1 : 0,
           transition: "opacity 800ms ease-out 600ms",
         }}
       >
-        Role para continuar ↓
-      </p>
+        <span>Deslize para continuar</span>
+        {/* Premium animated swipe-up icon (mobile emphasis) */}
+        <span className="relative inline-flex h-8 w-8 items-center justify-center sm:h-7 sm:w-7">
+          <span
+            className="absolute inset-0 rounded-full border border-[#e7d9b5]/60"
+            style={{ animation: "intro-swipe-ring 1.8s ease-out infinite" }}
+          />
+          <ChevronUp
+            className="h-4 w-4"
+            style={{ animation: "intro-swipe-up 1.4s ease-in-out infinite" }}
+          />
+        </span>
+      </div>
+
+      <style>{`
+        @keyframes intro-swipe-up {
+          0%   { transform: translateY(6px); opacity: 0.4; }
+          50%  { transform: translateY(-4px); opacity: 1; }
+          100% { transform: translateY(6px); opacity: 0.4; }
+        }
+        @keyframes intro-swipe-ring {
+          0%   { transform: scale(0.85); opacity: 0.9; }
+          100% { transform: scale(1.55); opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 
+  // Seamless full-viewport background painted with fixed attachment so both
+  // halves display the same continuous artwork — no visible seam when opening.
   const bg =
-    "radial-gradient(circle at 30% 20%, hsl(260 45% 22%) 0%, hsl(258 40% 12%) 55%, hsl(255 45% 8%) 100%)";
+    "radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120,95,175,0.35), transparent 60%)," +
+    "radial-gradient(ellipse 80% 55% at 85% 35%, rgba(210,175,110,0.18), transparent 60%)," +
+    "radial-gradient(ellipse 100% 60% at 20% 62%, rgba(130,100,180,0.26), transparent 60%)," +
+    "radial-gradient(ellipse 90% 55% at 90% 82%, rgba(200,170,105,0.14), transparent 60%)," +
+    "linear-gradient(180deg, #1a1229 0%, #221740 25%, #1c1533 55%, #241a44 80%, #17102a 100%)";
 
-  const halfTransition = hidden ? "none" : "transform 80ms linear";
+  const halfBgStyle: React.CSSProperties = {
+    backgroundImage: bg,
+    backgroundAttachment: "fixed",
+    backgroundSize: "100vw 100vh",
+    backgroundRepeat: "no-repeat",
+  };
+
+  const halfTransition = "transform 120ms linear";
 
   return (
     <div
@@ -146,33 +244,29 @@ export default function IntroCover() {
       className="fixed inset-0 z-[100] overflow-hidden"
       style={{ pointerEvents: hidden ? "none" : "auto" }}
     >
-      {/* LEFT HALF — slides left on scroll */}
+      {/* LEFT HALF — slides left as user "opens" the curtain */}
       <div
         className="absolute inset-y-0 left-0 w-1/2 overflow-hidden"
         style={{
-          background: bg,
+          ...halfBgStyle,
+          backgroundPosition: "left top",
           transform: `translate3d(-${shift}%, 0, 0)`,
           transition: halfTransition,
         }}
       >
-        <div className="pointer-events-none absolute -left-20 top-10 h-96 w-96 rounded-full bg-[#8e82b8]/25 blur-[120px]" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e7d9b5]/50 to-transparent" />
-        {/* Full-viewport content aligned to viewport left edge */}
         <div className="absolute inset-y-0 left-0 h-full w-screen">{content}</div>
       </div>
 
-      {/* RIGHT HALF — slides right on scroll */}
+      {/* RIGHT HALF — slides right */}
       <div
         className="absolute inset-y-0 right-0 w-1/2 overflow-hidden"
         style={{
-          background: bg,
+          ...halfBgStyle,
+          backgroundPosition: "right top",
           transform: `translate3d(${shift}%, 0, 0)`,
           transition: halfTransition,
         }}
       >
-        <div className="pointer-events-none absolute -right-20 bottom-10 h-[28rem] w-[28rem] rounded-full bg-[#e7d9b5]/15 blur-[140px]" />
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#e7d9b5]/50 to-transparent" />
-        {/* Full-viewport content aligned to viewport right edge */}
         <div className="absolute inset-y-0 right-0 h-full w-screen">{content}</div>
       </div>
     </div>
