@@ -32,7 +32,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 shadow-[0_2px_16px_hsl(249_22%_61%/0.08)] -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
+          ? "bg-[#1a1229]/90 shadow-[0_2px_20px_rgba(0,0,0,0.4)] -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -43,12 +43,11 @@ export default function Header() {
             <img
               src={logoNome.url}
               alt="Dra. Juliana Leal — Reumatologia"
-              className={`h-10 w-auto md:h-12 transition-[filter] duration-300 ${
-                scrolled ? "" : "[filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
-              }`}
+              className="h-10 w-auto md:h-12 [filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
               loading="eager"
             />
           </a>
+
 
           {/* Desktop nav */}
           <nav className="hidden items-center gap-1 lg:flex">
