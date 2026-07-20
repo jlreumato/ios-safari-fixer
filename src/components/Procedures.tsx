@@ -222,54 +222,36 @@ function JointsWheel() {
                   ["--tx" as string]: `${(1 - slide) * 50}vw`,
                 }}
               >
-                <p className="text-base font-semibold uppercase tracking-[0.24em] text-primary/80">
+                <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
                   key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500"
+                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {current.label}
                 </h3>
                 <p
                   key={current.desc}
-                  className="mt-5 text-lg leading-relaxed text-foreground/80 animate-in fade-in duration-500 sm:text-xl"
+                  className="mt-5 text-lg leading-relaxed text-white/95 animate-in fade-in duration-500 sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
                 >
                   {current.desc}
                 </p>
 
                 <div className="mt-10 w-full">
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-primary/15">
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/15">
                     <div
                       className="h-full rounded-full bg-primary transition-[width] duration-150"
                       style={{ width: `${progress * 100}%` }}
                     />
                   </div>
-                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-primary/70 lg:justify-start">
+                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-white/80 lg:justify-start">
                     <span>{String(active + 1).padStart(2, "0")}</span>
-                    <span className="h-px flex-1 bg-primary/25" />
+                    <span className="h-px flex-1 bg-white/25" />
                     <ChevronRight className="h-5 w-5 animate-pulse" />
-                    <span className="h-px flex-1 bg-primary/25" />
+                    <span className="h-px flex-1 bg-white/25" />
                     <span>{String(joints.length).padStart(2, "0")}</span>
-                  </div>
-
-                  <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 lg:justify-start">
-                    {joints.map((j, i) => {
-                      const isActive = i === active;
-                      return (
-                        <span
-                          key={j.label}
-                          className={`text-sm sm:text-base font-medium uppercase tracking-[0.16em] transition-all duration-500 ${
-                            isActive
-                              ? "text-primary scale-110"
-                              : "text-muted-foreground/60"
-                          }`}
-                        >
-                          {j.label}
-                        </span>
-                      );
-                    })}
                   </div>
                 </div>
               </div>
