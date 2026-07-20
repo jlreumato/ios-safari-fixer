@@ -39,8 +39,25 @@ export default function TratamentoDetalhe() {
 
   return (
     <>
+      <Seo
+        title={`${treatment.title} — Tratamento em Maceió (AL) | Dra. Juliana Leal`}
+        description={`${treatment.shortDesc} Atendimento com a Dra. Juliana Leal, reumatologista em Maceió — Alagoas.`}
+        path={`/tratamentos/${treatment.slug}`}
+        type="article"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "MedicalCondition",
+          name: treatment.title,
+          description: treatment.overview,
+          signOrSymptom: treatment.symptoms.map((s) => ({ "@type": "MedicalSignOrSymptom", name: s })),
+          possibleTreatment: treatment.approach.map((a) => ({ "@type": "MedicalTherapy", name: a })),
+          associatedAnatomy: { "@type": "AnatomicalStructure", name: "Sistema musculoesquelético" },
+          relevantSpecialty: { "@type": "MedicalSpecialty", name: "Rheumatology" },
+        }}
+      />
       <Header />
       <main className="bg-[#faf8f5]">
+
         {/* Hero */}
         <section
           className={`relative overflow-hidden bg-gradient-to-br ${treatment.gradient} pt-28 pb-20`}
