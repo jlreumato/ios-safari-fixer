@@ -70,15 +70,23 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
 
       {/* Content over the video */}
-      <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
+      <div
+        className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8"
+        style={{
+          paddingTop: "max(7rem, calc(env(safe-area-inset-top) + 5.5rem))",
+          paddingBottom: "max(5rem, calc(env(safe-area-inset-bottom) + 3.5rem))",
+          paddingLeft: "max(1rem, env(safe-area-inset-left))",
+          paddingRight: "max(1rem, env(safe-area-inset-right))",
+        }}
+      >
         <div className="max-w-2xl">
           <p className="mb-4 inline-block rounded-full border border-white/20 bg-white/5 -webkit-backdrop-filter backdrop-filter backdrop-blur-md px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-[#e7d9b5]/85 opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-xs">
             Reumatologista · CRM/AL 6717 · RQE 4857
           </p>
 
           <h1
-            className="text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-7xl xl:text-8xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            className="text-balance text-[2.5rem] font-normal leading-[1.08] tracking-tight text-white opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl sm:leading-[1.05] lg:text-7xl xl:text-8xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", paddingBottom: "0.08em" }}
           >
             Humanidade para transformar sua{" "}
             <span className="italic text-[#e7d9b5]">DOR</span>
@@ -113,7 +121,8 @@ export default function Hero() {
         {/* Scroll indicator */}
         <a
           href="#sobre"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-base font-medium uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
+          className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white sm:text-base"
+          style={{ bottom: "max(2rem, calc(env(safe-area-inset-bottom) + 1rem))" }}
         >
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
@@ -122,8 +131,8 @@ export default function Hero() {
 
       <style>{`
         @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(18px); filter: blur(4px); }
-          to { opacity: 1; transform: translateY(0); filter: blur(0); }
+          from { opacity: 0; -webkit-transform: translate3d(0, 18px, 0); transform: translate3d(0, 18px, 0); }
+          to { opacity: 1; -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
         }
       `}</style>
     </section>
