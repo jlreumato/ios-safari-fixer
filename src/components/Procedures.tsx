@@ -201,11 +201,12 @@ function JointsWheel() {
         </div>
 
         {/* Text overlay — starts centered, slides into the LEFT column */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-1/2 items-center lg:inset-0 lg:h-full">
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-1/2 items-start pt-[max(5rem,calc(env(safe-area-inset-top)+4rem))] lg:inset-0 lg:h-full lg:items-center lg:pt-0">
           <div
-            className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16"
+            className="w-full lg:w-1/2"
             style={{
-              transform: `translateX(${slide * 0}%)`,
+              paddingLeft: "max(1.5rem, env(safe-area-inset-left))",
+              paddingRight: "max(1.5rem, env(safe-area-inset-right))",
             }}
           >
             {/* On lg+ the wrapper starts translated 50% to the right (centered on viewport)
@@ -213,7 +214,7 @@ function JointsWheel() {
             <div
               className="mx-auto max-w-xl text-center lg:text-left"
               style={{
-                transform: `translateX(var(--tx, 0px))`,
+                transform: `translate3d(var(--tx, 0px), 0, 0)`,
               }}
             >
               <div
@@ -222,31 +223,31 @@ function JointsWheel() {
                   ["--tx" as string]: `${(1 - slide) * 50}vw`,
                 }}
               >
-                <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] sm:text-base [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
                   key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  className="mt-3 text-balance text-4xl font-normal leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", paddingBottom: "0.08em" }}
                 >
                   {current.label}
                 </h3>
                 <p
                   key={current.desc}
-                  className="mt-5 text-lg leading-relaxed text-white/95 animate-in fade-in duration-500 sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
+                  className="mt-5 text-base leading-relaxed text-white/95 animate-in fade-in duration-500 sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
                 >
                   {current.desc}
                 </p>
 
-                <div className="mt-10 w-full">
+                <div className="mt-8 w-full sm:mt-10">
                   <div className="h-1 w-full overflow-hidden rounded-full bg-white/15">
                     <div
                       className="h-full rounded-full bg-primary transition-[width] duration-150"
                       style={{ width: `${progress * 100}%` }}
                     />
                   </div>
-                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-white/80 lg:justify-start">
+                  <div className="mt-4 flex items-center justify-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-white/80 sm:text-base lg:justify-start">
                     <span>{String(active + 1).padStart(2, "0")}</span>
                     <span className="h-px flex-1 bg-white/25" />
                     <ChevronRight className="h-5 w-5 animate-pulse" />
