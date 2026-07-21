@@ -115,15 +115,28 @@
     overflow-wrap: break-word;
   }
 
-  html {
+  html, body {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Prevent italic descender clipping in Cormorant Garamond on iOS */
+  h1, h2, h3 { padding-bottom: 0.05em; }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .safe-top { padding-top: env(safe-area-inset-top); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 }
 
