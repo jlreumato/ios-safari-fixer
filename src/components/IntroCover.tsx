@@ -43,44 +43,44 @@ export default function IntroCover() {
     body.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
-    const OPEN_DISTANCE = 900; // px of accumulated delta needed to fully open
-    let touchY: number | null = null;
+    const OPEN_DELAY_MS = 900; // matches curtain transition
 
-    const bump = (delta: number) => {
+    const openFully = () => {
       if (openRef.current) return;
-      const next = Math.max(0, Math.min(1, progressRef.current + delta / OPEN_DISTANCE));
-      progressRef.current = next;
-      setProgress(next);
-      if (next >= 0.999) {
-        openRef.current = true;
+      openRef.current = true;
+      progressRef.current = 1;
+      setProgress(1);
+      // Wait for the curtain transition to finish before restoring page scroll,
+      // so the underlying page doesn't jump mid-animation.
+      window.setTimeout(() => {
         html.style.overflow = prevHtml;
         body.style.overflow = prevBody;
         window.scrollTo(0, 0);
-      }
+      }, OPEN_DELAY_MS);
     };
+
+    let touchStartY: number | null = null;
 
     const onWheel = (e: WheelEvent) => {
       if (openRef.current) return;
       e.preventDefault();
-      bump(e.deltaY);
+      if (e.deltaY > 0) openFully();
     };
     const onTouchStart = (e: TouchEvent) => {
       if (openRef.current) return;
-      touchY = e.touches[0]?.clientY ?? null;
+      touchStartY = e.touches[0]?.clientY ?? null;
     };
     const onTouchMove = (e: TouchEvent) => {
-      if (openRef.current || touchY == null) return;
+      if (openRef.current || touchStartY == null) return;
       e.preventDefault();
-      const y = e.touches[0]?.clientY ?? touchY;
-      const delta = touchY - y;
-      touchY = y;
-      bump(delta * 2.5);
+      const y = e.touches[0]?.clientY ?? touchStartY;
+      if (touchStartY - y > 12) openFully();
     };
     const onKey = (e: KeyboardEvent) => {
       if (openRef.current) return;
-      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) {
+      if (["ArrowDown", "PageDown", " ", "Spacebar", "Enter"].includes(e.key)) {
         e.preventDefault();
-        bump(120);
+        openFully();
       }
     };
 
@@ -97,6 +97,7 @@ export default function IntroCover() {
       body.style.overflow = prevBody;
     };
   }, []);
+
 
   const hidden = progress >= 0.999;
   const shift = progress * 100; // percentage
@@ -236,7 +237,7 @@ export default function IntroCover() {
     backgroundRepeat: "no-repeat",
   };
 
-  const halfTransition = "transform 120ms linear";
+  const halfTransition = "transform 900ms cubic-bezier(0.77, 0, 0.175, 1)";
 
   return (
     <div

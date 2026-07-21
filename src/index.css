@@ -110,6 +110,13 @@
     body::before, body::after { animation: none; }
   }
 
+  /* Mobile: lighten heavy fixed backdrops (huge repaint cost on iOS Safari) */
+  @media (max-width: 767px) {
+    body::before { display: none; }
+    body::after { filter: blur(14px); opacity: 0.7; }
+    body { background-attachment: scroll; }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Cormorant Garamond', Georgia, serif;
     overflow-wrap: break-word;
@@ -124,9 +131,31 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Block-by-block snap scrolling on the whole page (proximity keeps
+     scroll-driven sticky sections usable). Disabled on iOS where the combo
+     of snap + sticky + dynamic viewport causes scroll jank. */
+  @supports not (-webkit-touch-callout: none) {
+    html {
+      scroll-snap-type: y proximity;
+    }
+    main > section,
+    footer {
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+    }
+  }
+
+  /* Defer paint/layout of below-the-fold sections until they scroll near
+     the viewport — big TBT/LCP win with no visual change. */
+  main > section:not(:first-of-type) {
+    content-visibility: auto;
+    contain-intrinsic-size: 100dvh;
+  }
+
   /* Prevent italic descender clipping in Cormorant Garamond on iOS */
   h1, h2, h3 { padding-bottom: 0.05em; }
 }
+
 
 @layer utilities {
   .text-balance {
