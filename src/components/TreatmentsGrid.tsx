@@ -82,8 +82,9 @@ export default function TreatmentsGrid() {
         <MobileStack />
       ) : (
         /* Desktop tetris slide stage */
-        <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-          <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
+        <div ref={stageRef} style={{ height: `${totalVh}dvh` }} className="relative">
+          <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background [transform:translateZ(0)] [contain:paint]">
+
             <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6">
               {treatments.map((t, i) => {
                 const p = easeOut(progress[i] ?? 0);
@@ -165,8 +166,9 @@ function MobileStack() {
   const activeIndex = Math.round(progress * (total - 1));
 
   return (
-    <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-      <div className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden">
+    <div ref={stageRef} style={{ height: `${totalVh}dvh` }} className="relative">
+      <div className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden [transform:translateZ(0)] [contain:paint]">
+
         <div
           className="flex h-full items-center"
           style={{
