@@ -39,7 +39,7 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between md:h-20">
           {/* Logo */}
-          <a href="#" className="flex items-center" aria-label="Dra. Juliana Leal — Reumatologia">
+          <a href="/" className="flex items-center" aria-label="Dra. Juliana Leal — Reumatologia">
             <img
               src={logoNome.url}
               alt="Dra. Juliana Leal — Reumatologia"

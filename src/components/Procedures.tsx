@@ -339,17 +339,15 @@ function useScrollProgress() {
 function ZoomIntro() {
   const { ref, progress } = useScrollProgress();
 
-  // Scale DOR aggressively; from 1× to ~40× across the scroll.
-  const scale = 1 + progress * 40;
-  // Fade out the "Protocolo Transforma" prefix as DOR takes over.
-  const prefixOpacity = Math.max(0, 1 - progress * 2.2);
-  // Fade the whole intro at the very end so JourneyStage below appears clean.
-  const stageOpacity = Math.max(0, 1 - Math.max(0, progress - 0.85) * 6);
-  // Hint fades in initially then leaves.
-  const hintOpacity = Math.max(0, 1 - progress * 3.5);
+  // Uma única rolagem já aplica o zoom total (curva acelerada).
+  const eased = Math.min(1, progress * 3);
+  const scale = 1 + eased * 40;
+  const prefixOpacity = Math.max(0, 1 - eased * 2.2);
+  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.7) * 4);
+  const hintOpacity = Math.max(0, 1 - eased * 3.5);
 
   return (
-    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+    <div ref={ref} className="relative" style={{ height: "120vh" }}>
       <div
         className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
         style={{ opacity: stageOpacity }}
