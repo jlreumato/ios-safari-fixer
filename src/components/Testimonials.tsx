@@ -19,8 +19,6 @@ function useReveal() {
 
 type Testimonial = { name: string; text: string; avatar: string };
 
-// randomuser.me portraits — everyday-looking real people, mixed ages and backgrounds.
-// Simpler, everyday faces — older/plainer portraits, not model-styled.
 const rowTop: Testimonial[] = [
   { name: "Maria S.", text: "Anos com dor, sem diagnóstico. A Dra. Juliana descobriu minha artrite e mudou minha vida.", avatar: "https://randomuser.me/api/portraits/women/90.jpg" },
   { name: "João P.", text: "Muito atenciosa e clara. Meu tratamento da gota está funcionando bem.", avatar: "https://randomuser.me/api/portraits/men/32.jpg" },
@@ -45,7 +43,7 @@ function Card({ t }: { t: Testimonial }) {
           <Star key={j} className="h-5 w-5 fill-amber-400 text-amber-400" />
         ))}
       </div>
-      <p className="mt-3 text-lg leading-relaxed text-muted-foreground italic">"{t.text}"</p>
+      <p className="mt-3 text-lg font-light leading-relaxed text-muted-foreground italic">"{t.text}"</p>
       <div className="mt-4 flex items-center gap-3">
         <img
           src={t.avatar}
@@ -59,35 +57,31 @@ function Card({ t }: { t: Testimonial }) {
   );
 }
 
+function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimonial[]; reverse?: boolean; duration?: number }) {
+  // Duplicate content for seamless loop
+  const loop = [...items, ...items];
+  return (
+    <div className="group overflow-hidden">
+      <div
+        className="flex w-max whitespace-nowrap"
+        style={{
+          animation: `marquee-x ${duration}s linear infinite`,
+          animationDirection: reverse ? "reverse" : "normal",
+        }}
+      >
+        {loop.map((t, i) => (
+          <Card key={`${reverse ? "b" : "t"}-${i}`} t={t} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Testimonials() {
   const { ref, visible } = useReveal();
-  const sectionRef = useRef<HTMLElement>(null);
-  const [offset, setOffset] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const progress = 1 - (rect.top + rect.height) / (vh + rect.height);
-      setOffset(Math.max(0, Math.min(1, progress)));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const shift = 220;
-  const topTx = -offset * shift;
-  const bottomTx = offset * shift - shift / 2;
 
   return (
-    <section ref={sectionRef} id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
+    <section id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -103,13 +97,19 @@ export default function Testimonials() {
       </div>
 
       <div className="mt-14 space-y-5">
-        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${topTx}px,0,0)` }}>
-          {rowTop.map((t, i) => (<Card key={`t-${i}`} t={t} />))}
-        </div>
-        <div className="flex justify-center whitespace-nowrap will-change-transform" style={{ transform: `translate3d(${bottomTx}px,0,0)` }}>
-          {rowBottom.map((t, i) => (<Card key={`b-${i}`} t={t} />))}
-        </div>
+        <MarqueeRow items={rowTop} duration={60} />
+        <MarqueeRow items={rowBottom} reverse duration={75} />
       </div>
+
+      <style>{`
+        @keyframes marquee-x {
+          from { transform: translate3d(0, 0, 0); }
+          to   { transform: translate3d(-50%, 0, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [style*="marquee-x"] { animation: none !important; }
+        }
+      `}</style>
     </section>
   );
 }

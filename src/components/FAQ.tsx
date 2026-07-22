@@ -113,13 +113,7 @@ export default function FAQ() {
           </h2>
         </div>
 
-        <Accordion
-          type="single"
-          collapsible
-          className="mt-12"
-          value={activeIndex >= 0 ? `faq-${activeIndex}` : undefined}
-          onValueChange={() => {}}
-        >
+        <Accordion type="single" collapsible className="mt-12">
           {faqs.map((f, i) => {
             const isActive = activeIndex === i;
             const isRevealed = revealed[i];
@@ -127,14 +121,12 @@ export default function FAQ() {
               <div
                 key={i}
                 ref={(el) => (itemRefs.current[i] = el)}
-                onMouseEnter={() => setActiveIndex(i)}
                 className="transition-all duration-700 ease-out will-change-transform"
                 style={{
-                  opacity: isRevealed ? (activeIndex === -1 ? 1 : isActive ? 1 : 0.45) : 0,
+                  opacity: isRevealed ? (activeIndex === -1 ? 1 : isActive ? 1 : 0.55) : 0,
                   transform: isRevealed
                     ? `translateY(0) scale(${isActive ? 1.02 : 1})`
                     : "translateY(24px)",
-                  filter: isRevealed && !isActive && activeIndex !== -1 ? "blur(0.4px)" : "none",
                 }}
               >
                 <AccordionItem
@@ -146,7 +138,7 @@ export default function FAQ() {
                   <AccordionTrigger className="text-left text-xl lg:text-2xl font-medium text-foreground hover:no-underline hover:text-primary">
                     {f.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-lg lg:text-xl leading-relaxed text-muted-foreground">
+                  <AccordionContent className="text-lg lg:text-xl font-light leading-relaxed text-muted-foreground">
                     {f.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -154,6 +146,7 @@ export default function FAQ() {
             );
           })}
         </Accordion>
+
       </div>
     </section>
   );

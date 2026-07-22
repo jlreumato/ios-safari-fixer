@@ -43,21 +43,21 @@ export default function IntroCover() {
     body.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
-    const OPEN_DISTANCE = 900; // px of accumulated delta needed to fully open
+    const OPEN_DISTANCE = 1; // any wheel/touch fully opens the curtain
     let touchY: number | null = null;
 
     const bump = (delta: number) => {
       if (openRef.current) return;
-      const next = Math.max(0, Math.min(1, progressRef.current + delta / OPEN_DISTANCE));
+      if (delta <= 0) return;
+      const next = 1;
       progressRef.current = next;
       setProgress(next);
-      if (next >= 0.999) {
-        openRef.current = true;
-        html.style.overflow = prevHtml;
-        body.style.overflow = prevBody;
-        window.scrollTo(0, 0);
-      }
+      openRef.current = true;
+      html.style.overflow = prevHtml;
+      body.style.overflow = prevBody;
+      window.scrollTo(0, 0);
     };
+
 
     const onWheel = (e: WheelEvent) => {
       if (openRef.current) return;

@@ -55,6 +55,7 @@
   body {
     @apply text-foreground antialiased;
     font-family: 'DM Sans', system-ui, sans-serif;
+    font-weight: 300;
     background-color: #1a1229;
     background-image:
       radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120, 95, 175, 0.30), transparent 60%),
@@ -66,6 +67,14 @@
     position: relative;
     color: hsl(var(--foreground));
   }
+
+  /* Descrições e parágrafos em peso leve — mais elegante e minimalista */
+  p { font-weight: 300; }
+
+  /* Snap suave entre seções principais na home */
+  html { scroll-snap-type: y proximity; scroll-behavior: smooth; }
+  main > section { scroll-snap-align: start; scroll-snap-stop: normal; }
+
 
   /* Subtle animated thin lines + drifting orbs across the whole page */
   body::before {

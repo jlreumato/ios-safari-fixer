@@ -20,8 +20,11 @@ function shouldSkipVideoInitially(): boolean {
 export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -59,11 +62,17 @@ export default function Hero() {
           playsInline
           preload="metadata"
           onLoadedData={() => setVideoReady(true)}
+          onTimeUpdate={(e) => {
+            if (!isMobile) return;
+            const v = e.currentTarget;
+            if (v.currentTime >= 5) v.currentTime = 0;
+          }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
           style={{ opacity: videoReady ? 1 : 0 }}
           aria-hidden="true"
         />
       )}
+
 
       {/* Legibility overlays */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
