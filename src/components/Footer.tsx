@@ -8,13 +8,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           {/* Brand */}
           <div>
-            <img
-              src={logoNome.url}
-              alt="Dra. Juliana Leal — Reumatologia"
-              className="h-12 w-auto brightness-0 invert md:h-14"
-              loading="lazy"
-            />
-            
+            <a href="/" aria-label="Ir para a página inicial" className="inline-block">
+              <img
+                src={logoNome.url}
+                alt="Dra. Juliana Leal — Reumatologia"
+                className="h-12 w-auto brightness-0 invert md:h-14"
+                loading="lazy"
+              />
+            </a>
+
             <p className="mt-4 text-base leading-relaxed">
               Reumatologista em Maceió — AL. Atendimento humanizado e baseado em evidências científicas.
             </p>

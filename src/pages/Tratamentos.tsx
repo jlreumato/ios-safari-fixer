@@ -80,15 +80,15 @@ export default function Tratamentos() {
         }}
       />
       <Header />
-      <main className="bg-[#faf8f5]">
+      <main>
 
         {/* Intro */}
-        <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#f5f0e8] to-[#ebe5db] pt-28 pb-14">
+        <section className="relative flex min-h-[70vh] items-end overflow-hidden pt-28 pb-14">
           <div
             className="pointer-events-none absolute inset-0 opacity-40"
             style={{
               backgroundImage:
-                "repeating-linear-gradient(90deg, transparent, transparent 119px, rgba(142,130,184,0.10) 119px, rgba(142,130,184,0.10) 120px)",
+                "repeating-linear-gradient(90deg, transparent, transparent 119px, rgba(231,211,163,0.08) 119px, rgba(231,211,163,0.08) 120px)",
             }}
           />
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -96,16 +96,16 @@ export default function Tratamentos() {
               Tratamentos Reumatológicos
             </p>
             <h1
-              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2b2540] sm:text-5xl lg:text-6xl"
+              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Cuidado especializado para cada condição{" "}
-              <span className="italic text-[#8e82b8]">reumatológica.</span>
+              <span className="italic text-[#e7d9b5]">reumatológica.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#5a5568] sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg">
               Deslize para conhecer os tratamentos. Clique em um card para ver os detalhes.
             </p>
-            <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-[#5a5568]/70">
+            <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-white/60">
               Role para explorar
               <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
             </div>
