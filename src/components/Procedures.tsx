@@ -339,18 +339,24 @@ function useScrollProgress() {
 function ZoomIntro() {
   const { ref, progress } = useScrollProgress();
 
-  // Uma única rolagem já aplica o zoom total (curva acelerada).
-  const eased = Math.min(1, progress * 3);
+  // Zoom mais suave: precisa de mais rolagem para completar.
+  const eased = Math.min(1, progress * 1.35);
   const scale = 1 + eased * 40;
   const prefixOpacity = Math.max(0, 1 - eased * 2.2);
-  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.7) * 4);
+  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.75) * 4);
   const hintOpacity = Math.max(0, 1 - eased * 3.5);
+  // Parallax — sobe conforme o zoom avança, criando continuidade com a próxima seção.
+  const parallaxY = -eased * 22; // vh
 
   return (
-    <div ref={ref} className="relative" style={{ height: "120vh" }}>
+    <div ref={ref} className="relative" style={{ height: "220vh" }}>
       <div
         className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
-        style={{ opacity: stageOpacity }}
+        style={{
+          opacity: stageOpacity,
+          transform: `translate3d(0, ${parallaxY}vh, 0)`,
+          willChange: "transform, opacity",
+        }}
       >
         {/* Ambient decor */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -363,7 +369,7 @@ function ZoomIntro() {
             className="text-base font-semibold uppercase tracking-[0.28em] text-primary"
             style={{ opacity: prefixOpacity }}
           >
-            Protocolo
+            Programa
           </p>
           <h3
             className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
@@ -380,7 +386,7 @@ function ZoomIntro() {
               style={{
                 transform: `scale(${scale})`,
                 transformOrigin: "center center",
-                transition: "transform 120ms linear",
+                transition: "transform 180ms linear",
                 willChange: "transform",
               }}
             >
