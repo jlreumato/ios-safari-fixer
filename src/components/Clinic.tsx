@@ -32,7 +32,7 @@ const locations: ClinicLocation[] = [
     id: "harmony",
     name: "Harmony Trade Center",
     address: "Harmony Trade Center, 3º Andar, Sala 318 — Maceió, AL",
-    cep: "CEP 57036-510 — Local principal de atendimento",
+    cep: "CEP 57036-510",
     features: [
       { icon: AirVent, title: "Ambiente Climatizado", desc: "Consultório confortável e acolhedor para seu bem-estar." },
       { icon: MapPin, title: "Localização Privilegiada", desc: "Fácil acesso e estacionamento no local." },
