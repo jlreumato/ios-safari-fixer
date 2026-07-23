@@ -419,189 +419,170 @@ function ZoomIntro() {
  */
 function JourneyStage({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [entry, setEntry] = useState(0);
-
-  // Entry animation: fade + zoom-in as the section approaches the viewport
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const e = Math.max(0, Math.min(1, 1 - rect.top / vh));
-      setEntry(e);
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [ref]);
 
   // Continuous index across steps (0 → steps.length - 1).
   const scrollPos = progress * (steps.length - 1);
-  const scrollActive = Math.min(steps.length - 1, Math.max(0, Math.round(scrollPos)));
-  const active = hoverIndex ?? scrollActive;
-  const pos = hoverIndex !== null ? hoverIndex : scrollPos;
-
-  const introScale = 0.6 + entry * 0.4;
-  const introOpacity = entry;
+  const active = Math.min(steps.length - 1, Math.max(0, Math.round(scrollPos)));
+  const pos = scrollPos;
 
   return (
-    <div
-      ref={ref}
-      className="relative"
-      style={{ height: `${steps.length * 90 + 40}vh` }}
-    >
-      <div
-        className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden"
-        style={{
-          transform: `scale(${introScale})`,
-          opacity: introOpacity,
-          transformOrigin: "center center",
-          transition: "transform 120ms linear, opacity 120ms linear",
-          willChange: "transform, opacity",
-        }}
-      >
-        <div className="mx-auto grid h-full max-w-7xl grid-cols-1 items-center gap-6 px-4 sm:px-6 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-8">
-          {/* Left rail */}
-          <aside className="relative hidden lg:block">
-            <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
-              Etapas da Transformação
-            </p>
-            <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
-              {steps.map((s, i) => {
-                const isActive = i === active;
-                const isPast = i < active;
-                return (
-                  <li
-                    key={s.title}
-                    className="relative cursor-pointer"
-                    onMouseEnter={() => setHoverIndex(i)}
-                    onMouseLeave={() =>
-                      setHoverIndex((h) => (h === i ? null : h))
-                    }
-                  >
-                    <span
-                      className={`absolute -left-[30px] top-2 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
-                        isActive
-                          ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
-                          : isPast
-                          ? "border-primary/50 bg-primary/60"
-                          : "border-primary/25 bg-background"
-                      }`}
-                    >
-                      {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
-                    </span>
-                    <span
-                      className={`block text-[10px] font-semibold uppercase tracking-[0.28em] transition-colors ${
-                        isActive ? "text-primary" : "text-muted-foreground/70"
-                      }`}
-                    >
-                      Etapa {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span
-                      className={`mt-1 block text-2xl leading-tight tracking-tight transition-colors ${
-                        isActive
-                          ? "text-foreground"
-                          : "text-muted-foreground/80"
-                      }`}
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                    >
-                      {s.title}
-                    </span>
-                  </li>
-                );
-              })}
-
-            </ol>
-            <div className="mt-8 flex items-center gap-3 text-base font-medium uppercase tracking-[0.24em] text-primary/70">
-              <span>{String(active + 1).padStart(2, "0")}</span>
-              <span className="h-px flex-1 bg-primary/20" />
-              <span>{String(steps.length).padStart(2, "0")}</span>
+    <>
+      {/* MOBILE — horizontal snap slider, sem transparências ou hijack de scroll */}
+      <div className="lg:hidden px-4 sm:px-6 pb-12">
+        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
+          Etapas da Transformação
+        </p>
+        <div
+          className="-mx-4 sm:-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:px-6 pb-4"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {steps.map((step, i) => (
+            <div
+              key={step.title}
+              className="snap-center shrink-0"
+              style={{ width: "82vw" }}
+            >
+              <div className="h-full rounded-3xl border-2 border-[#2a2730] bg-background/40 p-6 sm:p-8">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/15 text-primary">
+                    <step.icon className="h-5 w-5" />
+                  </span>
+                  <span className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
+                    Etapa {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+                  </span>
+                </div>
+                <h4
+                  className="mt-5 text-3xl leading-tight text-foreground"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {step.title}
+                </h4>
+                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                  {step.desc}
+                </p>
+              </div>
             </div>
-          </aside>
+          ))}
+        </div>
+      </div>
 
-          {/* Right stage — vertical slide of cards */}
-          <div className="relative h-full overflow-hidden">
-            <div className="absolute inset-0 flex items-center justify-center">
-              {steps.map((step, i) => {
-                const delta = i - pos;
-                const abs = Math.abs(delta);
-                const ty = delta * 105; // % of stage height
-                const opacity = Math.max(0, 1 - abs * 0.8);
-                const scale = 1 - Math.min(0.15, abs * 0.08);
-                const isActive = i === active;
-                return (
-                  <div
-                    key={step.title}
-                    className="absolute inset-x-4 sm:inset-x-6 lg:inset-x-0"
-                    style={{
-                      transform: `translateY(${ty}%) scale(${scale})`,
-                      opacity,
-                      transition:
-                        "transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms linear",
-                      willChange: "transform, opacity",
-                      zIndex: 100 - Math.round(abs * 10),
-                      pointerEvents: isActive ? "auto" : "none",
-                    }}
-                  >
-                    <div
-                      className={`mx-auto max-w-2xl rounded-3xl border-2 bg-transparent p-8 sm:p-10 transition-colors duration-500 ${
-                        isActive
-                          ? "border-[#2a2730] shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]"
-                          : "border-[#2a2730]/40"
-                      }`}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                          <step.icon className="h-6 w-6" />
-                        </span>
-                        <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
-                          Etapa {String(i + 1).padStart(2, "0")} /{" "}
-                          {String(steps.length).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <h4
-                        className="mt-5 text-3xl leading-tight text-foreground sm:text-4xl"
+      {/* DESKTOP — sticky vertical slider (sem fade-in nem hover) */}
+      <div
+        ref={ref}
+        className="relative hidden lg:block"
+        style={{ height: `${steps.length * 90 + 40}vh` }}
+      >
+        <div className="sticky top-20 h-[calc(100dvh-5rem)] w-full overflow-hidden">
+          <div className="mx-auto grid h-full max-w-7xl grid-cols-[280px_1fr] items-center gap-12 px-8">
+            {/* Left rail */}
+            <aside className="relative">
+              <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
+                Etapas da Transformação
+              </p>
+              <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
+                {steps.map((s, i) => {
+                  const isActive = i === active;
+                  const isPast = i < active;
+                  return (
+                    <li key={s.title} className="relative">
+                      <span
+                        className={`absolute -left-[30px] top-2 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
+                          isActive
+                            ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
+                            : isPast
+                            ? "border-primary/50 bg-primary/60"
+                            : "border-primary/25 bg-background"
+                        }`}
+                      >
+                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
+                      </span>
+                      <span
+                        className={`block text-[10px] font-semibold uppercase tracking-[0.28em] transition-colors ${
+                          isActive ? "text-primary" : "text-muted-foreground/70"
+                        }`}
+                      >
+                        Etapa {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span
+                        className={`mt-1 block text-2xl leading-tight tracking-tight transition-colors ${
+                          isActive ? "text-foreground" : "text-muted-foreground/80"
+                        }`}
                         style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                       >
-                        {step.title}
-                      </h4>
-                      <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                        {step.desc}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                        {s.title}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ol>
+              <div className="mt-8 flex items-center gap-3 text-base font-medium uppercase tracking-[0.24em] text-primary/70">
+                <span>{String(active + 1).padStart(2, "0")}</span>
+                <span className="h-px flex-1 bg-primary/20" />
+                <span>{String(steps.length).padStart(2, "0")}</span>
+              </div>
+            </aside>
 
-            {/* Mobile progress dots */}
-            <div className="pointer-events-none absolute right-2 top-1/2 flex -translate-y-1/2 flex-col gap-2 lg:hidden">
-              {steps.map((_, i) => (
-                <span
-                  key={i}
-                  className={`rounded-full transition-all duration-300 ${
-                    i === active ? "h-6 w-1.5 bg-primary" : "h-1.5 w-1.5 bg-primary/25"
-                  }`}
-                />
-              ))}
+            {/* Right stage — vertical slide of cards */}
+            <div className="relative h-full overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center">
+                {steps.map((step, i) => {
+                  const delta = i - pos;
+                  const abs = Math.abs(delta);
+                  const ty = delta * 105; // % of stage height
+                  const opacity = Math.max(0, 1 - abs * 0.8);
+                  const scale = 1 - Math.min(0.15, abs * 0.08);
+                  const isActive = i === active;
+                  return (
+                    <div
+                      key={step.title}
+                      className="absolute inset-x-0"
+                      style={{
+                        transform: `translateY(${ty}%) scale(${scale})`,
+                        opacity,
+                        transition:
+                          "transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms linear",
+                        willChange: "transform, opacity",
+                        zIndex: 100 - Math.round(abs * 10),
+                        pointerEvents: isActive ? "auto" : "none",
+                      }}
+                    >
+                      <div
+                        className={`mx-auto max-w-2xl rounded-3xl border-2 bg-transparent p-10 transition-colors duration-500 ${
+                          isActive
+                            ? "border-[#2a2730] shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]"
+                            : "border-[#2a2730]/40"
+                        }`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                            <step.icon className="h-6 w-6" />
+                          </span>
+                          <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
+                            Etapa {String(i + 1).padStart(2, "0")} /{" "}
+                            {String(steps.length).padStart(2, "0")}
+                          </span>
+                        </div>
+                        <h4
+                          className="mt-5 text-4xl leading-tight text-foreground"
+                          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                        >
+                          {step.title}
+                        </h4>
+                        <p className="mt-4 text-xl leading-relaxed text-muted-foreground">
+                          {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
 
 
