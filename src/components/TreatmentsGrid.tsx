@@ -117,109 +117,45 @@ export default function TreatmentsGrid() {
 
 
 /**
- * Mobile — horizontal scroll hijack. Vertical page scroll drives the cards
- * sideways inside a sticky viewport; once the last card is passed the page
- * resumes normal vertical scrolling.
+ * Mobile — slider horizontal nativo com scroll-snap. Sem hijack de scroll
+ * vertical e sem efeitos de transparência entre os cards.
  */
 function MobileStack() {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-
   const total = treatments.length;
-  // How much vertical scroll per card slide (in vh).
-  const stepVh = 70;
-  const totalVh = total * stepVh + 20;
-
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      const el = stageRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const totalPx = el.offsetHeight - vh;
-      const scrolled = Math.max(0, Math.min(totalPx, -rect.top));
-      setProgress(totalPx > 0 ? scrolled / totalPx : 0);
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  // Card width as % of viewport width (wider than before).
   const cardVW = 84;
-  // Total translate distance so the last card ends aligned centered.
-  const gapVW = 4;
-  const stride = cardVW + gapVW;
-  const maxShiftVW = stride * (total - 1);
-  const shiftVW = progress * maxShiftVW;
-  const activeIndex = Math.round(progress * (total - 1));
+  const sidePad = (100 - cardVW) / 2;
 
   return (
-    <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-      <div className="sticky top-16 h-[calc(100dvh-4rem)] w-full overflow-hidden">
-        <div
-          className="flex h-full items-center"
-          style={{
-            paddingLeft: `${(100 - cardVW) / 2}vw`,
-            paddingRight: `${(100 - cardVW) / 2}vw`,
-            gap: `${gapVW}vw`,
-            transform: `translate3d(-${shiftVW}vw, 0, 0)`,
-            transition: "transform 120ms linear",
-            willChange: "transform",
-          }}
-        >
-          {treatments.map((t, i) => {
-            const isActive = i === activeIndex;
-            return (
-              <div
-                key={t.slug}
-                className="shrink-0"
-                style={{ width: `${cardVW}vw`, height: "78dvh" }}
-              >
-                <div
-                  className="relative h-full w-full overflow-hidden rounded-3xl transition-transform duration-500"
-                  style={{
-                    transform: isActive ? "scale(1)" : "scale(0.94)",
-                    boxShadow: "0 30px 60px -30px rgba(70,50,120,0.5)",
-                  }}
-                >
-                  <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Pagination dots */}
-        <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-1.5">
-          {treatments.map((_, i) => {
-            const active = i === activeIndex;
-            return (
-              <span
-                key={i}
-                className="h-1.5 rounded-full transition-all duration-300"
-                style={{
-                  width: active ? 20 : 6,
-                  backgroundColor: active ? "#e7d9b5" : "rgba(231,217,181,0.35)",
-                }}
-              />
-            );
-          })}
-        </div>
+    <div className="relative">
+      <div
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6"
+        style={{
+          paddingLeft: `${sidePad}vw`,
+          paddingRight: `${sidePad}vw`,
+          scrollbarWidth: "none",
+          WebkitOverflowScrolling: "touch",
+        }}
+      >
+        {treatments.map((t, i) => (
+          <div
+            key={t.slug}
+            className="shrink-0 snap-center"
+            style={{ width: `${cardVW}vw`, height: "78dvh" }}
+          >
+            <div
+              className="relative h-full w-full overflow-hidden rounded-3xl"
+              style={{ boxShadow: "0 30px 60px -30px rgba(70,50,120,0.5)" }}
+            >
+              <TreatmentCard index={i} total={total} treatment={t} active />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
+
+
 
 
 function TreatmentCard({

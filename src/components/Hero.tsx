@@ -21,10 +21,16 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     setIsMobile(mq.matches);
+    const ua = navigator.userAgent || "";
+    const iOS =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (navigator.platform === "MacIntel" && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1);
+    setIsIOS(iOS);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -38,18 +44,20 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
-      {/* Poster estático — LCP, aparece imediatamente (mobile específico) */}
-      <picture>
-        <source media="(max-width: 767px)" srcSet={heroPosterMobile.url} />
-        <img
-          src={heroPoster.url}
-          alt=""
-          aria-hidden="true"
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      </picture>
+      {/* Poster estático — LCP, aparece imediatamente (oculto no iOS para evitar flash) */}
+      {!isIOS && (
+        <picture>
+          <source media="(max-width: 767px)" srcSet={heroPosterMobile.url} />
+          <img
+            src={heroPoster.url}
+            alt=""
+            aria-hidden="true"
+            fetchPriority="high"
+            decoding="async"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </picture>
+      )}
 
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
