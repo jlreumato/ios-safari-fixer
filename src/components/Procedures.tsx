@@ -339,17 +339,16 @@ function useScrollProgress() {
 function ZoomIntro() {
   const { ref, progress } = useScrollProgress();
 
-  // Zoom mais suave: precisa de mais rolagem para completar.
-  const eased = Math.min(1, progress * 1.35);
-  const scale = 1 + eased * 40;
-  const prefixOpacity = Math.max(0, 1 - eased * 2.2);
-  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.75) * 4);
+  // Curva mais concisa: uma rolagem única completa o zoom e libera a próxima seção.
+  const eased = Math.min(1, progress * 1.9);
+  const scale = 1 + eased * 34;
+  const prefixOpacity = Math.max(0, 1 - eased * 2.4);
+  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.82) * 6);
   const hintOpacity = Math.max(0, 1 - eased * 3.5);
-  // Parallax — sobe conforme o zoom avança, criando continuidade com a próxima seção.
-  const parallaxY = -eased * 22; // vh
+  const parallaxY = -eased * 14; // vh
 
   return (
-    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+    <div ref={ref} className="relative" style={{ height: "140vh" }}>
       <div
         className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
         style={{
@@ -386,7 +385,7 @@ function ZoomIntro() {
               style={{
                 transform: `scale(${scale})`,
                 transformOrigin: "center center",
-                transition: "transform 180ms linear",
+                transition: "transform 160ms linear",
                 willChange: "transform",
               }}
             >

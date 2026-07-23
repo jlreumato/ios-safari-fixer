@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AirVent, MapPin, Stethoscope, Clock, Building2 } from "lucide-react";
+import { AirVent, MapPin, Stethoscope, Clock, Building2, X } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
 
 function useReveal() {
@@ -66,74 +66,143 @@ const locations: ClinicLocation[] = [
   },
 ];
 
-/** Carrossel em cubo 3D com rotação automática no eixo Y. */
-function Cube3DCarousel({ images }: { images: { src: string; alt: string }[] }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState(360);
-  const [rotation, setRotation] = useState(0);
-
-  // 4 faces do cubo — repete imagens caso haja menos de 4
-  const faces = [0, 1, 2, 3].map((i) => images[i % Math.max(images.length, 1)]);
+/**
+ * Scroll-driven 4-image grid. Odd-indexed images enter floating DOWN from above,
+ * even-indexed enter floating UP from below — one after another, forming a row.
+ * Click an image to open the lightbox.
+ */
+function FloatingGrid({
+  images,
+  onOpen,
+}: {
+  images: { src: string; alt: string }[];
+  onOpen: (i: number) => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const update = () => setSize(el.clientWidth);
+    let raf = 0;
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Start when the row enters the viewport bottom, complete before it leaves the top.
+      const start = vh * 0.9;
+      const end = vh * 0.15;
+      const t = (start - rect.top) / (start - end);
+      setProgress(Math.max(0, Math.min(1, t)));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
     update();
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
-  useEffect(() => {
-    const id = window.setInterval(() => setRotation((r) => r - 90), 3800);
-    return () => window.clearInterval(id);
-  }, [images]);
-
-  const half = size / 2;
+  const four = [0, 1, 2, 3].map((i) => images[i % Math.max(images.length, 1)]);
+  // Slightly overlapping stagger so images arrive one after the other in a single scroll.
+  const perImage = 0.28;
+  const spacing = (1 - perImage) / (four.length - 1); // 0.24
 
   return (
-    <div className="mt-12 flex justify-center">
-      <div
-        ref={wrapperRef}
-        className="relative w-full max-w-5xl"
-        style={{ perspective: "2200px", WebkitPerspective: "2200px" }}
-      >
-        {/* 16:9 stage */}
-        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-          <div
-            className="absolute inset-0"
-            style={{
-              transformStyle: "preserve-3d",
-              WebkitTransformStyle: "preserve-3d",
-              transform: `translateZ(-${half}px) rotateY(${rotation}deg)`,
-              WebkitTransform: `translateZ(-${half}px) rotateY(${rotation}deg)`,
-              transition: "transform 1.4s cubic-bezier(0.65, 0, 0.35, 1)",
-              WebkitTransition: "-webkit-transform 1.4s cubic-bezier(0.65, 0, 0.35, 1)",
-            }}
-          >
-            {faces.map((img, i) => (
-              <div
-                key={i}
-                className="absolute inset-0 overflow-hidden rounded-2xl shadow-[0_20px_50px_-25px_rgba(60,50,90,0.4)] ring-1 ring-white/40"
-                style={{
-                  transform: `rotateY(${i * 90}deg) translateZ(${half}px)`,
-                  WebkitTransform: `rotateY(${i * 90}deg) translateZ(${half}px)`,
-                  backfaceVisibility: "hidden",
-                  WebkitBackfaceVisibility: "hidden",
-                }}
-              >
-                <img
-                  src={img?.src}
-                  alt={img?.alt ?? ""}
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+    <div ref={ref} className="mt-12">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5">
+        {four.map((img, i) => {
+          const start = i * spacing;
+          const raw = (progress - start) / perImage;
+          const p = Math.max(0, Math.min(1, raw));
+          const eased = 1 - Math.pow(1 - p, 3);
+          const fromY = i % 2 === 0 ? -70 : 70; // even → down from top, odd → up from bottom
+          const ty = fromY * (1 - eased);
+          const opacity = eased;
+          return (
+            <button
+              key={i}
+              type="button"
+              onClick={() => onOpen(i)}
+              className="group relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-primary/25 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              style={{
+                transform: `translate3d(0, ${ty}%, 0)`,
+                opacity,
+                transition: "transform 180ms linear, opacity 180ms linear",
+                willChange: "transform, opacity",
+              }}
+              aria-label={`Ampliar imagem: ${img?.alt ?? ""}`}
+            >
+              <img
+                src={img?.src}
+                alt={img?.alt ?? ""}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            </button>
+          );
+        })}
       </div>
+    </div>
+  );
+}
+
+function Lightbox({
+  images,
+  index,
+  onClose,
+  onNav,
+}: {
+  images: { src: string; alt: string }[];
+  index: number;
+  onClose: () => void;
+  onNav: (dir: -1 | 1) => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") onNav(-1);
+      if (e.key === "ArrowRight") onNav(1);
+    };
+    window.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose, onNav]);
+
+  const img = images[index];
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <button
+        onClick={onClose}
+        className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+        aria-label="Fechar"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      <img
+        src={img?.src}
+        alt={img?.alt ?? ""}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[88vh] max-w-[92vw] rounded-xl object-contain shadow-2xl animate-in zoom-in-95 duration-200"
+      />
+      <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-sm text-white/80">
+        {index + 1} / {images.length}
+      </p>
     </div>
   );
 }
@@ -141,8 +210,10 @@ function Cube3DCarousel({ images }: { images: { src: string; alt: string }[] }) 
 export default function Clinic() {
   const { ref, visible } = useReveal();
   const [activeTab, setActiveTab] = useState(0);
+  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const currentLocation = locations[activeTab];
+  const gridImages = [0, 1, 2, 3].map((i) => currentLocation.images[i % currentLocation.images.length]);
 
   return (
     <section id="clinica" className="relative py-20 lg:py-28">
@@ -176,7 +247,6 @@ export default function Clinic() {
                 }`}
               >
                 {loc.name}
-
               </button>
             ))}
           </div>
@@ -191,10 +261,26 @@ export default function Clinic() {
           <p className="mt-1 text-base text-muted-foreground sm:text-sm">{currentLocation.cep}</p>
         </div>
 
-        {/* 3D Cube Carousel */}
-        <Cube3DCarousel key={currentLocation.id} images={currentLocation.images} />
-
+        {/* Floating grid — scroll-driven reveal, click to enlarge */}
+        <FloatingGrid
+          key={currentLocation.id}
+          images={gridImages}
+          onOpen={(i) => setLightbox(i)}
+        />
       </div>
+
+      {lightbox !== null && (
+        <Lightbox
+          images={gridImages}
+          index={lightbox}
+          onClose={() => setLightbox(null)}
+          onNav={(dir) =>
+            setLightbox((prev) =>
+              prev === null ? prev : (prev + dir + gridImages.length) % gridImages.length
+            )
+          }
+        />
+      )}
     </section>
   );
 }
