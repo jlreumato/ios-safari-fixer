@@ -236,7 +236,7 @@ export default function IntroCover() {
     backgroundRepeat: "no-repeat",
   };
 
-  const halfTransition = "transform 120ms linear";
+  const halfTransition = "transform 1400ms cubic-bezier(0.65, 0, 0.35, 1)";
 
   return (
     <div
