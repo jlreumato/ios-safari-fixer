@@ -21,7 +21,7 @@ export default function CTASection() {
       const vh = window.innerHeight;
       // 0 when the section top hits the top of the viewport,
       // 1 after scrolling ~1 viewport past that point.
-      const scrolled = Math.min(1, Math.max(0, -rect.top / vh));
+      const scrolled = Math.min(1, Math.max(0, -rect.top / (vh * 0.35)));
       setProgress(scrolled);
     };
     onScroll();
@@ -38,7 +38,7 @@ export default function CTASection() {
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: "200vh" }}
+      style={{ height: "120vh" }}
     >
       <div className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)]">
         <div className="pointer-events-none absolute inset-0">

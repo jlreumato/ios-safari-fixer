@@ -9,6 +9,8 @@ import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import BackToTop from "@/components/BackToTop";
+
 import IntroCover from "@/components/IntroCover";
 import Seo from "@/components/Seo";
 
@@ -33,6 +35,8 @@ const Index = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
+
     </>
   );
 };
