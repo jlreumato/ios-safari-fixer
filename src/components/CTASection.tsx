@@ -38,7 +38,7 @@ export default function CTASection() {
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: "200vh" }}
+      style={{ height: "120vh" }}
     >
       <div className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)]">
         <div className="pointer-events-none absolute inset-0">
