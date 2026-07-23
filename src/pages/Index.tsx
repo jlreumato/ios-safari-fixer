@@ -35,6 +35,8 @@ const Index = () => {
       </main>
       <Footer />
       <WhatsAppButton />
+      <BackToTop />
+
     </>
   );
 };
