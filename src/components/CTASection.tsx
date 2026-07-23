@@ -21,7 +21,7 @@ export default function CTASection() {
       const vh = window.innerHeight;
       // 0 when the section top hits the top of the viewport,
       // 1 after scrolling ~1 viewport past that point.
-      const scrolled = Math.min(1, Math.max(0, -rect.top / vh));
+      const scrolled = Math.min(1, Math.max(0, -rect.top / (vh * 0.35)));
       setProgress(scrolled);
     };
     onScroll();
