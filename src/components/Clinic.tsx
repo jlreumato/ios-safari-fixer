@@ -176,11 +176,7 @@ export default function Clinic() {
                 }`}
               >
                 {loc.name}
-                {i === 0 && (
-                  <span className={`ml-2 rounded-full border px-2 py-0.5 text-sm font-semibold uppercase tracking-wider ${activeTab === i ? "border-primary/40 text-primary" : "border-primary/20 text-primary"}`}>
-                    Principal
-                  </span>
-                )}
+
               </button>
             ))}
           </div>
