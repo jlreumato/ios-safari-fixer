@@ -567,10 +567,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
           <div className="mx-auto grid h-full max-w-7xl grid-cols-[280px_1fr] items-center gap-12 px-8">
             {/* Left rail */}
             <aside className="relative">
-              <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
-                Etapas da Transformação
-              </p>
-              <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
+              <ol className="relative space-y-4 border-l border-primary/15 pl-6">
                 {steps.map((s, i) => {
                   const isActive = i === active;
                   const isPast = i < active;
