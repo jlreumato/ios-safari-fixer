@@ -193,42 +193,48 @@ function JointsWheel() {
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
           </div>
 
-          {/* Mobile — diagonal fila; active card lifts to the front */}
-          <div className="absolute inset-x-0 bottom-0 top-1/2 overflow-visible lg:hidden" aria-hidden>
-            <div className="relative mx-auto h-full w-full" style={{ perspective: "1200px" }}>
-              {joints.map((j, i) => {
-                const delta = i - active;
-                const isActive = i === active;
-                const x = delta * 22;           // horizontal offset along the diagonal
-                const y = delta * 14;           // vertical offset (fila diagonal)
-                const rot = delta * -8;         // slight tilt
-                const scale = isActive ? 1 : Math.max(0.42, 0.62 - Math.abs(delta) * 0.05);
-                const z = isActive ? 60 : 30 - Math.abs(delta);
-                const opacity = isActive ? 1 : Math.max(0.35, 0.75 - Math.abs(delta) * 0.15);
-                return (
+          {/* Mobile — horizontal snap slider (foto + links) */}
+          <div className="absolute inset-x-0 bottom-0 top-[46%] overflow-hidden lg:hidden">
+            <div
+              className="flex h-full w-full snap-x snap-mandatory overflow-x-auto"
+              style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+              aria-label="Áreas em evidência — arraste para navegar"
+            >
+              {joints.map((j) => (
+                <div
+                  key={j.label}
+                  className="relative flex h-full w-full shrink-0 snap-center flex-col"
+                  style={{ minWidth: "100%" }}
+                >
                   <div
-                    key={j.label}
-                    className="absolute left-1/2 top-1/2 h-[62%] w-[72%] overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative mx-auto mt-2 h-[62%] w-[86%] overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
-                      transform: `translate3d(calc(-50% + ${x}%), calc(-50% + ${y}%), 0) rotate(${rot}deg) scale(${scale})`,
-                      opacity,
-                      zIndex: z,
-                      transition:
-                        "transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease",
-                      willChange: "transform, opacity",
                     }}
-                  >
-                    {!isActive && (
-                      <div className="absolute inset-0 bg-[#1a1229]/45" />
-                    )}
+                  />
+                  <div className="mx-auto mt-4 flex w-[86%] flex-col gap-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
+                      {j.label}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {j.links.map((l) => (
+                        <a
+                          key={l.slug}
+                          href={`/tratamentos/${l.slug}`}
+                          className="rounded-full border border-white/25 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/90 transition-colors hover:border-primary hover:text-primary"
+                        >
+                          {l.label}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
+
 
         </div>
 
