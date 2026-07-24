@@ -522,9 +522,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
     <>
       {/* MOBILE — horizontal snap slider, sem transparências ou hijack de scroll */}
       <div className="lg:hidden px-4 sm:px-6 pb-12">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
-          Etapas da Transformação
-        </p>
+
         <div
           className="-mx-4 sm:-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:px-6 pb-4"
           style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
