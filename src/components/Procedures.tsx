@@ -30,9 +30,9 @@ const joints: {
     image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
     links: [
-      { label: "Artrose", slug: "artrose" },
-      { label: "Osteoporose", slug: "osteoporose" },
-      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Infiltração Trocantérica", slug: "infiltracao-ultrassom" },
+      { label: "Viscossuplementação de Quadril", slug: "viscossuplementacao" },
+      { label: "PRP Coxofemoral", slug: "prp" },
     ],
   },
   {
@@ -40,9 +40,9 @@ const joints: {
     image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
     links: [
-      { label: "Artrose", slug: "artrose" },
-      { label: "Dores musculares", slug: "dores-musculares" },
-      { label: "Gota", slug: "gota" },
+      { label: "Viscossuplementação de Joelho", slug: "viscossuplementacao" },
+      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
+      { label: "PRP de Joelho", slug: "prp" },
     ],
   },
   {
@@ -50,9 +50,9 @@ const joints: {
     image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
     links: [
-      { label: "Dores musculares", slug: "dores-musculares" },
-      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
-      { label: "Artrose", slug: "artrose" },
+      { label: "Infiltração Subacromial", slug: "infiltracao-ultrassom" },
+      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
+      { label: "Bloqueio do Supraescapular", slug: "bloqueios-anestesicos" },
     ],
   },
   {
@@ -60,9 +60,9 @@ const joints: {
     image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
     links: [
-      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
-      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
-      { label: "Artrose", slug: "artrose" },
+      { label: "Bloqueio do Túnel do Carpo", slug: "bloqueios-anestesicos" },
+      { label: "Infiltração de Dedo em Gatilho", slug: "infiltracao-ultrassom" },
+      { label: "Infiltração da Rizartrose", slug: "infiltracao-ultrassom" },
     ],
   },
   {
@@ -70,9 +70,9 @@ const joints: {
     image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
     links: [
-      { label: "Gota", slug: "gota" },
-      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
-      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Infiltração da Fascite Plantar", slug: "infiltracao-ultrassom" },
+      { label: "Bloqueio do Nervo Tibial", slug: "bloqueios-anestesicos" },
+      { label: "PRP do Tendão de Aquiles", slug: "prp" },
     ],
   },
 ];
