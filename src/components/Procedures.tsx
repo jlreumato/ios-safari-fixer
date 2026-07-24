@@ -155,7 +155,8 @@ function JointsWheel() {
   }, []);
 
   const current = joints[active];
-  const slide = Math.min(1, progress * 2);
+  void progress;
+
 
   return (
     <div
