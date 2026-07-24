@@ -192,16 +192,16 @@ function JointsWheel() {
             ))}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
 
-            {/* Hover overlay — procedure links */}
+            {/* Hover overlay — procedure links, centered on image */}
             <div
-              className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-[#1a1229]/85 via-[#1a1229]/50 to-transparent p-10 transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center bg-[#1a1229]/70 p-10 backdrop-blur-sm transition-opacity duration-500"
               style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
             >
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-md text-center">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
                   Procedimentos indicados
                 </p>
-                <div className="mt-4 flex flex-col gap-2.5">
+                <div className="mt-5 flex flex-col gap-2.5">
                   {current.links.map((l) => (
                     <a
                       key={l.label}
@@ -213,6 +213,13 @@ function JointsWheel() {
                     </a>
                   ))}
                 </div>
+                <a
+                  href="/procedimentos"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                >
+                  Ver todos os procedimentos
+                  <ChevronRight className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
