@@ -192,30 +192,40 @@ function JointsWheel() {
             ))}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
 
-            {/* Hover overlay — procedure links, centered on image */}
+            {/* Hover overlay — procedure links, sophisticated modern (sharp edges) */}
             <div
-              className="absolute inset-0 flex items-center justify-center bg-[#1a1229]/70 p-10 backdrop-blur-sm transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1229]/85 via-[#1a1229]/70 to-[#2b1e40]/80 p-12 backdrop-blur-md transition-opacity duration-500"
               style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
             >
-              <div className="w-full max-w-md text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
-                  Procedimentos indicados
-                </p>
-                <div className="mt-5 flex flex-col gap-2.5">
-                  {current.links.map((l) => (
-                    <a
-                      key={l.label}
-                      href={`/procedimentos#${l.slug}`}
-                      className="group inline-flex items-center justify-between gap-3 rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-medium text-white/95 backdrop-blur transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
-                    >
-                      <span>{l.label}</span>
-                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </a>
-                  ))}
+              <div className="w-full max-w-lg">
+                <div className="mb-8 flex items-center gap-4">
+                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]">
+                    Procedimentos indicados
+                  </p>
+                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
                 </div>
+                <ul className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+                  {current.links.map((l) => (
+                    <li key={l.label}>
+                      <a
+                        href={`/procedimentos#${l.slug}`}
+                        className="group/link flex items-center justify-between gap-4 py-4 transition-colors hover:text-[#e7d9b5]"
+                      >
+                        <span className="text-lg font-light tracking-wide text-white/95">
+                          {l.label}
+                        </span>
+                        <span className="flex items-center gap-3 text-[#e7d9b5]/70 transition-all group-hover/link:text-[#e7d9b5]">
+                          <span className="h-px w-6 bg-[#e7d9b5]/60 transition-all group-hover/link:w-12" />
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
                 <a
                   href="/procedimentos"
-                  className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                  className="mt-10 inline-flex items-center gap-3 border border-[#e7d9b5]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] transition-colors hover:border-[#e7d9b5] hover:bg-[#e7d9b5]/10"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -238,7 +248,7 @@ function JointsWheel() {
                   style={{ minWidth: "100%" }}
                 >
                   <div
-                    className="relative h-full w-full overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative h-full w-full overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
@@ -246,22 +256,23 @@ function JointsWheel() {
                     }}
                   >
                     {/* Links overlaid on image */}
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/90 via-[#1a1229]/40 to-transparent p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/95 via-[#1a1229]/55 to-transparent p-5">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
                         {j.label} · Procedimentos
                       </p>
-                      <div className="mt-3 flex flex-col gap-2">
+                      <ul className="mt-4 flex flex-col divide-y divide-white/10 border-y border-white/10">
                         {j.links.map((l) => (
-                          <a
-                            key={l.label}
-                            href={`/procedimentos#${l.slug}`}
-                            className="inline-flex items-center justify-between gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-medium text-white/95 backdrop-blur"
-                          >
-                            <span>{l.label}</span>
-                            <ChevronRight className="h-3.5 w-3.5" />
-                          </a>
+                          <li key={l.label}>
+                            <a
+                              href={`/procedimentos#${l.slug}`}
+                              className="flex items-center justify-between gap-3 py-3 text-sm font-light text-white/95"
+                            >
+                              <span>{l.label}</span>
+                              <ChevronRight className="h-3.5 w-3.5 text-[#e7d9b5]" />
+                            </a>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -301,7 +312,7 @@ function JointsWheel() {
                 </p>
                 <a
                   href="/procedimentos"
-                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-3 border-2 border-[#e7d9b5]/70 px-7 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5] transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -315,7 +326,7 @@ function JointsWheel() {
         <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center lg:hidden">
           <a
             href="/procedimentos"
-            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] backdrop-blur"
+            className="pointer-events-auto inline-flex items-center gap-2 border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] backdrop-blur"
           >
             Ver todos os procedimentos
             <ChevronRight className="h-3.5 w-3.5" />
@@ -539,115 +550,46 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
         </div>
       </div>
 
-      {/* DESKTOP — sticky vertical slider (sem fade-in nem hover) */}
-      <div
-        ref={ref}
-        className="relative hidden lg:block"
-        style={{ height: `${steps.length * 90 + 40}vh` }}
-      >
-        <div className="sticky top-20 h-[calc(100dvh-5rem)] w-full overflow-hidden">
-          <div className="mx-auto grid h-full max-w-7xl grid-cols-[280px_1fr] items-center gap-12 px-8">
-            {/* Left rail */}
-            <aside className="relative">
-              <ol className="relative space-y-4 border-l border-primary/15 pl-6">
-                {steps.map((s, i) => {
-                  const isActive = i === active;
-                  const isPast = i < active;
-                  return (
-                    <li key={s.title} className="relative">
-                      <span
-                        className={`absolute -left-[30px] top-2 flex h-5 w-5 items-center justify-center rounded-full border transition-all duration-500 ${
-                          isActive
-                            ? "border-primary bg-primary scale-110 shadow-[0_0_0_6px_hsl(var(--primary)/0.12)]"
-                            : isPast
-                            ? "border-primary/50 bg-primary/60"
-                            : "border-primary/25 bg-background"
-                        }`}
-                      >
-                        {isActive && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
-                      </span>
-                      <span
-                        className={`block text-[10px] font-semibold uppercase tracking-[0.28em] transition-colors ${
-                          isActive ? "text-primary" : "text-muted-foreground/70"
-                        }`}
-                      >
-                        Etapa {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={`mt-1 block text-2xl leading-tight tracking-tight transition-colors ${
-                          isActive ? "text-foreground" : "text-muted-foreground/80"
-                        }`}
-                        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                      >
-                        {s.title}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-              <div className="mt-8 flex items-center gap-3 text-base font-medium uppercase tracking-[0.24em] text-primary/70">
-                <span>{String(active + 1).padStart(2, "0")}</span>
-                <span className="h-px flex-1 bg-primary/20" />
-                <span>{String(steps.length).padStart(2, "0")}</span>
-              </div>
-            </aside>
-
-            {/* Right stage — vertical slide of cards */}
-            <div className="relative h-full overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center">
-                {steps.map((step, i) => {
-                  const delta = i - pos;
-                  const abs = Math.abs(delta);
-                  const ty = delta * 105; // % of stage height
-                  const opacity = Math.max(0, 1 - abs * 0.8);
-                  const scale = 1 - Math.min(0.15, abs * 0.08);
-                  const isActive = i === active;
-                  return (
-                    <div
-                      key={step.title}
-                      className="absolute inset-x-0"
-                      style={{
-                        transform: `translateY(${ty}%) scale(${scale})`,
-                        opacity,
-                        transition:
-                          "transform 260ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms linear",
-                        willChange: "transform, opacity",
-                        zIndex: 100 - Math.round(abs * 10),
-                        pointerEvents: isActive ? "auto" : "none",
-                      }}
-                    >
-                      <div
-                        className={`mx-auto max-w-2xl rounded-3xl border-2 bg-transparent p-10 transition-colors duration-500 ${
-                          isActive
-                            ? "border-[#2a2730] shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]"
-                            : "border-[#2a2730]/40"
-                        }`}
-                      >
-                        <div className="flex items-center gap-4">
-                          <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                            <step.icon className="h-6 w-6" />
-                          </span>
-                          <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
-                            Etapa {String(i + 1).padStart(2, "0")} /{" "}
-                            {String(steps.length).padStart(2, "0")}
-                          </span>
-                        </div>
-                        <h4
-                          className="mt-5 text-4xl leading-tight text-foreground"
-                          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                        >
-                          {step.title}
-                        </h4>
-                        <p className="mt-4 text-xl leading-relaxed text-muted-foreground">
-                          {step.desc}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+      {/* DESKTOP — grid estático (sem parallax) */}
+      <div ref={ref} className="relative hidden lg:block">
+        <div className="mx-auto max-w-7xl px-8 py-24">
+          <div className="mb-14 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+              Etapas da Transformação
+            </p>
+            <h3
+              className="mt-4 text-5xl font-normal tracking-tight text-foreground"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              Uma jornada em <span className="italic text-primary">oito etapas</span>
+            </h3>
           </div>
+          <ol className="grid grid-cols-2 gap-6 xl:grid-cols-4">
+            {steps.map((step, i) => (
+              <li
+                key={step.title}
+                className="group relative flex flex-col border-2 border-[#2a2730] bg-transparent p-8 transition-colors duration-300 hover:border-primary/60"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <step.icon className="h-6 w-6" />
+                  </span>
+                  <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
+                    Etapa {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+                <h4
+                  className="mt-5 text-3xl leading-tight text-foreground"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {step.title}
+                </h4>
+                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+                  {step.desc}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     </>
