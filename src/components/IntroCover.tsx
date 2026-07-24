@@ -122,16 +122,17 @@ export default function IntroCover() {
           </span>
         </div>
 
-        {/* REUMATOLOGIA — slides in from the right */}
+        {/* REUMATOLOGIA — slides in together with "Juliana Leal" */}
         <div className="mt-1 flex justify-end overflow-hidden pr-1 sm:mt-2 sm:pr-2">
           <span
             className="text-base font-normal uppercase tracking-[0.28em] sm:text-xl md:text-2xl lg:text-3xl"
             style={{
               color: GOLD,
-              transform: nameDone ? "translateX(0)" : "translateX(110vw)",
-              opacity: nameDone ? 1 : 0,
+              transform: mounted ? "translateX(0)" : "translateX(110vw)",
+              opacity: mounted ? 1 : 0,
               transition:
                 "transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease-out",
+              transitionDelay: "150ms",
             }}
           >
             Reumatologia

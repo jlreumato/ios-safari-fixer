@@ -17,31 +17,63 @@ import ombroImg from "@/assets/joints/ombro.jpg";
 import maosImg from "@/assets/joints/maos.jpg";
 import pesImg from "@/assets/joints/pes.jpg";
 
-const joints = [
+type JointLink = { label: string; slug: string };
+
+const joints: {
+  label: string;
+  image: string;
+  desc: string;
+  links: JointLink[];
+}[] = [
   {
     label: "Quadril",
     image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
+    links: [
+      { label: "Artrose", slug: "artrose" },
+      { label: "Osteoporose", slug: "osteoporose" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+    ],
   },
   {
     label: "Joelho",
     image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
+    links: [
+      { label: "Artrose", slug: "artrose" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Gota", slug: "gota" },
+    ],
   },
   {
     label: "Ombro",
     image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
+    links: [
+      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
+      { label: "Artrose", slug: "artrose" },
+    ],
   },
   {
     label: "Punho e Mãos",
     image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
+    links: [
+      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
+      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
+      { label: "Artrose", slug: "artrose" },
+    ],
   },
   {
     label: "Pés e Tornozelos",
     image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
+    links: [
+      { label: "Gota", slug: "gota" },
+      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+    ],
   },
 ];
 
@@ -161,42 +193,48 @@ function JointsWheel() {
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
           </div>
 
-          {/* Mobile — diagonal fila; active card lifts to the front */}
-          <div className="absolute inset-x-0 bottom-0 top-1/2 overflow-visible lg:hidden" aria-hidden>
-            <div className="relative mx-auto h-full w-full" style={{ perspective: "1200px" }}>
-              {joints.map((j, i) => {
-                const delta = i - active;
-                const isActive = i === active;
-                const x = delta * 22;           // horizontal offset along the diagonal
-                const y = delta * 14;           // vertical offset (fila diagonal)
-                const rot = delta * -8;         // slight tilt
-                const scale = isActive ? 1 : Math.max(0.42, 0.62 - Math.abs(delta) * 0.05);
-                const z = isActive ? 60 : 30 - Math.abs(delta);
-                const opacity = isActive ? 1 : Math.max(0.35, 0.75 - Math.abs(delta) * 0.15);
-                return (
+          {/* Mobile — horizontal snap slider (foto + links) */}
+          <div className="absolute inset-x-0 bottom-0 top-[46%] overflow-hidden lg:hidden">
+            <div
+              className="flex h-full w-full snap-x snap-mandatory overflow-x-auto"
+              style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+              aria-label="Áreas em evidência — arraste para navegar"
+            >
+              {joints.map((j) => (
+                <div
+                  key={j.label}
+                  className="relative flex h-full w-full shrink-0 snap-center flex-col"
+                  style={{ minWidth: "100%" }}
+                >
                   <div
-                    key={j.label}
-                    className="absolute left-1/2 top-1/2 h-[62%] w-[72%] overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative mx-auto mt-2 h-[62%] w-[86%] overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
-                      transform: `translate3d(calc(-50% + ${x}%), calc(-50% + ${y}%), 0) rotate(${rot}deg) scale(${scale})`,
-                      opacity,
-                      zIndex: z,
-                      transition:
-                        "transform 700ms cubic-bezier(0.22,1,0.36,1), opacity 500ms ease",
-                      willChange: "transform, opacity",
                     }}
-                  >
-                    {!isActive && (
-                      <div className="absolute inset-0 bg-[#1a1229]/45" />
-                    )}
+                  />
+                  <div className="mx-auto mt-4 flex w-[86%] flex-col gap-2">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
+                      {j.label}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {j.links.map((l) => (
+                        <a
+                          key={l.slug}
+                          href={`/tratamentos/${l.slug}`}
+                          className="rounded-full border border-white/25 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/90 transition-colors hover:border-primary hover:text-primary"
+                        >
+                          {l.label}
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
+
 
         </div>
 
@@ -234,25 +272,23 @@ function JointsWheel() {
                 </h3>
                 <p
                   key={current.desc}
-                  className="mt-5 text-lg leading-relaxed text-white/95 animate-in fade-in duration-500 sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
+                  className="mt-5 hidden text-lg leading-relaxed text-white/95 lg:block sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
                 >
                   {current.desc}
                 </p>
 
-                <div className="mt-10 w-full">
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/15">
-                    <div
-                      className="h-full rounded-full bg-primary transition-[width] duration-150"
-                      style={{ width: `${progress * 100}%` }}
-                    />
-                  </div>
-                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-white/80 lg:justify-start">
-                    <span>{String(active + 1).padStart(2, "0")}</span>
-                    <span className="h-px flex-1 bg-white/25" />
-                    <ChevronRight className="h-5 w-5 animate-pulse" />
-                    <span className="h-px flex-1 bg-white/25" />
-                    <span>{String(joints.length).padStart(2, "0")}</span>
-                  </div>
+                {/* Desktop-only links menu — replaces progress + counter */}
+                <div className="mt-8 hidden flex-wrap gap-3 lg:flex" key={`${current.label}-links`}>
+                  {current.links.map((l) => (
+                    <a
+                      key={l.slug}
+                      href={`/tratamentos/${l.slug}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium uppercase tracking-[0.14em] text-white/90 transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                    >
+                      {l.label}
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -383,12 +419,17 @@ function FlipIntro() {
               className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              <span className="text-4xl sm:text-6xl lg:text-7xl">Transforma</span>
-              <span className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-5xl font-semibold text-transparent sm:text-7xl lg:text-8xl">
+              <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
+                Transforma
+              </span>
+              <span
+                className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
+                style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
+              >
                 DOR
               </span>
             </h3>
-            <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
               psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
             </p>
@@ -397,9 +438,9 @@ function FlipIntro() {
             </p>
           </div>
 
-          {/* BACK — Etapas prelude */}
+          {/* BACK — Etapa 1 já em exibição (mesma sessão) */}
           <div
-            className="absolute inset-0 flex items-center justify-center text-center"
+            className="absolute inset-0 flex items-center justify-center px-4"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -408,19 +449,29 @@ function FlipIntro() {
               transition: "opacity 200ms linear",
             }}
           >
-            <div>
-              <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
-                Um novo capítulo
+            <div className="mx-auto max-w-2xl rounded-3xl border-2 border-[#2a2730] bg-transparent p-8 sm:p-10 shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
+                Etapas da Transformação
               </p>
-              <h3
-                className="mt-4 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+              <div className="mt-4 flex items-center gap-4">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  {(() => {
+                    const Icon = journey[0].icon;
+                    return <Icon className="h-6 w-6" />;
+                  })()}
+                </span>
+                <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
+                  Etapa 01 / {String(journey.length).padStart(2, "0")}
+                </span>
+              </div>
+              <h4
+                className="mt-5 text-4xl leading-tight text-foreground sm:text-5xl"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
-                Etapas da <em className="not-italic text-primary">Transformação</em>
-              </h3>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Uma jornada cuidadosamente desenhada — do primeiro encontro à sua liberdade
-                de movimento. Continue rolando para conhecer cada passo.
+                {journey[0].title}
+              </h4>
+              <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+                {journey[0].desc}
               </p>
             </div>
           </div>

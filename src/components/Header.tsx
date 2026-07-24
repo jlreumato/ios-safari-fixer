@@ -8,7 +8,7 @@ import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
   { label: "A Clínica", href: "/#clinica" },
-  { label: "Atuação", href: "/#procedimentos" },
+  { label: "Procedimentos", href: "/procedimentos" },
   { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Blog", href: "/blog" },
@@ -90,8 +90,8 @@ export default function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-4 py-4 text-3xl text-foreground transition-colors hover:text-primary"
-                    style={{ fontFamily: "'Dancing Script', 'Cormorant Garamond', cursive", fontWeight: 600 }}
+                    className="rounded-md px-4 py-4 text-2xl font-normal tracking-tight text-foreground transition-colors hover:text-primary"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                   >
                     {link.label}
                   </a>
