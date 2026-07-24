@@ -583,11 +583,17 @@ function StepsReveal({
 
         {/* Vertical cylinder stage — one card at a time */}
         <div
-          className="relative flex min-h-[60vh] items-center justify-center lg:min-h-0"
-          style={{ perspective: "1600px" }}
+          className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0"
+          style={{
+            perspective: "1800px",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
+          }}
         >
           <div
-            className="relative h-[440px] w-full max-w-[520px]"
+            className="relative h-[360px] w-full max-w-[520px]"
             style={{
               transformStyle: "preserve-3d",
               transform: `translateZ(-${radius}px) rotateX(${rotation}deg)`,
