@@ -355,16 +355,194 @@ export default function Procedures() {
         backgroundSize: "cover",
       }}
     >
-      {/* Journey / Protocolo TransformaDOR */}
+      {/* Programa TransformaDOR — arrow slices DOR while Etapas slide in from the right */}
       <div id="protocolo" className="relative">
-        <FlipIntro />
-        <JourneyStage steps={journey} />
-        <div className="pb-16 lg:pb-24" />
+        <ArrowSliceReveal steps={journey} />
       </div>
 
       {/* Procedimentos — Áreas em evidência (merged) */}
       <JointsWheel />
     </section>
+  );
+}
+
+
+/**
+ * Sticky reveal: an arrow slides from right to left, "cutting" the word DOR.
+ * As it passes, the Programa TransformaDOR intro is clipped away and the
+ * Etapas da Transformação grid (with its own nav menu) slides in from the right.
+ */
+function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
+  const { ref, progress } = useScrollProgress();
+  const [activeStep, setActiveStep] = useState(0);
+
+  // Arrow position 100% → 0% across the viewport as progress goes 0 → 1.
+  const arrowX = 100 - progress * 100;
+  const introClip = `inset(0 ${progress * 100}% 0 0)`;
+  const stepsClip = `inset(0 0 0 ${arrowX}%)`;
+
+  return (
+    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        {/* Layer A — Programa TransformaDOR intro (revealed out) */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
+          style={{ clipPath: introClip, WebkitClipPath: introClip }}
+        >
+          <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
+            Programa
+          </p>
+          <h3
+            className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
+              Transforma
+            </span>
+            <span
+              className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
+              style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
+            >
+              DOR
+            </span>
+          </h3>
+          <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+            psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
+          </p>
+          <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
+            role para revelar →
+          </p>
+        </div>
+
+        {/* Layer B — Etapas da Transformação (revealed in from the right) */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: stepsClip, WebkitClipPath: stepsClip }}
+        >
+          <StepsReveal steps={steps} active={activeStep} setActive={setActiveStep} />
+        </div>
+
+        {/* Slicing arrow */}
+        <div
+          className="pointer-events-none absolute inset-y-0 z-10"
+          style={{
+            left: `${arrowX}%`,
+            transform: "translateX(-50%)",
+            transition: "left 60ms linear",
+          }}
+        >
+          {/* Vertical glowing blade */}
+          <div
+            className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 0%, #e7d9b5 20%, #e7d9b5 80%, transparent 100%)",
+              boxShadow: "0 0 24px 2px rgba(231,217,181,0.55)",
+            }}
+          />
+          {/* Arrow head */}
+          <div
+            className="absolute top-1/2 flex -translate-y-1/2 items-center gap-2"
+            style={{ right: "calc(50% + 6px)" }}
+          >
+            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] sm:inline">
+              Etapas
+            </span>
+            <span
+              className="flex h-12 w-12 items-center justify-center border-2 border-[#e7d9b5] bg-[#1a1229]/70 text-[#e7d9b5] backdrop-blur"
+              style={{ boxShadow: "0 0 30px rgba(231,217,181,0.35)" }}
+            >
+              <ChevronRight className="h-5 w-5 rotate-180" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepsReveal({
+  steps,
+  active,
+  setActive,
+}: {
+  steps: JourneyStep[];
+  active: number;
+  setActive: (i: number) => void;
+}) {
+  const current = steps[active];
+  return (
+    <div className="relative flex h-full w-full flex-col bg-transparent">
+      {/* Header */}
+      <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-16">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+          Etapas da Transformação
+        </p>
+        <h3
+          className="mt-3 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        >
+          Uma jornada em <span className="italic text-primary">oito etapas</span>
+        </h3>
+      </div>
+
+      {/* Body: nav menu + active step detail */}
+      <div className="grid flex-1 grid-cols-1 gap-8 px-6 pb-10 pt-8 sm:px-10 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-16 lg:pb-16">
+        {/* Nav menu */}
+        <nav
+          className="flex gap-3 overflow-x-auto lg:flex-col lg:gap-1 lg:overflow-visible"
+          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+        >
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={s.title}
+                type="button"
+                onClick={() => setActive(i)}
+                className={`group flex shrink-0 items-center gap-3 border-l-2 py-3 pl-4 pr-5 text-left transition-all ${
+                  isActive
+                    ? "border-primary bg-primary/5 text-foreground"
+                    : "border-[#2a2730] text-muted-foreground hover:border-primary/60 hover:text-foreground"
+                }`}
+              >
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="whitespace-nowrap text-sm font-medium lg:whitespace-normal">
+                  {s.title}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Active detail card */}
+        <div
+          key={current.title}
+          className="flex flex-col justify-center border-2 border-[#2a2730] bg-background/40 p-8 animate-in fade-in slide-in-from-right-4 duration-500 lg:p-12"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center bg-primary/10 text-primary">
+              <current.icon className="h-6 w-6" />
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
+              Etapa {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+            </span>
+          </div>
+          <h4
+            className="mt-6 text-4xl leading-tight text-foreground lg:text-5xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            {current.title}
+          </h4>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
+            {current.desc}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -406,195 +584,6 @@ function useScrollProgress() {
   return { ref, progress: p };
 }
 
-/**
- * "Programa TransformaDOR" — sobrecapa que se abre lateralmente (duas
- * metades deslizando para fora) conforme o scroll avança, revelando a
- * seção "Etapas da Transformação" logo abaixo. Mesmo padrão visual da
- * sobrecapa principal do site.
- */
-function FlipIntro() {
-  const { ref, progress } = useScrollProgress();
-
-  // Abertura mais lenta e cinematográfica: 0 → 1 em ~80% do scroll disponível.
-  const eased = Math.min(1, progress * 1.25);
-  const shift = eased * 100; // porcentagem que cada metade desliza
-
-  const content = (
-    <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-4 text-center">
-      <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
-        Programa
-      </p>
-      <h3
-        className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
-        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-      >
-        <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
-          Transforma
-        </span>
-        <span
-          className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
-          style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
-        >
-          DOR
-        </span>
-      </h3>
-      <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-        psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
-      </p>
-      <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
-        role para abrir ↓
-      </p>
-    </div>
-  );
-
-  const coverBg = `
-    radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
-    radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
-    radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
-    linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
-  `;
-
-  const halfBgStyle: React.CSSProperties = {
-    backgroundImage: coverBg,
-    backgroundAttachment: "fixed",
-    backgroundSize: "100vw 100vh",
-    backgroundRepeat: "no-repeat",
-  };
-
-  const halfTransition = "transform 900ms cubic-bezier(0.65, 0, 0.35, 1)";
-
-  return (
-    <div ref={ref} className="relative" style={{ height: "180vh" }}>
-      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Metade esquerda */}
-        <div
-          className="absolute inset-y-0 left-0 w-1/2 overflow-hidden"
-          style={{
-            ...halfBgStyle,
-            backgroundPosition: "left top",
-            transform: `translate3d(-${shift}%, 0, 0)`,
-            transition: halfTransition,
-          }}
-        >
-          <div className="absolute inset-y-0 left-0 h-full w-screen">{content}</div>
-        </div>
-
-        {/* Metade direita */}
-        <div
-          className="absolute inset-y-0 right-0 w-1/2 overflow-hidden"
-          style={{
-            ...halfBgStyle,
-            backgroundPosition: "right top",
-            transform: `translate3d(${shift}%, 0, 0)`,
-            transition: halfTransition,
-          }}
-        >
-          <div className="absolute inset-y-0 right-0 h-full w-screen">{content}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-/**
- * Journey stage — sticky viewport where cards slide vertically synced with
- * scroll while the left rail indicator moves through the steps. After the
- * last card, the page continues scrolling normally.
- */
-function JourneyStage({ steps }: { steps: JourneyStep[] }) {
-  const { ref, progress } = useScrollProgress();
-
-  // Continuous index across steps (0 → steps.length - 1).
-  const scrollPos = progress * (steps.length - 1);
-  const active = Math.min(steps.length - 1, Math.max(0, Math.round(scrollPos)));
-  const pos = scrollPos;
-
-  return (
-    <>
-      {/* MOBILE — horizontal snap slider, sem transparências ou hijack de scroll */}
-      <div className="lg:hidden px-4 sm:px-6 pb-12">
-
-        <div
-          className="-mx-4 sm:-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:px-6 pb-4"
-          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
-        >
-          {steps.map((step, i) => (
-            <div
-              key={step.title}
-              className="snap-center shrink-0"
-              style={{ width: "82vw" }}
-            >
-              <div className="h-full rounded-3xl border-2 border-[#2a2730] bg-background/40 p-6 sm:p-8">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-                    <step.icon className="h-5 w-5" />
-                  </span>
-                  <span className="text-sm font-semibold uppercase tracking-[0.24em] text-primary/80">
-                    Etapa {String(i + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-                  </span>
-                </div>
-                <h4
-                  className="mt-5 text-3xl leading-tight text-foreground"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                >
-                  {step.title}
-                </h4>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  {step.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* DESKTOP — grid estático (sem parallax) */}
-      <div ref={ref} className="relative hidden lg:block">
-        <div className="mx-auto max-w-7xl px-8 py-24">
-          <div className="mb-14 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
-              Etapas da Transformação
-            </p>
-            <h3
-              className="mt-4 text-5xl font-normal tracking-tight text-foreground"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              Uma jornada em <span className="italic text-primary">oito etapas</span>
-            </h3>
-          </div>
-          <ol className="grid grid-cols-2 gap-6 xl:grid-cols-4">
-            {steps.map((step, i) => (
-              <li
-                key={step.title}
-                className="group relative flex flex-col border-2 border-[#2a2730] bg-transparent p-8 transition-colors duration-300 hover:border-primary/60"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <step.icon className="h-6 w-6" />
-                  </span>
-                  <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
-                    Etapa {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <h4
-                  className="mt-5 text-3xl leading-tight text-foreground"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                >
-                  {step.title}
-                </h4>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">
-                  {step.desc}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-    </>
-  );
-}
 
 
 

@@ -144,7 +144,7 @@ function MobileStack() {
             style={{ width: `${cardVW}vw`, height: "78dvh" }}
           >
             <div
-              className="relative h-full w-full overflow-hidden rounded-3xl"
+              className="relative h-full w-full overflow-hidden"
               style={{ boxShadow: "0 30px 60px -30px rgba(70,50,120,0.5)" }}
             >
               <TreatmentCard index={i} total={total} treatment={t} active />
@@ -173,7 +173,7 @@ function TreatmentCard({
   return (
     <Link
       to={`/tratamentos/${treatment.slug}`}
-      className="group relative flex h-full min-h-0 flex-col overflow-hidden rounded-2xl shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1"
+      className="group relative flex h-full min-h-0 flex-col overflow-hidden shadow-[0_10px_30px_-20px_rgba(70,50,120,0.35)] transition-transform duration-500 hover:-translate-y-1"
     >
       {/* Full-bleed image */}
       <img
