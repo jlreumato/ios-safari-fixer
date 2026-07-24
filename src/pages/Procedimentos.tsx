@@ -132,6 +132,18 @@ const WHATSAPP_URL =
 
 export default function ProcedimentosPage() {
   const [active, setActive] = useState<string | null>(null);
+  const cardRefs = useRef<Record<string, HTMLElement | null>>({});
+
+  const handleToggle = (slug: string) => {
+    const willOpen = active !== slug;
+    setActive(willOpen ? slug : null);
+    if (willOpen) {
+      requestAnimationFrame(() => {
+        const el = cardRefs.current[slug];
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+  };
 
   return (
     <>
@@ -193,8 +205,9 @@ export default function ProcedimentosPage() {
                 <article
                   key={p.slug}
                   id={p.slug}
+                  ref={(el) => { cardRefs.current[p.slug] = el; }}
                   className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
-                    isOpen ? "sm:col-span-2 lg:col-span-3" : ""
+                    isOpen ? "sm:col-span-2 lg:col-span-3 order-first" : ""
                   }`}
                 >
                   <div
