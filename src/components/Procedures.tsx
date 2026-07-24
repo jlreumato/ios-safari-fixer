@@ -473,7 +473,7 @@ function StepsReveal({
   // Vertical cylinder — one card visible at a time, rotating on X axis.
   const anglePerCard = 360 / steps.length;
   const rotation = cylProgress * (steps.length - 1) * anglePerCard;
-  const radius = 420;
+  const radius = 560;
 
   // Fill progress for the vertical timeline (0 → 1 across all steps).
   const fillPct = steps.length > 1 ? (active / (steps.length - 1)) * 100 : 0;
@@ -489,7 +489,7 @@ function StepsReveal({
           className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
-          Uma jornada em <span className="italic text-primary">oito etapas</span>
+          8 Etapas para se <span className="italic text-primary">libertar da dor</span>
         </h3>
       </div>
 
@@ -583,11 +583,17 @@ function StepsReveal({
 
         {/* Vertical cylinder stage — one card at a time */}
         <div
-          className="relative flex min-h-[60vh] items-center justify-center lg:min-h-0"
-          style={{ perspective: "1600px" }}
+          className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0"
+          style={{
+            perspective: "1800px",
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
+          }}
         >
           <div
-            className="relative h-[440px] w-full max-w-[520px]"
+            className="relative h-[360px] w-full max-w-[520px]"
             style={{
               transformStyle: "preserve-3d",
               transform: `translateZ(-${radius}px) rotateX(${rotation}deg)`,

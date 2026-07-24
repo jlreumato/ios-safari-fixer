@@ -34,6 +34,20 @@ export default function IntroCover() {
     const body = document.body;
     const prevHtml = html.style.overflow;
     const prevBody = body.style.overflow;
+
+    // If the user landed via a hash link (menu navigation from another page)
+    // OR already opened the cover in this session, skip the curtain entirely.
+    const hasHash = typeof window !== "undefined" && window.location.hash.length > 1;
+    const alreadyOpened =
+      typeof window !== "undefined" && sessionStorage.getItem("jl_intro_opened") === "1";
+
+    if (hasHash || alreadyOpened) {
+      progressRef.current = 1;
+      setProgress(1);
+      openRef.current = true;
+      return;
+    }
+
     html.style.overflow = "hidden";
     body.style.overflow = "hidden";
     window.scrollTo(0, 0);
@@ -45,6 +59,11 @@ export default function IntroCover() {
       openRef.current = true;
       html.style.overflow = prevHtml;
       body.style.overflow = prevBody;
+      try {
+        sessionStorage.setItem("jl_intro_opened", "1");
+      } catch {
+        /* ignore */
+      }
       window.scrollTo(0, 0);
     };
 
