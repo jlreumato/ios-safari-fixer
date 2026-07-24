@@ -52,8 +52,11 @@ export default function CTASection() {
     };
   }, []);
 
-  // Reserve the last 15% for the button reveal; the first 85% assembles the phrase.
-  const phraseRange = 0.85;
+  // Phase 1 (0 → 0.55): assemble phrase word-by-word.
+  // Phase 2 (0.55 → 0.7): reveal button + subtitle.
+  // Phase 3 (0.7 → 1): pause — CTA stays fully visible so the user can read/click.
+  const phraseRange = 0.55;
+  const buttonRange = 0.15;
   const perWord = phraseRange / SEGMENTS.length;
 
   // Progress per segment: 0 → not yet, 1 → fully seated.
@@ -63,13 +66,13 @@ export default function CTASection() {
     return Math.max(0, Math.min(1, raw));
   });
 
-  const buttonProgress = Math.max(0, Math.min(1, (progress - phraseRange) / (1 - phraseRange)));
+  const buttonProgress = Math.max(0, Math.min(1, (progress - phraseRange) / buttonRange));
 
   return (
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: "220vh" }}
+      style={{ height: "300vh" }}
     >
       <div className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)]">
         <div className="pointer-events-none absolute inset-0">
