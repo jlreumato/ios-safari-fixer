@@ -301,7 +301,7 @@ function JointsWheel() {
                 </p>
                 <a
                   href="/procedimentos"
-                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-3 border-2 border-[#e7d9b5]/70 px-7 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5] transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -315,7 +315,7 @@ function JointsWheel() {
         <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center lg:hidden">
           <a
             href="/procedimentos"
-            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] backdrop-blur"
+            className="pointer-events-auto inline-flex items-center gap-2 border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] backdrop-blur"
           >
             Ver todos os procedimentos
             <ChevronRight className="h-3.5 w-3.5" />
