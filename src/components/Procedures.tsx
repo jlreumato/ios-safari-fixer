@@ -453,7 +453,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
         </p>
         <div
           className="-mx-4 sm:-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:px-6 pb-4"
-          style={{ scrollbarWidth: "none" }}
+          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
         >
           {steps.map((step, i) => (
             <div

@@ -134,6 +134,7 @@ function MobileStack() {
           paddingRight: `${sidePad}vw`,
           scrollbarWidth: "none",
           WebkitOverflowScrolling: "touch",
+          touchAction: "pan-x",
         }}
       >
         {treatments.map((t, i) => (
