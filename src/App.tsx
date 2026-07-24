@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound.tsx";
 import TratamentoDetalhe from "./pages/TratamentoDetalhe.tsx";
 import BlogPage from "./pages/Blog.tsx";
 import Procedimentos from "./pages/Procedimentos.tsx";
+import Tratamentos from "./pages/Tratamentos.tsx";
 import RouteLoader from "./components/RouteLoader.tsx";
 
 
