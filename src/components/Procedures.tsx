@@ -30,9 +30,9 @@ const joints: {
     image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
     links: [
-      { label: "Artrose", slug: "artrose" },
-      { label: "Osteoporose", slug: "osteoporose" },
-      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Infiltração Trocantérica", slug: "infiltracao-ultrassom" },
+      { label: "Viscossuplementação de Quadril", slug: "viscossuplementacao" },
+      { label: "PRP Coxofemoral", slug: "prp" },
     ],
   },
   {
@@ -40,9 +40,9 @@ const joints: {
     image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
     links: [
-      { label: "Artrose", slug: "artrose" },
-      { label: "Dores musculares", slug: "dores-musculares" },
-      { label: "Gota", slug: "gota" },
+      { label: "Viscossuplementação de Joelho", slug: "viscossuplementacao" },
+      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
+      { label: "PRP de Joelho", slug: "prp" },
     ],
   },
   {
@@ -50,9 +50,9 @@ const joints: {
     image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
     links: [
-      { label: "Dores musculares", slug: "dores-musculares" },
-      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
-      { label: "Artrose", slug: "artrose" },
+      { label: "Infiltração Subacromial", slug: "infiltracao-ultrassom" },
+      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
+      { label: "Bloqueio do Supraescapular", slug: "bloqueios-anestesicos" },
     ],
   },
   {
@@ -60,9 +60,9 @@ const joints: {
     image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
     links: [
-      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
-      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
-      { label: "Artrose", slug: "artrose" },
+      { label: "Bloqueio do Túnel do Carpo", slug: "bloqueios-anestesicos" },
+      { label: "Infiltração de Dedo em Gatilho", slug: "infiltracao-ultrassom" },
+      { label: "Infiltração da Rizartrose", slug: "infiltracao-ultrassom" },
     ],
   },
   {
@@ -70,9 +70,9 @@ const joints: {
     image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
     links: [
-      { label: "Gota", slug: "gota" },
-      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
-      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Infiltração da Fascite Plantar", slug: "infiltracao-ultrassom" },
+      { label: "Bloqueio do Nervo Tibial", slug: "bloqueios-anestesicos" },
+      { label: "PRP do Tendão de Aquiles", slug: "prp" },
     ],
   },
 ];
@@ -126,6 +126,7 @@ function JointsWheel() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -154,10 +155,6 @@ function JointsWheel() {
   }, []);
 
   const current = joints[active];
-
-  // Text slides from screen-center into the left column as user scrolls the section.
-  // 0 → text centered horizontally over the whole viewport
-  // 1 → text pinned inside the left column
   const slide = Math.min(1, progress * 2);
 
   return (
@@ -167,13 +164,16 @@ function JointsWheel() {
       style={{ height: `${joints.length * 60}vh` }}
     >
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Two-column layout */}
         <div className="grid h-full w-full grid-cols-1 lg:grid-cols-2">
-          {/* LEFT column reserved for text (destination) */}
+          {/* LEFT column reserved for text */}
           <div className="relative hidden h-full lg:block" aria-hidden />
 
-          {/* RIGHT column — full image */}
-          <div className="relative hidden h-full w-full overflow-hidden lg:block">
+          {/* RIGHT column — image with hover-reveal links */}
+          <div
+            className="relative hidden h-full w-full overflow-hidden lg:block"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+          >
             {joints.map((j, i) => (
               <div
                 key={j.label}
@@ -191,10 +191,34 @@ function JointsWheel() {
               />
             ))}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
+
+            {/* Hover overlay — procedure links */}
+            <div
+              className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-[#1a1229]/85 via-[#1a1229]/50 to-transparent p-10 transition-opacity duration-500"
+              style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
+            >
+              <div className="w-full max-w-md">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
+                  Procedimentos indicados
+                </p>
+                <div className="mt-4 flex flex-col gap-2.5">
+                  {current.links.map((l) => (
+                    <a
+                      key={l.label}
+                      href={`/procedimentos#${l.slug}`}
+                      className="group inline-flex items-center justify-between gap-3 rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-medium text-white/95 backdrop-blur transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                    >
+                      <span>{l.label}</span>
+                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Mobile — horizontal snap slider (foto + links) */}
-          <div className="absolute inset-x-0 bottom-0 top-[46%] overflow-hidden lg:hidden">
+          {/* Mobile — snap slider with links overlaid on image */}
+          <div className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden lg:hidden">
             <div
               className="flex h-full w-full snap-x snap-mandatory overflow-x-auto"
               style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
@@ -203,61 +227,50 @@ function JointsWheel() {
               {joints.map((j) => (
                 <div
                   key={j.label}
-                  className="relative flex h-full w-full shrink-0 snap-center flex-col"
+                  className="relative flex h-full w-full shrink-0 snap-center items-stretch justify-center px-4"
                   style={{ minWidth: "100%" }}
                 >
                   <div
-                    className="relative mx-auto mt-2 h-[62%] w-[86%] overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative h-full w-full overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}
-                  />
-                  <div className="mx-auto mt-4 flex w-[86%] flex-col gap-2">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
-                      {j.label}
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {j.links.map((l) => (
-                        <a
-                          key={l.slug}
-                          href={`/tratamentos/${l.slug}`}
-                          className="rounded-full border border-white/25 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/90 transition-colors hover:border-primary hover:text-primary"
-                        >
-                          {l.label}
-                        </a>
-                      ))}
+                  >
+                    {/* Links overlaid on image */}
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/90 via-[#1a1229]/40 to-transparent p-5">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
+                        {j.label} · Procedimentos
+                      </p>
+                      <div className="mt-3 flex flex-col gap-2">
+                        {j.links.map((l) => (
+                          <a
+                            key={l.label}
+                            href={`/procedimentos#${l.slug}`}
+                            className="inline-flex items-center justify-between gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-medium text-white/95 backdrop-blur"
+                          >
+                            <span>{l.label}</span>
+                            <ChevronRight className="h-3.5 w-3.5" />
+                          </a>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-
-
         </div>
 
-        {/* Text overlay — starts centered, slides into the LEFT column */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-1/2 items-center lg:inset-0 lg:h-full">
-          <div
-            className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16"
-            style={{
-              transform: `translateX(${slide * 0}%)`,
-            }}
-          >
-            {/* On lg+ the wrapper starts translated 50% to the right (centered on viewport)
-                and slides back to 0 (left column) as the user scrolls. */}
-            <div
-              className="mx-auto max-w-xl text-center lg:text-left"
-              style={{
-                transform: `translateX(var(--tx, 0px))`,
-              }}
-            >
+        {/* Text overlay */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[40%] items-center lg:inset-0 lg:h-full">
+          <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
+            <div className="mx-auto max-w-xl text-center lg:text-left">
               <div
                 style={{
-                  // custom prop consumed above; only apply the horizontal offset on lg screens via inline vars
                   ["--tx" as string]: `${(1 - slide) * 50}vw`,
+                  transform: `translateX(var(--tx, 0px))`,
                 }}
               >
                 <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
@@ -276,20 +289,9 @@ function JointsWheel() {
                 >
                   {current.desc}
                 </p>
-
-                {/* Desktop-only links menu — replaces progress + counter */}
-                <div className="mt-8 hidden flex-wrap gap-3 lg:flex" key={`${current.label}-links`}>
-                  {current.links.map((l) => (
-                    <a
-                      key={l.slug}
-                      href={`/tratamentos/${l.slug}`}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium uppercase tracking-[0.14em] text-white/90 transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
-                    >
-                      {l.label}
-                      <ChevronRight className="h-3.5 w-3.5" />
-                    </a>
-                  ))}
-                </div>
+                <p className="mt-6 hidden text-xs font-semibold uppercase tracking-[0.24em] text-white/60 lg:block">
+                  passe o mouse sobre a imagem para ver os procedimentos →
+                </p>
               </div>
             </div>
           </div>
@@ -438,9 +440,9 @@ function FlipIntro() {
             </p>
           </div>
 
-          {/* BACK — Etapa 1 já em exibição (mesma sessão) */}
+          {/* BACK — abre a seção Etapas da Transformação (que segue abaixo) */}
           <div
-            className="absolute inset-0 flex items-center justify-center px-4"
+            className="absolute inset-0 flex items-center justify-center px-4 text-center"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -449,32 +451,28 @@ function FlipIntro() {
               transition: "opacity 200ms linear",
             }}
           >
-            <div className="mx-auto max-w-2xl rounded-3xl border-2 border-[#2a2730] bg-transparent p-8 sm:p-10 shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
-                Etapas da Transformação
+            <div className="mx-auto max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
+                Programa · O outro lado
               </p>
-              <div className="mt-4 flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  {(() => {
-                    const Icon = journey[0].icon;
-                    return <Icon className="h-6 w-6" />;
-                  })()}
-                </span>
-                <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
-                  Etapa 01 / {String(journey.length).padStart(2, "0")}
-                </span>
-              </div>
               <h4
-                className="mt-5 text-4xl leading-tight text-foreground sm:text-5xl"
+                className="mt-4 text-5xl font-normal leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
-                {journey[0].title}
+                Etapas da{" "}
+                <span className="italic bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-transparent">
+                  Transformação
+                </span>
               </h4>
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                {journey[0].desc}
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Oito etapas conectadas — da escuta atenta ao acompanhamento contínuo — que traduzem cuidado em resultado.
+              </p>
+              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.28em] text-primary/70">
+                continue rolando ↓
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </div>

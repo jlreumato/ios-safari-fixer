@@ -1,20 +1,20 @@
 import { useState } from "react";
-import { ArrowRight, ArrowDown, Syringe, Activity, Waves, Target, ShieldPlus, Stethoscope } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Seo from "@/components/Seo";
 
-import quadrilImg from "@/assets/joints/quadril.jpg";
-import joelhoImg from "@/assets/joints/joelho.jpg";
-import ombroImg from "@/assets/joints/ombro.jpg";
-import maosImg from "@/assets/joints/maos.jpg";
-import pesImg from "@/assets/joints/pes.jpg";
+import infiltracaoAsset from "@/assets/procedures/infiltracao.jpg.asset.json";
+import viscoAsset from "@/assets/procedures/viscossuplementacao.jpg.asset.json";
+import prpAsset from "@/assets/procedures/prp.jpg.asset.json";
+import bloqueioAsset from "@/assets/procedures/bloqueio.jpg.asset.json";
+import osteoAsset from "@/assets/procedures/osteoporose.jpg.asset.json";
+import autoimuneAsset from "@/assets/procedures/autoimune.jpg.asset.json";
 
 type Procedure = {
   slug: string;
   title: string;
-  icon: typeof Syringe;
   image: string;
   short: string;
   indications: string[];
@@ -25,8 +25,7 @@ const procedures: Procedure[] = [
   {
     slug: "infiltracao-ultrassom",
     title: "Infiltrações Guiadas por Ultrassom",
-    icon: Syringe,
-    image: ombroImg,
+    image: infiltracaoAsset.url,
     short:
       "Aplicações precisas de medicamentos anti-inflamatórios ou anestésicos diretamente no ponto exato da dor, com auxílio de ultrassonografia em tempo real.",
     indications: [
@@ -44,8 +43,7 @@ const procedures: Procedure[] = [
   {
     slug: "viscossuplementacao",
     title: "Viscossuplementação",
-    icon: Waves,
-    image: joelhoImg,
+    image: viscoAsset.url,
     short:
       "Reposição do ácido hialurônico articular para restaurar a lubrificação e amortecimento da cartilagem em casos de artrose.",
     indications: [
@@ -62,8 +60,7 @@ const procedures: Procedure[] = [
   {
     slug: "prp",
     title: "PRP — Plasma Rico em Plaquetas",
-    icon: ShieldPlus,
-    image: quadrilImg,
+    image: prpAsset.url,
     short:
       "Terapia biológica que utiliza o plasma do próprio paciente, rico em fatores de crescimento, para estimular reparo tecidual em lesões articulares e tendíneas.",
     indications: [
@@ -80,8 +77,7 @@ const procedures: Procedure[] = [
   {
     slug: "bloqueios-anestesicos",
     title: "Bloqueios Anestésicos e Neurais",
-    icon: Target,
-    image: maosImg,
+    image: bloqueioAsset.url,
     short:
       "Aplicação de anestésicos e corticoides em pontos-gatilho, nervos periféricos e enteses para interromper o ciclo de dor.",
     indications: [
@@ -98,8 +94,7 @@ const procedures: Procedure[] = [
   {
     slug: "densitometria-avaliacao",
     title: "Avaliação e Manejo da Osteoporose",
-    icon: Activity,
-    image: pesImg,
+    image: osteoAsset.url,
     short:
       "Investigação metabólica completa, interpretação de densitometria óssea e prescrição de terapia antirreabsortiva ou anabólica.",
     indications: [
@@ -116,8 +111,7 @@ const procedures: Procedure[] = [
   {
     slug: "manejo-doencas-autoimunes",
     title: "Manejo de Doenças Autoimunes",
-    icon: Stethoscope,
-    image: ombroImg,
+    image: autoimuneAsset.url,
     short:
       "Diagnóstico, tratamento e monitoramento de doenças reumatológicas sistêmicas com terapias-alvo modernas — sintéticas e imunobiológicas.",
     indications: [
@@ -195,15 +189,19 @@ export default function ProcedimentosPage() {
           <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 sm:px-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8 lg:px-8">
             {procedures.map((p) => {
               const isOpen = active === p.slug;
-              const Icon = p.icon;
               return (
                 <article
                   key={p.slug}
+                  id={p.slug}
                   className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
                     isOpen ? "sm:col-span-2 lg:col-span-3" : ""
                   }`}
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                  <div
+                    className={`relative overflow-hidden transition-[aspect-ratio] duration-500 ${
+                      isOpen ? "aspect-[16/6] sm:aspect-[21/6]" : "aspect-[4/3]"
+                    }`}
+                  >
                     <div
                       className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
                       style={{
@@ -213,9 +211,6 @@ export default function ProcedimentosPage() {
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1a1229] via-[#1a1229]/40 to-transparent" />
-                    <div className="absolute left-5 top-5 flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/20 text-primary backdrop-blur">
-                      <Icon className="h-5 w-5" />
-                    </div>
                   </div>
 
                   <div className="p-6 lg:p-7">
