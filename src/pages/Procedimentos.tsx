@@ -138,10 +138,15 @@ export default function ProcedimentosPage() {
     const willOpen = active !== slug;
     setActive(willOpen ? slug : null);
     if (willOpen) {
-      requestAnimationFrame(() => {
+      // Aguarda o re-render (order-first + aspect change) antes de rolar.
+      const focus = () => {
         const el = cardRefs.current[slug];
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+        if (!el) return;
+        const headerOffset = 96; // altura do header fixo
+        const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      };
+      requestAnimationFrame(() => requestAnimationFrame(focus));
     }
   };
 
