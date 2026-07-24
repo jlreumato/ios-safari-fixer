@@ -81,18 +81,64 @@ export default function TreatmentsGrid() {
       {isMobile ? (
         <MobileStack />
       ) : (
-        /* Desktop — static grid, todos os cards visíveis */
+        /* Desktop — scroll-driven reveal: cards rise + fade + un-tilt as they enter view */
         <div className="mx-auto max-w-[1400px] px-3 sm:px-4 lg:px-6 pb-16">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {treatments.map((t, i) => (
-              <div key={t.slug} className="relative aspect-[3/4]">
-                <TreatmentCard index={i} total={total} treatment={t} active />
-              </div>
+              <RevealCard key={t.slug} index={i}>
+                <div className="relative aspect-[3/4] h-full">
+                  <TreatmentCard index={i} total={total} treatment={t} active />
+                </div>
+              </RevealCard>
             ))}
           </div>
         </div>
       )}
     </section>
+  );
+}
+
+/** Scroll-driven reveal wrapper: fades + rises + gently un-tilts on enter. */
+function RevealCard({ index, children }: { index: number; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setShown(true);
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.18, rootMargin: "0px 0px -8% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Alternate rows tilt slightly left/right for a subtle organic entry
+  const tiltDir = index % 2 === 0 ? -1 : 1;
+  const delay = (index % 4) * 90 + Math.floor(index / 4) * 40;
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: shown ? 1 : 0,
+        transform: shown
+          ? "translate3d(0,0,0) rotate(0deg) scale(1)"
+          : `translate3d(0, 48px, 0) rotate(${tiltDir * 2}deg) scale(0.94)`,
+        transition: `opacity 900ms cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 1100ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+        willChange: "opacity, transform",
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
