@@ -192,16 +192,16 @@ function JointsWheel() {
             ))}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
 
-            {/* Hover overlay — procedure links */}
+            {/* Hover overlay — procedure links, centered on image */}
             <div
-              className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-[#1a1229]/85 via-[#1a1229]/50 to-transparent p-10 transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center bg-[#1a1229]/70 p-10 backdrop-blur-sm transition-opacity duration-500"
               style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
             >
-              <div className="w-full max-w-md">
+              <div className="w-full max-w-md text-center">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
                   Procedimentos indicados
                 </p>
-                <div className="mt-4 flex flex-col gap-2.5">
+                <div className="mt-5 flex flex-col gap-2.5">
                   {current.links.map((l) => (
                     <a
                       key={l.label}
@@ -213,6 +213,13 @@ function JointsWheel() {
                     </a>
                   ))}
                 </div>
+                <a
+                  href="/procedimentos"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                >
+                  Ver todos os procedimentos
+                  <ChevronRight className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
@@ -263,10 +270,10 @@ function JointsWheel() {
           </div>
         </div>
 
-        {/* Text overlay */}
+        {/* Text overlay — left aligned */}
         <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[40%] items-center lg:inset-0 lg:h-full">
           <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
-            <div className="mx-auto max-w-xl text-center lg:text-left">
+            <div className="max-w-xl text-left">
               <div
                 style={{
                   ["--tx" as string]: `${(1 - slide) * 50}vw`,
@@ -292,9 +299,27 @@ function JointsWheel() {
                 <p className="mt-6 hidden text-xs font-semibold uppercase tracking-[0.24em] text-white/60 lg:block">
                   passe o mouse sobre a imagem para ver os procedimentos →
                 </p>
+                <a
+                  href="/procedimentos"
+                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                >
+                  Ver todos os procedimentos
+                  <ChevronRight className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Mobile — "Ver todos" button */}
+        <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center lg:hidden">
+          <a
+            href="/procedimentos"
+            className="pointer-events-auto inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] backdrop-blur"
+          >
+            Ver todos os procedimentos
+            <ChevronRight className="h-3.5 w-3.5" />
+          </a>
         </div>
       </div>
     </div>
@@ -497,9 +522,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
     <>
       {/* MOBILE — horizontal snap slider, sem transparências ou hijack de scroll */}
       <div className="lg:hidden px-4 sm:px-6 pb-12">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
-          Etapas da Transformação
-        </p>
+
         <div
           className="-mx-4 sm:-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 sm:px-6 pb-4"
           style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
@@ -544,10 +567,7 @@ function JourneyStage({ steps }: { steps: JourneyStep[] }) {
           <div className="mx-auto grid h-full max-w-7xl grid-cols-[280px_1fr] items-center gap-12 px-8">
             {/* Left rail */}
             <aside className="relative">
-              <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary/70">
-                Etapas da Transformação
-              </p>
-              <ol className="relative mt-6 space-y-4 border-l border-primary/15 pl-6">
+              <ol className="relative space-y-4 border-l border-primary/15 pl-6">
                 {steps.map((s, i) => {
                   const isActive = i === active;
                   const isPast = i < active;
