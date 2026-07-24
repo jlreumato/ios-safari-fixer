@@ -239,7 +239,7 @@ export default function ProcedimentosPage() {
 
                     <button
                       type="button"
-                      onClick={() => setActive(isOpen ? null : p.slug)}
+                      onClick={() => handleToggle(p.slug)}
                       className="mt-5 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.14em] text-[#e7d9b5] transition-colors hover:text-primary"
                     >
                       {isOpen ? "Fechar" : "Ver indicações"}
