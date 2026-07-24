@@ -355,16 +355,194 @@ export default function Procedures() {
         backgroundSize: "cover",
       }}
     >
-      {/* Journey / Protocolo TransformaDOR */}
+      {/* Programa TransformaDOR — arrow slices DOR while Etapas slide in from the right */}
       <div id="protocolo" className="relative">
-        <FlipIntro />
-        <JourneyStage steps={journey} />
-        <div className="pb-16 lg:pb-24" />
+        <ArrowSliceReveal steps={journey} />
       </div>
 
       {/* Procedimentos — Áreas em evidência (merged) */}
       <JointsWheel />
     </section>
+  );
+}
+
+
+/**
+ * Sticky reveal: an arrow slides from right to left, "cutting" the word DOR.
+ * As it passes, the Programa TransformaDOR intro is clipped away and the
+ * Etapas da Transformação grid (with its own nav menu) slides in from the right.
+ */
+function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
+  const { ref, progress } = useScrollProgress();
+  const [activeStep, setActiveStep] = useState(0);
+
+  // Arrow position 100% → 0% across the viewport as progress goes 0 → 1.
+  const arrowX = 100 - progress * 100;
+  const introClip = `inset(0 ${progress * 100}% 0 0)`;
+  const stepsClip = `inset(0 0 0 ${arrowX}%)`;
+
+  return (
+    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        {/* Layer A — Programa TransformaDOR intro (revealed out) */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
+          style={{ clipPath: introClip, WebkitClipPath: introClip }}
+        >
+          <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
+            Programa
+          </p>
+          <h3
+            className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
+              Transforma
+            </span>
+            <span
+              className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
+              style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
+            >
+              DOR
+            </span>
+          </h3>
+          <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+            psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
+          </p>
+          <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
+            role para revelar →
+          </p>
+        </div>
+
+        {/* Layer B — Etapas da Transformação (revealed in from the right) */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ clipPath: stepsClip, WebkitClipPath: stepsClip }}
+        >
+          <StepsReveal steps={steps} active={activeStep} setActive={setActiveStep} />
+        </div>
+
+        {/* Slicing arrow */}
+        <div
+          className="pointer-events-none absolute inset-y-0 z-10"
+          style={{
+            left: `${arrowX}%`,
+            transform: "translateX(-50%)",
+            transition: "left 60ms linear",
+          }}
+        >
+          {/* Vertical glowing blade */}
+          <div
+            className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
+            style={{
+              background:
+                "linear-gradient(180deg, transparent 0%, #e7d9b5 20%, #e7d9b5 80%, transparent 100%)",
+              boxShadow: "0 0 24px 2px rgba(231,217,181,0.55)",
+            }}
+          />
+          {/* Arrow head */}
+          <div
+            className="absolute top-1/2 flex -translate-y-1/2 items-center gap-2"
+            style={{ right: "calc(50% + 6px)" }}
+          >
+            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] sm:inline">
+              Etapas
+            </span>
+            <span
+              className="flex h-12 w-12 items-center justify-center border-2 border-[#e7d9b5] bg-[#1a1229]/70 text-[#e7d9b5] backdrop-blur"
+              style={{ boxShadow: "0 0 30px rgba(231,217,181,0.35)" }}
+            >
+              <ChevronRight className="h-5 w-5 rotate-180" />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepsReveal({
+  steps,
+  active,
+  setActive,
+}: {
+  steps: JourneyStep[];
+  active: number;
+  setActive: (i: number) => void;
+}) {
+  const current = steps[active];
+  return (
+    <div className="relative flex h-full w-full flex-col bg-transparent">
+      {/* Header */}
+      <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-16">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+          Etapas da Transformação
+        </p>
+        <h3
+          className="mt-3 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        >
+          Uma jornada em <span className="italic text-primary">oito etapas</span>
+        </h3>
+      </div>
+
+      {/* Body: nav menu + active step detail */}
+      <div className="grid flex-1 grid-cols-1 gap-8 px-6 pb-10 pt-8 sm:px-10 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-16 lg:pb-16">
+        {/* Nav menu */}
+        <nav
+          className="flex gap-3 overflow-x-auto lg:flex-col lg:gap-1 lg:overflow-visible"
+          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+        >
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={s.title}
+                type="button"
+                onClick={() => setActive(i)}
+                className={`group flex shrink-0 items-center gap-3 border-l-2 py-3 pl-4 pr-5 text-left transition-all ${
+                  isActive
+                    ? "border-primary bg-primary/5 text-foreground"
+                    : "border-[#2a2730] text-muted-foreground hover:border-primary/60 hover:text-foreground"
+                }`}
+              >
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="whitespace-nowrap text-sm font-medium lg:whitespace-normal">
+                  {s.title}
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Active detail card */}
+        <div
+          key={current.title}
+          className="flex flex-col justify-center border-2 border-[#2a2730] bg-background/40 p-8 animate-in fade-in slide-in-from-right-4 duration-500 lg:p-12"
+        >
+          <div className="flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center bg-primary/10 text-primary">
+              <current.icon className="h-6 w-6" />
+            </span>
+            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
+              Etapa {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
+            </span>
+          </div>
+          <h4
+            className="mt-6 text-4xl leading-tight text-foreground lg:text-5xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            {current.title}
+          </h4>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
+            {current.desc}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 
