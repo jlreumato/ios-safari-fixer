@@ -66,7 +66,22 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-6 text-center text-base text-white/40">
-          © {new Date().getFullYear()} Dra. Juliana Leal — Reumatologia. Todos os direitos reservados.
+          <p>© {new Date().getFullYear()} Dra. Juliana Leal — Reumatologia. Todos os direitos reservados.</p>
+          <p className="mt-2 flex items-center justify-center gap-1.5 text-sm text-white/35">
+            <span>Desenvolvido com</span>
+            <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-[#e7d9b5]" fill="currentColor" aria-hidden>
+              <path d="M6 3h12l4 6-10 12L2 9l4-6zm.6 2L4 8.5h4.2L10.5 5H6.6zm6.9 0L15.8 8.5h3.6L17 5h-3.5zM11.5 5L9.2 8.5h5.6L12.5 5h-1zM4.4 10.5L11 18.2 7.5 10.5H4.4zm4.4 0l3.1 7.3 3.1-7.3H8.8zm7.6 0l-3.5 7.7 6.6-7.7h-3.1z" />
+            </svg>
+            <span>por</span>
+            <a
+              href="https://befind.com.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white/60 underline-offset-2 hover:text-[#e7d9b5] hover:underline"
+            >
+              Befind — Experiências Digitais
+            </a>
+          </p>
         </div>
       </div>
     </footer>
