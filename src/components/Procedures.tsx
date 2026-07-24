@@ -470,21 +470,23 @@ function StepsReveal({
   active: number;
   cylProgress: number;
 }) {
+  // Vertical cylinder — one card visible at a time, rotating on X axis.
   const anglePerCard = 360 / steps.length;
-  // Continuous rotation driven by scroll — cylinder turns to bring active card front.
-  const rotation = -cylProgress * (steps.length - 1) * anglePerCard;
-  // Radius sized for smaller cards.
-  const radius = 320;
+  const rotation = cylProgress * (steps.length - 1) * anglePerCard;
+  const radius = 420;
+
+  // Fill progress for the vertical timeline (0 → 1 across all steps).
+  const fillPct = steps.length > 1 ? (active / (steps.length - 1)) * 100 : 0;
 
   return (
     <div className="relative flex h-full w-full flex-col bg-transparent">
       {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
-        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+        <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary sm:text-lg">
           Etapas da Transformação
         </p>
         <h3
-          className="mt-3 text-4xl font-normal tracking-tight text-foreground sm:text-5xl lg:text-6xl"
+          className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
           Uma jornada em <span className="italic text-primary">oito etapas</span>
@@ -492,40 +494,65 @@ function StepsReveal({
       </div>
 
       {/* Body: full-height nav + cylinder */}
-      <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[320px_1fr] lg:gap-10 lg:px-16 lg:pb-14">
-        {/* Nav menu — tall, thin outlined cells filling full section height */}
+      <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[440px_1fr] lg:gap-14 lg:px-16 lg:pb-14">
+        {/* Nav menu — vertical timeline with connecting line + filled squares */}
         <nav
-          className="hidden lg:flex lg:flex-col lg:h-full lg:gap-2"
+          className="relative hidden lg:flex lg:flex-col lg:h-full"
           aria-label="Etapas"
         >
-          {steps.map((s, i) => {
-            const isActive = i === active;
-            return (
-              <div
-                key={s.title}
-                className={`flex flex-1 items-center gap-4 border px-5 transition-all duration-500 ${
-                  isActive
-                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.06] text-foreground"
-                    : "border-white/10 text-muted-foreground"
-                }`}
-              >
-                <span
-                  className={`text-[11px] font-semibold uppercase tracking-[0.32em] ${
-                    isActive ? "text-[#e7d9b5]" : "text-primary/60"
+            {/* Timeline track — background line */}
+            <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-white/10" />
+            {/* Timeline track — filled portion */}
+            <div
+              className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#e7d9b5] transition-[height] duration-500"
+              style={{
+                height: `calc((100% - 24px) * ${fillPct / 100})`,
+                boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+              }}
+            />
+            {steps.map((s, i) => {
+              const isActive = i === active;
+              const isPassed = i <= active;
+              return (
+                <div
+                  key={s.title}
+                  className={`relative flex flex-1 items-center gap-5 border pl-14 pr-6 transition-all duration-500 ${
+                    isActive
+                      ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.07] text-foreground"
+                      : "border-white/10 text-muted-foreground"
                   }`}
+                  style={{ minHeight: 0 }}
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="h-px flex-none w-6 bg-current opacity-40" />
-                <span
-                  className="text-base font-normal tracking-tight"
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                >
-                  {s.title}
-                </span>
-              </div>
-            );
-          })}
+                  {/* Filled square marker on the timeline */}
+                  <span
+                    className={`absolute left-[15px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 border transition-all duration-500 ${
+                      isPassed
+                        ? "border-[#e7d9b5] bg-[#e7d9b5]"
+                        : "border-white/25 bg-transparent"
+                    }`}
+                    style={
+                      isPassed
+                        ? { boxShadow: "0 0 14px rgba(231,217,181,0.6)" }
+                        : undefined
+                    }
+                    aria-hidden
+                  />
+                  <span
+                    className={`text-sm font-semibold uppercase tracking-[0.32em] ${
+                      isActive ? "text-[#e7d9b5]" : "text-primary/60"
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className="text-xl font-normal leading-tight tracking-tight"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                  >
+                    {s.title}
+                  </span>
+                </div>
+              );
+            })}
         </nav>
 
         {/* Mobile — horizontal nav */}
@@ -554,17 +581,17 @@ function StepsReveal({
           })}
         </nav>
 
-        {/* Cylinder stage */}
+        {/* Vertical cylinder stage — one card at a time */}
         <div
-          className="relative flex min-h-[52vh] items-center justify-center lg:min-h-0"
-          style={{ perspective: "1400px" }}
+          className="relative flex min-h-[60vh] items-center justify-center lg:min-h-0"
+          style={{ perspective: "1600px" }}
         >
           <div
-            className="relative h-[300px] w-[280px]"
+            className="relative h-[440px] w-full max-w-[520px]"
             style={{
               transformStyle: "preserve-3d",
-              transform: `translateZ(-${radius}px) rotateY(${rotation}deg)`,
-              transition: "transform 120ms linear",
+              transform: `translateZ(-${radius}px) rotateX(${rotation}deg)`,
+              transition: "transform 160ms linear",
               willChange: "transform",
             }}
           >
@@ -574,9 +601,9 @@ function StepsReveal({
               return (
                 <div
                   key={s.title}
-                  className="absolute inset-0 flex flex-col justify-between border p-6"
+                  className="absolute inset-0 flex flex-col justify-between border p-10"
                   style={{
-                    transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
+                    transform: `rotateX(${-angle}deg) translateZ(${radius}px)`,
                     backfaceVisibility: "hidden",
                     borderColor: isActive
                       ? "rgba(231,217,181,0.85)"
@@ -585,33 +612,33 @@ function StepsReveal({
                       ? "rgba(231,217,181,0.06)"
                       : "rgba(20,15,32,0.55)",
                     boxShadow: isActive
-                      ? "0 30px 60px -20px rgba(0,0,0,0.55)"
+                      ? "0 40px 80px -20px rgba(0,0,0,0.6)"
                       : "none",
                     transition: "border-color 400ms ease, background 400ms ease",
                   }}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-4">
                     <span
-                      className={`flex h-10 w-10 items-center justify-center border ${
+                      className={`flex h-14 w-14 items-center justify-center border ${
                         isActive
                           ? "border-[#e7d9b5] text-[#e7d9b5]"
                           : "border-white/20 text-white/60"
                       }`}
                     >
-                      <s.icon className="h-5 w-5" />
+                      <s.icon className="h-6 w-6" />
                     </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-primary/80">
+                    <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary/80">
                       Etapa {String(i + 1).padStart(2, "0")}
                     </span>
                   </div>
                   <div>
                     <h4
-                      className="text-2xl leading-tight text-foreground lg:text-3xl"
+                      className="text-4xl leading-tight text-foreground lg:text-5xl"
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                     >
                       {s.title}
                     </h4>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
                       {s.desc}
                     </p>
                   </div>
