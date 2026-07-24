@@ -396,108 +396,90 @@ function useScrollProgress() {
 }
 
 /**
- * "Programa TransformaDOR" — the whole heading flips laterally (Y-axis) on
- * scroll. The back face reveals the "Etapas da Transformação" prelude,
- * seamlessly handing off to the JourneyStage that follows.
+ * "Programa TransformaDOR" — sobrecapa que se abre lateralmente (duas
+ * metades deslizando para fora) conforme o scroll avança, revelando a
+ * seção "Etapas da Transformação" logo abaixo. Mesmo padrão visual da
+ * sobrecapa principal do site.
  */
 function FlipIntro() {
   const { ref, progress } = useScrollProgress();
 
-  // One-scroll flip: 0 → 180deg with slight easing.
+  // Abertura mais lenta e cinematográfica: 0 → 1 em ~80% do scroll disponível.
   const eased = Math.min(1, progress * 1.25);
-  const angle = eased * 180;
-  const showBack = eased > 0.5;
+  const shift = eased * 100; // porcentagem que cada metade desliza
+
+  const content = (
+    <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-4 text-center">
+      <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
+        Programa
+      </p>
+      <h3
+        className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
+        style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+      >
+        <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
+          Transforma
+        </span>
+        <span
+          className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
+          style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
+        >
+          DOR
+        </span>
+      </h3>
+      <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+        Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+        psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
+      </p>
+      <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
+        role para abrir ↓
+      </p>
+    </div>
+  );
+
+  const coverBg = `
+    radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
+    radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
+    radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
+    linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
+  `;
+
+  const halfBgStyle: React.CSSProperties = {
+    backgroundImage: coverBg,
+    backgroundAttachment: "fixed",
+    backgroundSize: "100vw 100vh",
+    backgroundRepeat: "no-repeat",
+  };
+
+  const halfTransition = "transform 900ms cubic-bezier(0.65, 0, 0.35, 1)";
 
   return (
-    <div ref={ref} className="relative" style={{ height: "160vh" }}>
-      <div
-        className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
-        style={{ perspective: "1600px" }}
-      >
-        {/* Ambient decor */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          <div className="absolute -top-24 left-[8%] h-80 w-80 rounded-full bg-gradient-to-br from-primary/20 to-transparent blur-3xl" />
-          <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
-        </div>
-
+    <div ref={ref} className="relative" style={{ height: "180vh" }}>
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
+        {/* Metade esquerda */}
         <div
-          className="relative mx-auto w-full max-w-6xl px-4"
+          className="absolute inset-y-0 left-0 w-1/2 overflow-hidden"
           style={{
-            transformStyle: "preserve-3d",
-            transform: `rotateY(-${angle}deg)`,
-            transition: "transform 200ms linear",
-            willChange: "transform",
+            ...halfBgStyle,
+            backgroundPosition: "left top",
+            transform: `translate3d(-${shift}%, 0, 0)`,
+            transition: halfTransition,
           }}
         >
-          {/* FRONT — Programa TransformaDOR */}
-          <div
-            className="text-center"
-            style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              opacity: showBack ? 0 : 1,
-              transition: "opacity 200ms linear",
-            }}
-          >
-            <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
-              Programa
-            </p>
-            <h3
-              className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
-                Transforma
-              </span>
-              <span
-                className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
-                style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
-              >
-                DOR
-              </span>
-            </h3>
-            <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-              psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
-            </p>
-            <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
-              role para virar a página ↻
-            </p>
-          </div>
+          <div className="absolute inset-y-0 left-0 h-full w-screen">{content}</div>
+        </div>
 
-          {/* BACK — abre a seção Etapas da Transformação (que segue abaixo) */}
-          <div
-            className="absolute inset-0 flex items-center justify-center px-4 text-center"
-            style={{
-              backfaceVisibility: "hidden",
-              WebkitBackfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-              opacity: showBack ? 1 : 0,
-              transition: "opacity 200ms linear",
-            }}
-          >
-            <div className="mx-auto max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
-                Programa · O outro lado
-              </p>
-              <h4
-                className="mt-4 text-5xl font-normal leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl"
-                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-              >
-                Etapas da{" "}
-                <span className="italic bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-transparent">
-                  Transformação
-                </span>
-              </h4>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Oito etapas conectadas — da escuta atenta ao acompanhamento contínuo — que traduzem cuidado em resultado.
-              </p>
-              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.28em] text-primary/70">
-                continue rolando ↓
-              </p>
-            </div>
-          </div>
-
+        {/* Metade direita */}
+        <div
+          className="absolute inset-y-0 right-0 w-1/2 overflow-hidden"
+          style={{
+            ...halfBgStyle,
+            backgroundPosition: "right top",
+            transform: `translate3d(${shift}%, 0, 0)`,
+            transition: halfTransition,
+          }}
+        >
+          <div className="absolute inset-y-0 right-0 h-full w-screen">{content}</div>
         </div>
       </div>
     </div>
