@@ -489,7 +489,7 @@ function StepsReveal({
           className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
         >
-          Uma jornada em <span className="italic text-primary">oito etapas</span>
+          8 Etapas para se <span className="italic text-primary">libertar da dor</span>
         </h3>
       </div>
 
