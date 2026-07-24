@@ -283,7 +283,7 @@ export default function Procedures() {
     >
       {/* Journey / Protocolo TransformaDOR */}
       <div id="protocolo" className="relative">
-        <ZoomIntro />
+        <FlipIntro />
         <JourneyStage steps={journey} />
         <div className="pb-16 lg:pb-24" />
       </div>
@@ -333,29 +333,23 @@ function useScrollProgress() {
 }
 
 /**
- * "Protocolo TransformaDOR" — the word DOR zooms until it fills the screen,
- * suggesting that the transformation of pain takes over the whole experience.
+ * "Programa TransformaDOR" — the whole heading flips laterally (Y-axis) on
+ * scroll. The back face reveals the "Etapas da Transformação" prelude,
+ * seamlessly handing off to the JourneyStage that follows.
  */
-function ZoomIntro() {
+function FlipIntro() {
   const { ref, progress } = useScrollProgress();
 
-  // Curva mais concisa: uma rolagem única completa o zoom e libera a próxima seção.
-  const eased = Math.min(1, progress * 1.9);
-  const scale = 1 + eased * 34;
-  const prefixOpacity = Math.max(0, 1 - eased * 2.4);
-  const stageOpacity = Math.max(0, 1 - Math.max(0, eased - 0.82) * 6);
-  const hintOpacity = Math.max(0, 1 - eased * 3.5);
-  const parallaxY = -eased * 14; // vh
+  // One-scroll flip: 0 → 180deg with slight easing.
+  const eased = Math.min(1, progress * 1.25);
+  const angle = eased * 180;
+  const showBack = eased > 0.5;
 
   return (
-    <div ref={ref} className="relative" style={{ height: "140vh" }}>
+    <div ref={ref} className="relative" style={{ height: "160vh" }}>
       <div
         className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden"
-        style={{
-          opacity: stageOpacity,
-          transform: `translate3d(0, ${parallaxY}vh, 0)`,
-          willChange: "transform, opacity",
-        }}
+        style={{ perspective: "1600px" }}
       >
         {/* Ambient decor */}
         <div className="pointer-events-none absolute inset-0" aria-hidden>
@@ -363,53 +357,79 @@ function ZoomIntro() {
           <div className="absolute bottom-10 right-[5%] h-96 w-96 rounded-full bg-gradient-to-tr from-amber-200/30 to-pink-200/20 blur-3xl" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 text-center">
-          <p
-            className="text-base font-semibold uppercase tracking-[0.28em] text-primary"
-            style={{ opacity: prefixOpacity }}
+        <div
+          className="relative mx-auto w-full max-w-6xl px-4"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: `rotateY(-${angle}deg)`,
+            transition: "transform 200ms linear",
+            willChange: "transform",
+          }}
+        >
+          {/* FRONT — Programa TransformaDOR */}
+          <div
+            className="text-center"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              opacity: showBack ? 0 : 1,
+              transition: "opacity 200ms linear",
+            }}
           >
-            Programa
-          </p>
-          <h3
-            className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-          >
-            <span
-              className="text-4xl sm:text-6xl lg:text-7xl transition-opacity duration-200"
-              style={{ opacity: prefixOpacity }}
+            <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
+              Programa
+            </p>
+            <h3
+              className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              Transforma
-            </span>
-            <span
-              className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-5xl font-semibold text-transparent sm:text-7xl lg:text-8xl"
-              style={{
-                transform: `scale(${scale})`,
-                transformOrigin: "center center",
-                transition: "transform 160ms linear",
-                willChange: "transform",
-              }}
-            >
-              DOR
-            </span>
-          </h3>
-          <p
-            className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-            style={{ opacity: prefixOpacity }}
+              <span className="text-4xl sm:text-6xl lg:text-7xl">Transforma</span>
+              <span className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-5xl font-semibold text-transparent sm:text-7xl lg:text-8xl">
+                DOR
+              </span>
+            </h3>
+            <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
+              psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
+            </p>
+            <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
+              role para virar a página ↻
+            </p>
+          </div>
+
+          {/* BACK — Etapas prelude */}
+          <div
+            className="absolute inset-0 flex items-center justify-center text-center"
+            style={{
+              backfaceVisibility: "hidden",
+              WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+              opacity: showBack ? 1 : 0,
+              transition: "opacity 200ms linear",
+            }}
           >
-            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-            psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
-          </p>
-          <p
-            className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70"
-            style={{ opacity: hintOpacity }}
-          >
-            role para atravessar a dor ↓
-          </p>
+            <div>
+              <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
+                Um novo capítulo
+              </p>
+              <h3
+                className="mt-4 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+                style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+              >
+                Etapas da <em className="not-italic text-primary">Transformação</em>
+              </h3>
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Uma jornada cuidadosamente desenhada — do primeiro encontro à sua liberdade
+                de movimento. Continue rolando para conhecer cada passo.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 /**
  * Journey stage — sticky viewport where cards slide vertically synced with
