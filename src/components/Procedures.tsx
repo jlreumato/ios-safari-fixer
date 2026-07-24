@@ -155,7 +155,8 @@ function JointsWheel() {
   }, []);
 
   const current = joints[active];
-  const slide = Math.min(1, progress * 2);
+  void progress;
+
 
   return (
     <div
@@ -285,18 +286,13 @@ function JointsWheel() {
         <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[40%] items-center lg:inset-0 lg:h-full">
           <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
             <div className="max-w-xl text-left">
-              <div
-                style={{
-                  ["--tx" as string]: `${(1 - slide) * 50}vw`,
-                  transform: `translateX(var(--tx, 0px))`,
-                }}
-              >
+              <div>
                 <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
                   key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
+                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {current.label}
@@ -320,6 +316,7 @@ function JointsWheel() {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Mobile — "Ver todos" button */}
@@ -374,15 +371,18 @@ export default function Procedures() {
  */
 function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
-  const [activeStep, setActiveStep] = useState(0);
 
-  // Arrow position 100% → 0% across the viewport as progress goes 0 → 1.
-  const arrowX = 100 - progress * 100;
-  const introClip = `inset(0 ${progress * 100}% 0 0)`;
+  // Phase split: arrow slice 0→0.2, cylinder rotation 0.2→1.0.
+  const arrowP = Math.max(0, Math.min(1, progress / 0.2));
+  const cylP = Math.max(0, Math.min(1, (progress - 0.2) / 0.8));
+  const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
+
+  const arrowX = 100 - arrowP * 100;
+  const introClip = `inset(0 ${arrowP * 100}% 0 0)`;
   const stepsClip = `inset(0 0 0 ${arrowX}%)`;
 
   return (
-    <div ref={ref} className="relative" style={{ height: "220vh" }}>
+    <div ref={ref} className="relative" style={{ height: "500vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* Layer A — Programa TransformaDOR intro (revealed out) */}
         <div
@@ -420,19 +420,19 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
           className="absolute inset-0 overflow-hidden"
           style={{ clipPath: stepsClip, WebkitClipPath: stepsClip }}
         >
-          <StepsReveal steps={steps} active={activeStep} setActive={setActiveStep} />
+          <StepsReveal steps={steps} active={activeStep} cylProgress={cylP} />
         </div>
 
-        {/* Slicing arrow */}
+        {/* Slicing arrow — only visible during arrow phase */}
         <div
           className="pointer-events-none absolute inset-y-0 z-10"
           style={{
             left: `${arrowX}%`,
             transform: "translateX(-50%)",
-            transition: "left 60ms linear",
+            opacity: arrowP < 1 ? 1 : 0,
+            transition: "left 60ms linear, opacity 300ms ease",
           }}
         >
-          {/* Vertical glowing blade */}
           <div
             className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
             style={{
@@ -441,7 +441,6 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
               boxShadow: "0 0 24px 2px rgba(231,217,181,0.55)",
             }}
           />
-          {/* Arrow head */}
           <div
             className="absolute top-1/2 flex -translate-y-1/2 items-center gap-2"
             style={{ right: "calc(50% + 6px)" }}
@@ -465,17 +464,22 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
 function StepsReveal({
   steps,
   active,
-  setActive,
+  cylProgress,
 }: {
   steps: JourneyStep[];
   active: number;
-  setActive: (i: number) => void;
+  cylProgress: number;
 }) {
-  const current = steps[active];
+  const anglePerCard = 360 / steps.length;
+  // Continuous rotation driven by scroll — cylinder turns to bring active card front.
+  const rotation = -cylProgress * (steps.length - 1) * anglePerCard;
+  // Radius sized for smaller cards.
+  const radius = 320;
+
   return (
     <div className="relative flex h-full w-full flex-col bg-transparent">
       {/* Header */}
-      <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-16">
+      <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
           Etapas da Transformação
         </p>
@@ -487,64 +491,140 @@ function StepsReveal({
         </h3>
       </div>
 
-      {/* Body: nav menu + active step detail */}
-      <div className="grid flex-1 grid-cols-1 gap-8 px-6 pb-10 pt-8 sm:px-10 lg:grid-cols-[280px_1fr] lg:gap-12 lg:px-16 lg:pb-16">
-        {/* Nav menu */}
+      {/* Body: full-height nav + cylinder */}
+      <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[320px_1fr] lg:gap-10 lg:px-16 lg:pb-14">
+        {/* Nav menu — tall, thin outlined cells filling full section height */}
         <nav
-          className="flex gap-3 overflow-x-auto lg:flex-col lg:gap-1 lg:overflow-visible"
-          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+          className="hidden lg:flex lg:flex-col lg:h-full lg:gap-2"
+          aria-label="Etapas"
         >
           {steps.map((s, i) => {
             const isActive = i === active;
             return (
-              <button
+              <div
                 key={s.title}
-                type="button"
-                onClick={() => setActive(i)}
-                className={`group flex shrink-0 items-center gap-3 border-l-2 py-3 pl-4 pr-5 text-left transition-all ${
+                className={`flex flex-1 items-center gap-4 border px-5 transition-all duration-500 ${
                   isActive
-                    ? "border-primary bg-primary/5 text-foreground"
-                    : "border-[#2a2730] text-muted-foreground hover:border-primary/60 hover:text-foreground"
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.06] text-foreground"
+                    : "border-white/10 text-muted-foreground"
+                }`}
+              >
+                <span
+                  className={`text-[11px] font-semibold uppercase tracking-[0.32em] ${
+                    isActive ? "text-[#e7d9b5]" : "text-primary/60"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="h-px flex-none w-6 bg-current opacity-40" />
+                <span
+                  className="text-base font-normal tracking-tight"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {s.title}
+                </span>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Mobile — horizontal nav */}
+        <nav
+          className="flex gap-3 overflow-x-auto lg:hidden"
+          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+          aria-label="Etapas"
+        >
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            return (
+              <div
+                key={s.title}
+                className={`flex shrink-0 items-center gap-3 border py-2 pl-3 pr-4 text-left ${
+                  isActive
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.06] text-foreground"
+                    : "border-white/10 text-muted-foreground"
                 }`}
               >
                 <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="whitespace-nowrap text-sm font-medium lg:whitespace-normal">
-                  {s.title}
-                </span>
-              </button>
+                <span className="whitespace-nowrap text-sm">{s.title}</span>
+              </div>
             );
           })}
         </nav>
 
-        {/* Active detail card */}
+        {/* Cylinder stage */}
         <div
-          key={current.title}
-          className="flex flex-col justify-center border-2 border-[#2a2730] bg-background/40 p-8 animate-in fade-in slide-in-from-right-4 duration-500 lg:p-12"
+          className="relative flex min-h-[52vh] items-center justify-center lg:min-h-0"
+          style={{ perspective: "1400px" }}
         >
-          <div className="flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center bg-primary/10 text-primary">
-              <current.icon className="h-6 w-6" />
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
-              Etapa {String(active + 1).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}
-            </span>
-          </div>
-          <h4
-            className="mt-6 text-4xl leading-tight text-foreground lg:text-5xl"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          <div
+            className="relative h-[300px] w-[280px]"
+            style={{
+              transformStyle: "preserve-3d",
+              transform: `translateZ(-${radius}px) rotateY(${rotation}deg)`,
+              transition: "transform 120ms linear",
+              willChange: "transform",
+            }}
           >
-            {current.title}
-          </h4>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            {current.desc}
-          </p>
+            {steps.map((s, i) => {
+              const angle = i * anglePerCard;
+              const isActive = i === active;
+              return (
+                <div
+                  key={s.title}
+                  className="absolute inset-0 flex flex-col justify-between border p-6"
+                  style={{
+                    transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
+                    backfaceVisibility: "hidden",
+                    borderColor: isActive
+                      ? "rgba(231,217,181,0.85)"
+                      : "rgba(255,255,255,0.12)",
+                    background: isActive
+                      ? "rgba(231,217,181,0.06)"
+                      : "rgba(20,15,32,0.55)",
+                    boxShadow: isActive
+                      ? "0 30px 60px -20px rgba(0,0,0,0.55)"
+                      : "none",
+                    transition: "border-color 400ms ease, background 400ms ease",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`flex h-10 w-10 items-center justify-center border ${
+                        isActive
+                          ? "border-[#e7d9b5] text-[#e7d9b5]"
+                          : "border-white/20 text-white/60"
+                      }`}
+                    >
+                      <s.icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.32em] text-primary/80">
+                      Etapa {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <div>
+                    <h4
+                      className="text-2xl leading-tight text-foreground lg:text-3xl"
+                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                    >
+                      {s.title}
+                    </h4>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {s.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 

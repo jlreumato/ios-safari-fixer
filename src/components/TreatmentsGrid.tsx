@@ -81,33 +81,14 @@ export default function TreatmentsGrid() {
       {isMobile ? (
         <MobileStack />
       ) : (
-        /* Desktop tetris slide stage */
-        <div ref={stageRef} style={{ height: `${totalVh}vh` }} className="relative">
-          <div className="sticky top-16 md:top-20 h-[calc(100dvh-4rem)] md:h-[calc(100dvh-5rem)] w-full overflow-hidden bg-gradient-to-b from-secondary/30 to-background">
-            <div className="mx-auto grid h-full max-w-[1400px] grid-cols-2 lg:grid-cols-4 grid-rows-2 gap-3 sm:gap-4 p-3 sm:p-4 lg:p-6">
-              {treatments.map((t, i) => {
-                const p = easeOut(progress[i] ?? 0);
-                const fromLeft = i % 2 === 0;
-                const tx = (1 - p) * (fromLeft ? -120 : 120);
-                const rot = (1 - p) * (fromLeft ? -6 : 6);
-                const scale = 0.9 + 0.1 * p;
-                const isActive = p > 0.85;
-                return (
-                  <div
-                    key={t.slug}
-                    className="relative min-h-0"
-                    style={{
-                      transform: `translate3d(${tx}%,0,0) rotate(${rot}deg) scale(${scale})`,
-                      opacity: 0.15 + 0.85 * p,
-                      transition: "transform 120ms linear, opacity 120ms linear",
-                      willChange: "transform, opacity",
-                    }}
-                  >
-                    <TreatmentCard index={i} total={total} treatment={t} active={isActive} />
-                  </div>
-                );
-              })}
-            </div>
+        /* Desktop — static grid, todos os cards visíveis */
+        <div className="mx-auto max-w-[1400px] px-3 sm:px-4 lg:px-6 pb-16">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {treatments.map((t, i) => (
+              <div key={t.slug} className="relative aspect-[3/4]">
+                <TreatmentCard index={i} total={total} treatment={t} active />
+              </div>
+            ))}
           </div>
         </div>
       )}
