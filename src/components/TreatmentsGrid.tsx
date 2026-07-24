@@ -220,7 +220,7 @@ function TreatmentCard({
       />
 
       {/* Top badge (index) always visible, floats over image */}
-      <div className="absolute left-4 top-4 z-10 rounded-full bg-white/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#2b2540] backdrop-blur sm:text-xs">
+      <div className="absolute left-4 top-4 z-10 px-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] sm:text-xs">
         {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
       </div>
 

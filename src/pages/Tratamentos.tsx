@@ -74,7 +74,7 @@ export default function TratamentosPage() {
                 />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/45 to-transparent" />
 
-                <div className="absolute left-4 top-4 z-10 bg-white/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#2b2540] backdrop-blur sm:text-xs">
+                <div className="absolute left-4 top-4 z-10 px-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] sm:text-xs">
                   {String(i + 1).padStart(2, "0")} /{" "}
                   {String(treatments.length).padStart(2, "0")}
                 </div>

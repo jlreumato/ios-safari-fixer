@@ -9,6 +9,7 @@ import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppForm from "@/components/WhatsAppForm";
 import BackToTop from "@/components/BackToTop";
 
 import IntroCover from "@/components/IntroCover";
@@ -29,6 +30,7 @@ const Index = () => {
         <Clinic />
         <TreatmentsGrid />
         <Procedures />
+        <WhatsAppForm />
         <Testimonials />
         <FAQ />
         <CTASection />
