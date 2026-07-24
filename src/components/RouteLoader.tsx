@@ -63,7 +63,12 @@ export default function RouteLoader() {
   }, [pending, navigate]);
 
   // Fallback: também mostra o splash quando o pathname muda por outras vias.
+  const [firstMount, setFirstMount] = useState(true);
   useEffect(() => {
+    if (firstMount) {
+      setFirstMount(false);
+      return;
+    }
     if (pending) return; // splash já ativo pelo interceptor
     setKey((prev) => (prev ? prev : "nav-" + location.pathname + Date.now()));
     // eslint-disable-next-line react-hooks/exhaustive-deps
