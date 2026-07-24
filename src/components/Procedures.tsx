@@ -17,31 +17,63 @@ import ombroImg from "@/assets/joints/ombro.jpg";
 import maosImg from "@/assets/joints/maos.jpg";
 import pesImg from "@/assets/joints/pes.jpg";
 
-const joints = [
+type JointLink = { label: string; slug: string };
+
+const joints: {
+  label: string;
+  image: string;
+  desc: string;
+  links: JointLink[];
+}[] = [
   {
     label: "Quadril",
     image: quadrilImg,
     desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
+    links: [
+      { label: "Artrose", slug: "artrose" },
+      { label: "Osteoporose", slug: "osteoporose" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+    ],
   },
   {
     label: "Joelho",
     image: joelhoImg,
     desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
+    links: [
+      { label: "Artrose", slug: "artrose" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Gota", slug: "gota" },
+    ],
   },
   {
     label: "Ombro",
     image: ombroImg,
     desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
+    links: [
+      { label: "Dores musculares", slug: "dores-musculares" },
+      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
+      { label: "Artrose", slug: "artrose" },
+    ],
   },
   {
     label: "Punho e Mãos",
     image: maosImg,
     desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
+    links: [
+      { label: "Artrite Reumatoide", slug: "artrite-reumatoide" },
+      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
+      { label: "Artrose", slug: "artrose" },
+    ],
   },
   {
     label: "Pés e Tornozelos",
     image: pesImg,
     desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
+    links: [
+      { label: "Gota", slug: "gota" },
+      { label: "Artrite Psoriásica", slug: "artrite-psoriasica" },
+      { label: "Dores musculares", slug: "dores-musculares" },
+    ],
   },
 ];
 
