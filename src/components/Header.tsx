@@ -9,7 +9,7 @@ const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
   { label: "A Clínica", href: "/#clinica" },
   { label: "Procedimentos", href: "/procedimentos" },
-  { label: "Tratamentos", href: "/#tratamentos-resumo" },
+  { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/#contato" },
