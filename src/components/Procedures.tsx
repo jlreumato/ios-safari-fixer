@@ -419,12 +419,17 @@ function FlipIntro() {
               className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              <span className="text-4xl sm:text-6xl lg:text-7xl">Transforma</span>
-              <span className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-5xl font-semibold text-transparent sm:text-7xl lg:text-8xl">
+              <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
+                Transforma
+              </span>
+              <span
+                className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
+                style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
+              >
                 DOR
               </span>
             </h3>
-            <p className="mx-auto mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
               psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
             </p>
@@ -433,9 +438,9 @@ function FlipIntro() {
             </p>
           </div>
 
-          {/* BACK — Etapas prelude */}
+          {/* BACK — Etapa 1 já em exibição (mesma sessão) */}
           <div
-            className="absolute inset-0 flex items-center justify-center text-center"
+            className="absolute inset-0 flex items-center justify-center px-4"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -444,19 +449,29 @@ function FlipIntro() {
               transition: "opacity 200ms linear",
             }}
           >
-            <div>
-              <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
-                Um novo capítulo
+            <div className="mx-auto max-w-2xl rounded-3xl border-2 border-[#2a2730] bg-transparent p-8 sm:p-10 shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
+                Etapas da Transformação
               </p>
-              <h3
-                className="mt-4 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+              <div className="mt-4 flex items-center gap-4">
+                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  {(() => {
+                    const Icon = journey[0].icon;
+                    return <Icon className="h-6 w-6" />;
+                  })()}
+                </span>
+                <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
+                  Etapa 01 / {String(journey.length).padStart(2, "0")}
+                </span>
+              </div>
+              <h4
+                className="mt-5 text-4xl leading-tight text-foreground sm:text-5xl"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
-                Etapas da <em className="not-italic text-primary">Transformação</em>
-              </h3>
-              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                Uma jornada cuidadosamente desenhada — do primeiro encontro à sua liberdade
-                de movimento. Continue rolando para conhecer cada passo.
+                {journey[0].title}
+              </h4>
+              <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+                {journey[0].desc}
               </p>
             </div>
           </div>
