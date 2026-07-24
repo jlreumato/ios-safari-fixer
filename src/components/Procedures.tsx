@@ -272,25 +272,23 @@ function JointsWheel() {
                 </h3>
                 <p
                   key={current.desc}
-                  className="mt-5 text-lg leading-relaxed text-white/95 animate-in fade-in duration-500 sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
+                  className="mt-5 hidden text-lg leading-relaxed text-white/95 lg:block sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
                 >
                   {current.desc}
                 </p>
 
-                <div className="mt-10 w-full">
-                  <div className="h-1 w-full overflow-hidden rounded-full bg-white/15">
-                    <div
-                      className="h-full rounded-full bg-primary transition-[width] duration-150"
-                      style={{ width: `${progress * 100}%` }}
-                    />
-                  </div>
-                  <div className="mt-4 flex items-center justify-center gap-3 text-base font-semibold uppercase tracking-[0.24em] text-white/80 lg:justify-start">
-                    <span>{String(active + 1).padStart(2, "0")}</span>
-                    <span className="h-px flex-1 bg-white/25" />
-                    <ChevronRight className="h-5 w-5 animate-pulse" />
-                    <span className="h-px flex-1 bg-white/25" />
-                    <span>{String(joints.length).padStart(2, "0")}</span>
-                  </div>
+                {/* Desktop-only links menu — replaces progress + counter */}
+                <div className="mt-8 hidden flex-wrap gap-3 lg:flex" key={`${current.label}-links`}>
+                  {current.links.map((l) => (
+                    <a
+                      key={l.slug}
+                      href={`/tratamentos/${l.slug}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium uppercase tracking-[0.14em] text-white/90 transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                    >
+                      {l.label}
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
