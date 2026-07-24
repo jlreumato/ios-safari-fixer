@@ -473,7 +473,7 @@ function StepsReveal({
   // Vertical cylinder — one card visible at a time, rotating on X axis.
   const anglePerCard = 360 / steps.length;
   const rotation = cylProgress * (steps.length - 1) * anglePerCard;
-  const radius = 420;
+  const radius = 560;
 
   // Fill progress for the vertical timeline (0 → 1 across all steps).
   const fillPct = steps.length > 1 ? (active / (steps.length - 1)) * 100 : 0;
