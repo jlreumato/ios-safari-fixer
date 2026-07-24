@@ -90,8 +90,8 @@ export default function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-4 py-4 text-3xl text-foreground transition-colors hover:text-primary"
-                    style={{ fontFamily: "'Dancing Script', 'Cormorant Garamond', cursive", fontWeight: 600 }}
+                    className="rounded-md px-4 py-4 text-2xl font-normal tracking-tight text-foreground transition-colors hover:text-primary"
+                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                   >
                     {link.label}
                   </a>
