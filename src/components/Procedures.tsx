@@ -440,9 +440,9 @@ function FlipIntro() {
             </p>
           </div>
 
-          {/* BACK — Etapa 1 já em exibição (mesma sessão) */}
+          {/* BACK — abre a seção Etapas da Transformação (que segue abaixo) */}
           <div
-            className="absolute inset-0 flex items-center justify-center px-4"
+            className="absolute inset-0 flex items-center justify-center px-4 text-center"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -451,32 +451,28 @@ function FlipIntro() {
               transition: "opacity 200ms linear",
             }}
           >
-            <div className="mx-auto max-w-2xl rounded-3xl border-2 border-[#2a2730] bg-transparent p-8 sm:p-10 shadow-[0_30px_60px_-30px_rgba(30,25,40,0.35)]">
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary/80">
-                Etapas da Transformação
+            <div className="mx-auto max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.32em] text-primary">
+                Programa · O outro lado
               </p>
-              <div className="mt-4 flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  {(() => {
-                    const Icon = journey[0].icon;
-                    return <Icon className="h-6 w-6" />;
-                  })()}
-                </span>
-                <span className="text-base font-semibold uppercase tracking-[0.24em] text-primary/70">
-                  Etapa 01 / {String(journey.length).padStart(2, "0")}
-                </span>
-              </div>
               <h4
-                className="mt-5 text-4xl leading-tight text-foreground sm:text-5xl"
+                className="mt-4 text-5xl font-normal leading-[1.05] tracking-tight text-foreground sm:text-6xl lg:text-7xl"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
-                {journey[0].title}
+                Etapas da{" "}
+                <span className="italic bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text text-transparent">
+                  Transformação
+                </span>
               </h4>
-              <p className="mt-4 text-lg leading-relaxed text-muted-foreground sm:text-xl">
-                {journey[0].desc}
+              <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Oito etapas conectadas — da escuta atenta ao acompanhamento contínuo — que traduzem cuidado em resultado.
+              </p>
+              <p className="mt-8 text-xs font-semibold uppercase tracking-[0.28em] text-primary/70">
+                continue rolando ↓
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </div>
