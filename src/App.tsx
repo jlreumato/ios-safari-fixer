@@ -9,6 +9,7 @@ import Tratamentos from "./pages/Tratamentos.tsx";
 import TratamentoDetalhe from "./pages/TratamentoDetalhe.tsx";
 import BlogPage from "./pages/Blog.tsx";
 import Procedimentos from "./pages/Procedimentos.tsx";
+import RouteLoader from "./components/RouteLoader.tsx";
 
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RouteLoader />
         <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/tratamentos" element={<Tratamentos />} />
