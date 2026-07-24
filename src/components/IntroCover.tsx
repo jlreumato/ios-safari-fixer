@@ -1,39 +1,34 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronUp } from "lucide-react";
-
-const navLinks = [
-  { label: "Sobre Mim", href: "/#sobre" },
-  { label: "A Clínica", href: "/#clinica" },
-  { label: "Tratamentos", href: "/tratamentos" },
-  { label: "Depoimentos", href: "/#depoimentos" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contato", href: "/#contato" },
-];
+import { ChevronUp, Hand } from "lucide-react";
 
 const GOLD = "#e7d9b5";
 
 /**
  * Full-screen intro cover. Page scroll is locked until the user "opens" the
- * curtain (via wheel / touch). When fully opened, the halves stay off-screen
- * and normal page scrolling begins.
+ * curtain (via wheel / touch / tap). When fully opened, the halves stay
+ * off-screen and normal page scrolling begins.
  */
 export default function IntroCover() {
   const [progress, setProgress] = useState(0); // 0 closed → 1 fully open
   const [mounted, setMounted] = useState(false);
   const [nameDone, setNameDone] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
   const progressRef = useRef(0);
   const openRef = useRef(false);
 
   useEffect(() => {
     const t = requestAnimationFrame(() => setMounted(true));
     const done = window.setTimeout(() => setNameDone(true), 1600);
+    // Detect touch primary input
+    const touch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    setIsTouch(touch);
     return () => {
       cancelAnimationFrame(t);
       window.clearTimeout(done);
     };
   }, []);
 
-  // Lock page scroll while curtain is closed; drive progress via wheel/touch.
+  // Lock page scroll while curtain is closed; drive progress via wheel/touch/tap.
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -43,56 +38,47 @@ export default function IntroCover() {
     body.style.overflow = "hidden";
     window.scrollTo(0, 0);
 
-    const OPEN_DISTANCE = 1; // any wheel/touch fully opens the curtain
-    let touchY: number | null = null;
-
-    const bump = (delta: number) => {
+    const open = () => {
       if (openRef.current) return;
-      if (delta <= 0) return;
-      const next = 1;
-      progressRef.current = next;
-      setProgress(next);
+      progressRef.current = 1;
+      setProgress(1);
       openRef.current = true;
       html.style.overflow = prevHtml;
       body.style.overflow = prevBody;
       window.scrollTo(0, 0);
     };
 
-
     const onWheel = (e: WheelEvent) => {
       if (openRef.current) return;
       e.preventDefault();
-      bump(e.deltaY);
+      if (e.deltaY > 0) open();
     };
-    const onTouchStart = (e: TouchEvent) => {
+    const onTouchStart = () => {
+      // Any touch on mobile opens the cover instantly.
       if (openRef.current) return;
-      touchY = e.touches[0]?.clientY ?? null;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      if (openRef.current || touchY == null) return;
-      e.preventDefault();
-      const y = e.touches[0]?.clientY ?? touchY;
-      const delta = touchY - y;
-      touchY = y;
-      bump(delta * 2.5);
+      open();
     };
     const onKey = (e: KeyboardEvent) => {
       if (openRef.current) return;
-      if (["ArrowDown", "PageDown", " ", "Spacebar"].includes(e.key)) {
+      if (["ArrowDown", "PageDown", " ", "Spacebar", "Enter"].includes(e.key)) {
         e.preventDefault();
-        bump(120);
+        open();
       }
+    };
+    const onClick = () => {
+      if (openRef.current) return;
+      open();
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("keydown", onKey);
+    window.addEventListener("click", onClick);
     return () => {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("click", onClick);
       html.style.overflow = prevHtml;
       body.style.overflow = prevBody;
     };
@@ -136,18 +122,17 @@ export default function IntroCover() {
           </span>
         </div>
 
-        {/* REUMATOLOGIA — right-aligned under the name */}
-        <div
-          className="mt-1 flex justify-end pr-1 sm:mt-2 sm:pr-2"
-          style={{
-            opacity: nameDone ? 1 : 0,
-            transform: nameDone ? "translateY(0)" : "translateY(8px)",
-            transition: "opacity 700ms ease-out, transform 700ms ease-out",
-          }}
-        >
+        {/* REUMATOLOGIA — slides in from the right */}
+        <div className="mt-1 flex justify-end overflow-hidden pr-1 sm:mt-2 sm:pr-2">
           <span
             className="text-base font-normal uppercase tracking-[0.28em] sm:text-xl md:text-2xl lg:text-3xl"
-            style={{ color: GOLD }}
+            style={{
+              color: GOLD,
+              transform: nameDone ? "translateX(0)" : "translateX(110vw)",
+              opacity: nameDone ? 1 : 0,
+              transition:
+                "transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease-out",
+            }}
           >
             Reumatologia
           </span>
@@ -164,45 +149,31 @@ export default function IntroCover() {
         }}
       />
 
-      {/* Nav menu — fades in after name animation */}
-      <nav
-        className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:gap-x-8"
-        style={{
-          opacity: nameDone ? 1 : 0,
-          transform: nameDone ? "translateY(0)" : "translateY(10px)",
-          transition: "opacity 800ms ease-out 300ms, transform 800ms ease-out 300ms",
-        }}
-      >
-        {navLinks.map((link) => (
-          <a
-            key={link.href}
-            href={link.href}
-            className="text-xs font-medium uppercase tracking-[0.25em] text-white/70 transition-colors hover:text-[#e7d9b5] sm:text-sm"
-          >
-            {link.label}
-          </a>
-        ))}
-      </nav>
-
       <div
-        className="mt-10 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.35em] sm:text-sm"
+        className="mt-12 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.35em] sm:text-sm"
         style={{
           color: GOLD,
           opacity: nameDone ? 1 : 0,
           transition: "opacity 800ms ease-out 600ms",
         }}
       >
-        <span>Deslize para continuar</span>
-        {/* Premium animated swipe-up icon (mobile emphasis) */}
+        <span>{isTouch ? "Toque para iniciar sua transformação" : "Deslize para continuar"}</span>
         <span className="relative inline-flex h-8 w-8 items-center justify-center sm:h-7 sm:w-7">
           <span
             className="absolute inset-0 rounded-full border border-[#e7d9b5]/60"
             style={{ animation: "intro-swipe-ring 1.8s ease-out infinite" }}
           />
-          <ChevronUp
-            className="h-4 w-4"
-            style={{ animation: "intro-swipe-up 1.4s ease-in-out infinite" }}
-          />
+          {isTouch ? (
+            <Hand
+              className="h-4 w-4"
+              style={{ animation: "intro-swipe-tap 1.4s ease-in-out infinite" }}
+            />
+          ) : (
+            <ChevronUp
+              className="h-4 w-4"
+              style={{ animation: "intro-swipe-up 1.4s ease-in-out infinite" }}
+            />
+          )}
         </span>
       </div>
 
@@ -212,6 +183,10 @@ export default function IntroCover() {
           50%  { transform: translateY(-4px); opacity: 1; }
           100% { transform: translateY(6px); opacity: 0.4; }
         }
+        @keyframes intro-swipe-tap {
+          0%,100% { transform: scale(0.9); opacity: 0.5; }
+          50%     { transform: scale(1.1); opacity: 1; }
+        }
         @keyframes intro-swipe-ring {
           0%   { transform: scale(0.85); opacity: 0.9; }
           100% { transform: scale(1.55); opacity: 0; }
@@ -220,8 +195,6 @@ export default function IntroCover() {
     </div>
   );
 
-  // Seamless full-viewport background painted with fixed attachment so both
-  // halves display the same continuous artwork — no visible seam when opening.
   const bg =
     "radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120,95,175,0.35), transparent 60%)," +
     "radial-gradient(ellipse 80% 55% at 85% 35%, rgba(210,175,110,0.18), transparent 60%)," +
@@ -244,7 +217,6 @@ export default function IntroCover() {
       className="fixed inset-0 z-[100] overflow-hidden"
       style={{ pointerEvents: hidden ? "none" : "auto" }}
     >
-      {/* LEFT HALF — slides left as user "opens" the curtain */}
       <div
         className="absolute inset-y-0 left-0 w-1/2 overflow-hidden"
         style={{
@@ -257,7 +229,6 @@ export default function IntroCover() {
         <div className="absolute inset-y-0 left-0 h-full w-screen">{content}</div>
       </div>
 
-      {/* RIGHT HALF — slides right */}
       <div
         className="absolute inset-y-0 right-0 w-1/2 overflow-hidden"
         style={{
