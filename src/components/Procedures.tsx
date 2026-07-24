@@ -192,30 +192,40 @@ function JointsWheel() {
             ))}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
 
-            {/* Hover overlay — procedure links, centered on image */}
+            {/* Hover overlay — procedure links, sophisticated modern (sharp edges) */}
             <div
-              className="absolute inset-0 flex items-center justify-center bg-[#1a1229]/70 p-10 backdrop-blur-sm transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1229]/85 via-[#1a1229]/70 to-[#2b1e40]/80 p-12 backdrop-blur-md transition-opacity duration-500"
               style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
             >
-              <div className="w-full max-w-md text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
-                  Procedimentos indicados
-                </p>
-                <div className="mt-5 flex flex-col gap-2.5">
-                  {current.links.map((l) => (
-                    <a
-                      key={l.label}
-                      href={`/procedimentos#${l.slug}`}
-                      className="group inline-flex items-center justify-between gap-3 rounded-full border border-white/25 bg-white/5 px-5 py-2.5 text-sm font-medium text-white/95 backdrop-blur transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
-                    >
-                      <span>{l.label}</span>
-                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </a>
-                  ))}
+              <div className="w-full max-w-lg">
+                <div className="mb-8 flex items-center gap-4">
+                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]">
+                    Procedimentos indicados
+                  </p>
+                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
                 </div>
+                <ul className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+                  {current.links.map((l) => (
+                    <li key={l.label}>
+                      <a
+                        href={`/procedimentos#${l.slug}`}
+                        className="group/link flex items-center justify-between gap-4 py-4 transition-colors hover:text-[#e7d9b5]"
+                      >
+                        <span className="text-lg font-light tracking-wide text-white/95">
+                          {l.label}
+                        </span>
+                        <span className="flex items-center gap-3 text-[#e7d9b5]/70 transition-all group-hover/link:text-[#e7d9b5]">
+                          <span className="h-px w-6 bg-[#e7d9b5]/60 transition-all group-hover/link:w-12" />
+                          <ChevronRight className="h-4 w-4" />
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
                 <a
                   href="/procedimentos"
-                  className="mt-6 inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                  className="mt-10 inline-flex items-center gap-3 border border-[#e7d9b5]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] transition-colors hover:border-[#e7d9b5] hover:bg-[#e7d9b5]/10"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -238,7 +248,7 @@ function JointsWheel() {
                   style={{ minWidth: "100%" }}
                 >
                   <div
-                    className="relative h-full w-full overflow-hidden rounded-3xl shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative h-full w-full overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
@@ -246,22 +256,23 @@ function JointsWheel() {
                     }}
                   >
                     {/* Links overlaid on image */}
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/90 via-[#1a1229]/40 to-transparent p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5]">
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/95 via-[#1a1229]/55 to-transparent p-5">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
                         {j.label} · Procedimentos
                       </p>
-                      <div className="mt-3 flex flex-col gap-2">
+                      <ul className="mt-4 flex flex-col divide-y divide-white/10 border-y border-white/10">
                         {j.links.map((l) => (
-                          <a
-                            key={l.label}
-                            href={`/procedimentos#${l.slug}`}
-                            className="inline-flex items-center justify-between gap-2 rounded-full border border-white/30 bg-white/10 px-4 py-2 text-xs font-medium text-white/95 backdrop-blur"
-                          >
-                            <span>{l.label}</span>
-                            <ChevronRight className="h-3.5 w-3.5" />
-                          </a>
+                          <li key={l.label}>
+                            <a
+                              href={`/procedimentos#${l.slug}`}
+                              className="flex items-center justify-between gap-3 py-3 text-sm font-light text-white/95"
+                            >
+                              <span>{l.label}</span>
+                              <ChevronRight className="h-3.5 w-3.5 text-[#e7d9b5]" />
+                            </a>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
                   </div>
                 </div>
