@@ -285,18 +285,13 @@ function JointsWheel() {
         <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[40%] items-center lg:inset-0 lg:h-full">
           <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
             <div className="max-w-xl text-left">
-              <div
-                style={{
-                  ["--tx" as string]: `${(1 - slide) * 50}vw`,
-                  transform: `translateX(var(--tx, 0px))`,
-                }}
-              >
+              <div>
                 <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
                   key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in slide-in-from-bottom-2 duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
+                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {current.label}
@@ -320,6 +315,7 @@ function JointsWheel() {
               </div>
             </div>
           </div>
+
         </div>
 
         {/* Mobile — "Ver todos" button */}
