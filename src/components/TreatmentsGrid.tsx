@@ -151,17 +151,57 @@ function MobileStack() {
   const total = treatments.length;
   const cardVW = 84;
   const sidePad = (100 - cardVW) / 2;
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const gesture = useRef<{ x: number; y: number; axis: "" | "x" | "y" }>({
+    x: 0,
+    y: 0,
+    axis: "",
+  });
+
+  // Detect gesture axis on first move and lock it. If vertical, disable the
+  // scroller's touch handling so iOS Safari lets the page scroll naturally.
+  const onTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    gesture.current = { x: t.clientX, y: t.clientY, axis: "" };
+    if (scrollerRef.current) scrollerRef.current.style.touchAction = "pan-x pan-y";
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (gesture.current.axis) return;
+    const t = e.touches[0];
+    const dx = Math.abs(t.clientX - gesture.current.x);
+    const dy = Math.abs(t.clientY - gesture.current.y);
+    if (dx < 6 && dy < 6) return;
+    if (dy > dx) {
+      gesture.current.axis = "y";
+      // Hand the gesture to the page — prevents iOS from trapping it here.
+      if (scrollerRef.current) scrollerRef.current.style.touchAction = "pan-y";
+    } else {
+      gesture.current.axis = "x";
+      if (scrollerRef.current) scrollerRef.current.style.touchAction = "pan-x";
+    }
+  };
+  const onTouchEnd = () => {
+    gesture.current.axis = "";
+    if (scrollerRef.current) scrollerRef.current.style.touchAction = "pan-x pan-y";
+  };
 
   return (
     <div className="relative">
       <div
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6"
+        ref={scrollerRef}
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden pb-6"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onTouchCancel={onTouchEnd}
         style={{
           paddingLeft: `${sidePad}vw`,
           paddingRight: `${sidePad}vw`,
           scrollbarWidth: "none",
           WebkitOverflowScrolling: "touch",
           touchAction: "pan-x pan-y",
+          overscrollBehaviorY: "auto",
+          overscrollBehaviorX: "contain",
         }}
       >
         {treatments.map((t, i) => (
