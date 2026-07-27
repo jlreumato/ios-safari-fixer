@@ -781,18 +781,19 @@ function StepsReveal({
                   aria-hidden
                 />
                 <span
-                  className={`text-sm font-semibold uppercase tracking-[0.32em] ${
+                  className={`text-base font-semibold uppercase tracking-[0.32em] ${
                     isActive ? "text-[#e7d9b5]" : "text-primary/60"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="text-xl font-normal leading-tight tracking-tight"
+                  className="text-2xl font-normal leading-tight tracking-tight lg:text-[1.7rem]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {s.title}
                 </span>
+
               </div>
             );
           })}
