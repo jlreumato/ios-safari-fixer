@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Menu } from "lucide-react";
+import { Menu, ChevronRight } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import logoNome from "@/assets/nome-header.png.asset.json";
