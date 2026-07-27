@@ -549,20 +549,8 @@ function StepsReveal({
             transition: "transform 300ms linear",
           }}
         />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(231,217,181,0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(231,217,181,0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: "40px 40px, 40px 40px",
-            maskImage:
-              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
-          }}
-        />
+        {/* grid lines removed for a cleaner card */}
+
 
         {/* Corner brackets */}
         {(["tl", "tr", "bl", "br"] as const).map((c) => (
