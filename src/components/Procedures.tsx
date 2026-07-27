@@ -827,7 +827,11 @@ function StepsReveal({
 
         {/* Kinetic aurora stage */}
         <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
-          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden">
+          <div
+            className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden"
+            style={{ boxShadow: "0 40px 90px -20px rgba(0,0,0,0.75), 0 0 0 1px rgba(231,217,181,0.15)" }}
+          >
+
             {transitioning
               ? (
                 <>
