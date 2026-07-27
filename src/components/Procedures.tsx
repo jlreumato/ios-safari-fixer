@@ -470,80 +470,166 @@ function StepsReveal({
   active: number;
   cylProgress: number;
 }) {
-  // Puzzle-piece stack — one piece visible at a time; incoming piece slides
-  // up from below and its top tab locks into the current piece's bottom notch.
+  // Holographic HUD stage — one card visible at a time. Incoming card
+  // materializes via a downward scan-line pass; outgoing card dissolves upward.
   const totalSteps = steps.length;
   const progress = cylProgress * (totalSteps - 1);
   const currentIdx = Math.min(totalSteps - 1, Math.max(0, Math.floor(progress)));
-  const t = Math.min(1, Math.max(0, progress - currentIdx)); // 0 → 1 transition to next
+  const t = Math.min(1, Math.max(0, progress - currentIdx)); // 0 → 1 transition
   const nextIdx = Math.min(totalSteps - 1, currentIdx + 1);
 
   // Fill progress for the vertical timeline (0 → 1 across all steps).
   const fillPct = totalSteps > 1 ? (active / (totalSteps - 1)) * 100 : 0;
 
-  // Puzzle-piece SVG clip-path: tab on TOP center, notch on BOTTOM center.
-  // objectBoundingBox → coordinates are 0..1 relative to the element.
-  const PUZZLE_PATH =
-    "M 0.04,0.12 L 0.38,0.12 C 0.38,-0.02 0.62,-0.02 0.62,0.12 L 0.96,0.12 L 0.96,0.88 L 0.62,0.88 C 0.62,0.74 0.38,0.74 0.38,0.88 L 0.04,0.88 Z";
-
-  const renderPiece = (i: number, translateYPct: number, isFront: boolean) => {
+  const renderCard = (i: number, phase: "out" | "in" | "solo") => {
     const s = steps[i];
     const isActive = i === active;
+    // Motion & materialization params driven by t.
+    const outOpacity = phase === "out" ? Math.max(0, 1 - t * 1.2) : 1;
+    const outY = phase === "out" ? -t * 40 : 0;
+    const outBlur = phase === "out" ? t * 6 : 0;
+    const inOpacity = phase === "in" ? Math.min(1, t * 1.4) : 1;
+    const inY = phase === "in" ? (1 - t) * 40 : 0;
+    // Scan line vertical position for incoming card (top → bottom).
+    const scanY = phase === "in" ? t * 100 : phase === "out" ? 100 + t * 20 : 100;
+    // Reveal mask: incoming card is revealed above the scan line.
+    const revealPct = phase === "in" ? t * 100 : 100;
+
+    const opacity = phase === "out" ? outOpacity : phase === "in" ? inOpacity : 1;
+    const translateY = phase === "out" ? outY : phase === "in" ? inY : 0;
+    const blur = phase === "out" ? outBlur : 0;
+
     return (
       <div
-        key={`piece-${i}`}
-        className="absolute inset-0 flex items-center justify-center"
+        key={`hud-${i}-${phase}`}
+        className="absolute inset-0"
         style={{
-          transform: `translateY(${translateYPct}%)`,
-          transition: "transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1)",
-          zIndex: isFront ? 2 : 1,
-          willChange: "transform",
+          opacity,
+          transform: `translateY(${translateY}px)`,
+          filter: blur ? `blur(${blur}px)` : undefined,
+          transition: "opacity 200ms linear, transform 200ms linear",
+          zIndex: phase === "in" ? 2 : 1,
+          willChange: "opacity, transform",
         }}
       >
-        {/* Border layer */}
+        {/* Tech grid backdrop */}
         <div
           className="absolute inset-0"
           style={{
-            clipPath: "url(#puzzle-piece-clip)",
-            WebkitClipPath: "url(#puzzle-piece-clip)",
-            background: isActive
-              ? "rgba(231,217,181,0.9)"
-              : "rgba(255,255,255,0.18)",
-            transition: "background 400ms ease",
+            background:
+              "linear-gradient(160deg, rgba(20,15,32,0.92) 0%, rgba(30,20,50,0.88) 100%)",
+            backgroundImage: `
+              linear-gradient(160deg, rgba(20,15,32,0.92) 0%, rgba(30,20,50,0.88) 100%),
+              linear-gradient(rgba(231,217,181,0.06) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(231,217,181,0.06) 1px, transparent 1px)
+            `,
+            backgroundSize: "100% 100%, 32px 32px, 32px 32px",
           }}
         />
-        {/* Fill layer (inset to reveal border) */}
+
+        {/* Radial glow from top */}
         <div
-          className="absolute"
+          className="pointer-events-none absolute inset-0"
           style={{
-            top: 2,
-            left: 2,
-            right: 2,
-            bottom: 2,
-            clipPath: "url(#puzzle-piece-clip)",
-            WebkitClipPath: "url(#puzzle-piece-clip)",
-            background: isActive
-              ? "linear-gradient(160deg, rgba(231,217,181,0.10) 0%, rgba(20,15,32,0.9) 60%)"
-              : "rgba(20,15,32,0.92)",
-            transition: "background 400ms ease",
+            background:
+              "radial-gradient(80% 40% at 50% 0%, rgba(231,217,181,0.18), transparent 70%)",
           }}
         />
-        {/* Content (inset to keep clear of tab/notch regions) */}
-        <div className="relative flex h-full w-full flex-col justify-between px-10 py-[14%]">
-          <div className="flex items-center gap-4">
+
+        {/* Border + corner brackets */}
+        <div
+          className="pointer-events-none absolute inset-0 border"
+          style={{
+            borderColor: isActive
+              ? "rgba(231,217,181,0.7)"
+              : "rgba(231,217,181,0.25)",
+            boxShadow: isActive
+              ? "0 0 40px rgba(231,217,181,0.18), inset 0 0 40px rgba(231,217,181,0.05)"
+              : "inset 0 0 20px rgba(0,0,0,0.4)",
+          }}
+        />
+        {(["tl", "tr", "bl", "br"] as const).map((c) => (
+          <span
+            key={c}
+            aria-hidden
+            className="pointer-events-none absolute h-5 w-5"
+            style={{
+              top: c.startsWith("t") ? -1 : undefined,
+              bottom: c.startsWith("b") ? -1 : undefined,
+              left: c.endsWith("l") ? -1 : undefined,
+              right: c.endsWith("r") ? -1 : undefined,
+              borderTop: c.startsWith("t")
+                ? "2px solid #e7d9b5"
+                : undefined,
+              borderBottom: c.startsWith("b")
+                ? "2px solid #e7d9b5"
+                : undefined,
+              borderLeft: c.endsWith("l") ? "2px solid #e7d9b5" : undefined,
+              borderRight: c.endsWith("r") ? "2px solid #e7d9b5" : undefined,
+              boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+            }}
+          />
+        ))}
+
+        {/* Giant outlined step number (background art) */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-2 -top-6 select-none text-[220px] font-bold leading-none tracking-tighter"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            color: "transparent",
+            WebkitTextStroke: "1px rgba(231,217,181,0.18)",
+          }}
+        >
+          {String(i + 1).padStart(2, "0")}
+        </span>
+
+        {/* Content — masked by reveal for the incoming card */}
+        <div
+          className="relative flex h-full w-full flex-col justify-between px-8 py-10 sm:px-10"
+          style={{
+            WebkitMaskImage: `linear-gradient(to bottom, #000 ${revealPct}%, transparent ${revealPct}%)`,
+            maskImage: `linear-gradient(to bottom, #000 ${revealPct}%, transparent ${revealPct}%)`,
+          }}
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span
+                className={`flex h-12 w-12 items-center justify-center border ${
+                  isActive
+                    ? "border-[#e7d9b5] text-[#e7d9b5]"
+                    : "border-white/20 text-white/60"
+                }`}
+                style={
+                  isActive
+                    ? { boxShadow: "0 0 18px rgba(231,217,181,0.35)" }
+                    : undefined
+                }
+              >
+                <s.icon className="h-5 w-5" />
+              </span>
+              <div className="flex flex-col">
+                <span
+                  className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]"
+                  style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
+                >
+                  // ETAPA {String(i + 1).padStart(2, "0")}/{String(totalSteps).padStart(2, "0")}
+                </span>
+                <span
+                  className="text-[10px] uppercase tracking-[0.28em] text-primary/50"
+                  style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
+                >
+                  · SYS.TRANSFORM · LOADING
+                </span>
+              </div>
+            </div>
             <span
-              className={`flex h-14 w-14 items-center justify-center border ${
-                isActive
-                  ? "border-[#e7d9b5] text-[#e7d9b5]"
-                  : "border-white/20 text-white/60"
-              }`}
-            >
-              <s.icon className="h-6 w-6" />
-            </span>
-            <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary/80">
-              Etapa {String(i + 1).padStart(2, "0")}
-            </span>
+              className="flex h-2 w-2 rounded-full bg-[#e7d9b5]"
+              style={{ boxShadow: "0 0 10px rgba(231,217,181,0.9)" }}
+              aria-hidden
+            />
           </div>
+
           <div>
             <h4
               className="text-4xl leading-tight text-foreground lg:text-5xl"
@@ -556,20 +642,37 @@ function StepsReveal({
             </p>
           </div>
         </div>
+
+        {/* Scan line pass */}
+        {(phase === "in" || phase === "out") && (
+          <>
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 h-[2px]"
+              style={{
+                top: `${scanY}%`,
+                background:
+                  "linear-gradient(90deg, transparent, #e7d9b5 20%, #ffffff 50%, #e7d9b5 80%, transparent)",
+                boxShadow: "0 0 24px rgba(231,217,181,0.8)",
+                opacity: phase === "in" ? 1 : 0.4,
+              }}
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0"
+              style={{
+                top: `${Math.max(0, scanY - 8)}%`,
+                height: "8%",
+                background:
+                  "linear-gradient(to bottom, transparent, rgba(231,217,181,0.15))",
+              }}
+            />
+          </>
+        )}
       </div>
     );
   };
 
-  return (
-    <div className="relative flex h-full w-full flex-col bg-transparent">
-      {/* SVG clip-path definition (shared by all puzzle pieces) */}
-      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
-        <defs>
-          <clipPath id="puzzle-piece-clip" clipPathUnits="objectBoundingBox">
-            <path d={PUZZLE_PATH} />
-          </clipPath>
-        </defs>
-      </svg>
 
       {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
