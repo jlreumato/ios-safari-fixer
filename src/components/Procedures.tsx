@@ -470,16 +470,107 @@ function StepsReveal({
   active: number;
   cylProgress: number;
 }) {
-  // Vertical cylinder — one card visible at a time, rotating on X axis.
-  const anglePerCard = 360 / steps.length;
-  const rotation = cylProgress * (steps.length - 1) * anglePerCard;
-  const radius = 560;
+  // Puzzle-piece stack — one piece visible at a time; incoming piece slides
+  // up from below and its top tab locks into the current piece's bottom notch.
+  const totalSteps = steps.length;
+  const progress = cylProgress * (totalSteps - 1);
+  const currentIdx = Math.min(totalSteps - 1, Math.max(0, Math.floor(progress)));
+  const t = Math.min(1, Math.max(0, progress - currentIdx)); // 0 → 1 transition to next
+  const nextIdx = Math.min(totalSteps - 1, currentIdx + 1);
 
   // Fill progress for the vertical timeline (0 → 1 across all steps).
-  const fillPct = steps.length > 1 ? (active / (steps.length - 1)) * 100 : 0;
+  const fillPct = totalSteps > 1 ? (active / (totalSteps - 1)) * 100 : 0;
+
+  // Puzzle-piece SVG clip-path: tab on TOP center, notch on BOTTOM center.
+  // objectBoundingBox → coordinates are 0..1 relative to the element.
+  const PUZZLE_PATH =
+    "M 0.04,0.12 L 0.38,0.12 C 0.38,-0.02 0.62,-0.02 0.62,0.12 L 0.96,0.12 L 0.96,0.88 L 0.62,0.88 C 0.62,0.74 0.38,0.74 0.38,0.88 L 0.04,0.88 Z";
+
+  const renderPiece = (i: number, translateYPct: number, isFront: boolean) => {
+    const s = steps[i];
+    const isActive = i === active;
+    return (
+      <div
+        key={`piece-${i}`}
+        className="absolute inset-0 flex items-center justify-center"
+        style={{
+          transform: `translateY(${translateYPct}%)`,
+          transition: "transform 220ms cubic-bezier(0.22, 0.61, 0.36, 1)",
+          zIndex: isFront ? 2 : 1,
+          willChange: "transform",
+        }}
+      >
+        {/* Border layer */}
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath: "url(#puzzle-piece-clip)",
+            WebkitClipPath: "url(#puzzle-piece-clip)",
+            background: isActive
+              ? "rgba(231,217,181,0.9)"
+              : "rgba(255,255,255,0.18)",
+            transition: "background 400ms ease",
+          }}
+        />
+        {/* Fill layer (inset to reveal border) */}
+        <div
+          className="absolute"
+          style={{
+            top: 2,
+            left: 2,
+            right: 2,
+            bottom: 2,
+            clipPath: "url(#puzzle-piece-clip)",
+            WebkitClipPath: "url(#puzzle-piece-clip)",
+            background: isActive
+              ? "linear-gradient(160deg, rgba(231,217,181,0.10) 0%, rgba(20,15,32,0.9) 60%)"
+              : "rgba(20,15,32,0.92)",
+            transition: "background 400ms ease",
+          }}
+        />
+        {/* Content (inset to keep clear of tab/notch regions) */}
+        <div className="relative flex h-full w-full flex-col justify-between px-10 py-[14%]">
+          <div className="flex items-center gap-4">
+            <span
+              className={`flex h-14 w-14 items-center justify-center border ${
+                isActive
+                  ? "border-[#e7d9b5] text-[#e7d9b5]"
+                  : "border-white/20 text-white/60"
+              }`}
+            >
+              <s.icon className="h-6 w-6" />
+            </span>
+            <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary/80">
+              Etapa {String(i + 1).padStart(2, "0")}
+            </span>
+          </div>
+          <div>
+            <h4
+              className="text-4xl leading-tight text-foreground lg:text-5xl"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
+              {s.title}
+            </h4>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              {s.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="relative flex h-full w-full flex-col bg-transparent">
+      {/* SVG clip-path definition (shared by all puzzle pieces) */}
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
+        <defs>
+          <clipPath id="puzzle-piece-clip" clipPathUnits="objectBoundingBox">
+            <path d={PUZZLE_PATH} />
+          </clipPath>
+        </defs>
+      </svg>
+
       {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
         <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary sm:text-lg">
@@ -493,66 +584,63 @@ function StepsReveal({
         </h3>
       </div>
 
-      {/* Body: full-height nav + cylinder */}
+      {/* Body: full-height nav + puzzle stack */}
       <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[440px_1fr] lg:gap-14 lg:px-16 lg:pb-14">
         {/* Nav menu — vertical timeline with connecting line + filled squares */}
         <nav
           className="relative hidden lg:flex lg:flex-col lg:h-full"
           aria-label="Etapas"
         >
-            {/* Timeline track — background line */}
-            <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-white/10" />
-            {/* Timeline track — filled portion */}
-            <div
-              className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#e7d9b5] transition-[height] duration-500"
-              style={{
-                height: `calc((100% - 24px) * ${fillPct / 100})`,
-                boxShadow: "0 0 12px rgba(231,217,181,0.6)",
-              }}
-            />
-            {steps.map((s, i) => {
-              const isActive = i === active;
-              const isPassed = i <= active;
-              return (
-                <div
-                  key={s.title}
-                  className={`relative flex flex-1 items-center gap-5 border pl-14 pr-6 transition-all duration-500 ${
-                    isActive
-                      ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.07] text-foreground"
-                      : "border-white/10 text-muted-foreground"
+          <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-white/10" />
+          <div
+            className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#e7d9b5] transition-[height] duration-500"
+            style={{
+              height: `calc((100% - 24px) * ${fillPct / 100})`,
+              boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+            }}
+          />
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            const isPassed = i <= active;
+            return (
+              <div
+                key={s.title}
+                className={`relative flex flex-1 items-center gap-5 border pl-14 pr-6 transition-all duration-500 ${
+                  isActive
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.07] text-foreground"
+                    : "border-white/10 text-muted-foreground"
+                }`}
+                style={{ minHeight: 0 }}
+              >
+                <span
+                  className={`absolute left-[15px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 border transition-all duration-500 ${
+                    isPassed
+                      ? "border-[#e7d9b5] bg-[#e7d9b5]"
+                      : "border-white/25 bg-transparent"
                   }`}
-                  style={{ minHeight: 0 }}
+                  style={
+                    isPassed
+                      ? { boxShadow: "0 0 14px rgba(231,217,181,0.6)" }
+                      : undefined
+                  }
+                  aria-hidden
+                />
+                <span
+                  className={`text-sm font-semibold uppercase tracking-[0.32em] ${
+                    isActive ? "text-[#e7d9b5]" : "text-primary/60"
+                  }`}
                 >
-                  {/* Filled square marker on the timeline */}
-                  <span
-                    className={`absolute left-[15px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 border transition-all duration-500 ${
-                      isPassed
-                        ? "border-[#e7d9b5] bg-[#e7d9b5]"
-                        : "border-white/25 bg-transparent"
-                    }`}
-                    style={
-                      isPassed
-                        ? { boxShadow: "0 0 14px rgba(231,217,181,0.6)" }
-                        : undefined
-                    }
-                    aria-hidden
-                  />
-                  <span
-                    className={`text-sm font-semibold uppercase tracking-[0.32em] ${
-                      isActive ? "text-[#e7d9b5]" : "text-primary/60"
-                    }`}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className="text-xl font-normal leading-tight tracking-tight"
-                    style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                  >
-                    {s.title}
-                  </span>
-                </div>
-              );
-            })}
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className="text-xl font-normal leading-tight tracking-tight"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {s.title}
+                </span>
+              </div>
+            );
+          })}
         </nav>
 
         {/* Mobile — horizontal nav */}
@@ -581,82 +669,20 @@ function StepsReveal({
           })}
         </nav>
 
-        {/* Vertical cylinder stage — one card at a time */}
-        <div
-          className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0"
-          style={{
-            perspective: "1800px",
-            WebkitMaskImage:
-              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
-            maskImage:
-              "linear-gradient(to bottom, transparent 0%, #000 18%, #000 82%, transparent 100%)",
-          }}
-        >
-          <div
-            className="relative h-[360px] w-full max-w-[520px]"
-            style={{
-              transformStyle: "preserve-3d",
-              transform: `translateZ(-${radius}px) rotateX(${rotation}deg)`,
-              transition: "transform 160ms linear",
-              willChange: "transform",
-            }}
-          >
-            {steps.map((s, i) => {
-              const angle = i * anglePerCard;
-              const isActive = i === active;
-              return (
-                <div
-                  key={s.title}
-                  className="absolute inset-0 flex flex-col justify-between border p-10"
-                  style={{
-                    transform: `rotateX(${-angle}deg) translateZ(${radius}px)`,
-                    backfaceVisibility: "hidden",
-                    borderColor: isActive
-                      ? "rgba(231,217,181,0.85)"
-                      : "rgba(255,255,255,0.12)",
-                    background: isActive
-                      ? "rgba(231,217,181,0.06)"
-                      : "rgba(20,15,32,0.55)",
-                    boxShadow: isActive
-                      ? "0 40px 80px -20px rgba(0,0,0,0.6)"
-                      : "none",
-                    transition: "border-color 400ms ease, background 400ms ease",
-                  }}
-                >
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`flex h-14 w-14 items-center justify-center border ${
-                        isActive
-                          ? "border-[#e7d9b5] text-[#e7d9b5]"
-                          : "border-white/20 text-white/60"
-                      }`}
-                    >
-                      <s.icon className="h-6 w-6" />
-                    </span>
-                    <span className="text-sm font-semibold uppercase tracking-[0.32em] text-primary/80">
-                      Etapa {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <div>
-                    <h4
-                      className="text-4xl leading-tight text-foreground lg:text-5xl"
-                      style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                    >
-                      {s.title}
-                    </h4>
-                    <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-                      {s.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+        {/* Puzzle-piece stage — one piece at a time, next piece locks in from below */}
+        <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
+          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[520px]">
+            {/* Current piece slides UP and out */}
+            {renderPiece(currentIdx, -t * 100, true)}
+            {/* Next piece slides IN from below, its top tab locking into current's bottom notch */}
+            {nextIdx !== currentIdx && renderPiece(nextIdx, (1 - t) * 100, false)}
           </div>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 
