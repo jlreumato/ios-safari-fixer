@@ -138,17 +138,21 @@ export default function ProcedimentosPage() {
     const willOpen = active !== slug;
     setActive(willOpen ? slug : null);
     if (willOpen) {
-      // Aguarda o re-render (order-first + aspect change) antes de rolar.
+      // Espera o re-layout (order-first + aspect change + transition 500ms) antes de rolar.
       const focus = () => {
         const el = cardRefs.current[slug];
         if (!el) return;
-        const headerOffset = 96; // altura do header fixo
+        const headerOffset = 88; // header fixo
         const y = el.getBoundingClientRect().top + window.scrollY - headerOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
       };
+      // Duplo rAF para garantir que o layout re-ordenado esteja pronto, depois
+      // um segundo scroll após a transição concluir para pegar o estado final.
       requestAnimationFrame(() => requestAnimationFrame(focus));
+      window.setTimeout(focus, 560);
     }
   };
+
 
   return (
     <>
