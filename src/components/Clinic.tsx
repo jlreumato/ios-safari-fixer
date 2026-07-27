@@ -114,14 +114,14 @@ function FloatingGrid({
   const spacing = (1 - perImage) / (four.length - 1); // 0.24
 
   return (
-    <div ref={ref} className="mt-12">
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5">
+    <div ref={ref} className="mt-14">
+      <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 md:gap-6">
         {four.map((img, i) => {
           const start = i * spacing;
           const raw = (progress - start) / perImage;
           const p = Math.max(0, Math.min(1, raw));
           const eased = 1 - Math.pow(1 - p, 3);
-          const fromY = i % 2 === 0 ? -70 : 70; // even → down from top, odd → up from bottom
+          const fromY = i % 2 === 0 ? -70 : 70;
           const ty = fromY * (1 - eased);
           const opacity = eased;
           return (
@@ -129,7 +129,7 @@ function FloatingGrid({
               key={i}
               type="button"
               onClick={() => onOpen(i)}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-primary/25 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="group relative aspect-[3/4] overflow-hidden border border-[#e7d9b5]/25 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.7)] focus:outline-none focus-visible:border-[#e7d9b5]"
               style={{
                 transform: `translate3d(0, ${ty}%, 0)`,
                 opacity,
@@ -144,7 +144,25 @@ function FloatingGrid({
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              {/* corner brackets */}
+              {(["tl", "tr", "bl", "br"] as const).map((c) => (
+                <span
+                  key={c}
+                  aria-hidden
+                  className="pointer-events-none absolute h-4 w-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{
+                    top: c.startsWith("t") ? 6 : undefined,
+                    bottom: c.startsWith("b") ? 6 : undefined,
+                    left: c.endsWith("l") ? 6 : undefined,
+                    right: c.endsWith("r") ? 6 : undefined,
+                    borderTop: c.startsWith("t") ? "1.5px solid #e7d9b5" : undefined,
+                    borderBottom: c.startsWith("b") ? "1.5px solid #e7d9b5" : undefined,
+                    borderLeft: c.endsWith("l") ? "1.5px solid #e7d9b5" : undefined,
+                    borderRight: c.endsWith("r") ? "1.5px solid #e7d9b5" : undefined,
+                  }}
+                />
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </button>
           );
         })}
@@ -152,6 +170,7 @@ function FloatingGrid({
     </div>
   );
 }
+
 
 function Lightbox({
   images,
@@ -223,51 +242,61 @@ export default function Clinic() {
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <div className="text-center">
-          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Locais de Atendimento</p>
-          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-            Seu conforto é nossa prioridade
+        {/* Header — left-aligned, mirrors Etapas */}
+        <div className="max-w-3xl">
+          <div className="flex items-center gap-4">
+            <span className="h-px w-14 bg-[#e7d9b5]" />
+            <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
+              Locais de Atendimento
+            </p>
+          </div>
+          <h2
+            className="mt-5 text-balance text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            Seu conforto é <span className="italic text-primary">nossa prioridade</span>
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
             Espaços pensados para oferecer acolhimento e cuidado desde o primeiro momento.
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="mt-10 flex justify-center">
-          <div className="inline-flex flex-wrap justify-center gap-2 rounded-xl bg-background/50 p-2 shadow-sm">
+        {/* Tabs + Address — modern outlined layout */}
+        <div className="mt-12 flex flex-col gap-6 border-y border-white/10 py-6 lg:flex-row lg:items-center lg:justify-between">
+          <div className="inline-flex flex-wrap gap-3">
             {locations.map((loc, i) => (
               <button
                 key={loc.id}
                 onClick={() => setActiveTab(i)}
-                className={`rounded-lg border-2 px-5 py-2.5 text-base font-medium transition-all duration-200 ${
+                className={`border px-6 py-3 text-sm font-semibold uppercase tracking-[0.24em] transition-all duration-200 ${
                   activeTab === i
-                    ? "border-primary bg-transparent text-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.10)]"
-                    : "border-transparent bg-transparent text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.08] text-[#e7d9b5]"
+                    : "border-white/15 text-muted-foreground hover:border-[#e7d9b5]/50 hover:text-foreground"
                 }`}
               >
                 {loc.name}
               </button>
             ))}
           </div>
+          <div className="text-left lg:text-right">
+            <p className="flex items-center gap-2 text-base text-foreground lg:justify-end">
+              <MapPin className="h-4 w-4 text-primary" />
+              {currentLocation.address}
+            </p>
+            <p className="mt-1 text-sm uppercase tracking-[0.2em] text-muted-foreground">
+              {currentLocation.cep}
+            </p>
+          </div>
         </div>
 
-        {/* Address */}
-        <div className="mt-6 text-center">
-          <p className="flex items-center justify-center gap-2 text-lg text-foreground font-medium sm:text-base">
-            <MapPin className="h-5 w-5 text-primary" />
-            {currentLocation.address}
-          </p>
-          <p className="mt-1 text-base text-muted-foreground sm:text-sm">{currentLocation.cep}</p>
-        </div>
-
-        {/* Floating grid — scroll-driven reveal, click to enlarge */}
+        {/* Floating grid — larger, rectangular */}
         <FloatingGrid
           key={currentLocation.id}
           images={gridImages}
           onOpen={(i) => setLightbox(i)}
         />
       </div>
+
 
       {lightbox !== null && (
         <Lightbox

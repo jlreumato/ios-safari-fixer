@@ -382,7 +382,7 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const stepsClip = `inset(0 0 0 ${arrowX}%)`;
 
   return (
-    <div ref={ref} className="relative" style={{ height: "500vh" }}>
+    <div ref={ref} className="relative" style={{ height: "800vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* Layer A — Programa TransformaDOR intro (revealed out) */}
         <div
@@ -549,20 +549,8 @@ function StepsReveal({
             transition: "transform 300ms linear",
           }}
         />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(231,217,181,0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(231,217,181,0.05) 1px, transparent 1px)
-            `,
-            backgroundSize: "40px 40px, 40px 40px",
-            maskImage:
-              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
-          }}
-        />
+        {/* grid lines removed for a cleaner card */}
+
 
         {/* Corner brackets */}
         {(["tl", "tr", "bl", "br"] as const).map((c) => (
@@ -793,18 +781,19 @@ function StepsReveal({
                   aria-hidden
                 />
                 <span
-                  className={`text-sm font-semibold uppercase tracking-[0.32em] ${
+                  className={`text-base font-semibold uppercase tracking-[0.32em] ${
                     isActive ? "text-[#e7d9b5]" : "text-primary/60"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span
-                  className="text-xl font-normal leading-tight tracking-tight"
+                  className="text-2xl font-normal leading-tight tracking-tight lg:text-[1.7rem]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {s.title}
                 </span>
+
               </div>
             );
           })}
@@ -827,10 +816,11 @@ function StepsReveal({
                     : "border-white/10 text-muted-foreground"
                 }`}
               >
-                <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
+                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="whitespace-nowrap text-sm">{s.title}</span>
+                <span className="whitespace-nowrap text-base" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>{s.title}</span>
+
               </div>
             );
           })}
@@ -838,7 +828,11 @@ function StepsReveal({
 
         {/* Kinetic aurora stage */}
         <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
-          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden">
+          <div
+            className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden"
+            style={{ boxShadow: "0 40px 90px -20px rgba(0,0,0,0.75), 0 0 0 1px rgba(231,217,181,0.15)" }}
+          >
+
             {transitioning
               ? (
                 <>
