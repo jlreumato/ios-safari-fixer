@@ -113,7 +113,8 @@ export default function Header() {
                     Agendar Consulta
                   </Button>
                 </a>
-              </nav>
+              </div>
+
             </SheetContent>
           </Sheet>
         </div>
