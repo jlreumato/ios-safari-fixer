@@ -85,18 +85,22 @@ export default function Header() {
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="w-screen max-w-none bg-[#1a1229] pt-16 border-l-0 px-8">
-              <nav className="flex flex-col gap-2">
+              <nav className="flex flex-col divide-y divide-white/10 border-y border-white/10">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="rounded-md px-4 py-4 text-2xl font-normal tracking-tight text-foreground transition-colors hover:text-primary"
+                    className="group flex items-center justify-between px-2 py-5 text-2xl font-normal tracking-tight text-foreground transition-colors duration-200 hover:bg-white/[0.06] hover:text-primary"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                   >
-                    {link.label}
+                    <span>{link.label}</span>
+                    <ChevronRight className="h-5 w-5 text-white/40 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary" />
                   </a>
                 ))}
+              </nav>
+              <div className="mt-8">
+
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
