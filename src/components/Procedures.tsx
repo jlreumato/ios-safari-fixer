@@ -816,10 +816,11 @@ function StepsReveal({
                     : "border-white/10 text-muted-foreground"
                 }`}
               >
-                <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
+                <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="whitespace-nowrap text-sm">{s.title}</span>
+                <span className="whitespace-nowrap text-base" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>{s.title}</span>
+
               </div>
             );
           })}
