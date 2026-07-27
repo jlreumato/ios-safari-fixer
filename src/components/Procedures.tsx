@@ -774,15 +774,20 @@ function StepsReveal({
           })}
         </nav>
 
-        {/* Puzzle-piece stage — one piece at a time, next piece locks in from below */}
+        {/* Holographic HUD stage — scan-line materialization */}
         <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
-          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[520px]">
-            {/* Current piece slides UP and out */}
-            {renderPiece(currentIdx, -t * 100, true)}
-            {/* Next piece slides IN from below, its top tab locking into current's bottom notch */}
-            {nextIdx !== currentIdx && renderPiece(nextIdx, (1 - t) * 100, false)}
+          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden">
+            {nextIdx !== currentIdx
+              ? (
+                <>
+                  {renderCard(currentIdx, "out")}
+                  {renderCard(nextIdx, "in")}
+                </>
+              )
+              : renderCard(currentIdx, "solo")}
           </div>
         </div>
+
       </div>
     </div>
   );
