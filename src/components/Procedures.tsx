@@ -673,6 +673,8 @@ function StepsReveal({
     );
   };
 
+  return (
+    <div className="relative flex h-full w-full flex-col bg-transparent">
 
       {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
