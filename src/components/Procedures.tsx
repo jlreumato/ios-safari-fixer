@@ -382,7 +382,7 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const stepsClip = `inset(0 0 0 ${arrowX}%)`;
 
   return (
-    <div ref={ref} className="relative" style={{ height: "500vh" }}>
+    <div ref={ref} className="relative" style={{ height: "800vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* Layer A — Programa TransformaDOR intro (revealed out) */}
         <div
