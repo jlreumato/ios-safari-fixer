@@ -560,10 +560,129 @@ function StepsReveal({
     );
   };
 
+  return (
+    <div className="relative flex h-full w-full flex-col bg-transparent">
+      {/* SVG clip-path definition (shared by all puzzle pieces) */}
+      <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden>
+        <defs>
+          <clipPath id="puzzle-piece-clip" clipPathUnits="objectBoundingBox">
+            <path d={PUZZLE_PATH} />
+          </clipPath>
+        </defs>
+      </svg>
+
+      {/* Header */}
+      <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
+        <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary sm:text-lg">
+          Etapas da Transformação
+        </p>
+        <h3
+          className="mt-3 text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+        >
+          8 Etapas para se <span className="italic text-primary">libertar da dor</span>
+        </h3>
+      </div>
+
+      {/* Body: full-height nav + puzzle stack */}
+      <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[440px_1fr] lg:gap-14 lg:px-16 lg:pb-14">
+        {/* Nav menu — vertical timeline with connecting line + filled squares */}
+        <nav
+          className="relative hidden lg:flex lg:flex-col lg:h-full"
+          aria-label="Etapas"
+        >
+          <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-white/10" />
+          <div
+            className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#e7d9b5] transition-[height] duration-500"
+            style={{
+              height: `calc((100% - 24px) * ${fillPct / 100})`,
+              boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+            }}
+          />
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            const isPassed = i <= active;
+            return (
+              <div
+                key={s.title}
+                className={`relative flex flex-1 items-center gap-5 border pl-14 pr-6 transition-all duration-500 ${
+                  isActive
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.07] text-foreground"
+                    : "border-white/10 text-muted-foreground"
+                }`}
+                style={{ minHeight: 0 }}
+              >
+                <span
+                  className={`absolute left-[15px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 border transition-all duration-500 ${
+                    isPassed
+                      ? "border-[#e7d9b5] bg-[#e7d9b5]"
+                      : "border-white/25 bg-transparent"
+                  }`}
+                  style={
+                    isPassed
+                      ? { boxShadow: "0 0 14px rgba(231,217,181,0.6)" }
+                      : undefined
+                  }
+                  aria-hidden
+                />
+                <span
+                  className={`text-sm font-semibold uppercase tracking-[0.32em] ${
+                    isActive ? "text-[#e7d9b5]" : "text-primary/60"
+                  }`}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span
+                  className="text-xl font-normal leading-tight tracking-tight"
+                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+                >
+                  {s.title}
+                </span>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Mobile — horizontal nav */}
+        <nav
+          className="flex gap-3 overflow-x-auto lg:hidden"
+          style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
+          aria-label="Etapas"
+        >
+          {steps.map((s, i) => {
+            const isActive = i === active;
+            return (
+              <div
+                key={s.title}
+                className={`flex shrink-0 items-center gap-3 border py-2 pl-3 pr-4 text-left ${
+                  isActive
+                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.06] text-foreground"
+                    : "border-white/10 text-muted-foreground"
+                }`}
+              >
+                <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-primary/80">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="whitespace-nowrap text-sm">{s.title}</span>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Puzzle-piece stage — one piece at a time, next piece locks in from below */}
+        <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
+          <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[520px]">
+            {/* Current piece slides UP and out */}
+            {renderPiece(currentIdx, -t * 100, true)}
+            {/* Next piece slides IN from below, its top tab locking into current's bottom notch */}
+            {nextIdx !== currentIdx && renderPiece(nextIdx, (1 - t) * 100, false)}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
 
 
 
