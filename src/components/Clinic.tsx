@@ -114,14 +114,14 @@ function FloatingGrid({
   const spacing = (1 - perImage) / (four.length - 1); // 0.24
 
   return (
-    <div ref={ref} className="mt-12">
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:gap-5">
+    <div ref={ref} className="mt-14">
+      <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-4 md:gap-6">
         {four.map((img, i) => {
           const start = i * spacing;
           const raw = (progress - start) / perImage;
           const p = Math.max(0, Math.min(1, raw));
           const eased = 1 - Math.pow(1 - p, 3);
-          const fromY = i % 2 === 0 ? -70 : 70; // even → down from top, odd → up from bottom
+          const fromY = i % 2 === 0 ? -70 : 70;
           const ty = fromY * (1 - eased);
           const opacity = eased;
           return (
@@ -129,7 +129,7 @@ function FloatingGrid({
               key={i}
               type="button"
               onClick={() => onOpen(i)}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl ring-1 ring-primary/25 shadow-[0_20px_50px_-25px_rgba(0,0,0,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="group relative aspect-[3/4] overflow-hidden border border-[#e7d9b5]/25 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.7)] focus:outline-none focus-visible:border-[#e7d9b5]"
               style={{
                 transform: `translate3d(0, ${ty}%, 0)`,
                 opacity,
@@ -144,7 +144,25 @@ function FloatingGrid({
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              {/* corner brackets */}
+              {(["tl", "tr", "bl", "br"] as const).map((c) => (
+                <span
+                  key={c}
+                  aria-hidden
+                  className="pointer-events-none absolute h-4 w-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  style={{
+                    top: c.startsWith("t") ? 6 : undefined,
+                    bottom: c.startsWith("b") ? 6 : undefined,
+                    left: c.endsWith("l") ? 6 : undefined,
+                    right: c.endsWith("r") ? 6 : undefined,
+                    borderTop: c.startsWith("t") ? "1.5px solid #e7d9b5" : undefined,
+                    borderBottom: c.startsWith("b") ? "1.5px solid #e7d9b5" : undefined,
+                    borderLeft: c.endsWith("l") ? "1.5px solid #e7d9b5" : undefined,
+                    borderRight: c.endsWith("r") ? "1.5px solid #e7d9b5" : undefined,
+                  }}
+                />
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </button>
           );
         })}
@@ -152,6 +170,7 @@ function FloatingGrid({
     </div>
   );
 }
+
 
 function Lightbox({
   images,
