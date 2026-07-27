@@ -470,84 +470,101 @@ function StepsReveal({
   active: number;
   cylProgress: number;
 }) {
-  // Holographic HUD stage — one card visible at a time. Incoming card
-  // materializes via a downward scan-line pass; outgoing card dissolves upward.
+  // Kinetic Aurora stage — one card at a time with:
+  //  · Massive step number that "shatters" (top half slides up, bottom half slides down)
+  //    and the incoming number closes back from opposite directions.
+  //  · Aurora conic-gradient ring rotating behind the icon.
+  //  · Title words stagger-fade with directional blur clearing.
+  //  · Description reveals via left-to-right ink-flow clip-path.
   const totalSteps = steps.length;
   const progress = cylProgress * (totalSteps - 1);
   const currentIdx = Math.min(totalSteps - 1, Math.max(0, Math.floor(progress)));
   const t = Math.min(1, Math.max(0, progress - currentIdx)); // 0 → 1 transition
   const nextIdx = Math.min(totalSteps - 1, currentIdx + 1);
+  const transitioning = nextIdx !== currentIdx;
 
   // Fill progress for the vertical timeline (0 → 1 across all steps).
   const fillPct = totalSteps > 1 ? (active / (totalSteps - 1)) * 100 : 0;
 
+  // Easing helpers
+  const ease = (x: number) => 1 - Math.pow(1 - x, 3); // easeOutCubic
+  const tE = ease(t);
+
   const renderCard = (i: number, phase: "out" | "in" | "solo") => {
     const s = steps[i];
-    const isActive = i === active;
-    // Motion & materialization params driven by t.
-    const outOpacity = phase === "out" ? Math.max(0, 1 - t * 1.2) : 1;
-    const outY = phase === "out" ? -t * 40 : 0;
-    const outBlur = phase === "out" ? t * 6 : 0;
-    const inOpacity = phase === "in" ? Math.min(1, t * 1.4) : 1;
-    const inY = phase === "in" ? (1 - t) * 40 : 0;
-    // Scan line vertical position for incoming card (top → bottom).
-    const scanY = phase === "in" ? t * 100 : phase === "out" ? 100 + t * 20 : 100;
-    // Reveal mask: incoming card is revealed above the scan line.
-    const revealPct = phase === "in" ? t * 100 : 100;
+    const num = String(i + 1).padStart(2, "0");
 
-    const opacity = phase === "out" ? outOpacity : phase === "in" ? inOpacity : 1;
-    const translateY = phase === "out" ? outY : phase === "in" ? inY : 0;
-    const blur = phase === "out" ? outBlur : 0;
+    // Shatter transforms for the giant number:
+    // outgoing → top half rises, bottom half sinks (opacity fades).
+    // incoming → halves converge back to center (opacity rises).
+    const shatter = phase === "out" ? tE : phase === "in" ? 1 - tE : 0;
+    const halfShift = shatter * 55; // % of height
+    const halfOpacity = phase === "solo" ? 1 : 1 - shatter;
+
+    // Content-level transforms
+    const contentOpacity =
+      phase === "out" ? 1 - tE : phase === "in" ? tE : 1;
+    const contentBlur = phase === "in" ? (1 - tE) * 8 : phase === "out" ? tE * 6 : 0;
+    const contentY = phase === "in" ? (1 - tE) * 24 : phase === "out" ? -tE * 16 : 0;
+
+    // Ink-flow reveal for description (left → right)
+    const inkPct =
+      phase === "in" ? tE * 100 : phase === "out" ? 100 - tE * 100 : 100;
+
+    // Title word stagger — reveal progress per word
+    const words = s.title.split(" ");
+    const wordProgress = (idx: number) => {
+      const total = words.length;
+      const span = 1 / Math.max(1, total * 0.65);
+      const start = (idx / total) * (1 - span);
+      const local = (tE - start) / span;
+      return Math.max(0, Math.min(1, phase === "in" ? local : phase === "out" ? 1 - (tE - start) / span : 1));
+    };
 
     return (
       <div
-        key={`hud-${i}-${phase}`}
+        key={`kinetic-${i}-${phase}`}
         className="absolute inset-0"
         style={{
-          opacity,
-          transform: `translateY(${translateY}px)`,
-          filter: blur ? `blur(${blur}px)` : undefined,
-          transition: "opacity 200ms linear, transform 200ms linear",
-          zIndex: phase === "in" ? 2 : 1,
-          willChange: "opacity, transform",
+          zIndex: phase === "in" ? 2 : phase === "out" ? 1 : 1,
+          opacity: phase === "solo" ? 1 : phase === "in" ? Math.min(1, tE * 1.4) : Math.max(0, 1 - tE * 1.4),
+          willChange: "opacity",
         }}
       >
-        {/* Tech grid backdrop */}
+        {/* Aurora backdrop */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(160deg, rgba(20,15,32,0.92) 0%, rgba(30,20,50,0.88) 100%)",
-            backgroundImage: `
-              linear-gradient(160deg, rgba(20,15,32,0.92) 0%, rgba(30,20,50,0.88) 100%),
-              linear-gradient(rgba(231,217,181,0.06) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(231,217,181,0.06) 1px, transparent 1px)
-            `,
-            backgroundSize: "100% 100%, 32px 32px, 32px 32px",
+              "linear-gradient(160deg, rgba(20,15,32,0.94) 0%, rgba(30,20,50,0.9) 100%)",
           }}
         />
-
-        {/* Radial glow from top */}
+        <div
+          className="pointer-events-none absolute -inset-24 opacity-70"
+          style={{
+            background:
+              "conic-gradient(from 210deg at 50% 45%, rgba(142,130,184,0.35), rgba(231,217,181,0.28), rgba(74,53,120,0.35), rgba(231,217,181,0.2), rgba(142,130,184,0.35))",
+            filter: "blur(60px)",
+            transform: `rotate(${(i * 47 + tE * 30).toFixed(1)}deg)`,
+            transition: "transform 300ms linear",
+          }}
+        />
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background:
-              "radial-gradient(80% 40% at 50% 0%, rgba(231,217,181,0.18), transparent 70%)",
+            backgroundImage: `
+              linear-gradient(rgba(231,217,181,0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(231,217,181,0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px, 40px 40px",
+            maskImage:
+              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse at 50% 50%, #000 30%, transparent 75%)",
           }}
         />
 
-        {/* Border + corner brackets */}
-        <div
-          className="pointer-events-none absolute inset-0 border"
-          style={{
-            borderColor: isActive
-              ? "rgba(231,217,181,0.7)"
-              : "rgba(231,217,181,0.25)",
-            boxShadow: isActive
-              ? "0 0 40px rgba(231,217,181,0.18), inset 0 0 40px rgba(231,217,181,0.05)"
-              : "inset 0 0 20px rgba(0,0,0,0.4)",
-          }}
-        />
+        {/* Corner brackets */}
         {(["tl", "tr", "bl", "br"] as const).map((c) => (
           <span
             key={c}
@@ -558,124 +575,169 @@ function StepsReveal({
               bottom: c.startsWith("b") ? -1 : undefined,
               left: c.endsWith("l") ? -1 : undefined,
               right: c.endsWith("r") ? -1 : undefined,
-              borderTop: c.startsWith("t")
-                ? "2px solid #e7d9b5"
-                : undefined,
-              borderBottom: c.startsWith("b")
-                ? "2px solid #e7d9b5"
-                : undefined,
+              borderTop: c.startsWith("t") ? "2px solid #e7d9b5" : undefined,
+              borderBottom: c.startsWith("b") ? "2px solid #e7d9b5" : undefined,
               borderLeft: c.endsWith("l") ? "2px solid #e7d9b5" : undefined,
               borderRight: c.endsWith("r") ? "2px solid #e7d9b5" : undefined,
-              boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+              boxShadow: "0 0 12px rgba(231,217,181,0.55)",
             }}
           />
         ))}
 
-        {/* Giant outlined step number (background art) */}
-        <span
+        {/* Shattering giant number — two halves */}
+        <div
           aria-hidden
-          className="pointer-events-none absolute -right-2 -top-6 select-none text-[220px] font-bold leading-none tracking-tighter"
+          className="pointer-events-none absolute inset-0 select-none"
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
-            color: "transparent",
-            WebkitTextStroke: "1px rgba(231,217,181,0.18)",
           }}
         >
-          {String(i + 1).padStart(2, "0")}
-        </span>
+          {/* top half */}
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{
+              clipPath: "inset(0 0 50% 0)",
+              transform: `translateY(${-halfShift}%)`,
+              opacity: halfOpacity,
+              transition: "transform 200ms linear, opacity 200ms linear",
+              willChange: "transform, opacity",
+            }}
+          >
+            <div
+              className="absolute -right-4 top-1/2 -translate-y-1/2 text-[clamp(280px,44vh,520px)] font-bold leading-none tracking-tighter"
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "1.5px rgba(231,217,181,0.28)",
+                textShadow: "0 0 40px rgba(231,217,181,0.12)",
+              }}
+            >
+              {num}
+            </div>
+          </div>
+          {/* bottom half */}
+          <div
+            className="absolute inset-0 overflow-hidden"
+            style={{
+              clipPath: "inset(50% 0 0 0)",
+              transform: `translateY(${halfShift}%)`,
+              opacity: halfOpacity,
+              transition: "transform 200ms linear, opacity 200ms linear",
+              willChange: "transform, opacity",
+            }}
+          >
+            <div
+              className="absolute -right-4 top-1/2 -translate-y-1/2 text-[clamp(280px,44vh,520px)] font-bold leading-none tracking-tighter"
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "1.5px rgba(231,217,181,0.28)",
+              }}
+            >
+              {num}
+            </div>
+          </div>
+          {/* central shatter line — flashes during transition */}
+          {transitioning && (
+            <div
+              className="absolute inset-x-6 top-1/2 h-px -translate-y-1/2"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, #e7d9b5 30%, #ffffff 50%, #e7d9b5 70%, transparent)",
+                boxShadow: "0 0 20px rgba(231,217,181,0.7)",
+                opacity: phase === "solo" ? 0 : Math.sin(t * Math.PI),
+              }}
+            />
+          )}
+        </div>
 
-        {/* Content — masked by reveal for the incoming card */}
+        {/* Content */}
         <div
           className="relative flex h-full w-full flex-col justify-between px-8 py-10 sm:px-10"
           style={{
-            WebkitMaskImage: `linear-gradient(to bottom, #000 ${revealPct}%, transparent ${revealPct}%)`,
-            maskImage: `linear-gradient(to bottom, #000 ${revealPct}%, transparent ${revealPct}%)`,
+            opacity: contentOpacity,
+            transform: `translateY(${contentY}px)`,
+            filter: contentBlur ? `blur(${contentBlur}px)` : undefined,
+            transition: "opacity 200ms linear, transform 200ms linear, filter 200ms linear",
+            willChange: "opacity, transform, filter",
           }}
         >
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
+          {/* Header */}
+          <div className="flex items-center gap-4">
+            {/* Aurora ring around icon */}
+            <span className="relative flex h-14 w-14 items-center justify-center">
               <span
-                className={`flex h-12 w-12 items-center justify-center border ${
-                  isActive
-                    ? "border-[#e7d9b5] text-[#e7d9b5]"
-                    : "border-white/20 text-white/60"
-                }`}
-                style={
-                  isActive
-                    ? { boxShadow: "0 0 18px rgba(231,217,181,0.35)" }
-                    : undefined
-                }
+                aria-hidden
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, #e7d9b5, rgba(142,130,184,0.9), #e7d9b5, rgba(74,53,120,0.9), #e7d9b5)",
+                  animation: "spin 6s linear infinite",
+                  filter: "blur(2px)",
+                  opacity: 0.9,
+                }}
+              />
+              <span
+                aria-hidden
+                className="absolute inset-[2px] bg-[#1a1229]"
+              />
+              <s.icon className="relative h-6 w-6 text-[#e7d9b5]" />
+            </span>
+            <div className="flex flex-col">
+              <span
+                className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]"
+                style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
               >
-                <s.icon className="h-5 w-5" />
+                Etapa {num} / {String(totalSteps).padStart(2, "0")}
               </span>
-              <div className="flex flex-col">
-                <span
-                  className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]"
-                  style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
-                >
-                  // ETAPA {String(i + 1).padStart(2, "0")}/{String(totalSteps).padStart(2, "0")}
-                </span>
-                <span
-                  className="text-[10px] uppercase tracking-[0.28em] text-primary/50"
-                  style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
-                >
-                  · SYS.TRANSFORM · LOADING
-                </span>
-              </div>
+              <span className="mt-1 h-px w-16 bg-[#e7d9b5]/60" />
             </div>
-            <span
-              className="flex h-2 w-2 rounded-full bg-[#e7d9b5]"
-              style={{ boxShadow: "0 0 10px rgba(231,217,181,0.9)" }}
-              aria-hidden
-            />
           </div>
 
-          <div>
+          {/* Title — word stagger */}
+          <div className="mt-auto">
             <h4
-              className="text-4xl leading-tight text-foreground lg:text-5xl"
+              className="flex flex-wrap gap-x-3 gap-y-1 text-4xl leading-tight text-white lg:text-5xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              {s.title}
+              {words.map((w, wi) => {
+                const wp = wordProgress(wi);
+                return (
+                  <span
+                    key={`${wi}-${w}`}
+                    className="inline-block"
+                    style={{
+                      opacity: phase === "solo" ? 1 : wp,
+                      transform: `translateY(${(1 - wp) * 14}px)`,
+                      filter: (1 - wp) > 0.02 ? `blur(${(1 - wp) * 6}px)` : undefined,
+                      transition:
+                        "opacity 220ms linear, transform 220ms linear, filter 220ms linear",
+                      willChange: "opacity, transform, filter",
+                    }}
+                  >
+                    {w}
+                  </span>
+                );
+              })}
             </h4>
-            <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+
+            {/* Description — ink flow */}
+            <p
+              className="mt-5 text-lg leading-relaxed text-white/80"
+              style={{
+                clipPath: `inset(0 ${100 - inkPct}% 0 0)`,
+                WebkitClipPath: `inset(0 ${100 - inkPct}% 0 0)`,
+                transition: "clip-path 200ms linear",
+              }}
+            >
               {s.desc}
             </p>
           </div>
         </div>
-
-        {/* Scan line pass */}
-        {(phase === "in" || phase === "out") && (
-          <>
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 h-[2px]"
-              style={{
-                top: `${scanY}%`,
-                background:
-                  "linear-gradient(90deg, transparent, #e7d9b5 20%, #ffffff 50%, #e7d9b5 80%, transparent)",
-                boxShadow: "0 0 24px rgba(231,217,181,0.8)",
-                opacity: phase === "in" ? 1 : 0.4,
-              }}
-            />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0"
-              style={{
-                top: `${Math.max(0, scanY - 8)}%`,
-                height: "8%",
-                background:
-                  "linear-gradient(to bottom, transparent, rgba(231,217,181,0.15))",
-              }}
-            />
-          </>
-        )}
       </div>
     );
   };
 
   return (
     <div className="relative flex h-full w-full flex-col bg-transparent">
-
       {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
         <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary sm:text-lg">
@@ -689,7 +751,7 @@ function StepsReveal({
         </h3>
       </div>
 
-      {/* Body: full-height nav + puzzle stack */}
+      {/* Body: full-height nav + kinetic stage */}
       <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[440px_1fr] lg:gap-14 lg:px-16 lg:pb-14">
         {/* Nav menu — vertical timeline with connecting line + filled squares */}
         <nav
@@ -774,10 +836,10 @@ function StepsReveal({
           })}
         </nav>
 
-        {/* Holographic HUD stage — scan-line materialization */}
+        {/* Kinetic aurora stage */}
         <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden lg:min-h-0">
           <div className="relative aspect-[4/5] h-full max-h-[560px] w-full max-w-[560px] overflow-hidden">
-            {nextIdx !== currentIdx
+            {transitioning
               ? (
                 <>
                   {renderCard(currentIdx, "out")}
@@ -787,7 +849,6 @@ function StepsReveal({
               : renderCard(currentIdx, "solo")}
           </div>
         </div>
-
       </div>
     </div>
   );
