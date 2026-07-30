@@ -27,6 +27,7 @@ const SEGMENTS: Segment[] = [
  */
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { ref: revealRef, inView: revealed } = useInView({ threshold: 0.05 });
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
