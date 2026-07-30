@@ -1,21 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
+import { useInView } from "@/hooks/useInView";
 
 type Testimonial = { name: string; text: string; avatar: string };
 
