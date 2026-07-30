@@ -20,6 +20,11 @@ import pesImg from "@/assets/joints/pes.jpg";
 
 type JointLink = { label: string; slug: string };
 
+/** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
+ *  grandes animados: reduzimos o raio e congelamos a rotação da aurora. */
+const REDUCE_FX =
+  typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
 const joints: {
   label: string;
   image: string;
@@ -548,9 +553,10 @@ function StepsReveal({
           style={{
             background:
               "conic-gradient(from 210deg at 50% 45%, rgba(142,130,184,0.35), rgba(231,217,181,0.28), rgba(74,53,120,0.35), rgba(231,217,181,0.2), rgba(142,130,184,0.35))",
-            filter: "blur(60px)",
-            transform: `rotate(${(i * 47 + tE * 30).toFixed(1)}deg)`,
-            transition: "transform 300ms linear",
+            filter: REDUCE_FX ? "blur(28px)" : "blur(60px)",
+            WebkitFilter: REDUCE_FX ? "blur(28px)" : "blur(60px)",
+            transform: `rotate(${(REDUCE_FX ? i * 47 : i * 47 + tE * 30).toFixed(1)}deg)`,
+            transition: REDUCE_FX ? undefined : "transform 300ms linear",
           }}
         />
         {/* grid lines removed for a cleaner card */}
