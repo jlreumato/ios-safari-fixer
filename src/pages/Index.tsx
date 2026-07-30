@@ -27,14 +27,30 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <About />
-        <Clinic />
-        <TreatmentsGrid />
-        <Procedures />
-        <WhatsAppForm />
-        <Testimonials />
-        <FAQ />
-        <CTASection />
+        <LazySection id="sobre" rootMargin="200px" minHeight="80vh" ariaLabel="Sobre a Dra. Juliana Leal">
+          <About />
+        </LazySection>
+        <LazySection id="clinica" rootMargin="200px" minHeight="100vh" ariaLabel="Locais de atendimento">
+          <Clinic />
+        </LazySection>
+        <LazySection id="tratamentos-resumo" rootMargin="200px" minHeight="100vh" ariaLabel="Tratamentos">
+          <TreatmentsGrid />
+        </LazySection>
+        <LazySection id="procedimentos" rootMargin="400px" minHeight="1100vh" ariaLabel="Procedimentos e Programa TransformaDOR">
+          <Procedures />
+        </LazySection>
+        <LazySection id="agendar" rootMargin="200px" minHeight="80vh" ariaLabel="Agendar consulta">
+          <WhatsAppForm />
+        </LazySection>
+        <LazySection id="depoimentos" rootMargin="200px" minHeight="80vh" ariaLabel="Depoimentos">
+          <Testimonials />
+        </LazySection>
+        <LazySection rootMargin="200px" minHeight="80vh" ariaLabel="Perguntas frequentes">
+          <FAQ />
+        </LazySection>
+        <LazySection rootMargin="400px" minHeight="300vh" ariaLabel="Chamada para ação">
+          <CTASection />
+        </LazySection>
       </main>
       <Footer />
       <WhatsAppButton />
