@@ -93,8 +93,8 @@ export default function Testimonials() {
       </div>
 
       <div className="mt-14 space-y-5">
-        <MarqueeRow items={rowTop} duration={60} />
-        <MarqueeRow items={rowBottom} reverse duration={75} />
+        <MarqueeRow items={rowTop} duration={60} paused={!inView} />
+        <MarqueeRow items={rowBottom} reverse duration={75} paused={!inView} />
       </div>
 
       <style>{`
