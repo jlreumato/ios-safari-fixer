@@ -29,9 +29,18 @@ export default function LazySection({
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
+  /** True when the current URL hash points directly to this section. */
+  const hashMatches = (hash: string) => id && hash.replace("#", "") === id;
+
   useEffect(() => {
     const el = ref.current;
     if (!el || mounted) return;
+
+    // Mount immediately if the page was loaded with an anchor pointing here.
+    if (hashMatches(window.location.hash)) {
+      setMounted(true);
+      return;
+    }
 
     const obs = new IntersectionObserver(
       ([entry]) => {
@@ -44,8 +53,17 @@ export default function LazySection({
     );
 
     obs.observe(el);
-    return () => obs.disconnect();
-  }, [mounted, rootMargin]);
+
+    // If a same-page anchor link targets this section, mount it before scrolling.
+    const onHashChange = () => {
+      if (hashMatches(window.location.hash)) setMounted(true);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      obs.disconnect();
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, [mounted, rootMargin, id]);
 
   return (
     <div
