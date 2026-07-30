@@ -63,7 +63,7 @@ export default function MobileParallaxStack({
       className={`relative ${className}`}
       style={{ height: `${totalVh}vh` }}
     >
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+      <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         <div className="relative w-full px-4">
           {items.map((child, i) => (
             <div

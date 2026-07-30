@@ -224,8 +224,9 @@ export default function IntroCover() {
 
   const halfBgStyle: React.CSSProperties = {
     backgroundImage: bg,
-    backgroundAttachment: "fixed",
-    backgroundSize: "100vw 100vh",
+    // Sem background-attachment: fixed — não suportado no iOS Safari.
+    // O posicionamento left/right top já mantém a emenda perfeita entre as metades.
+    backgroundSize: "100vw 100dvh",
     backgroundRepeat: "no-repeat",
   };
 

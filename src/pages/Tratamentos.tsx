@@ -19,7 +19,7 @@ export default function TratamentosPage() {
       />
       <Header />
       <main
-        className="relative min-h-screen"
+        className="bg-parallax-fixed relative min-h-[100dvh]"
         style={{
           backgroundImage: `
             radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
@@ -27,7 +27,6 @@ export default function TratamentosPage() {
             radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
             linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
           `,
-          backgroundAttachment: "fixed",
         }}
       >
         {/* Intro */}

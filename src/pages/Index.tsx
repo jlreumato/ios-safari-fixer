@@ -27,28 +27,28 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <LazySection id="sobre" rootMargin="200px" minHeight="80vh" ariaLabel="Sobre a Dra. Juliana Leal">
+        <LazySection id="sobre" rootMargin="200px" minHeight="80dvh" ariaLabel="Sobre a Dra. Juliana Leal">
           <About />
         </LazySection>
-        <LazySection id="clinica" rootMargin="200px" minHeight="100vh" ariaLabel="Locais de atendimento">
+        <LazySection id="clinica" rootMargin="200px" minHeight="100dvh" ariaLabel="Locais de atendimento">
           <Clinic />
         </LazySection>
-        <LazySection id="tratamentos-resumo" rootMargin="200px" minHeight="100vh" ariaLabel="Tratamentos">
+        <LazySection id="tratamentos-resumo" rootMargin="200px" minHeight="100dvh" ariaLabel="Tratamentos">
           <TreatmentsGrid />
         </LazySection>
-        <LazySection id="procedimentos" rootMargin="400px" minHeight="1100vh" ariaLabel="Procedimentos e Programa TransformaDOR">
+        <LazySection id="procedimentos" rootMargin="400px" minHeight="1100dvh" ariaLabel="Procedimentos e Programa TransformaDOR">
           <Procedures />
         </LazySection>
-        <LazySection id="agendar" rootMargin="200px" minHeight="80vh" ariaLabel="Agendar consulta">
+        <LazySection id="agendar" rootMargin="200px" minHeight="80dvh" ariaLabel="Agendar consulta">
           <WhatsAppForm />
         </LazySection>
-        <LazySection id="depoimentos" rootMargin="200px" minHeight="80vh" ariaLabel="Depoimentos">
+        <LazySection id="depoimentos" rootMargin="200px" minHeight="80dvh" ariaLabel="Depoimentos">
           <Testimonials />
         </LazySection>
-        <LazySection rootMargin="200px" minHeight="80vh" ariaLabel="Perguntas frequentes">
+        <LazySection rootMargin="200px" minHeight="80dvh" ariaLabel="Perguntas frequentes">
           <FAQ />
         </LazySection>
-        <LazySection rootMargin="400px" minHeight="300vh" ariaLabel="Chamada para ação">
+        <LazySection rootMargin="400px" minHeight="300dvh" ariaLabel="Chamada para ação">
           <CTASection />
         </LazySection>
       </main>

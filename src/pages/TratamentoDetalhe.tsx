@@ -30,8 +30,8 @@ export default function TratamentoDetalhe() {
       <>
         <Header />
         <main
-          className="mx-auto flex min-h-[70dvh] flex-col items-center justify-center px-4 text-center text-white"
-          style={{ backgroundImage: DARK_BG, backgroundAttachment: "fixed" }}
+          className="bg-parallax-fixed mx-auto flex min-h-[70dvh] flex-col items-center justify-center px-4 text-center text-white"
+          style={{ backgroundImage: DARK_BG }}
         >
           <h1
             className="text-4xl"
@@ -71,8 +71,8 @@ export default function TratamentoDetalhe() {
       />
       <Header />
       <main
-        className="relative min-h-screen"
-        style={{ backgroundImage: DARK_BG, backgroundAttachment: "fixed" }}
+        className="bg-parallax-fixed relative min-h-[100dvh]"
+        style={{ backgroundImage: DARK_BG }}
       >
         {/* Hero */}
         <section className="relative overflow-hidden pt-28 pb-16 sm:pb-20">

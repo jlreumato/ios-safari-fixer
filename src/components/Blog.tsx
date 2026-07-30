@@ -76,7 +76,7 @@ export default function Blog() {
               <a
                 key={i}
                 href={p.href}
-                className="group relative block h-[68vh] overflow-hidden rounded-2xl shadow-2xl"
+                className="ios-clip group relative block h-[68dvh] overflow-hidden rounded-2xl shadow-2xl"
               >
                 <img
                   src={p.image}
@@ -114,7 +114,7 @@ export default function Blog() {
             <a
               key={i}
               href={p.href}
-              className={`group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 hover:flex-[2.2] focus-within:flex-[2.2] h-full ${
+              className={`ios-clip group relative block overflow-hidden rounded-2xl shadow-md transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex-1 hover:flex-[2.2] focus-within:flex-[2.2] h-full ${
                 visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
               }`}
               style={{ transitionDelay: visible ? `${200 + i * 100}ms` : "0ms" }}

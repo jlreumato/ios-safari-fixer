@@ -57,15 +57,30 @@
     font-family: 'DM Sans', system-ui, sans-serif;
     font-weight: 300;
     background-color: #1a1229;
+    position: relative;
+    color: hsl(var(--foreground));
+  }
+
+  /* Fundo global em camada fixa própria.
+     `background-attachment: fixed` não é suportado no iOS Safari (o fundo
+     "pula" ou é reescalado), por isso usamos um elemento fixo real. */
+  html::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: #1a1229;
     background-image:
       radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120, 95, 175, 0.30), transparent 60%),
       radial-gradient(ellipse 80% 55% at 85% 35%, rgba(210, 175, 110, 0.14), transparent 60%),
       radial-gradient(ellipse 100% 60% at 20% 62%, rgba(130, 100, 180, 0.22), transparent 60%),
       radial-gradient(ellipse 90% 55% at 90% 82%, rgba(200, 170, 105, 0.12), transparent 60%),
       linear-gradient(180deg, #1a1229 0%, #221740 25%, #1c1533 55%, #241a44 80%, #17102a 100%);
-    background-attachment: fixed;
-    position: relative;
-    color: hsl(var(--foreground));
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
   }
 
   /* Descrições e parágrafos em peso leve — mais elegante e minimalista */
@@ -155,7 +170,8 @@
   border-radius: 9999px;
   padding: 3px;
   background: conic-gradient(
-    from var(--btn-angle),
+    /* fallback 0deg: iOS Safari < 16.4 não suporta @property (anel fica estático) */
+    from var(--btn-angle, 0deg),
     hsl(249 22% 61%),
     hsl(270 25% 55%),
     hsl(330 35% 65%),
@@ -214,4 +230,41 @@
   25%     { border-radius: 45% 55% 63% 37% / 55% 62% 38% 45%; }
   50%     { border-radius: 55% 45% 38% 62% / 40% 55% 45% 60%; }
   75%     { border-radius: 38% 62% 55% 45% / 60% 40% 55% 45%; }
+}
+
+/* ============================================================
+   Compatibilidade iOS / Safari
+   ============================================================ */
+
+/* Fundo "parallax" fixo com fallback para iOS Safari,
+   que não suporta background-attachment: fixed. */
+.bg-parallax-fixed {
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+@supports (-webkit-touch-callout: none) {
+  .bg-parallax-fixed {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+/* Safari não recorta corretamente filhos com transform/animação dentro de
+   containers com border-radius + overflow hidden. Força uma nova camada
+   de composição para que cantos e sombras fiquem iguais ao Chrome. */
+.ios-clip {
+  -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+          mask-image: -webkit-radial-gradient(#fff, #000);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  isolation: isolate;
+}
+
+/* Rolagem suave e sem "travas" de momentum no iOS */
+@supports (-webkit-touch-callout: none) {
+  html, body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
 }
