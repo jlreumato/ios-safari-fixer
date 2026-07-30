@@ -231,3 +231,40 @@
   50%     { border-radius: 55% 45% 38% 62% / 40% 55% 45% 60%; }
   75%     { border-radius: 38% 62% 55% 45% / 60% 40% 55% 45%; }
 }
+
+/* ============================================================
+   Compatibilidade iOS / Safari
+   ============================================================ */
+
+/* Fundo "parallax" fixo com fallback para iOS Safari,
+   que não suporta background-attachment: fixed. */
+.bg-parallax-fixed {
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+@supports (-webkit-touch-callout: none) {
+  .bg-parallax-fixed {
+    background-attachment: scroll;
+    background-size: cover;
+  }
+}
+
+/* Safari não recorta corretamente filhos com transform/animação dentro de
+   containers com border-radius + overflow hidden. Força uma nova camada
+   de composição para que cantos e sombras fiquem iguais ao Chrome. */
+.ios-clip {
+  -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
+          mask-image: -webkit-radial-gradient(#fff, #000);
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  isolation: isolate;
+}
+
+/* Rolagem suave e sem "travas" de momentum no iOS */
+@supports (-webkit-touch-callout: none) {
+  html, body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
+  }
+}
