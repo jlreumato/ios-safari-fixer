@@ -344,7 +344,7 @@ export default function Procedures() {
     <section
       ref={ref}
       id="procedimentos"
-      className={`relative transition-opacity duration-700 ease-out ${
+      className={`bg-parallax-fixed relative transition-opacity duration-700 ease-out ${
         inView ? "opacity-100" : "opacity-0"
       }`}
       style={{
@@ -354,8 +354,6 @@ export default function Procedures() {
           radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
           linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
         `,
-        backgroundAttachment: "fixed",
-        backgroundSize: "cover",
       }}
     >
       {/* Programa TransformaDOR — arrow slices DOR while Etapas slide in from the right */}
