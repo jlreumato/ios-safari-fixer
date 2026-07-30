@@ -62,8 +62,7 @@ export default function Hero() {
           loop
           muted
           playsInline
-          // @ts-expect-error atributo legado necessário no iOS antigo
-          webkit-playsinline="true"
+          {...{ "webkit-playsinline": "true" }}
           preload="metadata"
           onLoadedData={() => setVideoReady(true)}
           onTimeUpdate={(e) => {
