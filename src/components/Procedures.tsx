@@ -548,17 +548,31 @@ function StepsReveal({
               "linear-gradient(160deg, rgba(20,15,32,0.94) 0%, rgba(30,20,50,0.9) 100%)",
           }}
         />
+        {/* Aurora. No iOS/Safari um filter: blur() grande sobre uma camada
+            animada derruba o compositor: usamos gradientes radiais suaves
+            (já "borrados" por natureza) em vez do filtro. */}
         <div
           className="pointer-events-none absolute -inset-24 opacity-70"
-          style={{
-            background:
-              "conic-gradient(from 210deg at 50% 45%, rgba(142,130,184,0.35), rgba(231,217,181,0.28), rgba(74,53,120,0.35), rgba(231,217,181,0.2), rgba(142,130,184,0.35))",
-            filter: REDUCE_FX ? "blur(28px)" : "blur(60px)",
-            WebkitFilter: REDUCE_FX ? "blur(28px)" : "blur(60px)",
-            transform: `rotate(${(REDUCE_FX ? i * 47 : i * 47 + tE * 30).toFixed(1)}deg)`,
-            transition: REDUCE_FX ? undefined : "transform 300ms linear",
-          }}
+          style={
+            REDUCE_FX
+              ? {
+                  background:
+                    "radial-gradient(circle at 30% 30%, rgba(142,130,184,0.38), transparent 62%)," +
+                    "radial-gradient(circle at 72% 38%, rgba(231,217,181,0.26), transparent 60%)," +
+                    "radial-gradient(circle at 45% 78%, rgba(74,53,120,0.42), transparent 65%)",
+                  transform: `rotate(${(i * 47) % 360}deg)`,
+                }
+              : {
+                  background:
+                    "conic-gradient(from 210deg at 50% 45%, rgba(142,130,184,0.35), rgba(231,217,181,0.28), rgba(74,53,120,0.35), rgba(231,217,181,0.2), rgba(142,130,184,0.35))",
+                  filter: "blur(60px)",
+                  WebkitFilter: "blur(60px)",
+                  transform: `rotate(${(i * 47 + tE * 30).toFixed(1)}deg)`,
+                  transition: "transform 300ms linear",
+                }
+          }
         />
+
         {/* grid lines removed for a cleaner card */}
 
 
