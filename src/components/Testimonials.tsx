@@ -63,14 +63,14 @@ function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimon
 }
 
 export default function Testimonials() {
-  const { ref, visible } = useReveal();
+  const { ref, inView } = useInView();
 
   return (
     <section id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
         <div className="text-center">
