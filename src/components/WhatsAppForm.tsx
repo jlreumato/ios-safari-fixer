@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
 
 const WHATSAPP_NUMBER = "5582999872509";
 
 export default function WhatsAppForm() {
+  const { ref, inView } = useInView();
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [queixa, setQueixa] = useState("");
