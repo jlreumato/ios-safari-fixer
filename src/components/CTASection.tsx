@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
+import { useInView } from "@/hooks/useInView";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -26,6 +27,7 @@ const SEGMENTS: Segment[] = [
  */
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { ref: revealRef, inView: revealed } = useInView<HTMLElement>({ threshold: 0.05 });
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -70,11 +72,18 @@ export default function CTASection() {
 
   return (
     <section
-      ref={sectionRef}
+      ref={(el) => {
+        sectionRef.current = el;
+        revealRef.current = el;
+      }}
       className="relative"
       style={{ height: "300vh" }}
     >
-      <div className="sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)]">
+      <div
+        className={`sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)] transition-opacity duration-700 ease-out ${
+          revealed ? "opacity-100" : "opacity-0"
+        }`}
+      >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#8e82b8]/25 blur-[120px]" />
           <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-[#e7d9b5]/12 blur-[140px]" />

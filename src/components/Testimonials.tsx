@@ -1,21 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
+import { useInView } from "@/hooks/useInView";
 
 type Testimonial = { name: string; text: string; avatar: string };
 
@@ -57,7 +42,17 @@ function Card({ t }: { t: Testimonial }) {
   );
 }
 
-function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimonial[]; reverse?: boolean; duration?: number }) {
+function MarqueeRow({
+  items,
+  reverse = false,
+  duration = 60,
+  paused = false,
+}: {
+  items: Testimonial[];
+  reverse?: boolean;
+  duration?: number;
+  paused?: boolean;
+}) {
   // Duplicate content for seamless loop
   const loop = [...items, ...items];
   return (
@@ -67,6 +62,7 @@ function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimon
         style={{
           animation: `marquee-x ${duration}s linear infinite`,
           animationDirection: reverse ? "reverse" : "normal",
+          animationPlayState: paused ? "paused" : "running",
         }}
       >
         {loop.map((t, i) => (
@@ -78,14 +74,14 @@ function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimon
 }
 
 export default function Testimonials() {
-  const { ref, visible } = useReveal();
+  const { ref, inView } = useInView();
 
   return (
     <section id="depoimentos" className="bg-secondary/50 pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
         <div className="text-center">
@@ -97,8 +93,8 @@ export default function Testimonials() {
       </div>
 
       <div className="mt-14 space-y-5">
-        <MarqueeRow items={rowTop} duration={60} />
-        <MarqueeRow items={rowBottom} reverse duration={75} />
+        <MarqueeRow items={rowTop} duration={60} paused={!inView} />
+        <MarqueeRow items={rowBottom} reverse duration={75} paused={!inView} />
       </div>
 
       <style>{`

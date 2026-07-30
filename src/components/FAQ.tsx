@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useInView } from "@/hooks/useInView";
 
 const faqs = [
   {
@@ -26,22 +27,10 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [headerVisible, setHeaderVisible] = useState(false);
+  const { ref: headerRef, inView: headerVisible } = useInView({ threshold: 0.2 });
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [revealed, setRevealed] = useState<boolean[]>(() => faqs.map(() => false));
   const [activeIndex, setActiveIndex] = useState<number>(-1);
-
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setHeaderVisible(true); obs.disconnect(); } },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
 
   // Staggered reveal on scroll
   useEffect(() => {

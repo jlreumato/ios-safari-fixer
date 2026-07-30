@@ -1,22 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AirVent, MapPin, Stethoscope, Clock, Building2, X } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
+import { useInView } from "@/hooks/useInView";
 
 interface ClinicLocation {
   id: string;
@@ -227,7 +212,7 @@ function Lightbox({
 }
 
 export default function Clinic() {
-  const { ref, visible } = useReveal();
+  const { ref, inView } = useInView();
   const [activeTab, setActiveTab] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
@@ -239,7 +224,7 @@ export default function Clinic() {
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
         {/* Header — left-aligned, mirrors Etapas */}

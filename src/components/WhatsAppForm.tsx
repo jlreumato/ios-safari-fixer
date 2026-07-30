@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
 
 const WHATSAPP_NUMBER = "5582999872509";
 
 export default function WhatsAppForm() {
+  const { ref, inView } = useInView();
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [queixa, setQueixa] = useState("");
@@ -25,7 +27,13 @@ export default function WhatsAppForm() {
     "w-full border border-white/15 bg-white/[0.04] px-4 py-3 text-base text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#e7d9b5]/60 focus:bg-white/[0.06]";
 
   return (
-    <section id="agendar" className="relative py-20 sm:py-24">
+    <section
+      ref={ref}
+      id="agendar"
+      className={`relative py-20 sm:py-24 transition-all duration-700 ease-out ${
+        inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+    >
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <div className="flex flex-col justify-center">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">

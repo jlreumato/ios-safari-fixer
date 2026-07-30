@@ -1,32 +1,15 @@
-import { useEffect, useRef, useState } from "react";
 import draJulianaAbout from "@/assets/dra-juliana-about.jpg.asset.json";
-
-
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
+import { useInView } from "@/hooks/useInView";
 
 export default function About() {
-  const { ref, visible } = useReveal();
+  const { ref, inView } = useInView();
 
   return (
     <section id="sobre" className="py-20 lg:py-28">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
         <div className="flex flex-col items-center gap-12 lg:flex-row-reverse lg:gap-16">
