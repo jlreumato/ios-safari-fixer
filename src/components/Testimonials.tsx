@@ -42,7 +42,17 @@ function Card({ t }: { t: Testimonial }) {
   );
 }
 
-function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimonial[]; reverse?: boolean; duration?: number }) {
+function MarqueeRow({
+  items,
+  reverse = false,
+  duration = 60,
+  paused = false,
+}: {
+  items: Testimonial[];
+  reverse?: boolean;
+  duration?: number;
+  paused?: boolean;
+}) {
   // Duplicate content for seamless loop
   const loop = [...items, ...items];
   return (
@@ -52,6 +62,7 @@ function MarqueeRow({ items, reverse = false, duration = 60 }: { items: Testimon
         style={{
           animation: `marquee-x ${duration}s linear infinite`,
           animationDirection: reverse ? "reverse" : "normal",
+          animationPlayState: paused ? "paused" : "running",
         }}
       >
         {loop.map((t, i) => (
