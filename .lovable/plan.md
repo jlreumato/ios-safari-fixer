@@ -1,57 +1,113 @@
 ## Objetivo
 
-Melhorar o LCP e reduzir consumo de dados no mobile mostrando uma imagem estática (poster) do Hero imediatamente, com o vídeo carregando por trás sem bloquear a primeira renderização.
+Reduzir o consumo inicial de JS, imagens e listeners de scroll no mobile carregando as seções abaixo da dobra (`About`, `Clinic`, `TreatmentsGrid`, `Procedures`, `WhatsAppForm`, `Testimonials`, `FAQ`, `CTASection`) apenas quando estiverem próximas do viewport. As animações de entrada passam a ser disparadas no momento em que cada seção entra na tela.
 
-## Por que funciona
+## Por que faz sentido
 
-- Hoje o `<video>` MP4 (1.3 MB) é o primeiro grande recurso do Hero — mesmo com `preload="metadata"` ele concorre com o LCP e demora para aparecer no 4G.
-- Um poster JPEG/WebP bem comprimido (~80–150 KB) aparece quase instantaneamente e vira o candidato a LCP.
-- O vídeo carrega em segundo plano e faz "cross-fade" quando o primeiro frame estiver pronto (evento `loadeddata`), sem "pulo" visual.
+Hoje o `Index.tsx` monta todas as seções de uma só vez, mesmo as que o usuário nunca rola até. No mobile isso significa:
+
+- Todo o bundle/imagens das seções inferiores competem com o LCP.
+- Listeners de scroll das seções `Procedures` e `CTASection` são registrados logo no primeiro render.
+- O Marquee de depoimentos começa a animar fora da tela.
+
+Com lazy loading por seção, o primeiro paint fica mais leve e o usuário só paga pelo que visualiza.
+
+## O que não muda
+
+- `IntroCover`, `Header`, `Hero`, `Footer`, `WhatsAppButton` e `BackToTop` continuam eager (são críticos para a primeira experiência).
+- Navegação por âncoras (`/#tratamentos-resumo`, `#procedimentos`) continua funcionando.
+- As animações de scroll-driven (`CTASection`, `Procedures`) continuam funcionando, porque serão montadas com antecedência (`rootMargin`) para que seus cálculos de altura/progresso sejam feitos antes de ficarem visíveis.
 
 ## Passos
 
-### 1. Gerar a imagem do poster
+### 1. Criar hook reutilizável `src/hooks/useInView.ts`
 
-Criar `src/assets/hero-poster-mobile.webp` representando a primeira cena do vídeo atual (mesma composição/cor/atmosfera para não haver "salto" quando o vídeo entrar). Usar `imagegen` no modelo `standard`, 1920×1080, mesmo mood cinematográfico lilás/champagne da marca.
+Um único `IntersectionObserver` por elemento, com parâmetros:
 
-### 2. Ajustar `src/components/Hero.tsx`
+- `threshold` padrão `0.15`
+- `rootMargin` configurável (ex: `"0px"` para reveal simples, `"300px"` para seções scroll-driven)
+- `triggerOnce` padrão `true`
+- Retorna `{ ref, inView }`
 
-- Importar o poster.
-- Renderizar uma `<img>` de fundo (ou `background-image`) que fica visível de imediato — recebe `fetchPriority="high"` e `decoding="async"`.
-- Renderizar o `<video>` com `poster={heroPoster}`, `preload="none"` no mobile e `preload="metadata"` no desktop, `opacity: 0` até o `onLoadedData`, quando faz `opacity: 1` via transição CSS (300 ms). No mobile em conexão lenta (`navigator.connection.saveData` ou `effectiveType` in `['slow-2g','2g','3g']`), não montar o `<video>` — deixar apenas o poster.
-- Manter todos os overlays e conteúdo atuais intactos (sem mudança visual).
+Isso elimina as cópias do `useReveal` espalhadas em `About.tsx`, `Clinic.tsx` e `Testimonials.tsx`.
 
-### 3. Preload do poster
+### 2. Criar componente `src/components/LazySection.tsx`
 
-Adicionar no `<head>` do `index.html`:
+Wrapper que:
 
-```html
-<link rel="preload" as="image" href="/…/hero-poster-mobile.webp" fetchpriority="high" />
+1. Renderiza um placeholder `div` com altura mínima aproximada da seção (evita layout shift brusco).
+2. Observa o placeholder com `rootMargin`.
+3. Monta os `children` quando o placeholder entra na zona de pré-carregamento.
+4. Passa `inView` para os filhos via render prop, permitindo que cada seção dispare sua animação de entrada no momento certo.
+
+```tsx
+<LazySection rootMargin="300px" minHeight="100vh">
+  {(inView) => <CTASection reveal={inView} />}
+</LazySection>
 ```
 
-(usando a URL do `.asset.json` gerado pelo Lovable Assets)
+### 3. Aplicar lazy loading nas seções da home
 
-### 4. Verificação
+Em `src/pages/Index.tsx`, envolver as seções abaixo da dobra:
 
-- `bun run build` (sanity check).
-- Playwright headless em `http://localhost:8080`: medir `performance.getEntriesByType('largest-contentful-paint')` antes/depois; screenshot do Hero em viewport mobile (375×812) para confirmar que o visual não mudou e que o poster aparece imediatamente.
+- `About` — `rootMargin="200px"`
+- `Clinic` — `rootMargin="200px"`
+- `TreatmentsGrid` — `rootMargin="200px"`
+- `Procedures` — `rootMargin="400px"` (precisa de mais margem por causa das animações scroll-driven e altura de 800vh)
+- `WhatsAppForm` — `rootMargin="200px"`
+- `Testimonials` — `rootMargin="200px"`
+- `FAQ` — `rootMargin:"200px"`
+- `CTASection` — `rootMargin="400px"` (altura 300vh, precisa montar cedo)
+
+Cada componente receberá uma prop `reveal: boolean` e ajustará sua animação de entrada para iniciar quando `reveal` for `true`.
+
+### 4. Adaptar componentes para animar ao entrar na tela
+
+- `About`, `Clinic`, `Testimonials`: substituir o `useReveal` local pelo `useInView` do hook global e/ou pela prop `reveal` vinda do `LazySection`.
+- `FAQ`: manter o stagger existente, mas iniciá-lo a partir do momento em que a seção se torna visível.
+- `TreatmentsGrid`: manter o `IntersectionObserver` dos cards, mas garantir que o container só comece a observar após o mount lazy.
+- `CTASection`: manter o scroll progress, mas adicionar uma transição de fade-in suave quando `reveal` passar de `false` para `true`.
+- `Procedures`: manter o `ArrowSliceReveal` e `JointsWheel`, mas adicionar fade-in inicial controlado por `reveal`.
+
+### 5. Garantir acessibilidade e SEO
+
+- O placeholder deve ter o mesmo `id` da seção (ex: `id="sobre"`) para que links de âncora funcionem mesmo antes do mount.
+- Adicionar `aria-busy="true"` no placeholder e `aria-busy="false"` após o mount.
+- Para usuários sem JavaScript, o placeholder pode conter o conteúdo estático em `noscript`.
+
+### 6. Otimizações adicionais no mobile
+
+- No `Testimonials`, pausar o CSS animation do `MarqueeRow` enquanto a seção não estiver visível (usando `animation-play-state: paused`).
+- No `Hero`, manter a lógica atual de poster/vídeo (já otimizada).
+- Considerar desmontar seções que saíram muito do viewport? **Não recomendado** — causa perda de estado e re-renderizações caras. O plano é montar uma vez (`triggerOnce`).
 
 ## Fora do escopo
 
-- Não mexer em outras seções, animações ou textos.
-- Não alterar o vídeo em si.
+- Code-split de rotas internas (`Blog`, `Procedimentos`, `Tratamentos`, `TratamentoDetalhe`) — o usuário optou por não priorizar isso agora.
+- Alterar o design visual das seções.
+- Trocar imagens ou textos.
 
 ## Detalhes técnicos
 
-- `useState(false)` para `videoReady`; `onLoadedData={() => setVideoReady(true)}` no `<video>`.
-- Detecção de mobile/rede leve (executada uma vez no primeiro render):
-  ```ts
-  const shouldSkipVideo = () => {
-    if (typeof navigator === 'undefined') return false;
-    const conn = (navigator as any).connection;
-    const slow = conn?.saveData || ['slow-2g','2g','3g'].includes(conn?.effectiveType);
-    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-    return isMobile && slow;
-  };
-  ```
-- Poster salvo via `lovable-assets` (pointer `.asset.json`) para não pesar o repo.
+- `LazySection` usará `React.lazy` internamente? Não. O ganho vem do atraso do mount, não de split de chunk. Se quisermos split de chunk no futuro, basta trocar a importação do componente por `React.lazy` sem mexer no wrapper.
+- O `rootMargin` positivo faz com que o observer dispare antes do elemento estar visível, dando tempo de montar e calcular layouts.
+- Para seções scroll-driven, o placeholder precisa ter altura aproximada correta. Se a altura for dinâmica (ex: `800vh`), usamos `minHeight` igual à altura real da seção.
+
+## Verificação
+
+1. `bun run build` — sanity check de compilação.
+2. Playwright headless em viewport mobile (375×812):
+   - Medir `performance.getEntriesByType('largest-contentful-paint')` antes e depois.
+   - Verificar que `About` só monta após scroll.
+   - Verificar que animações de `CTASection` e `Procedures` ainda funcionam.
+   - Testar link de âncora `/#tratamentos-resumo` vindo de outra página.
+3. Lighthouse mobile para confirmar redução no TBT/CLS.
+
+## Riscos e mitigações
+
+| Risco | Mitigação |
+|-------|-----------|
+| Layout shift ao montar seção | Placeholder com `minHeight` igual à altura real da seção |
+| Animação scroll-driven quebra porque montou tarde | `rootMargin` maior (400px) para `Procedures` e `CTASection` |
+| Âncora não funciona antes do mount | Placeholder carrega o `id` da seção |
+| Reveal não dispara se usuário rola muito rápido | `threshold` baixo (0.05) + `rootMargin` generoso |
