@@ -2,7 +2,7 @@ import draJulianaAbout from "@/assets/dra-juliana-about.jpg.asset.json";
 import { useInView } from "@/hooks/useInView";
 
 export default function About() {
-  const { ref, visible } = useReveal();
+  const { ref, visible } = useInView();
 
   return (
     <section id="sobre" className="py-20 lg:py-28">
