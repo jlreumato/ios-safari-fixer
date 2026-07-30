@@ -14,7 +14,7 @@ interface UseInViewOptions {
  * Returns a ref to attach to an element and a boolean indicating whether
  * the element is inside the observer's viewport.
  */
-export function useInView<T extends Element = HTMLElement>({
+export function useInView<T extends Element = HTMLDivElement>({
   threshold = 0.15,
   rootMargin = "0px",
   triggerOnce = true,
