@@ -212,7 +212,7 @@ function Lightbox({
 }
 
 export default function Clinic() {
-  const { ref, visible } = useReveal();
+  const { ref, inView } = useInView();
   const [activeTab, setActiveTab] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
 
