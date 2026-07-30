@@ -14,12 +14,12 @@ interface UseInViewOptions {
  * Returns a ref to attach to an element and a boolean indicating whether
  * the element is inside the observer's viewport.
  */
-export function useInView({
+export function useInView<T extends Element = HTMLElement>({
   threshold = 0.15,
   rootMargin = "0px",
   triggerOnce = true,
 }: UseInViewOptions = {}) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
