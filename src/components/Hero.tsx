@@ -44,20 +44,20 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
-      {/* Poster estático — LCP, aparece imediatamente (oculto no iOS para evitar flash) */}
-      {!isIOS && (
-        <picture>
-          <source media="(max-width: 767px)" srcSet={heroPosterMobile.url} />
-          <img
-            src={heroPoster.url}
-            alt=""
-            aria-hidden="true"
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </picture>
-      )}
+      {/* Poster estático — LCP. Sempre renderizado (inclusive no iOS, onde o
+          autoplay do vídeo pode ser adiado/bloqueado e deixaria a área vazia). */}
+      <picture>
+        <source media="(max-width: 767px)" srcSet={heroPosterMobile.url} />
+        <img
+          src={heroPoster.url}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      </picture>
+
 
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
