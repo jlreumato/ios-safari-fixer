@@ -11,6 +11,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import WhatsAppForm from "@/components/WhatsAppForm";
 import BackToTop from "@/components/BackToTop";
+import LazySection from "@/components/LazySection";
 
 import IntroCover from "@/components/IntroCover";
 import Seo from "@/components/Seo";
