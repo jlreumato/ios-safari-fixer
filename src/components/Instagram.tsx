@@ -293,7 +293,7 @@ export default function Instagram() {
                 key={p.id}
                 type="button"
                 onClick={() => setPlaying(p)}
-                className={`group relative overflow-hidden rounded-3xl bg-black text-left shadow-[0_20px_50px_-30px_rgba(70,50,120,0.35)] ring-1 ring-white/40 transition-all duration-500 hover:shadow-[0_30px_70px_-25px_rgba(70,50,120,0.5)] hover:ring-primary/40 ${span} ${
+                className={`ios-clip group relative overflow-hidden rounded-3xl bg-black text-left shadow-[0_20px_50px_-30px_rgba(70,50,120,0.35)] ring-1 ring-white/40 transition-all duration-500 hover:shadow-[0_30px_70px_-25px_rgba(70,50,120,0.5)] hover:ring-primary/40 ${span} ${
                   isFeature ? "min-h-[24rem] sm:min-h-0" : "min-h-[16rem] sm:min-h-0"
                 }`}
                 style={{
