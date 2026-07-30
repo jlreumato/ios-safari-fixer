@@ -21,16 +21,10 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     setIsMobile(mq.matches);
-    const ua = navigator.userAgent || "";
-    const iOS =
-      /iPad|iPhone|iPod/.test(ua) ||
-      (navigator.platform === "MacIntel" && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1);
-    setIsIOS(iOS);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -68,6 +62,8 @@ export default function Hero() {
           loop
           muted
           playsInline
+          // @ts-expect-error atributo legado necessário no iOS antigo
+          webkit-playsinline="true"
           preload="metadata"
           onLoadedData={() => setVideoReady(true)}
           onTimeUpdate={(e) => {
