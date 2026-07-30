@@ -170,7 +170,8 @@
   border-radius: 9999px;
   padding: 3px;
   background: conic-gradient(
-    from var(--btn-angle),
+    /* fallback 0deg: iOS Safari < 16.4 não suporta @property (anel fica estático) */
+    from var(--btn-angle, 0deg),
     hsl(249 22% 61%),
     hsl(270 25% 55%),
     hsl(330 35% 65%),
