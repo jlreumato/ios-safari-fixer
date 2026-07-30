@@ -2,14 +2,14 @@ import draJulianaAbout from "@/assets/dra-juliana-about.jpg.asset.json";
 import { useInView } from "@/hooks/useInView";
 
 export default function About() {
-  const { ref, visible } = useInView();
+  const { ref, inView } = useInView();
 
   return (
     <section id="sobre" className="py-20 lg:py-28">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
-          visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
         <div className="flex flex-col items-center gap-12 lg:flex-row-reverse lg:gap-16">
