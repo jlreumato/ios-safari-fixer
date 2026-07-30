@@ -338,10 +338,15 @@ function JointsWheel() {
 
 
 export default function Procedures() {
+  const { ref, inView } = useInView({ threshold: 0.05 });
+
   return (
     <section
+      ref={ref}
       id="procedimentos"
-      className="relative"
+      className={`relative transition-opacity duration-700 ease-out ${
+        inView ? "opacity-100" : "opacity-0"
+      }`}
       style={{
         backgroundImage: `
           radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
