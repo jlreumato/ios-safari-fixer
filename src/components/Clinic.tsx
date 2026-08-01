@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { AirVent, MapPin, Stethoscope, Clock, Building2, X } from "lucide-react";
 import reumatosFachada from "@/assets/reumatos-fachada.png.asset.json";
+import harmonyTrade from "@/assets/clinic/harmony-trade.jpg.asset.json";
+import recepcao from "@/assets/clinic/recepcao.jpg.asset.json";
+import consultorio from "@/assets/clinic/consultorio.jpg.asset.json";
+import consultorioDetalhe from "@/assets/clinic/consultorio-detalhe.jpg.asset.json";
 import { useInView } from "@/hooks/useInView";
 
 interface ClinicLocation {
@@ -25,10 +29,10 @@ const locations: ClinicLocation[] = [
       { icon: Clock, title: "Pontualidade", desc: "Respeito ao seu tempo com atendimento dentro do horário." },
     ],
     images: [
-      { src: "https://julianalealreumato.com.br/imagens/harmony-trade.jpg", alt: "Harmony Trade Center — fachada" },
-      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Harmony Trade Center" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Harmony Trade Center" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento médico moderno" },
+      { src: harmonyTrade.url, alt: "Harmony Trade Center — fachada" },
+      { src: recepcao.url, alt: "Recepção — Harmony Trade Center" },
+      { src: consultorio.url, alt: "Consultório — Harmony Trade Center" },
+      { src: consultorioDetalhe.url, alt: "Equipamento médico moderno" },
     ],
   },
   {
@@ -44,9 +48,9 @@ const locations: ClinicLocation[] = [
     ],
     images: [
       { src: reumatosFachada.url, alt: "Fachada do Centro Médico Imagem Plena — Clínica Reumatos" },
-      { src: "https://julianalealreumato.com.br/imagens/recepcao.jpg", alt: "Recepção — Reumatos" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio.jpg", alt: "Consultório — Reumatos" },
-      { src: "https://julianalealreumato.com.br/imagens/consultorio-detalhe.jpg", alt: "Equipamento moderno — Reumatos" },
+      { src: recepcao.url, alt: "Recepção — Reumatos" },
+      { src: consultorio.url, alt: "Consultório — Reumatos" },
+      { src: consultorioDetalhe.url, alt: "Equipamento moderno — Reumatos" },
     ],
   },
 ];

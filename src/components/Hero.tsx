@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
@@ -7,6 +7,9 @@ import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
+
+/** Raio da lanterna de cor que segue o mouse (px). */
+const SPOT_RADIUS = 240;
 
 /** Decide se devemos pular o vídeo (mobile em conexão lenta / save-data). */
 function shouldSkipVideoInitially(): boolean {
@@ -21,10 +24,22 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [spotlightEnabled, setSpotlightEnabled] = useState(false);
+  const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const baseVideoRef = useRef<HTMLVideoElement>(null);
+  const colorVideoRef = useRef<HTMLVideoElement>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     setIsMobile(mq.matches);
+    // A lanterna de cor só faz sentido em ponteiro fino (mouse/trackpad).
+    setSpotlightEnabled(
+      window.matchMedia("(pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    );
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -36,8 +51,38 @@ export default function Hero() {
     idle(() => setMountVideo(true));
   }, []);
 
+  /** Mantém a camada colorida em sincronia com a camada base. */
+  useEffect(() => {
+    if (!spotlightEnabled || !mountVideo) return;
+    const id = window.setInterval(() => {
+      const base = baseVideoRef.current;
+      const color = colorVideoRef.current;
+      if (!base || !color) return;
+      if (Math.abs(base.currentTime - color.currentTime) > 0.12) color.currentTime = base.currentTime;
+    }, 600);
+    return () => window.clearInterval(id);
+  }, [spotlightEnabled, mountVideo]);
+
+  const handleMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!spotlightEnabled) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => setSpot({ x, y, active: true }));
+  };
+
+  const spotMask = `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0) 100%)`;
+
+
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100dvh] w-full overflow-hidden"
+      onMouseMove={handleMove}
+      onMouseLeave={() => setSpot((s) => ({ ...s, active: false }))}
+    >
       {/* Poster estático — LCP. Sempre renderizado (inclusive no iOS, onde o
           autoplay do vídeo pode ser adiado/bloqueado e deixaria a área vazia). */}
       <picture>
@@ -49,6 +94,7 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
+          style={spotlightEnabled ? { filter: "grayscale(1) contrast(1.05)" } : undefined}
         />
       </picture>
 
@@ -56,6 +102,7 @@ export default function Hero() {
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
+          ref={baseVideoRef}
           src={heroVideo.url}
           poster={heroPoster.url}
           autoPlay
@@ -71,15 +118,61 @@ export default function Hero() {
             if (v.currentTime >= 5) v.currentTime = 0;
           }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{ opacity: videoReady ? 1 : 0 }}
+          style={{
+            opacity: videoReady ? 1 : 0,
+            filter: spotlightEnabled ? "grayscale(1) contrast(1.05)" : undefined,
+          }}
           aria-hidden="true"
         />
       )}
 
+      {/* Lanterna de cor: cópia colorida revelada por uma máscara radial suave
+          que acompanha o mouse (desktop / ponteiro fino apenas). */}
+      {spotlightEnabled && mountVideo && (
+        <>
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-out"
+            style={{
+              opacity: spot.active && videoReady ? 1 : 0,
+              WebkitMaskImage: spotMask,
+              maskImage: spotMask,
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+            }}
+            aria-hidden="true"
+          >
+            <video
+              ref={colorVideoRef}
+              src={heroVideo.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              {...{ "webkit-playsinline": "true" }}
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ filter: "saturate(1.25) contrast(1.05)" }}
+            />
+          </div>
+
+          {/* Halo luminoso do foco */}
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+            style={{
+              opacity: spot.active ? 1 : 0,
+              background: `radial-gradient(circle ${SPOT_RADIUS * 1.15}px at ${spot.x}px ${spot.y}px, hsl(45 60% 90% / 0.16) 0%, hsl(45 60% 90% / 0.06) 55%, transparent 78%)`,
+              mixBlendMode: "screen",
+            }}
+            aria-hidden="true"
+          />
+        </>
+      )}
+
 
       {/* Legibility overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+
 
       {/* Content over the video */}
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
