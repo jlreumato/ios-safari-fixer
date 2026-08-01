@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroVideo from "@/assets/hero-video-real-color.mp4.asset.json";
+import heroVideoColor from "@/assets/hero-video-real-color.mp4.asset.json";
+import heroVideoSlowmo from "@/assets/hero-video-slowmo.mp4.asset.json";
 import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
@@ -27,6 +28,13 @@ export default function Hero() {
   const [spotlightEnabled, setSpotlightEnabled] = useState(false);
   const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
 
+  /** Teste A/B: ?video=slowmo usa a montagem com efeitos + slow motion no joelho. */
+  const [variant, setVariant] = useState<"color" | "slowmo">("color");
+  const [showToggle, setShowToggle] = useState(false);
+  const heroVideo = variant === "slowmo" ? heroVideoSlowmo : heroVideoColor;
+
+
+
   const sectionRef = useRef<HTMLElement>(null);
   const baseVideoRef = useRef<HTMLVideoElement>(null);
   
@@ -40,6 +48,10 @@ export default function Hero() {
       window.matchMedia("(pointer: fine)").matches &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
+    const q = new URLSearchParams(window.location.search);
+    const v = q.get("video");
+    if (v === "slowmo" || v === "color") setVariant(v);
+    if (v || q.has("teste")) setShowToggle(true);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -95,6 +107,7 @@ export default function Hero() {
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
+          key={heroVideo.url}
           ref={baseVideoRef}
           src={heroVideo.url}
           poster={heroPoster.url}
@@ -115,6 +128,28 @@ export default function Hero() {
           aria-hidden="true"
         />
       )}
+
+      {/* Painel de teste A/B do vídeo (só aparece com ?teste=video ou ?video=...) */}
+      {showToggle && (
+        <div className="absolute right-4 top-24 z-30 flex overflow-hidden rounded-full border border-white/25 bg-black/45 -webkit-backdrop-filter backdrop-filter backdrop-blur-md text-[11px] uppercase tracking-[0.16em]">
+          {(["color", "slowmo"] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => {
+                setVariant(v);
+                setVideoReady(false);
+              }}
+              className={`px-4 py-2 transition-colors ${
+                variant === v ? "bg-[#e7d9b5] text-[#0e0a1a]" : "text-white/80 hover:bg-white/10"
+              }`}
+            >
+              {v === "color" ? "Colorido" : "Slow motion"}
+            </button>
+          ))}
+        </div>
+      )}
+
 
       {/* Lanterna de cor: uma camada dessaturada cobre tudo e tem um "buraco"
           (máscara inversa) no cursor — ali a cor original aparece. */}
