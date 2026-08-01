@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
@@ -7,6 +7,9 @@ import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
+
+/** Raio da lanterna de cor que segue o mouse (px). */
+const SPOT_RADIUS = 240;
 
 /** Decide se devemos pular o vídeo (mobile em conexão lenta / save-data). */
 function shouldSkipVideoInitially(): boolean {
@@ -21,10 +24,22 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [spotlightEnabled, setSpotlightEnabled] = useState(false);
+  const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const baseVideoRef = useRef<HTMLVideoElement>(null);
+  const colorVideoRef = useRef<HTMLVideoElement>(null);
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     setIsMobile(mq.matches);
+    // A lanterna de cor só faz sentido em ponteiro fino (mouse/trackpad).
+    setSpotlightEnabled(
+      window.matchMedia("(pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    );
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -35,6 +50,31 @@ export default function Hero() {
     };
     idle(() => setMountVideo(true));
   }, []);
+
+  /** Mantém a camada colorida em sincronia com a camada base. */
+  useEffect(() => {
+    if (!spotlightEnabled || !mountVideo) return;
+    const id = window.setInterval(() => {
+      const base = baseVideoRef.current;
+      const color = colorVideoRef.current;
+      if (!base || !color) return;
+      if (Math.abs(base.currentTime - color.currentTime) > 0.12) color.currentTime = base.currentTime;
+    }, 600);
+    return () => window.clearInterval(id);
+  }, [spotlightEnabled, mountVideo]);
+
+  const handleMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (!spotlightEnabled) return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => setSpot({ x, y, active: true }));
+  };
+
+  const spotMask = `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0) 100%)`;
+
 
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
