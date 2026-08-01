@@ -77,7 +77,12 @@ export default function Hero() {
 
 
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100dvh] w-full overflow-hidden"
+      onMouseMove={handleMove}
+      onMouseLeave={() => setSpot((s) => ({ ...s, active: false }))}
+    >
       {/* Poster estático — LCP. Sempre renderizado (inclusive no iOS, onde o
           autoplay do vídeo pode ser adiado/bloqueado e deixaria a área vazia). */}
       <picture>
@@ -89,6 +94,7 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
+          style={spotlightEnabled ? { filter: "grayscale(1) contrast(1.05)" } : undefined}
         />
       </picture>
 
@@ -96,6 +102,7 @@ export default function Hero() {
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
+          ref={baseVideoRef}
           src={heroVideo.url}
           poster={heroPoster.url}
           autoPlay
@@ -111,15 +118,61 @@ export default function Hero() {
             if (v.currentTime >= 5) v.currentTime = 0;
           }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{ opacity: videoReady ? 1 : 0 }}
+          style={{
+            opacity: videoReady ? 1 : 0,
+            filter: spotlightEnabled ? "grayscale(1) contrast(1.05)" : undefined,
+          }}
           aria-hidden="true"
         />
       )}
 
+      {/* Lanterna de cor: cópia colorida revelada por uma máscara radial suave
+          que acompanha o mouse (desktop / ponteiro fino apenas). */}
+      {spotlightEnabled && mountVideo && (
+        <>
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-out"
+            style={{
+              opacity: spot.active && videoReady ? 1 : 0,
+              WebkitMaskImage: spotMask,
+              maskImage: spotMask,
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+            }}
+            aria-hidden="true"
+          >
+            <video
+              ref={colorVideoRef}
+              src={heroVideo.url}
+              autoPlay
+              loop
+              muted
+              playsInline
+              {...{ "webkit-playsinline": "true" }}
+              preload="metadata"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ filter: "saturate(1.25) contrast(1.05)" }}
+            />
+          </div>
+
+          {/* Halo luminoso do foco */}
+          <div
+            className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+            style={{
+              opacity: spot.active ? 1 : 0,
+              background: `radial-gradient(circle ${SPOT_RADIUS * 1.15}px at ${spot.x}px ${spot.y}px, hsl(45 60% 90% / 0.16) 0%, hsl(45 60% 90% / 0.06) 55%, transparent 78%)`,
+              mixBlendMode: "screen",
+            }}
+            aria-hidden="true"
+          />
+        </>
+      )}
+
 
       {/* Legibility overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
+
 
       {/* Content over the video */}
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
