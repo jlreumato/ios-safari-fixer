@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroVideo from "@/assets/hero-video.mp4.asset.json";
+import heroVideo from "@/assets/hero-video-color.mp4.asset.json";
 import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
