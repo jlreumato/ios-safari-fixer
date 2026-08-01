@@ -48,6 +48,10 @@ export default function Hero() {
       window.matchMedia("(pointer: fine)").matches &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     );
+    const q = new URLSearchParams(window.location.search);
+    const v = q.get("video");
+    if (v === "slowmo" || v === "color") setVariant(v);
+    if (v || q.has("teste")) setShowToggle(true);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
