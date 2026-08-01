@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /lovable/
 
-Sitemap: https://julianalealreumato.com.br/sitemap.xml
+Sitemap: https://julianaleal.com.br/sitemap.xml

@@ -8,7 +8,7 @@ type Props = {
   jsonLd?: object | object[];
 };
 
-const BASE = "https://julianalealreumato.com.br";
+const BASE = "https://julianaleal.com.br";
 const OG_IMAGE = `${BASE}/__l5e/assets-v1/6107dc36-1b4d-4932-a9d2-70421528e591/og-juliana-leal.jpg`;
 
 export default function Seo({ title, description, path, type = "website", jsonLd }: Props) {

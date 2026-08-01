@@ -7,7 +7,7 @@ import CTASection from "@/components/CTASection";
 import BackToTop from "@/components/BackToTop";
 import Seo from "@/components/Seo";
 
-const BASE = "https://julianalealreumato.com.br";
+const BASE = "https://julianaleal.com.br";
 
 const BLOG_TITLE = "Blog de Reumatologia em Maceió (AL) | Dra. Juliana Leal";
 const BLOG_DESC =
