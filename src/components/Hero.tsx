@@ -2,15 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroVideoColor from "@/assets/hero-video-real-color.mp4.asset.json";
-import heroVideoSlowmo from "@/assets/hero-video-slowmo.mp4.asset.json";
+import heroVideo from "@/assets/hero-video-full-color.mp4.asset.json";
 import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
-
-/** Raio da lanterna de cor que segue o mouse (px). */
-const SPOT_RADIUS = 240;
 
 /** Decide se devemos pular o vídeo (mobile em conexão lenta / save-data). */
 function shouldSkipVideoInitially(): boolean {
@@ -25,33 +21,12 @@ export default function Hero() {
   const [videoReady, setVideoReady] = useState(false);
   const [mountVideo, setMountVideo] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [spotlightEnabled, setSpotlightEnabled] = useState(false);
-  const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
 
-  /** Teste A/B: ?video=slowmo usa a montagem com efeitos + slow motion no joelho. */
-  const [variant, setVariant] = useState<"color" | "slowmo">("color");
-  const [showToggle, setShowToggle] = useState(false);
-  const heroVideo = variant === "slowmo" ? heroVideoSlowmo : heroVideoColor;
-
-
-
-  const sectionRef = useRef<HTMLElement>(null);
   const baseVideoRef = useRef<HTMLVideoElement>(null);
-  
-  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
     setIsMobile(mq.matches);
-    // A lanterna de cor só faz sentido em ponteiro fino (mouse/trackpad).
-    setSpotlightEnabled(
-      window.matchMedia("(pointer: fine)").matches &&
-        !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    );
-    const q = new URLSearchParams(window.location.search);
-    const v = q.get("video");
-    if (v === "slowmo" || v === "color") setVariant(v);
-    if (v || q.has("teste")) setShowToggle(true);
     if (shouldSkipVideoInitially()) return;
     // Adia a montagem do vídeo para depois do primeiro paint,
     // garantindo que o poster (LCP) apareça primeiro.
@@ -63,31 +38,8 @@ export default function Hero() {
     idle(() => setMountVideo(true));
   }, []);
 
-  const handleMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!spotlightEnabled) return;
-    const rect = sectionRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => setSpot({ x, y, active: true }));
-  };
-
-  /** Máscara INVERSA: buraco (transparente) onde o mouse está —
-      é ali que a camada dessaturada não é pintada, revelando a cor. */
-  const holeMask = spot.active
-    ? `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.45) 62%, rgba(0,0,0,0.85) 82%, rgba(0,0,0,1) 100%)`
-    : "linear-gradient(rgba(0,0,0,1), rgba(0,0,0,1))";
-
-
-
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-[100dvh] w-full overflow-hidden"
-      onMouseMove={handleMove}
-      onMouseLeave={() => setSpot((s) => ({ ...s, active: false }))}
-    >
+    <section className="relative min-h-[100dvh] w-full overflow-hidden">
       {/* Poster estático — LCP. Sempre renderizado (inclusive no iOS, onde o
           autoplay do vídeo pode ser adiado/bloqueado e deixaria a área vazia). */}
       <picture>
@@ -99,15 +51,12 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
-
         />
       </picture>
 
-
-      {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
+      {/* Vídeo colorido carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
-          key={heroVideo.url}
           ref={baseVideoRef}
           src={heroVideo.url}
           poster={heroPoster.url}
@@ -129,64 +78,9 @@ export default function Hero() {
         />
       )}
 
-      {/* Painel de teste A/B do vídeo (só aparece com ?teste=video ou ?video=...) */}
-      {showToggle && (
-        <div className="absolute right-4 top-24 z-30 flex overflow-hidden rounded-full border border-white/25 bg-black/45 -webkit-backdrop-filter backdrop-filter backdrop-blur-md text-[11px] uppercase tracking-[0.16em]">
-          {(["color", "slowmo"] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => {
-                setVariant(v);
-                setVideoReady(false);
-              }}
-              className={`px-4 py-2 transition-colors ${
-                variant === v ? "bg-[#e7d9b5] text-[#0e0a1a]" : "text-white/80 hover:bg-white/10"
-              }`}
-            >
-              {v === "color" ? "Colorido" : "Slow motion"}
-            </button>
-          ))}
-        </div>
-      )}
-
-
-      {/* Lanterna de cor: uma camada dessaturada cobre tudo e tem um "buraco"
-          (máscara inversa) no cursor — ali a cor original aparece. */}
-      {spotlightEnabled && (
-        <>
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              WebkitBackdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
-              backdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
-              WebkitMaskImage: holeMask,
-              maskImage: holeMask,
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-              transition: "-webkit-mask-image 120ms linear, mask-image 120ms linear",
-            }}
-            aria-hidden="true"
-          />
-
-          {/* Halo luminoso suave na borda do foco */}
-          <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-            style={{
-              opacity: spot.active ? 1 : 0,
-              background: `radial-gradient(circle ${SPOT_RADIUS * 1.1}px at ${spot.x}px ${spot.y}px, transparent 0%, transparent 48%, hsl(45 60% 90% / 0.10) 72%, transparent 92%)`,
-            }}
-            aria-hidden="true"
-          />
-        </>
-      )}
-
-
-
       {/* Legibility overlays */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-black/25" />
-
 
       {/* Content over the video */}
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
