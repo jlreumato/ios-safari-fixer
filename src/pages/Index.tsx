@@ -48,7 +48,7 @@ const Index = () => {
         <LazySection rootMargin="200px" minHeight="80dvh" ariaLabel="Perguntas frequentes">
           <FAQ />
         </LazySection>
-        <LazySection rootMargin="400px" minHeight="300dvh" ariaLabel="Chamada para ação">
+        <LazySection rootMargin="400px" minHeight="160dvh" ariaLabel="Chamada para ação">
           <CTASection />
         </LazySection>
       </main>
