@@ -62,7 +62,7 @@ const SERVICE_LD = {
   "@context": "https://schema.org",
   "@type": "MedicalBusiness",
   name: "Dra. Juliana Leal — Reumatologia e Dor",
-  url: "https://julianalealreumato.com.br/",
+  url: "https://julianaleal.com.br/",
   telephone: "+55-82-99987-2509",
   priceRange: "$$",
   areaServed: { "@type": "State", name: "Alagoas" },
