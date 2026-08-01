@@ -160,7 +160,43 @@ export default function ProcedimentosPage() {
         title="Procedimentos Reumatológicos em Maceió (AL) — Dra. Juliana Leal"
         description="Infiltrações guiadas por ultrassom, viscossuplementação, PRP, bloqueios anestésicos e manejo de doenças autoimunes em Maceió — Alagoas."
         path="/procedimentos"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Início",
+                item: "https://julianalealreumato.com.br/",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "Procedimentos",
+                item: "https://julianalealreumato.com.br/procedimentos",
+              },
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Procedimentos reumatológicos realizados em Maceió (AL)",
+            itemListElement: procedures.map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "MedicalProcedure",
+                name: p.title,
+                description: p.short,
+                url: `https://julianalealreumato.com.br/procedimentos#${p.slug}`,
+              },
+            })),
+          },
+        ]}
       />
+
       <Header />
       <main
         className="bg-parallax-fixed relative min-h-[100dvh]"
@@ -214,9 +250,10 @@ export default function ProcedimentosPage() {
                   key={p.slug}
                   id={p.slug}
                   ref={(el) => { cardRefs.current[p.slug] = el; }}
-                  className={`ios-clip group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
+                  className={`ios-clip group relative overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
                     isOpen ? "sm:col-span-2 lg:col-span-3 order-first" : ""
                   }`}
+
                 >
                   <div
                     className={`relative overflow-hidden transition-[aspect-ratio] duration-500 ${

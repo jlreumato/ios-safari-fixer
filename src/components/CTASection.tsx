@@ -54,21 +54,24 @@ export default function CTASection() {
     };
   }, []);
 
-  // Phase 1 (0 → 0.55): assemble phrase word-by-word.
-  // Phase 2 (0.55 → 0.7): reveal button + subtitle.
-  // Phase 3 (0.7 → 1): pause — CTA stays fully visible so the user can read/click.
-  const phraseRange = 0.55;
-  const buttonRange = 0.15;
+  // Single-scroll choreography (~60vh of travel):
+  //  · Phase 1 (0 → 0.7): assemble phrase word-by-word (starts already in motion,
+  //    so there is no empty screen at the beginning of the section).
+  //  · Phase 2 (0.7 → 0.9): reveal subtitle + button.
+  //  · Phase 3 (0.9 → 1): short pause so the CTA can be read/clicked.
+  const p = Math.max(0, Math.min(1, progress * 1.1 + 0.08));
+  const phraseRange = 0.7;
+  const buttonRange = 0.2;
   const perWord = phraseRange / SEGMENTS.length;
 
   // Progress per segment: 0 → not yet, 1 → fully seated.
   const segProgress = SEGMENTS.map((_, i) => {
     const start = i * perWord;
-    const raw = (progress - start) / perWord;
+    const raw = (p - start) / perWord;
     return Math.max(0, Math.min(1, raw));
   });
 
-  const buttonProgress = Math.max(0, Math.min(1, (progress - phraseRange) / buttonRange));
+  const buttonProgress = Math.max(0, Math.min(1, (p - phraseRange) / buttonRange));
 
   return (
     <section
@@ -77,8 +80,9 @@ export default function CTASection() {
         revealRef.current = el;
       }}
       className="relative"
-      style={{ height: "300vh" }}
+      style={{ height: "160vh" }}
     >
+
       <div
         className={`sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)] transition-opacity duration-700 ease-out ${
           revealed ? "opacity-100" : "opacity-0"
