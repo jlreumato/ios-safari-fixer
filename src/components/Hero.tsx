@@ -28,6 +28,13 @@ export default function Hero() {
   const [spotlightEnabled, setSpotlightEnabled] = useState(false);
   const [spot, setSpot] = useState({ x: 0, y: 0, active: false });
 
+  /** Teste A/B: ?video=slowmo usa a montagem com efeitos + slow motion no joelho. */
+  const [variant, setVariant] = useState<"color" | "slowmo">("color");
+  const [showToggle, setShowToggle] = useState(false);
+  const heroVideo = variant === "slowmo" ? heroVideoSlowmo : heroVideoColor;
+
+
+
   const sectionRef = useRef<HTMLElement>(null);
   const baseVideoRef = useRef<HTMLVideoElement>(null);
   
