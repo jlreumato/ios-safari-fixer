@@ -214,9 +214,10 @@ export default function ProcedimentosPage() {
                   key={p.slug}
                   id={p.slug}
                   ref={(el) => { cardRefs.current[p.slug] = el; }}
-                  className={`ios-clip group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
+                  className={`ios-clip group relative overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
                     isOpen ? "sm:col-span-2 lg:col-span-3 order-first" : ""
                   }`}
+
                 >
                   <div
                     className={`relative overflow-hidden transition-[aspect-ratio] duration-500 ${
