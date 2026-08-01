@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroVideo from "@/assets/hero-video-full-color.mp4.asset.json";
+import heroVideoHd from "@/assets/hero-video-hd.mp4.asset.json";
+import heroVideoMobile from "@/assets/hero-video-mobile.mp4.asset.json";
 import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
 import heroPosterMobile from "@/assets/hero-poster-mobile.webp.asset.json";
 
@@ -37,6 +38,9 @@ export default function Hero() {
     };
     idle(() => setMountVideo(true));
   }, []);
+
+  // Mobile recebe a versão 960x540 (~1 MB); desktop a 1080p nítida (~3,7 MB).
+  const heroVideo = isMobile ? heroVideoMobile : heroVideoHd;
 
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
