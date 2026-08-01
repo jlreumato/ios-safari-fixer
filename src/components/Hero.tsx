@@ -39,6 +39,9 @@ export default function Hero() {
     idle(() => setMountVideo(true));
   }, []);
 
+  // Mobile recebe a versão 960x540 (~1 MB); desktop a 1080p nítida (~3,7 MB).
+  const heroVideo = isMobile ? heroVideoMobile : heroVideoHd;
+
   return (
     <section className="relative min-h-[100dvh] w-full overflow-hidden">
       {/* Poster estático — LCP. Sempre renderizado (inclusive no iOS, onde o
