@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ComponentType } from "react";
+import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
 import {
   Syringe,
   Stethoscope,
@@ -507,7 +507,7 @@ function StepsReveal({
   }, [active]);
 
   /** rel: continuous deck position. 0 = front, negative = leaving, >0 = queued. */
-  const deckStyle = (rel: number): React.CSSProperties => {
+  const deckStyle = (rel: number): CSSProperties => {
     if (rel < 0) {
       // Exiting card: slides diagonally out (up-left on desktop, up on mobile).
       const e = ease(Math.min(1, -rel));
