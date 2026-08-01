@@ -29,7 +29,7 @@ export default function Hero() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const baseVideoRef = useRef<HTMLVideoElement>(null);
-  const colorVideoRef = useRef<HTMLVideoElement>(null);
+  
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
