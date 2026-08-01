@@ -107,6 +107,7 @@ export default function Hero() {
       {/* Vídeo carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
+          key={heroVideo.url}
           ref={baseVideoRef}
           src={heroVideo.url}
           poster={heroPoster.url}
