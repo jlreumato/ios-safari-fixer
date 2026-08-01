@@ -1,6 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import MobileParallaxStack from "./MobileParallaxStack";
+import imgGota from "@/assets/blog/gota.jpg.asset.json";
+import imgArtrite from "@/assets/blog/blog-artrite.jpg.asset.json";
+import imgLupus from "@/assets/blog/blog-lupus.jpg.asset.json";
+import imgFibro from "@/assets/blog/blog-fibromialgia.jpg.asset.json";
+
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +29,7 @@ const posts = [
     excerpt: "Artropatia inflamatória causada pelo acúmulo de ácido úrico no organismo, que pode afetar qualquer pessoa.",
     category: "Artrites",
     reading: "5 min de leitura",
-    image: "https://julianalealreumato.com.br/imagens/gota.jpg",
+    image: imgGota.url,
     href: "/tratamentos/gota",
   },
   {
@@ -32,7 +37,7 @@ const posts = [
     excerpt: "Doença autoimune crônica que causa inflamação nas articulações. Diagnóstico precoce preserva a qualidade de vida.",
     category: "Artrites",
     reading: "6 min de leitura",
-    image: "https://julianalealreumato.com.br/imagens/blog-artrite.jpg",
+    image: imgArtrite.url,
     href: "/tratamentos/artrite-reumatoide",
   },
   {
@@ -40,7 +45,7 @@ const posts = [
     excerpt: "Doença autoimune complexa em que o sistema imunológico ataca tecidos saudáveis em vários órgãos.",
     category: "Doenças Autoimunes",
     reading: "7 min de leitura",
-    image: "https://julianalealreumato.com.br/imagens/blog-lupus.jpg",
+    image: imgLupus.url,
     href: "/tratamentos/outras-doencas-imunologicas",
   },
   {
@@ -48,7 +53,7 @@ const posts = [
     excerpt: "Síndrome de dor muscular generalizada e crônica, com fadiga, distúrbios do sono e ansiedade.",
     category: "Dores Crônicas",
     reading: "6 min de leitura",
-    image: "https://julianalealreumato.com.br/imagens/blog-fibromialgia.jpg",
+    image: imgFibro.url,
     href: "/tratamentos/fibromialgia",
   },
 ];
