@@ -87,7 +87,7 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
-          style={spotlightEnabled ? { filter: "grayscale(1) contrast(1.05)" } : undefined}
+
         />
       </picture>
 
