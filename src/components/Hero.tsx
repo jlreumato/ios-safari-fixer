@@ -129,6 +129,28 @@ export default function Hero() {
         />
       )}
 
+      {/* Painel de teste A/B do vídeo (só aparece com ?teste=video ou ?video=...) */}
+      {showToggle && (
+        <div className="absolute right-4 top-24 z-30 flex overflow-hidden rounded-full border border-white/25 bg-black/45 -webkit-backdrop-filter backdrop-filter backdrop-blur-md text-[11px] uppercase tracking-[0.16em]">
+          {(["color", "slowmo"] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => {
+                setVariant(v);
+                setVideoReady(false);
+              }}
+              className={`px-4 py-2 transition-colors ${
+                variant === v ? "bg-[#e7d9b5] text-[#0e0a1a]" : "text-white/80 hover:bg-white/10"
+              }`}
+            >
+              {v === "color" ? "Colorido" : "Slow motion"}
+            </button>
+          ))}
+        </div>
+      )}
+
+
       {/* Lanterna de cor: uma camada dessaturada cobre tudo e tem um "buraco"
           (máscara inversa) no cursor — ali a cor original aparece. */}
       {spotlightEnabled && (
