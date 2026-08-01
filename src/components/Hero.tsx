@@ -111,55 +111,41 @@ export default function Hero() {
             if (v.currentTime >= 5) v.currentTime = 0;
           }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{
-            opacity: videoReady ? 1 : 0,
-            filter: spotlightEnabled ? "grayscale(1) contrast(1.05)" : undefined,
-          }}
+          style={{ opacity: videoReady ? 1 : 0 }}
           aria-hidden="true"
         />
       )}
 
-      {/* Lanterna de cor: cópia colorida revelada por uma máscara radial suave
-          que acompanha o mouse (desktop / ponteiro fino apenas). */}
-      {spotlightEnabled && mountVideo && (
+      {/* Lanterna de cor: uma camada dessaturada cobre tudo e tem um "buraco"
+          (máscara inversa) no cursor — ali a cor original aparece. */}
+      {spotlightEnabled && (
         <>
           <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-out"
+            className="pointer-events-none absolute inset-0"
             style={{
-              opacity: spot.active && videoReady ? 1 : 0,
-              WebkitMaskImage: spotMask,
-              maskImage: spotMask,
+              WebkitBackdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
+              backdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
+              WebkitMaskImage: holeMask,
+              maskImage: holeMask,
               WebkitMaskRepeat: "no-repeat",
               maskRepeat: "no-repeat",
+              transition: "-webkit-mask-image 120ms linear, mask-image 120ms linear",
             }}
             aria-hidden="true"
-          >
-            <video
-              ref={colorVideoRef}
-              src={heroVideo.url}
-              autoPlay
-              loop
-              muted
-              playsInline
-              {...{ "webkit-playsinline": "true" }}
-              preload="metadata"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ filter: "saturate(1.25) contrast(1.05)" }}
-            />
-          </div>
+          />
 
-          {/* Halo luminoso do foco */}
+          {/* Halo luminoso suave na borda do foco */}
           <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+            className="pointer-events-none absolute inset-0 transition-opacity duration-300"
             style={{
               opacity: spot.active ? 1 : 0,
-              background: `radial-gradient(circle ${SPOT_RADIUS * 1.15}px at ${spot.x}px ${spot.y}px, hsl(45 60% 90% / 0.16) 0%, hsl(45 60% 90% / 0.06) 55%, transparent 78%)`,
-              mixBlendMode: "screen",
+              background: `radial-gradient(circle ${SPOT_RADIUS * 1.1}px at ${spot.x}px ${spot.y}px, transparent 0%, transparent 48%, hsl(45 60% 90% / 0.10) 72%, transparent 92%)`,
             }}
             aria-hidden="true"
           />
         </>
       )}
+
 
 
       {/* Legibility overlays */}
