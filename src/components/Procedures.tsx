@@ -209,7 +209,7 @@ function JointsWheel() {
                         className="absolute left-0 w-full overflow-hidden"
                         style={{
                           top: `${top}%`,
-                          height: `${100 / SLICES + 0.2}%`,
+                          height: `${100 / SLICES + 0.15}%`,
                           transform: `translate3d(${shift}%, 0, 0)`,
                           opacity: isActive ? Math.min(1, e * 1.4) : Math.max(0, 1 - e * 1.4),
                           willChange: "transform, opacity",
@@ -218,17 +218,16 @@ function JointsWheel() {
                         <div
                           className="absolute left-0 w-full"
                           style={{
-                            top: `-${top}%`,
+                            top: `-${s * 100}%`,
                             height: `${100 * SLICES}%`,
                             backgroundImage: `url(${j.image})`,
                             backgroundSize: "cover",
                             backgroundPosition: "center",
-                            transform: `scale(${isActive ? 1 + (1 - e) * 0.06 : 1.02})`,
-                            transformOrigin: "center",
                           }}
                         />
                       </div>
                     );
+
                   })}
                   {/* Thin champagne seams between the slices */}
                   {Array.from({ length: SLICES - 1 }).map((_, s) => (
