@@ -29,7 +29,7 @@ export default function Hero() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const baseVideoRef = useRef<HTMLVideoElement>(null);
-  const colorVideoRef = useRef<HTMLVideoElement>(null);
+  
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -51,18 +51,6 @@ export default function Hero() {
     idle(() => setMountVideo(true));
   }, []);
 
-  /** Mantém a camada colorida em sincronia com a camada base. */
-  useEffect(() => {
-    if (!spotlightEnabled || !mountVideo) return;
-    const id = window.setInterval(() => {
-      const base = baseVideoRef.current;
-      const color = colorVideoRef.current;
-      if (!base || !color) return;
-      if (Math.abs(base.currentTime - color.currentTime) > 0.12) color.currentTime = base.currentTime;
-    }, 600);
-    return () => window.clearInterval(id);
-  }, [spotlightEnabled, mountVideo]);
-
   const handleMove = (e: React.MouseEvent<HTMLElement>) => {
     if (!spotlightEnabled) return;
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -73,7 +61,12 @@ export default function Hero() {
     rafRef.current = requestAnimationFrame(() => setSpot({ x, y, active: true }));
   };
 
-  const spotMask = `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0) 100%)`;
+  /** Máscara INVERSA: buraco (transparente) onde o mouse está —
+      é ali que a camada dessaturada não é pintada, revelando a cor. */
+  const holeMask = spot.active
+    ? `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.45) 62%, rgba(0,0,0,0.85) 82%, rgba(0,0,0,1) 100%)`
+    : "linear-gradient(rgba(0,0,0,1), rgba(0,0,0,1))";
+
 
 
   return (
@@ -94,7 +87,7 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
-          style={spotlightEnabled ? { filter: "grayscale(1) contrast(1.05)" } : undefined}
+
         />
       </picture>
 
@@ -118,55 +111,41 @@ export default function Hero() {
             if (v.currentTime >= 5) v.currentTime = 0;
           }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{
-            opacity: videoReady ? 1 : 0,
-            filter: spotlightEnabled ? "grayscale(1) contrast(1.05)" : undefined,
-          }}
+          style={{ opacity: videoReady ? 1 : 0 }}
           aria-hidden="true"
         />
       )}
 
-      {/* Lanterna de cor: cópia colorida revelada por uma máscara radial suave
-          que acompanha o mouse (desktop / ponteiro fino apenas). */}
-      {spotlightEnabled && mountVideo && (
+      {/* Lanterna de cor: uma camada dessaturada cobre tudo e tem um "buraco"
+          (máscara inversa) no cursor — ali a cor original aparece. */}
+      {spotlightEnabled && (
         <>
           <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-500 ease-out"
+            className="pointer-events-none absolute inset-0"
             style={{
-              opacity: spot.active && videoReady ? 1 : 0,
-              WebkitMaskImage: spotMask,
-              maskImage: spotMask,
+              WebkitBackdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
+              backdropFilter: "grayscale(1) contrast(1.06) brightness(0.95)",
+              WebkitMaskImage: holeMask,
+              maskImage: holeMask,
               WebkitMaskRepeat: "no-repeat",
               maskRepeat: "no-repeat",
+              transition: "-webkit-mask-image 120ms linear, mask-image 120ms linear",
             }}
             aria-hidden="true"
-          >
-            <video
-              ref={colorVideoRef}
-              src={heroVideo.url}
-              autoPlay
-              loop
-              muted
-              playsInline
-              {...{ "webkit-playsinline": "true" }}
-              preload="metadata"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ filter: "saturate(1.25) contrast(1.05)" }}
-            />
-          </div>
+          />
 
-          {/* Halo luminoso do foco */}
+          {/* Halo luminoso suave na borda do foco */}
           <div
-            className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+            className="pointer-events-none absolute inset-0 transition-opacity duration-300"
             style={{
               opacity: spot.active ? 1 : 0,
-              background: `radial-gradient(circle ${SPOT_RADIUS * 1.15}px at ${spot.x}px ${spot.y}px, hsl(45 60% 90% / 0.16) 0%, hsl(45 60% 90% / 0.06) 55%, transparent 78%)`,
-              mixBlendMode: "screen",
+              background: `radial-gradient(circle ${SPOT_RADIUS * 1.1}px at ${spot.x}px ${spot.y}px, transparent 0%, transparent 48%, hsl(45 60% 90% / 0.10) 72%, transparent 92%)`,
             }}
             aria-hidden="true"
           />
         </>
       )}
+
 
 
       {/* Legibility overlays */}
