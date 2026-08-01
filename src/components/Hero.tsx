@@ -51,18 +51,6 @@ export default function Hero() {
     idle(() => setMountVideo(true));
   }, []);
 
-  /** Mantém a camada colorida em sincronia com a camada base. */
-  useEffect(() => {
-    if (!spotlightEnabled || !mountVideo) return;
-    const id = window.setInterval(() => {
-      const base = baseVideoRef.current;
-      const color = colorVideoRef.current;
-      if (!base || !color) return;
-      if (Math.abs(base.currentTime - color.currentTime) > 0.12) color.currentTime = base.currentTime;
-    }, 600);
-    return () => window.clearInterval(id);
-  }, [spotlightEnabled, mountVideo]);
-
   const handleMove = (e: React.MouseEvent<HTMLElement>) => {
     if (!spotlightEnabled) return;
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -73,7 +61,12 @@ export default function Hero() {
     rafRef.current = requestAnimationFrame(() => setSpot({ x, y, active: true }));
   };
 
-  const spotMask = `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0.95) 42%, rgba(0,0,0,0.55) 68%, rgba(0,0,0,0) 100%)`;
+  /** Máscara INVERSA: buraco (transparente) onde o mouse está —
+      é ali que a camada dessaturada não é pintada, revelando a cor. */
+  const holeMask = spot.active
+    ? `radial-gradient(circle ${SPOT_RADIUS}px at ${spot.x}px ${spot.y}px, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 38%, rgba(0,0,0,0.45) 62%, rgba(0,0,0,0.85) 82%, rgba(0,0,0,1) 100%)`
+    : "linear-gradient(rgba(0,0,0,1), rgba(0,0,0,1))";
+
 
 
   return (
