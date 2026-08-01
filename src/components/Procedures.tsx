@@ -11,6 +11,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 
 import quadrilImg from "@/assets/joints/quadril.jpg";
 import joelhoImg from "@/assets/joints/joelho.jpg";
