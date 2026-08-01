@@ -163,8 +163,9 @@ function JointsWheel() {
   }, []);
 
   const current = joints[active];
-  void progress;
-
+  // Sub-progress inside the active area (0 → 1): drives the slice choreography.
+  const local = Math.max(0, Math.min(1, progress * joints.length - active));
+  const SLICES = 6;
 
   return (
     <div
@@ -177,29 +178,73 @@ function JointsWheel() {
           {/* LEFT column reserved for text */}
           <div className="relative hidden h-full lg:block" aria-hidden />
 
-          {/* RIGHT column — image with hover-reveal links */}
+          {/* RIGHT column — sliced kinetic image with hover-reveal links */}
           <div
             className="relative hidden h-full w-full overflow-hidden lg:block"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-            {joints.map((j, i) => (
-              <div
-                key={j.label}
-                className="absolute inset-0"
-                style={{
-                  backgroundImage: `url(${j.image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  opacity: i === active ? 1 : 0,
-                  transform: i === active ? "scale(1)" : "scale(1.06)",
-                  transition:
-                    "opacity 900ms ease, transform 1400ms cubic-bezier(0.22,1,0.36,1)",
-                  willChange: "opacity, transform",
-                }}
-              />
-            ))}
+            {joints.map((j, i) => {
+              const isActive = i === active;
+              const isPrev = i === active - 1;
+              if (!isActive && !isPrev) return null;
+              return (
+                <div key={j.label} className="absolute inset-0" aria-hidden={!isActive}>
+                  {Array.from({ length: SLICES }).map((_, s) => {
+                    // Stagger: each slice enters slightly after the previous one.
+                    const span = 1 / (SLICES * 0.9);
+                    const start = (s / SLICES) * (1 - span) * 0.9;
+                    const raw = (local - start) / span;
+                    const e = 1 - Math.pow(1 - Math.max(0, Math.min(1, raw)), 3);
+                    const dir = s % 2 === 0 ? -1 : 1;
+                    // Active slice slides into place; previous one keeps sliding out.
+                    const shift = isActive ? (1 - e) * 100 * dir : -e * 100 * dir;
+                    const top = (s / SLICES) * 100;
+                    return (
+                      <div
+                        key={s}
+                        className="absolute left-0 w-full overflow-hidden"
+                        style={{
+                          top: `${top}%`,
+                          height: `${100 / SLICES + 0.2}%`,
+                          transform: `translate3d(${shift}%, 0, 0)`,
+                          opacity: isActive ? Math.min(1, e * 1.4) : Math.max(0, 1 - e * 1.4),
+                          willChange: "transform, opacity",
+                        }}
+                      >
+                        <div
+                          className="absolute left-0 w-full"
+                          style={{
+                            top: `-${top}%`,
+                            height: `${100 * SLICES}%`,
+                            backgroundImage: `url(${j.image})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            transform: `scale(${isActive ? 1 + (1 - e) * 0.06 : 1.02})`,
+                            transformOrigin: "center",
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                  {/* Thin champagne seams between the slices */}
+                  {Array.from({ length: SLICES - 1 }).map((_, s) => (
+                    <span
+                      key={`seam-${s}`}
+                      className="pointer-events-none absolute left-0 h-px w-full"
+                      style={{
+                        top: `${((s + 1) / SLICES) * 100}%`,
+                        background:
+                          "linear-gradient(90deg, transparent, rgba(231,217,181,0.55), transparent)",
+                        opacity: isActive ? Math.max(0, 1 - local * 2) : 0,
+                      }}
+                    />
+                  ))}
+                </div>
+              );
+            })}
             <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
+
 
             {/* Hover overlay — procedure links, sophisticated modern (sharp edges) */}
             <div
