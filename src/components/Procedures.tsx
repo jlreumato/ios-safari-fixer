@@ -164,8 +164,11 @@ function JointsWheel() {
 
   const current = joints[active];
   // Sub-progress inside the active area (0 → 1): drives the slice choreography.
-  const local = Math.max(0, Math.min(1, progress * joints.length - active));
+  const localRaw = Math.max(0, Math.min(1, progress * joints.length - active));
+  // Compress the assembly into the first third so the image stays whole while reading.
+  const local = Math.min(1, localRaw / 0.34);
   const SLICES = 6;
+
 
   return (
     <div
