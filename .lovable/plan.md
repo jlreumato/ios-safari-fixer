@@ -18,14 +18,17 @@ Nova hero em duas camadas: o vídeo atual continua como fundo cinematográfico (
 ```
 
 - Coluna esquerda: badge CRM, headline (escala reduzida ~15% para o equilíbrio 50/50), subtítulo, CTAs — animações de entrada atuais preservadas.
-- Coluna direita: 4-5 cards em profundidades diferentes (escala + blur leve nos mais distantes), cantos retos, moldura de linha fina champagne, sombra suave.
+- Coluna direita: 4-5 cards agrupados em cluster compacto, com pouco espaço entre eles, em profundidades diferentes (escala + blur leve nos mais distantes), cantos retos, moldura de linha fina champagne, sombra suave.
 - Cada card exibe a thumbnail do vídeo + badge de duração/origem e um botão de play champagne. Legenda curta ("Entrevista TV Pajuçara", "Infiltração guiada", etc.).
 
 ## Movimento
 
-- Flutuação contínua e dessincronizada (translate Y/X sutil, ~6-10s por ciclo), suavizada e desativada com `prefers-reduced-motion`.
+- Cards posicionados próximos uns dos outros; em alguns momentos do ciclo de flutuação eles se sobrepõem em até ~20% da largura/altura do card, e depois se separam novamente.
+- `z-index` por profundidade fixo (o card da frente sempre passa por cima), com a sombra do card frontal reforçada no momento da sobreposição para dar sensação de camadas.
+- Flutuação contínua e dessincronizada (translate Y/X sutil, ~6-10s por ciclo, amplitudes e fases diferentes por card para gerar os encontros), suavizada e desativada com `prefers-reduced-motion`.
 - Parallax leve pelo movimento do mouse (desktop apenas), com limite pequeno para não distrair.
 - Entrada em stagger junto com a headline.
+
 
 ## Interação
 
