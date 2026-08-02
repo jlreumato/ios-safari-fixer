@@ -24,7 +24,7 @@ export default function WhatsAppForm() {
   };
 
   const inputCls =
-    "w-full border border-white/15 bg-white/[0.04] px-4 py-3 text-base text-white placeholder:text-white/40 outline-none transition-colors focus:border-[#e7d9b5]/60 focus:bg-white/[0.06]";
+    "w-full border border-[#2a2233]/12 bg-white px-4 py-3 text-base text-[#2a2233] placeholder:text-[#6b6076]/80 outline-none transition-colors focus:border-[#a3813c]/60 focus:bg-white";
 
   return (
     <section
@@ -40,13 +40,13 @@ export default function WhatsAppForm() {
             Fale diretamente comigo
           </p>
           <h2
-            className="mt-3 text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white sm:text-5xl"
+            className="mt-3 text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2a2233] sm:text-5xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             Vamos conversar sobre a sua{" "}
-            <span className="italic text-[#e7d9b5]">dor.</span>
+            <span className="italic text-[#a3813c]">dor.</span>
           </h2>
-          <p className="mt-5 max-w-md text-base leading-relaxed text-white/75">
+          <p className="mt-5 max-w-md text-base leading-relaxed text-[#4a4152]">
             Preencha as informações abaixo e envie diretamente para o meu WhatsApp.
             Você receberá um retorno humano, atento e sem pressa.
           </p>
@@ -54,10 +54,10 @@ export default function WhatsAppForm() {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm sm:p-8"
+          className="flex flex-col gap-4 border border-[#2a2233]/12 bg-white/80 p-6 backdrop-blur-sm sm:p-8"
         >
           <label className="flex flex-col gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#4a4152]">
               Nome completo
             </span>
             <input
@@ -71,7 +71,7 @@ export default function WhatsAppForm() {
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#4a4152]">
               Telefone / WhatsApp
             </span>
             <input
@@ -85,7 +85,7 @@ export default function WhatsAppForm() {
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#4a4152]">
               Queixa principal
             </span>
             <textarea
@@ -99,7 +99,7 @@ export default function WhatsAppForm() {
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#4a4152]">
               Melhor horário para retorno
             </span>
             <input

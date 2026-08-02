@@ -153,29 +153,29 @@ export default function VideoFanCarousel() {
                 {/* Play — cobre toda a capa da carta ativa */}
                 <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2.5">
                   <span
-                    className={`flex items-center justify-center border border-[#e7d9b5]/85 bg-black/30 transition-transform duration-500 group-hover:scale-110 ${
+                    className={`flex items-center justify-center border border-[#a3813c]/85 bg-black/30 transition-transform duration-500 group-hover:scale-110 ${
                       isActive ? "h-14 w-14" : "h-10 w-10"
                     }`}
                   >
                     <Play
-                      className={`ml-0.5 fill-[#e7d9b5] text-[#e7d9b5] ${
+                      className={`ml-0.5 fill-[#a3813c] text-[#a3813c] ${
                         isActive ? "h-5 w-5" : "h-3.5 w-3.5"
                       }`}
                     />
                   </span>
                   {isActive && (
-                    <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#e7d9b5] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#a3813c] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
                       Assistir
                     </span>
                   )}
                 </span>
 
                 <span className="pointer-events-none absolute inset-x-0 bottom-0 p-4">
-                  <span className="block text-[10px] font-medium uppercase tracking-[0.24em] text-[#e7d9b5]">
+                  <span className="block text-[10px] font-medium uppercase tracking-[0.24em] text-[#a3813c]">
                     {v.kind}
                   </span>
                   <span
-                    className={`mt-1 block leading-snug text-white line-clamp-2 ${
+                    className={`mt-1 block leading-snug text-[#2a2233] line-clamp-2 ${
                       isActive ? "text-[17px]" : "text-[13px]"
                     }`}
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}

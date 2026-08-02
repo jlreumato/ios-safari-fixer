@@ -84,18 +84,18 @@ export default function CTASection() {
     >
 
       <div
-        className={`sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-[hsl(260_35%_18%)] via-[hsl(260_40%_14%)] to-[hsl(255_45%_10%)] transition-opacity duration-700 ease-out ${
+        className={`sticky top-0 flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-gradient-to-br from-white via-[#fbf7ee] to-[#f2e9d8] transition-opacity duration-700 ease-out ${
           revealed ? "opacity-100" : "opacity-0"
         }`}
       >
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#8e82b8]/25 blur-[120px]" />
-          <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-[#e7d9b5]/12 blur-[140px]" />
+          <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#8e82b8]/15 blur-[120px]" />
+          <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-[#a3813c]/12 blur-[140px]" />
         </div>
 
         <div className="relative mx-auto max-w-5xl px-6 text-center sm:px-8">
           <h2
-            className="text-balance flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-5xl font-normal uppercase leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl"
+            className="text-balance flex flex-wrap items-baseline justify-center gap-x-4 gap-y-2 text-5xl font-normal uppercase leading-[1.05] tracking-tight text-[#2a2233] sm:text-6xl lg:text-7xl xl:text-8xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             {SEGMENTS.map((seg, i) => {
@@ -111,7 +111,7 @@ export default function CTASection() {
               return (
                 <span
                   key={i}
-                  className={`inline-block ${isAccent ? "italic text-[#e7d9b5]" : ""}`}
+                  className={`inline-block ${isAccent ? "italic text-[#a3813c]" : ""}`}
                   style={{
                     transform: `translate3d(${tx}vw, ${ty}vh, 0) rotate(${rot}deg) scale(${sc})`,
                     opacity: e,
@@ -135,7 +135,7 @@ export default function CTASection() {
               willChange: "opacity, transform",
             }}
           >
-            <p className="mx-auto mt-10 max-w-2xl text-lg leading-relaxed text-white/85 sm:text-xl lg:text-2xl">
+            <p className="mx-auto mt-10 max-w-2xl text-lg leading-relaxed text-[#4a4152] sm:text-xl lg:text-2xl">
               Agende sua consulta e dê o primeiro passo rumo a uma vida com menos dor e mais qualidade.
             </p>
 

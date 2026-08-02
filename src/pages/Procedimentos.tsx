@@ -202,10 +202,9 @@ export default function ProcedimentosPage() {
         className="bg-parallax-fixed relative min-h-[100dvh]"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
-            radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
-            radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
-            linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
+            radial-gradient(circle at 82% 20%, rgba(231,217,181,0.40), transparent 58%),
+            radial-gradient(circle at 12% 82%, rgba(142,130,184,0.12), transparent 60%),
+            linear-gradient(160deg, #ffffff 0%, #fbf7ee 50%, #f2e9d8 100%)
           `,
         }}
       >
@@ -223,17 +222,17 @@ export default function ProcedimentosPage() {
               Procedimentos Reumatológicos
             </p>
             <h1
-              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
+              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2a2233] sm:text-5xl lg:text-6xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Técnica, precisão e cuidado{" "}
-              <span className="italic text-[#e7d9b5]">humanizado.</span>
+              <span className="italic text-[#a3813c]">humanizado.</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#4a4152] sm:text-lg">
               Cada procedimento é realizado com rigor técnico e escuta atenta — do
               diagnóstico ao acompanhamento contínuo. Conheça abaixo o portfólio completo.
             </p>
-            <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-white/60">
+            <div className="mt-8 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.2em] text-[#4a4152]">
               Role para explorar
               <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
             </div>
@@ -250,7 +249,7 @@ export default function ProcedimentosPage() {
                   key={p.slug}
                   id={p.slug}
                   ref={(el) => { cardRefs.current[p.slug] = el; }}
-                  className={`ios-clip group relative overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all duration-500 ${
+                  className={`ios-clip group relative overflow-hidden border border-[#2a2233]/12 bg-white/80 backdrop-blur-sm transition-all duration-500 ${
                     isOpen ? "sm:col-span-2 lg:col-span-3 order-first" : ""
                   }`}
 
@@ -268,24 +267,24 @@ export default function ProcedimentosPage() {
                         backgroundPosition: "center",
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#1a1229] via-[#1a1229]/40 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2a2233]/85 via-[#2a2233]/35 to-transparent" />
                   </div>
 
                   <div className="p-6 lg:p-7">
                     <h2
-                      className="text-2xl font-normal leading-tight tracking-tight text-white lg:text-3xl"
+                      className="text-2xl font-normal leading-tight tracking-tight text-[#2a2233] lg:text-3xl"
                       style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                     >
                       {p.title}
                     </h2>
-                    <p className="mt-3 text-sm leading-relaxed text-white/75 lg:text-base">
+                    <p className="mt-3 text-sm leading-relaxed text-[#4a4152] lg:text-base">
                       {p.short}
                     </p>
 
                     <button
                       type="button"
                       onClick={() => handleToggle(p.slug)}
-                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.14em] text-[#e7d9b5] transition-colors hover:text-primary"
+                      className="mt-5 inline-flex items-center gap-2 text-sm font-medium uppercase tracking-[0.14em] text-[#a3813c] transition-colors hover:text-primary"
                     >
                       {isOpen ? "Fechar" : "Ver indicações"}
                       <ArrowRight
@@ -303,10 +302,10 @@ export default function ProcedimentosPage() {
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">
                               Indicações
                             </p>
-                            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-white/80">
+                            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#4a4152]">
                               {p.indications.map((i) => (
                                 <li key={i} className="flex gap-2">
-                                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#e7d9b5]" />
+                                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#a3813c]" />
                                   {i}
                                 </li>
                               ))}
@@ -316,10 +315,10 @@ export default function ProcedimentosPage() {
                             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary/80">
                               Benefícios
                             </p>
-                            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-white/80">
+                            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-[#4a4152]">
                               {p.benefits.map((i) => (
                                 <li key={i} className="flex gap-2">
-                                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#e7d9b5]" />
+                                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[#a3813c]" />
                                   {i}
                                 </li>
                               ))}
@@ -337,14 +336,14 @@ export default function ProcedimentosPage() {
           {/* CTA */}
           <div className="mx-auto mt-16 flex max-w-3xl flex-col items-center gap-6 px-4 text-center">
             <h3
-              className="text-3xl font-normal leading-tight tracking-tight text-white sm:text-4xl"
+              className="text-3xl font-normal leading-tight tracking-tight text-[#2a2233] sm:text-4xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Pronto para começar sua{" "}
-              <span className="italic text-[#e7d9b5]">transformação?</span>
+              <span className="italic text-[#a3813c]">transformação?</span>
             </h3>
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              <span className="inline-flex items-center gap-2 rounded-full border-2 border-[#e7d9b5]/60 bg-white/5 px-8 py-3 text-base font-medium uppercase tracking-[0.18em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full border-2 border-[#a3813c]/60 bg-white px-8 py-3 text-base font-medium uppercase tracking-[0.18em] text-[#a3813c] transition-all hover:border-primary hover:text-primary">
                 Agendar consulta
                 <ArrowRight className="h-4 w-4" />
               </span>

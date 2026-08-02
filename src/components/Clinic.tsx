@@ -118,7 +118,7 @@ function FloatingGrid({
               key={i}
               type="button"
               onClick={() => onOpen(i)}
-              className="group relative aspect-[3/4] overflow-hidden border border-[#e7d9b5]/25 shadow-[0_30px_70px_-25px_rgba(0,0,0,0.7)] focus:outline-none focus-visible:border-[#e7d9b5]"
+              className="group relative aspect-[3/4] overflow-hidden border border-[#a3813c]/25 shadow-[0_24px_60px_-28px_rgba(42,34,51,0.25)] focus:outline-none focus-visible:border-[#a3813c]"
               style={{
                 transform: `translate3d(0, ${ty}%, 0)`,
                 opacity,
@@ -144,10 +144,10 @@ function FloatingGrid({
                     bottom: c.startsWith("b") ? 6 : undefined,
                     left: c.endsWith("l") ? 6 : undefined,
                     right: c.endsWith("r") ? 6 : undefined,
-                    borderTop: c.startsWith("t") ? "1.5px solid #e7d9b5" : undefined,
-                    borderBottom: c.startsWith("b") ? "1.5px solid #e7d9b5" : undefined,
-                    borderLeft: c.endsWith("l") ? "1.5px solid #e7d9b5" : undefined,
-                    borderRight: c.endsWith("r") ? "1.5px solid #e7d9b5" : undefined,
+                    borderTop: c.startsWith("t") ? "1.5px solid #a3813c" : undefined,
+                    borderBottom: c.startsWith("b") ? "1.5px solid #a3813c" : undefined,
+                    borderLeft: c.endsWith("l") ? "1.5px solid #a3813c" : undefined,
+                    borderRight: c.endsWith("r") ? "1.5px solid #a3813c" : undefined,
                   }}
                 />
               ))}
@@ -190,14 +190,14 @@ function Lightbox({
   const img = images[index];
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/85 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#2a2233]/80 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <button
         onClick={onClose}
-        className="absolute right-5 top-5 rounded-full bg-white/10 p-2 text-white transition hover:bg-white/20"
+        className="absolute right-5 top-5 rounded-full bg-white p-2 text-[#2a2233] transition hover:bg-[#f2e9d8]"
         aria-label="Fechar"
       >
         <X className="h-5 w-5" />
@@ -208,7 +208,7 @@ function Lightbox({
         onClick={(e) => e.stopPropagation()}
         className="max-h-[88vh] max-w-[92vw] rounded-xl object-contain shadow-2xl animate-in zoom-in-95 duration-200"
       />
-      <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-sm text-white/80">
+      <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-sm text-[#4a4152]">
         {index + 1} / {images.length}
       </p>
     </div>
@@ -234,8 +234,8 @@ export default function Clinic() {
         {/* Header — left-aligned, mirrors Etapas */}
         <div className="max-w-3xl">
           <div className="flex items-center gap-4">
-            <span className="h-px w-14 bg-[#e7d9b5]" />
-            <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
+            <span className="h-px w-14 bg-[#a3813c]" />
+            <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#a3813c]">
               Locais de Atendimento
             </p>
           </div>
@@ -251,7 +251,7 @@ export default function Clinic() {
         </div>
 
         {/* Tabs + Address — modern outlined layout */}
-        <div className="mt-12 flex flex-col gap-6 border-y border-white/10 py-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mt-12 flex flex-col gap-6 border-y border-[#2a2233]/12 py-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="inline-flex flex-wrap gap-3">
             {locations.map((loc, i) => (
               <button
@@ -259,8 +259,8 @@ export default function Clinic() {
                 onClick={() => setActiveTab(i)}
                 className={`border px-6 py-3 text-sm font-semibold uppercase tracking-[0.24em] transition-all duration-200 ${
                   activeTab === i
-                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.08] text-[#e7d9b5]"
-                    : "border-white/15 text-muted-foreground hover:border-[#e7d9b5]/50 hover:text-foreground"
+                    ? "border-[#a3813c] bg-[#a3813c]/[0.08] text-[#a3813c]"
+                    : "border-[#2a2233]/12 text-muted-foreground hover:border-[#a3813c]/50 hover:text-foreground"
                 }`}
               >
                 {loc.name}

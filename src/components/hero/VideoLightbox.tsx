@@ -39,14 +39,14 @@ export default function VideoLightbox({ video, onClose }: Props) {
         type="button"
         onClick={onClose}
         aria-label="Fechar vídeo"
-        className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-[#e7d9b5]/50 text-[#e7d9b5] transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-[#e7d9b5]"
+        className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-[#a3813c]/50 text-[#a3813c] transition-colors hover:bg-[#f2e9d8] focus-visible:ring-2 focus-visible:ring-[#a3813c]"
       >
         <X className="h-5 w-5" />
       </button>
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full overflow-hidden border border-[#e7d9b5]/25 bg-black shadow-[0_30px_90px_-30px_rgba(0,0,0,0.9)]"
+        className="relative w-full overflow-hidden border border-[#a3813c]/25 bg-black shadow-[0_30px_80px_-30px_rgba(42,34,51,0.35)]"
         style={{
           maxWidth: vertical ? "min(420px, 92vw)" : "min(960px, 94vw)",
           aspectRatio: vertical ? "9 / 16" : "16 / 9",

@@ -11,10 +11,9 @@ const WHATSAPP_URL =
   "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
 const DARK_BG = `
-  radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
-  radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
-  radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
-  linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
+  radial-gradient(circle at 82% 20%, rgba(231,217,181,0.40), transparent 58%),
+  radial-gradient(circle at 12% 82%, rgba(142,130,184,0.12), transparent 60%),
+  linear-gradient(160deg, #ffffff 0%, #fbf7ee 50%, #f2e9d8 100%)
 `;
 
 export default function TratamentoDetalhe() {
@@ -30,7 +29,7 @@ export default function TratamentoDetalhe() {
       <>
         <Header />
         <main
-          className="bg-parallax-fixed mx-auto flex min-h-[70dvh] flex-col items-center justify-center px-4 text-center text-white"
+          className="bg-parallax-fixed mx-auto flex min-h-[70dvh] flex-col items-center justify-center px-4 text-center text-[#2a2233]"
           style={{ backgroundImage: DARK_BG }}
         >
           <h1
@@ -39,7 +38,7 @@ export default function TratamentoDetalhe() {
           >
             Tratamento não encontrado
           </h1>
-          <Link to="/#tratamentos-resumo" className="mt-6 text-[#e7d9b5] underline">
+          <Link to="/#tratamentos-resumo" className="mt-6 text-[#a3813c] underline">
             Ver todos os tratamentos
           </Link>
         </main>
@@ -87,7 +86,7 @@ export default function TratamentoDetalhe() {
             <div>
               <Link
                 to="/#tratamentos-resumo"
-                className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-[#e7d9b5]/80 transition-colors hover:text-[#e7d9b5]"
+                className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.22em] text-[#a3813c]/80 transition-colors hover:text-[#a3813c]"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Todos os tratamentos
@@ -96,23 +95,23 @@ export default function TratamentoDetalhe() {
                 Tratamento reumatológico
               </p>
               <h1
-                className="mt-3 text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
+                className="mt-3 text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2a2233] sm:text-5xl lg:text-6xl"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
                 {treatment.title}
               </h1>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-[#4a4152] sm:text-lg">
                 {treatment.shortDesc}
               </p>
-              <div className="mt-8 h-px w-24 bg-[#e7d9b5]/50" />
+              <div className="mt-8 h-px w-24 bg-[#a3813c]/50" />
             </div>
 
             {/* Image with soft mask */}
             {treatment.image && (
               <div className="relative">
                 <div
-                  className="relative aspect-[4/5] w-full overflow-hidden border border-white/10 bg-white/[0.03]"
-                  style={{ boxShadow: "0 30px 80px -30px rgba(0,0,0,0.7)" }}
+                  className="relative aspect-[4/5] w-full overflow-hidden border border-[#2a2233]/12 bg-white/80"
+                  style={{ boxShadow: "0 24px 60px -28px rgba(42,34,51,0.25)" }}
                 >
                   <img
                     src={treatment.image}
@@ -120,7 +119,7 @@ export default function TratamentoDetalhe() {
                     className="h-full w-full object-cover"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1a1229] via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#2a2233]/45 via-transparent to-transparent" />
                   {(["tl", "tr", "bl", "br"] as const).map((c) => (
                     <span
                       key={c}
@@ -131,10 +130,10 @@ export default function TratamentoDetalhe() {
                         bottom: c.startsWith("b") ? -1 : undefined,
                         left: c.endsWith("l") ? -1 : undefined,
                         right: c.endsWith("r") ? -1 : undefined,
-                        borderTop: c.startsWith("t") ? "2px solid #e7d9b5" : undefined,
-                        borderBottom: c.startsWith("b") ? "2px solid #e7d9b5" : undefined,
-                        borderLeft: c.endsWith("l") ? "2px solid #e7d9b5" : undefined,
-                        borderRight: c.endsWith("r") ? "2px solid #e7d9b5" : undefined,
+                        borderTop: c.startsWith("t") ? "2px solid #a3813c" : undefined,
+                        borderBottom: c.startsWith("b") ? "2px solid #a3813c" : undefined,
+                        borderLeft: c.endsWith("l") ? "2px solid #a3813c" : undefined,
+                        borderRight: c.endsWith("r") ? "2px solid #a3813c" : undefined,
                         boxShadow: "0 0 12px rgba(231,217,181,0.5)",
                       }}
                     />
@@ -150,7 +149,7 @@ export default function TratamentoDetalhe() {
           <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-3 lg:gap-14 lg:px-8">
             <div className="space-y-14 lg:col-span-2">
               <Block title="Sobre a condição">
-                <p className="text-base leading-relaxed text-white/80 sm:text-lg">
+                <p className="text-base leading-relaxed text-[#4a4152] sm:text-lg">
                   {treatment.overview}
                 </p>
               </Block>
@@ -158,8 +157,8 @@ export default function TratamentoDetalhe() {
               <Block title="Sinais e sintomas">
                 <ul className="space-y-3">
                   {treatment.symptoms.map((s, i) => (
-                    <li key={i} className="flex items-start gap-3 text-white/85">
-                      <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center border border-[#e7d9b5]/60 text-[#e7d9b5]">
+                    <li key={i} className="flex items-start gap-3 text-[#4a4152]">
+                      <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center border border-[#a3813c]/60 text-[#a3813c]">
                         <Check className="h-3.5 w-3.5" />
                       </span>
                       <span className="text-base leading-relaxed sm:text-lg">{s}</span>
@@ -171,8 +170,8 @@ export default function TratamentoDetalhe() {
               <Block title="Como tratamos">
                 <ul className="space-y-3">
                   {treatment.approach.map((s, i) => (
-                    <li key={i} className="flex items-start gap-3 text-white/85">
-                      <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center border border-[#e7d9b5]/60 text-[#e7d9b5]">
+                    <li key={i} className="flex items-start gap-3 text-[#4a4152]">
+                      <span className="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center border border-[#a3813c]/60 text-[#a3813c]">
                         <Stethoscope className="h-3.5 w-3.5" />
                       </span>
                       <span className="text-base leading-relaxed sm:text-lg">{s}</span>
@@ -185,8 +184,8 @@ export default function TratamentoDetalhe() {
             {/* Sidebar CTA */}
             <aside className="lg:sticky lg:top-28 h-fit">
               <div
-                className="relative border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm"
-                style={{ boxShadow: "0 30px 60px -20px rgba(0,0,0,0.6)" }}
+                className="relative border border-[#2a2233]/12 bg-white/80 p-8 backdrop-blur-sm"
+                style={{ boxShadow: "0 24px 50px -24px rgba(42,34,51,0.2)" }}
               >
                 {(["tl", "tr", "bl", "br"] as const).map((c) => (
                   <span
@@ -198,10 +197,10 @@ export default function TratamentoDetalhe() {
                       bottom: c.startsWith("b") ? -1 : undefined,
                       left: c.endsWith("l") ? -1 : undefined,
                       right: c.endsWith("r") ? -1 : undefined,
-                      borderTop: c.startsWith("t") ? "1.5px solid #e7d9b5" : undefined,
-                      borderBottom: c.startsWith("b") ? "1.5px solid #e7d9b5" : undefined,
-                      borderLeft: c.endsWith("l") ? "1.5px solid #e7d9b5" : undefined,
-                      borderRight: c.endsWith("r") ? "1.5px solid #e7d9b5" : undefined,
+                      borderTop: c.startsWith("t") ? "1.5px solid #a3813c" : undefined,
+                      borderBottom: c.startsWith("b") ? "1.5px solid #a3813c" : undefined,
+                      borderLeft: c.endsWith("l") ? "1.5px solid #a3813c" : undefined,
+                      borderRight: c.endsWith("r") ? "1.5px solid #a3813c" : undefined,
                     }}
                   />
                 ))}
@@ -209,19 +208,19 @@ export default function TratamentoDetalhe() {
                   Agende uma avaliação
                 </p>
                 <h3
-                  className="mt-3 text-3xl font-normal leading-tight text-white"
+                  className="mt-3 text-3xl font-normal leading-tight text-[#2a2233]"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
-                  Cuide de você com quem <span className="italic text-[#e7d9b5]">entende.</span>
+                  Cuide de você com quem <span className="italic text-[#a3813c]">entende.</span>
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-white/70">
+                <p className="mt-3 text-base leading-relaxed text-[#4a4152]">
                   Dra. Juliana Leal — Reumatologista com pós-graduação em Dor Crônica pela USP.
                 </p>
                 <a
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-6 inline-flex w-full items-center justify-center gap-2 border-2 border-[#e7d9b5]/70 bg-white/5 px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] transition-all hover:border-primary hover:text-primary"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 border-2 border-[#a3813c]/70 bg-white px-6 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-[#a3813c] transition-all hover:border-primary hover:text-primary"
                 >
                   Agendar Consulta
                   <ArrowRight className="h-4 w-4" />
@@ -232,7 +231,7 @@ export default function TratamentoDetalhe() {
 
           {/* Next treatment */}
           {next && next.slug !== treatment.slug && (
-            <div className="mx-auto mt-20 max-w-6xl border-t border-white/10 px-4 pt-10 sm:px-6 lg:px-8">
+            <div className="mx-auto mt-20 max-w-6xl border-t border-[#2a2233]/12 px-4 pt-10 sm:px-6 lg:px-8">
               <Link
                 to={`/tratamentos/${next.slug}`}
                 className="group flex items-center justify-between gap-4"
@@ -242,13 +241,13 @@ export default function TratamentoDetalhe() {
                     Próximo tratamento
                   </p>
                   <p
-                    className="mt-2 text-3xl font-normal text-white transition-colors group-hover:text-[#e7d9b5] sm:text-4xl"
+                    className="mt-2 text-3xl font-normal text-[#2a2233] transition-colors group-hover:text-[#a3813c] sm:text-4xl"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                   >
                     {next.title}
                   </p>
                 </div>
-                <ArrowRight className="h-6 w-6 text-[#e7d9b5] transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-6 w-6 text-[#a3813c] transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           )}
@@ -264,8 +263,8 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
   return (
     <div>
       <div className="flex items-center gap-4">
-        <span className="h-px w-10 bg-[#e7d9b5]/60" />
-        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]">
+        <span className="h-px w-10 bg-[#a3813c]/60" />
+        <p className="text-xs font-semibold uppercase tracking-[0.32em] text-[#a3813c]">
           {title}
         </p>
       </div>

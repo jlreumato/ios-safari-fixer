@@ -24,10 +24,10 @@ export default function VideoCard({
       onClick={() => onOpen(video)}
       aria-label={`Assistir: ${video.title}`}
       style={style}
-      className={`group relative block w-full cursor-pointer overflow-hidden bg-black/40 text-left outline-none transition-[box-shadow,border-color] duration-500 focus-visible:ring-2 focus-visible:ring-[#e7d9b5] ${
+      className={`group relative block w-full cursor-pointer overflow-hidden bg-black/40 text-left outline-none transition-[box-shadow,border-color] duration-500 focus-visible:ring-2 focus-visible:ring-[#a3813c] ${
         featured
-          ? "card-featured-glow border border-[#e7d9b5]/85"
-          : "border border-[#e7d9b5]/35 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.75)] hover:border-[#e7d9b5]/75"
+          ? "card-featured-glow border border-[#a3813c]/85"
+          : "border border-[#a3813c]/35 shadow-[0_18px_45px_-22px_rgba(42,34,51,0.30)] hover:border-[#a3813c]/75"
       } ${className}`}
     >
       <img
@@ -54,21 +54,21 @@ export default function VideoCard({
 
       {/* Indicador do cartão em destaque */}
       {featured && (
-        <span className="pointer-events-none absolute right-3 top-3 h-1.5 w-1.5 rounded-full bg-[#e7d9b5] animate-pulse" />
+        <span className="pointer-events-none absolute right-3 top-3 h-1.5 w-1.5 rounded-full bg-[#a3813c] animate-pulse" />
       )}
 
       {/* Play — cobre toda a capa; o botão inteiro é clicável */}
       <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3">
         <span
-          className={`flex items-center justify-center border border-[#e7d9b5]/80 bg-black/35 transition-transform duration-500 group-hover:scale-110 ${
+          className={`flex items-center justify-center border border-[#a3813c]/80 bg-black/35 transition-transform duration-500 group-hover:scale-110 ${
             featured ? "h-16 w-16" : "h-12 w-12"
           }`}
         >
           <Play
-            className={`ml-0.5 fill-[#e7d9b5] text-[#e7d9b5] ${featured ? "h-6 w-6" : "h-4 w-4"}`}
+            className={`ml-0.5 fill-[#a3813c] text-[#a3813c] ${featured ? "h-6 w-6" : "h-4 w-4"}`}
           />
         </span>
-        <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#e7d9b5] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+        <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#a3813c] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
           Assistir
         </span>
       </span>
@@ -78,7 +78,7 @@ export default function VideoCard({
         className={`pointer-events-none absolute inset-x-0 bottom-0 ${featured ? "p-5" : "p-3"}`}
       >
         <span
-          className={`block font-medium uppercase text-[#e7d9b5]/90 ${
+          className={`block font-medium uppercase text-[#a3813c]/90 ${
             featured ? "text-[11px] tracking-[0.24em]" : "text-[9px] tracking-[0.2em]"
           }`}
         >

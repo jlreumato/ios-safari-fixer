@@ -33,7 +33,7 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#1a1229]/90 shadow-[0_2px_20px_rgba(0,0,0,0.4)] -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
+          ? "bg-white/85 shadow-[0_1px_20px_rgba(42,34,51,0.08)] border-b border-[#2a2233]/10 -webkit-backdrop-filter backdrop-filter backdrop-blur-md"
           : "bg-transparent"
       }`}
     >
@@ -44,7 +44,7 @@ export default function Header() {
             <img
               src={logoNome.url}
               alt="Dra. Juliana Leal — Reumatologia"
-              className="h-10 w-auto md:h-12 [filter:brightness(0)_invert(1)_drop-shadow(0_1px_8px_rgba(0,0,0,0.35))]"
+              className="h-10 w-auto md:h-12 [filter:brightness(0)_saturate(0)_opacity(0.85)]"
               loading="eager"
             />
           </a>
@@ -56,7 +56,7 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="rounded-md px-3 py-2 text-base font-medium text-white/80 transition-colors hover:text-primary"
+                className="rounded-md px-3 py-2 text-base font-medium text-[#4a4152] transition-colors hover:text-primary"
               >
                 {link.label}
               </a>
@@ -80,22 +80,22 @@ export default function Header() {
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="inline-flex items-center justify-center rounded-md p-2 text-white lg:hidden" aria-label="Menu">
+              <button className="inline-flex items-center justify-center rounded-md p-2 text-[#2a2233] lg:hidden" aria-label="Menu">
                 <Menu className="h-6 w-6" />
               </button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-screen max-w-none bg-[#1a1229] pt-16 border-l-0 px-8">
-              <nav className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+            <SheetContent side="right" className="w-screen max-w-none bg-[#faf7f2] pt-16 border-l-0 px-8">
+              <nav className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
                 {navLinks.map((link) => (
                   <a
                     key={link.href}
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="group flex items-center justify-between px-2 py-5 text-2xl font-normal tracking-tight text-foreground transition-colors duration-200 hover:bg-white/[0.06] hover:text-primary"
+                    className="group flex items-center justify-between px-2 py-5 text-2xl font-normal tracking-tight text-foreground transition-colors duration-200 hover:bg-[#2a2233]/[0.04] hover:text-primary"
                     style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                   >
                     <span>{link.label}</span>
-                    <ChevronRight className="h-5 w-5 text-white/40 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary" />
+                    <ChevronRight className="h-5 w-5 text-[#4a4152] transition-transform duration-200 group-hover:translate-x-1 group-hover:text-primary" />
                   </a>
                 ))}
               </nav>
