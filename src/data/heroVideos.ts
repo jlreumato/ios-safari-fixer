@@ -1,6 +1,6 @@
-import thumbInfiltracao from "@/assets/procedures/infiltracao.jpg.asset.json";
-import thumbBloqueio from "@/assets/procedures/bloqueio.jpg.asset.json";
-import thumbPrp from "@/assets/procedures/prp.jpg.asset.json";
+import thumbIg1 from "@/assets/hero-videos/ig-DaVcHNlpusr.jpg.asset.json";
+import thumbIg2 from "@/assets/hero-videos/ig-DXfMqDXDMyV.jpg.asset.json";
+import thumbIg3 from "@/assets/hero-videos/ig-DYiQJOYJ09g.jpg.asset.json";
 import thumbAutoimune from "@/assets/procedures/autoimune.jpg.asset.json";
 
 export type HeroVideo = {
@@ -23,7 +23,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "ErEW-kzJleY",
     title: "Entrevista com a Dra. Juliana Leal",
     kind: "Entrevista",
-    thumb: "https://i.ytimg.com/vi/ErEW-kzJleY/hqdefault.jpg",
+    thumb: "https://i.ytimg.com/vi/ErEW-kzJleY/maxresdefault.jpg",
     aspect: "16/9",
   },
   {
@@ -32,7 +32,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DaVcHNlpusr",
     title: "Cuidado com a dor no dia a dia",
     kind: "Instagram",
-    thumb: thumbInfiltracao.url,
+    thumb: thumbIg1.url,
     aspect: "9/16",
   },
   {
@@ -41,7 +41,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "jQ8avLicNz4",
     title: "Doenças reumáticas: quando procurar ajuda",
     kind: "Entrevista",
-    thumb: "https://i.ytimg.com/vi/jQ8avLicNz4/hqdefault.jpg",
+    thumb: "https://i.ytimg.com/vi/jQ8avLicNz4/maxresdefault.jpg",
     aspect: "16/9",
   },
   {
@@ -50,7 +50,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DXfMqDXDMyV",
     title: "Procedimento guiado no consultório",
     kind: "Instagram",
-    thumb: thumbBloqueio.url,
+    thumb: thumbIg2.url,
     aspect: "9/16",
   },
   {
@@ -59,7 +59,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DYiQJOYJ09g",
     title: "Tratamento da dor articular",
     kind: "Instagram",
-    thumb: thumbPrp.url,
+    thumb: thumbIg3.url,
     aspect: "9/16",
   },
 ];
@@ -69,5 +69,5 @@ export const heroVideoFallbackThumb = thumbAutoimune.url;
 export function embedUrl(v: HeroVideo): string {
   return v.platform === "youtube"
     ? `https://www.youtube-nocookie.com/embed/${v.videoId}?autoplay=1&rel=0&modestbranding=1`
-    : `https://www.instagram.com/p/${v.videoId}/embed/`;
+    : `https://www.instagram.com/reel/${v.videoId}/embed/`;
 }
