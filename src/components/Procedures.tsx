@@ -237,7 +237,7 @@ function JointsWheel() {
                       style={{
                         top: `${((s + 1) / SLICES) * 100}%`,
                         background:
-                          "linear-gradient(90deg, transparent, rgba(231,217,181,0.55), transparent)",
+                          "linear-gradient(90deg, transparent, rgba(163,129,60,0.45), transparent)",
                         opacity: isActive ? Math.max(0, 1 - local * 2) : 0,
                       }}
                     />
@@ -245,34 +245,34 @@ function JointsWheel() {
                 </div>
               );
             })}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-[#1a1229]/40" />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/50" />
 
 
             {/* Hover overlay — procedure links, sophisticated modern (sharp edges) */}
             <div
-              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1229]/85 via-[#1a1229]/70 to-[#2b1e40]/80 p-12 backdrop-blur-md transition-opacity duration-500"
+              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white/92 via-[#fbf7ee]/90 to-[#f2e9d8]/92 p-12 backdrop-blur-md transition-opacity duration-500"
               style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
             >
               <div className="w-full max-w-lg">
                 <div className="mb-8 flex items-center gap-4">
-                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]">
+                  <span className="h-px flex-1 bg-[#a3813c]/40" />
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c]">
                     Procedimentos indicados
                   </p>
-                  <span className="h-px flex-1 bg-[#e7d9b5]/40" />
+                  <span className="h-px flex-1 bg-[#a3813c]/40" />
                 </div>
-                <ul className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+                <ul className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
                   {current.links.map((l) => (
                     <li key={l.label}>
                       <a
                         href={`/procedimentos#${l.slug}`}
-                        className="group/link flex items-center justify-between gap-4 py-4 transition-colors hover:text-[#e7d9b5]"
+                        className="group/link flex items-center justify-between gap-4 py-4 transition-colors hover:text-[#a3813c]"
                       >
-                        <span className="text-lg font-light tracking-wide text-white/95">
+                        <span className="text-lg font-light tracking-wide text-[#4a4152]">
                           {l.label}
                         </span>
-                        <span className="flex items-center gap-3 text-[#e7d9b5]/70 transition-all group-hover/link:text-[#e7d9b5]">
-                          <span className="h-px w-6 bg-[#e7d9b5]/60 transition-all group-hover/link:w-12" />
+                        <span className="flex items-center gap-3 text-[#a3813c]/70 transition-all group-hover/link:text-[#a3813c]">
+                          <span className="h-px w-6 bg-[#a3813c]/60 transition-all group-hover/link:w-12" />
                           <ChevronRight className="h-4 w-4" />
                         </span>
                       </a>
@@ -281,7 +281,7 @@ function JointsWheel() {
                 </ul>
                 <a
                   href="/procedimentos"
-                  className="mt-10 inline-flex items-center gap-3 border border-[#e7d9b5]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] transition-colors hover:border-[#e7d9b5] hover:bg-[#e7d9b5]/10"
+                  className="mt-10 inline-flex items-center gap-3 border border-[#a3813c]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c] transition-colors hover:border-[#a3813c] hover:bg-[#a3813c]/10"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -304,7 +304,7 @@ function JointsWheel() {
                   style={{ minWidth: "100%" }}
                 >
                   <div
-                    className="relative h-full w-full overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] ring-1 ring-primary/25"
+                    className="relative h-full w-full overflow-hidden shadow-[0_24px_50px_-24px_rgba(42,34,51,0.22)] ring-1 ring-primary/25"
                     style={{
                       backgroundImage: `url(${j.image})`,
                       backgroundSize: "cover",
@@ -312,19 +312,19 @@ function JointsWheel() {
                     }}
                   >
                     {/* Links overlaid on image */}
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-[#1a1229]/95 via-[#1a1229]/55 to-transparent p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#e7d9b5]">
+                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-white/95 via-white/70 to-transparent p-5">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#a3813c]">
                         {j.label} · Procedimentos
                       </p>
-                      <ul className="mt-4 flex flex-col divide-y divide-white/10 border-y border-white/10">
+                      <ul className="mt-4 flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
                         {j.links.map((l) => (
                           <li key={l.label}>
                             <a
                               href={`/procedimentos#${l.slug}`}
-                              className="flex items-center justify-between gap-3 py-3 text-sm font-light text-white/95"
+                              className="flex items-center justify-between gap-3 py-3 text-sm font-light text-[#4a4152]"
                             >
                               <span>{l.label}</span>
-                              <ChevronRight className="h-3.5 w-3.5 text-[#e7d9b5]" />
+                              <ChevronRight className="h-3.5 w-3.5 text-[#a3813c]" />
                             </a>
                           </li>
                         ))}
@@ -342,28 +342,28 @@ function JointsWheel() {
           <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
             <div className="max-w-xl text-left">
               <div>
-                <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">
+                <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#a3813c] ">
                   Procedimentos · Área em evidência
                 </p>
                 <h3
                   key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-white sm:text-6xl lg:text-7xl animate-in fade-in duration-500 [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]"
+                  className="mt-3 text-5xl font-normal tracking-tight text-[#2a2233] sm:text-6xl lg:text-7xl animate-in fade-in duration-500 "
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {current.label}
                 </h3>
                 <p
                   key={current.desc}
-                  className="mt-5 hidden text-lg leading-relaxed text-white/95 lg:block sm:text-xl [text-shadow:0_1px_10px_rgba(0,0,0,0.7)]"
+                  className="mt-5 hidden text-lg leading-relaxed text-[#4a4152] lg:block sm:text-xl "
                 >
                   {current.desc}
                 </p>
-                <p className="mt-6 hidden text-xs font-semibold uppercase tracking-[0.24em] text-white/60 lg:block">
+                <p className="mt-6 hidden text-xs font-semibold uppercase tracking-[0.24em] text-[#4a4152] lg:block">
                   passe o mouse sobre a imagem para ver os procedimentos →
                 </p>
                 <a
                   href="/procedimentos"
-                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-3 border-2 border-[#e7d9b5]/70 px-7 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#e7d9b5] transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
+                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-3 border-2 border-[#a3813c]/70 px-7 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#a3813c] transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
                 >
                   Ver todos os procedimentos
                   <ChevronRight className="h-4 w-4" />
@@ -378,7 +378,7 @@ function JointsWheel() {
         <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center lg:hidden">
           <a
             href="/procedimentos"
-            className="pointer-events-auto inline-flex items-center gap-2 border-2 border-[#e7d9b5]/70 bg-[#1a1229]/70 px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] backdrop-blur"
+            className="pointer-events-auto inline-flex items-center gap-2 border-2 border-[#a3813c]/70 bg-white/85 px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#a3813c] backdrop-blur"
           >
             Ver todos os procedimentos
             <ChevronRight className="h-3.5 w-3.5" />
@@ -403,10 +403,9 @@ export default function Procedures() {
       }`}
       style={{
         backgroundImage: `
-          radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
-          radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
-          radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
-          linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
+          radial-gradient(circle at 82% 20%, rgba(231,217,181,0.40), transparent 58%),
+          radial-gradient(circle at 12% 82%, rgba(142,130,184,0.12), transparent 60%),
+          linear-gradient(160deg, #ffffff 0%, #fbf7ee 50%, #f2e9d8 100%)
         `,
       }}
     >
@@ -495,19 +494,19 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
             className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
             style={{
               background:
-                "linear-gradient(180deg, transparent 0%, #e7d9b5 20%, #e7d9b5 80%, transparent 100%)",
-              boxShadow: "0 0 24px 2px rgba(231,217,181,0.55)",
+                "linear-gradient(180deg, transparent 0%, #a3813c 20%, #a3813c 80%, transparent 100%)",
+              boxShadow: "0 0 24px 2px rgba(163,129,60,0.45)",
             }}
           />
           <div
             className="absolute top-1/2 flex -translate-y-1/2 items-center gap-2"
             style={{ right: "calc(50% + 6px)" }}
           >
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5] sm:inline">
+            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.32em] text-[#a3813c] sm:inline">
               Etapas
             </span>
             <span
-              className="flex h-12 w-12 items-center justify-center border-2 border-[#e7d9b5] bg-[#1a1229]/70 text-[#e7d9b5] backdrop-blur"
+              className="flex h-12 w-12 items-center justify-center border-2 border-[#a3813c] bg-[#faf7f2]/70 text-[#a3813c] backdrop-blur"
               style={{ boxShadow: "0 0 30px rgba(231,217,181,0.35)" }}
             >
               <ChevronRight className="h-5 w-5 rotate-180" />
@@ -595,7 +594,7 @@ function StepsReveal({
           transition: "transform 120ms linear, opacity 120ms linear, filter 160ms linear",
           willChange: "transform, opacity, filter",
           boxShadow:
-            "0 40px 90px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(231,217,181,0.16)",
+            "0 30px 70px -24px rgba(42,34,51,0.18), 0 0 0 1px rgba(163,129,60,0.18)",
         }}
         aria-hidden={!isFront}
       >
@@ -604,24 +603,24 @@ function StepsReveal({
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(160deg, rgba(20,15,32,0.96) 0%, rgba(30,20,50,0.94) 100%)",
+              "linear-gradient(160deg, #ffffff 0%, #fbf7ee 60%, #f4ecdd 100%)",
           }}
         />
         {/* Aurora glow */}
         <div
-          className="pointer-events-none absolute -inset-24 opacity-70"
+          className="pointer-events-none absolute -inset-24 opacity-60"
           style={
             REDUCE_FX
               ? {
                   background:
-                    "radial-gradient(circle at 30% 30%, rgba(142,130,184,0.38), transparent 62%)," +
-                    "radial-gradient(circle at 72% 38%, rgba(231,217,181,0.26), transparent 60%)," +
-                    "radial-gradient(circle at 45% 78%, rgba(74,53,120,0.42), transparent 65%)",
+                    "radial-gradient(circle at 30% 30%, rgba(231,217,181,0.30), transparent 62%)," +
+                    "radial-gradient(circle at 72% 38%, rgba(163,129,60,0.10), transparent 60%)," +
+                    "radial-gradient(circle at 45% 78%, rgba(142,130,184,0.16), transparent 65%)",
                   transform: `rotate(${(i * 47) % 360}deg)`,
                 }
               : {
                   background:
-                    "conic-gradient(from 210deg at 50% 45%, rgba(142,130,184,0.35), rgba(231,217,181,0.28), rgba(74,53,120,0.35), rgba(231,217,181,0.2), rgba(142,130,184,0.35))",
+                    "conic-gradient(from 210deg at 50% 45%, rgba(231,217,181,0.30), rgba(231,217,181,0.28), rgba(142,130,184,0.16), rgba(231,217,181,0.2), rgba(231,217,181,0.30))",
                   filter: "blur(60px)",
                   WebkitFilter: "blur(60px)",
                   transform: `rotate(${(i * 47) % 360}deg)`,
@@ -640,11 +639,11 @@ function StepsReveal({
               bottom: c.startsWith("b") ? -1 : undefined,
               left: c.endsWith("l") ? -1 : undefined,
               right: c.endsWith("r") ? -1 : undefined,
-              borderTop: c.startsWith("t") ? "2px solid #e7d9b5" : undefined,
-              borderBottom: c.startsWith("b") ? "2px solid #e7d9b5" : undefined,
-              borderLeft: c.endsWith("l") ? "2px solid #e7d9b5" : undefined,
-              borderRight: c.endsWith("r") ? "2px solid #e7d9b5" : undefined,
-              boxShadow: "0 0 12px rgba(231,217,181,0.55)",
+              borderTop: c.startsWith("t") ? "2px solid #a3813c" : undefined,
+              borderBottom: c.startsWith("b") ? "2px solid #a3813c" : undefined,
+              borderLeft: c.endsWith("l") ? "2px solid #a3813c" : undefined,
+              borderRight: c.endsWith("r") ? "2px solid #a3813c" : undefined,
+              boxShadow: "0 0 10px rgba(163,129,60,0.35)",
             }}
           />
         ))}
@@ -656,8 +655,8 @@ function StepsReveal({
           style={{
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             color: "transparent",
-            WebkitTextStroke: "1.5px rgba(231,217,181,0.28)",
-            textShadow: "0 0 40px rgba(231,217,181,0.12)",
+            WebkitTextStroke: "1.5px rgba(163,129,60,0.28)",
+            textShadow: "0 0 40px rgba(163,129,60,0.10)",
           }}
         >
           {num}
@@ -672,34 +671,34 @@ function StepsReveal({
                 className="absolute inset-0"
                 style={{
                   background:
-                    "conic-gradient(from 0deg, #e7d9b5, rgba(142,130,184,0.9), #e7d9b5, rgba(74,53,120,0.9), #e7d9b5)",
+                    "conic-gradient(from 0deg, #a3813c, rgba(142,130,184,0.9), #a3813c, rgba(74,53,120,0.9), #a3813c)",
                   animation: isFront ? "spin 6s linear infinite" : undefined,
                   filter: "blur(2px)",
                   opacity: 0.9,
                 }}
               />
-              <span aria-hidden className="absolute inset-[2px] bg-[#1a1229]" />
-              <s.icon className="relative h-6 w-6 text-[#e7d9b5]" />
+              <span aria-hidden className="absolute inset-[2px] bg-[#faf7f2]" />
+              <s.icon className="relative h-6 w-6 text-[#a3813c]" />
             </span>
             <div className="flex flex-col">
               <span
-                className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#e7d9b5]"
+                className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c]"
                 style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}
               >
                 Etapa {num} / {String(totalSteps).padStart(2, "0")}
               </span>
-              <span className="mt-1 h-px w-16 bg-[#e7d9b5]/60" />
+              <span className="mt-1 h-px w-16 bg-[#a3813c]/60" />
             </div>
           </div>
 
           <div className="mt-auto">
             <h4
-              className="text-4xl leading-tight text-white lg:text-5xl"
+              className="text-4xl leading-tight text-[#2a2233] lg:text-5xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               {s.title}
             </h4>
-            <p className="mt-5 text-lg leading-relaxed text-white/80">{s.desc}</p>
+            <p className="mt-5 text-lg leading-relaxed text-[#4a4152]">{s.desc}</p>
           </div>
         </div>
       </div>
@@ -736,12 +735,12 @@ function StepsReveal({
           className="relative hidden lg:flex lg:flex-col lg:h-full"
           aria-label="Etapas"
         >
-          <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-white/10" />
+          <div className="pointer-events-none absolute left-[22px] top-3 bottom-3 w-px bg-[#2a2233]/15" />
           <div
-            className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#e7d9b5] transition-[height] duration-500"
+            className="pointer-events-none absolute left-[22px] top-3 w-px bg-[#a3813c] transition-[height] duration-500"
             style={{
               height: `calc((100% - 24px) * ${fillPct / 100})`,
-              boxShadow: "0 0 12px rgba(231,217,181,0.6)",
+              boxShadow: "0 0 12px rgba(163,129,60,0.35)",
             }}
           />
           {steps.map((s, i) => {
@@ -752,27 +751,27 @@ function StepsReveal({
                 key={s.title}
                 className={`relative flex flex-1 items-center gap-5 border pl-14 pr-6 transition-all duration-500 ${
                   isActive
-                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.07] text-foreground"
-                    : "border-white/10 text-muted-foreground"
+                    ? "border-[#a3813c] bg-[#a3813c]/[0.07] text-foreground"
+                    : "border-[#2a2233]/12 text-muted-foreground"
                 }`}
                 style={{ minHeight: 0 }}
               >
                 <span
                   className={`absolute left-[15px] top-1/2 h-3.5 w-3.5 -translate-y-1/2 border transition-all duration-500 ${
                     isPassed
-                      ? "border-[#e7d9b5] bg-[#e7d9b5]"
-                      : "border-white/25 bg-transparent"
+                      ? "border-[#a3813c] bg-[#a3813c]"
+                      : "border-[#2a2233]/12 bg-transparent"
                   }`}
                   style={
                     isPassed
-                      ? { boxShadow: "0 0 14px rgba(231,217,181,0.6)" }
+                      ? { boxShadow: "0 0 14px rgba(163,129,60,0.35)" }
                       : undefined
                   }
                   aria-hidden
                 />
                 <span
                   className={`text-base font-semibold uppercase tracking-[0.32em] ${
-                    isActive ? "text-[#e7d9b5]" : "text-primary/60"
+                    isActive ? "text-[#a3813c]" : "text-primary/60"
                   }`}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -803,8 +802,8 @@ function StepsReveal({
                 key={s.title}
                 className={`flex shrink-0 items-center gap-3 border py-2 pl-3 pr-4 text-left transition-all duration-500 ${
                   isActive
-                    ? "border-[#e7d9b5] bg-[#e7d9b5]/[0.08] text-foreground"
-                    : "border-white/10 text-muted-foreground opacity-60"
+                    ? "border-[#a3813c] bg-[#a3813c]/[0.08] text-foreground"
+                    : "border-[#2a2233]/12 text-muted-foreground opacity-60"
                 }`}
               >
                 <span className="text-xs font-semibold uppercase tracking-[0.28em] text-primary/80">

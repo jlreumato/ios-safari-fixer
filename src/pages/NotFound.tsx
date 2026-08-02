@@ -16,15 +16,15 @@ const NotFound = () => {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="px-6 text-center">
-        <h1 className="mb-4 text-5xl font-normal text-white" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+        <h1 className="mb-4 text-5xl font-normal text-[#2a2233]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
           404
         </h1>
-        <p className="mb-6 text-lg font-light text-white/70">
+        <p className="mb-6 text-lg font-light text-[#4a4152]">
           Esta página não existe ou foi movida.
         </p>
         <a
           href="/"
-          className="inline-flex items-center gap-2 border border-white/25 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:border-[#e7d9b5] hover:text-[#e7d9b5]"
+          className="inline-flex items-center gap-2 border border-[#2a2233]/12 px-6 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#2a2233] transition-colors hover:border-[#a3813c] hover:text-[#a3813c]"
         >
           Voltar ao início
         </a>

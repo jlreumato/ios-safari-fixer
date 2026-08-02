@@ -22,10 +22,9 @@ export default function TratamentosPage() {
         className="bg-parallax-fixed relative min-h-[100dvh]"
         style={{
           backgroundImage: `
-            radial-gradient(circle at 20% 15%, hsl(260 45% 22% / 0.75), transparent 55%),
-            radial-gradient(circle at 80% 40%, hsl(40 40% 30% / 0.35), transparent 55%),
-            radial-gradient(circle at 30% 85%, hsl(275 40% 20% / 0.7), transparent 55%),
-            linear-gradient(160deg, hsl(258 40% 12%) 0%, hsl(268 35% 15%) 55%, hsl(255 40% 10%) 100%)
+            radial-gradient(circle at 82% 20%, rgba(231,217,181,0.40), transparent 58%),
+            radial-gradient(circle at 12% 82%, rgba(142,130,184,0.12), transparent 60%),
+            linear-gradient(160deg, #ffffff 0%, #fbf7ee 50%, #f2e9d8 100%)
           `,
         }}
       >
@@ -43,13 +42,13 @@ export default function TratamentosPage() {
               Tratamentos Reumatológicos
             </p>
             <h1
-              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
+              className="mt-3 max-w-3xl text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2a2233] sm:text-5xl lg:text-6xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Cuidado para cada{" "}
-              <span className="italic text-[#e7d9b5]">condição.</span>
+              <span className="italic text-[#a3813c]">condição.</span>
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#4a4152] sm:text-lg">
               Atendimento humanizado e baseado em evidências nas principais áreas da
               reumatologia — do diagnóstico ao acompanhamento contínuo.
             </p>
@@ -63,7 +62,7 @@ export default function TratamentosPage() {
               <Link
                 key={t.slug}
                 to={`/tratamentos/${t.slug}`}
-                className="group relative flex aspect-[3/4] flex-col overflow-hidden border border-white/10 bg-white/[0.03] shadow-[0_20px_60px_-30px_rgba(0,0,0,0.6)] backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1"
+                className="group relative flex aspect-[3/4] flex-col overflow-hidden border border-[#2a2233]/12 bg-white shadow-[0_20px_50px_-28px_rgba(42,34,51,0.25)] backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1"
               >
                 <img
                   src={t.image}
@@ -73,14 +72,14 @@ export default function TratamentosPage() {
                 />
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-black/85 via-black/45 to-transparent" />
 
-                <div className="absolute left-4 top-4 z-10 px-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#e7d9b5] sm:text-xs">
+                <div className="absolute left-4 top-4 z-10 px-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#a3813c] sm:text-xs">
                   {String(i + 1).padStart(2, "0")} /{" "}
                   {String(treatments.length).padStart(2, "0")}
                 </div>
 
-                <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 text-white">
-                  <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#e7d9b5] sm:text-xs">
-                    <span className="h-px w-8 bg-[#e7d9b5]/70" />
+                <div className="absolute inset-x-0 bottom-0 z-10 p-5 sm:p-6 text-[#2a2233]">
+                  <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#a3813c] sm:text-xs">
+                    <span className="h-px w-8 bg-[#a3813c]/70" />
                     <span>Tratamento</span>
                   </div>
                   <h2
@@ -89,14 +88,14 @@ export default function TratamentosPage() {
                   >
                     {t.title}
                   </h2>
-                  <p className="mt-2 line-clamp-2 text-sm leading-snug text-white/85 sm:text-base">
+                  <p className="mt-2 line-clamp-2 text-sm leading-snug text-[#4a4152] sm:text-base">
                     {t.shortDesc}
                   </p>
                   <div className="mt-4 flex items-center justify-between">
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/85 sm:text-xs">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#4a4152] sm:text-xs">
                       Saiba mais
                     </span>
-                    <span className="flex h-9 w-9 items-center justify-center border-2 border-[#e7d9b5] text-[#e7d9b5] transition-transform duration-500 group-hover:scale-110">
+                    <span className="flex h-9 w-9 items-center justify-center border-2 border-[#a3813c] text-[#a3813c] transition-transform duration-500 group-hover:scale-110">
                       <ArrowUpRight className="h-4 w-4" />
                     </span>
                   </div>
@@ -111,13 +110,13 @@ export default function TratamentosPage() {
               Vamos conversar sobre você
             </p>
             <h3
-              className="text-3xl font-normal leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl"
+              className="text-3xl font-normal leading-tight tracking-tight text-[#2a2233] sm:text-4xl lg:text-5xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Pronto para transformar sua{" "}
-              <span className="italic text-[#e7d9b5]">dor em liberdade?</span>
+              <span className="italic text-[#a3813c]">dor em liberdade?</span>
             </h3>
-            <p className="max-w-xl text-base leading-relaxed text-white/75">
+            <p className="max-w-xl text-base leading-relaxed text-[#4a4152]">
               Agende sua avaliação e receba um plano de cuidado personalizado — do
               diagnóstico preciso ao acompanhamento contínuo.
             </p>

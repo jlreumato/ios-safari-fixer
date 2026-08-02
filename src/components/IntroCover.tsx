@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronUp, Hand } from "lucide-react";
 
-const GOLD = "#e7d9b5";
+const GOLD = "#a3813c";
 
 /**
  * Full-screen intro cover. Page scroll is locked until the user "opens" the
@@ -109,7 +109,7 @@ export default function IntroCover() {
   const content = (
     <div className="relative flex h-[100dvh] w-full flex-col items-center justify-center overflow-hidden px-6">
       <div
-        className="relative text-white"
+        className="relative text-[#2a2233]"
         style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
       >
         {/* Row: DRA.  JULIANA LEAL */}
@@ -128,7 +128,7 @@ export default function IntroCover() {
           </span>
 
           <span
-            className="whitespace-nowrap text-5xl font-normal uppercase tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl"
+            className="whitespace-nowrap text-5xl font-normal uppercase tracking-tight text-[#2a2233] sm:text-7xl md:text-8xl lg:text-9xl"
             style={{
               transform: mounted ? "translateX(0)" : "translateX(110vw)",
               opacity: mounted ? 1 : 0,
@@ -161,7 +161,7 @@ export default function IntroCover() {
 
       {/* Divider */}
       <div
-        className="mt-10 h-px w-28 bg-gradient-to-r from-transparent via-[#e7d9b5]/70 to-transparent"
+        className="mt-10 h-px w-28 bg-gradient-to-r from-transparent via-[#a3813c]/60 to-transparent"
         style={{
           opacity: nameDone ? 1 : 0,
           transform: nameDone ? "scaleX(1)" : "scaleX(0)",
@@ -180,7 +180,7 @@ export default function IntroCover() {
         <span>{isTouch ? "Toque para iniciar sua transformação" : "Deslize para continuar"}</span>
         <span className="relative inline-flex h-8 w-8 items-center justify-center sm:h-7 sm:w-7">
           <span
-            className="absolute inset-0 rounded-full border border-[#e7d9b5]/60"
+            className="absolute inset-0 rounded-full border border-[#a3813c]/50"
             style={{ animation: "intro-swipe-ring 1.8s ease-out infinite" }}
           />
           {isTouch ? (
@@ -216,11 +216,9 @@ export default function IntroCover() {
   );
 
   const bg =
-    "radial-gradient(ellipse 90% 60% at 15% 12%, rgba(120,95,175,0.35), transparent 60%)," +
-    "radial-gradient(ellipse 80% 55% at 85% 35%, rgba(210,175,110,0.18), transparent 60%)," +
-    "radial-gradient(ellipse 100% 60% at 20% 62%, rgba(130,100,180,0.26), transparent 60%)," +
-    "radial-gradient(ellipse 90% 55% at 90% 82%, rgba(200,170,105,0.14), transparent 60%)," +
-    "linear-gradient(180deg, #1a1229 0%, #221740 25%, #1c1533 55%, #241a44 80%, #17102a 100%)";
+    "radial-gradient(ellipse 70% 55% at 82% 18%, rgba(231,217,181,0.55), transparent 65%)," +
+    "radial-gradient(ellipse 65% 50% at 10% 80%, rgba(142,130,184,0.12), transparent 68%)," +
+    "linear-gradient(180deg, #ffffff 0%, #fbf7ee 45%, #f2e9d8 100%)";
 
   const halfBgStyle: React.CSSProperties = {
     backgroundImage: bg,
