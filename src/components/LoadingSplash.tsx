@@ -36,8 +36,8 @@ export default function LoadingSplash({
           alt=""
           className="h-14 w-auto md:h-16 animate-[splash-pulse_1.4s_ease-in-out_infinite]"
         />
-        <div className="h-[2px] w-32 overflow-hidden rounded-full bg-[hsl(249_22%_61%/0.15)]">
-          <div className="h-full w-1/3 rounded-full bg-[hsl(249_22%_61%)] animate-[splash-bar_1.2s_ease-in-out_infinite]" />
+        <div className="h-[2px] w-32 overflow-hidden rounded-full bg-[#a3813c]/15">
+          <div className="h-full w-1/3 rounded-full bg-[#a3813c] animate-[splash-bar_1.2s_ease-in-out_infinite]" />
         </div>
       </div>
       <style>{`

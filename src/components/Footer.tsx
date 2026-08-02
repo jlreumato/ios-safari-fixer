@@ -12,7 +12,7 @@ export default function Footer() {
               <img
                 src={logoNome.url}
                 alt="Dra. Juliana Leal — Reumatologia"
-                className="h-12 w-auto brightness-0 invert md:h-14"
+                className="h-12 w-auto opacity-90 [filter:brightness(0)_saturate(0)] md:h-14"
                 loading="lazy"
               />
             </a>
