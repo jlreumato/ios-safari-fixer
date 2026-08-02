@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
+import FloatingVideoGallery from "@/components/hero/FloatingVideoGallery";
 import heroVideoHd from "@/assets/hero-video-hd.mp4.asset.json";
 import heroVideoMobile from "@/assets/hero-video-mobile.mp4.asset.json";
 import heroPoster from "@/assets/dra-juliana-about.jpg.asset.json";
