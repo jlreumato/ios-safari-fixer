@@ -233,6 +233,42 @@
 }
 
 /* ============================================================
+   Galeria flutuante de vídeos (hero)
+   Amplitudes em % do próprio card: cards vizinhos chegam a se
+   sobrepor ~20% nos encontros do ciclo e depois se separam.
+   ============================================================ */
+@keyframes float-card-a {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  35%      { transform: translate3d(9%, 7%, 0); }
+  70%      { transform: translate3d(3%, -6%, 0); }
+}
+@keyframes float-card-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  30%      { transform: translate3d(-11%, -8%, 0); }
+  65%      { transform: translate3d(-4%, 9%, 0); }
+}
+@keyframes float-card-c {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  40%      { transform: translate3d(-8%, 10%, 0); }
+  75%      { transform: translate3d(7%, -5%, 0); }
+}
+.float-card {
+  will-change: transform;
+  -webkit-animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  animation-direction: alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .float-card {
+    -webkit-animation: none !important;
+    animation: none !important;
+  }
+}
+
+/* ============================================================
    Compatibilidade iOS / Safari
    ============================================================ */
 
