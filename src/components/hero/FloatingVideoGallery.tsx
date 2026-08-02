@@ -21,8 +21,8 @@ type Layer = {
 const LAYERS: Layer[] = [
   // Entrevista 16:9 — topo direito, levemente recuada
   {
-    pos: { right: "3%", top: "3%" },
-    width: "47%",
+    pos: { right: "5%", top: "3%" },
+    width: "46%",
     rotateY: -15,
     depth: -50,
     z: 20,
@@ -33,8 +33,8 @@ const LAYERS: Layer[] = [
   },
   // Reel vertical — esquerda, recuado ao fundo
   {
-    pos: { left: "3%", top: "9%" },
-    width: "27%",
+    pos: { left: "9%", top: "9%" },
+    width: "25%",
     rotateY: 25,
     depth: -100,
     z: 10,
@@ -45,8 +45,8 @@ const LAYERS: Layer[] = [
   },
   // Entrevista 16:9 — inferior esquerda, mais ao fundo
   {
-    pos: { left: "0%", bottom: "3%" },
-    width: "44%",
+    pos: { left: "5%", bottom: "3%" },
+    width: "42%",
     rotateY: 10,
     depth: -80,
     z: 15,
@@ -55,6 +55,7 @@ const LAYERS: Layer[] = [
     delay: "-5s",
     blur: 0.6,
   },
+
   // Reel vertical — centro, em destaque à frente de todos
   {
     pos: { left: "50%", top: "50%" },
