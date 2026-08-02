@@ -122,18 +122,24 @@ export default function FloatingVideoGallery() {
           {heroVideos.map((v, i) => {
             const l = LAYERS[i % LAYERS.length];
             const isHovered = hovered === i;
-            const center = l.featured ? "translate(-50%, -50%) " : "";
-            const depth = l.depth + (isHovered ? 90 : 0);
-            const scale = isHovered && l.featured ? 1.05 : 1;
+            const vertical = v.aspect === "9/16";
+            // No hover, o cartão viaja para o centro da cena e vem para a frente.
+            const pos: React.CSSProperties = isHovered
+              ? { left: "50%", top: "50%", right: "auto", bottom: "auto" }
+              : { ...l.pos };
+            const width = isHovered ? (vertical ? "33%" : "58%") : l.width;
+            const centered = isHovered || l.featured;
             return (
               <div
                 key={v.id}
                 className="gallery-plane absolute opacity-0 animate-[fadeInUp_0.9s_ease-out_forwards]"
                 style={{
-                  ...l.pos,
-                  width: l.width,
+                  ...pos,
+                  width,
                   zIndex: isHovered ? 60 : l.z,
                   animationDelay: `${0.45 + i * 0.11}s`,
+                  transition:
+                    "left 700ms cubic-bezier(0.22,1,0.36,1), top 700ms cubic-bezier(0.22,1,0.36,1), right 700ms cubic-bezier(0.22,1,0.36,1), bottom 700ms cubic-bezier(0.22,1,0.36,1), width 700ms cubic-bezier(0.22,1,0.36,1)",
                 }}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
@@ -141,8 +147,8 @@ export default function FloatingVideoGallery() {
                 <div
                   className="gallery-plane"
                   style={{
-                    transform: `${center}rotateY(${isHovered ? l.rotateY * 0.35 : l.rotateY}deg) translateZ(${depth}px) scale(${scale})`,
-                    transition: "transform 600ms cubic-bezier(0.22,1,0.36,1), filter 600ms ease",
+                    transform: `${centered ? "translate(-50%, -50%) " : ""}rotateY(${isHovered ? 0 : l.rotateY}deg) translateZ(${isHovered ? 160 : l.depth}px) scale(${isHovered ? 1.04 : 1})`,
+                    transition: "transform 700ms cubic-bezier(0.22,1,0.36,1), filter 600ms ease",
                     filter: l.blur && !isHovered ? `blur(${l.blur}px) brightness(0.88)` : undefined,
                   }}
                 >
@@ -152,12 +158,13 @@ export default function FloatingVideoGallery() {
                       animationName: l.anim,
                       animationDuration: l.dur,
                       animationDelay: l.delay,
+                      animationPlayState: isHovered ? "paused" : "running",
                     }}
                   >
                     <VideoCard
                       video={v}
                       onOpen={setOpen}
-                      featured={l.featured}
+                      featured={l.featured || isHovered}
                       style={{ aspectRatio: v.aspect.replace("/", " / ") }}
                       className="w-full"
                     />
