@@ -3,14 +3,15 @@ import { heroVideos, type HeroVideo } from "@/data/heroVideos";
 import VideoCard from "./VideoCard";
 import VideoLightbox from "./VideoLightbox";
 
-/** Cluster compacto: posições em % do container, animação e profundidade por card. */
+/** Cluster compacto: posições em % do container, sempre dentro da área visível. */
 const LAYOUT = [
-  { left: "0%", top: "6%", width: "48%", z: 30, anim: "float-card-a", dur: "9s", delay: "0s", blur: 0, scale: 1 },
-  { left: "41%", top: "20%", width: "27%", z: 40, anim: "float-card-b", dur: "7.5s", delay: "-1.2s", blur: 0, scale: 1 },
-  { left: "70%", top: "2%", width: "26%", z: 20, anim: "float-card-c", dur: "10.5s", delay: "-3s", blur: 1.2, scale: 0.96 },
-  { left: "9%", top: "58%", width: "42%", z: 25, anim: "float-card-c", dur: "8.5s", delay: "-2s", blur: 0.6, scale: 0.98 },
-  { left: "63%", top: "50%", width: "24%", z: 35, anim: "float-card-a", dur: "8s", delay: "-4s", blur: 0, scale: 1 },
+  { left: "2%", top: "8%", width: "44%", z: 30, anim: "float-card-a", dur: "9s", delay: "0s", blur: 0, scale: 1 },
+  { left: "40%", top: "4%", width: "26%", z: 40, anim: "float-card-b", dur: "7.5s", delay: "-1.2s", blur: 0, scale: 1 },
+  { left: "70%", top: "18%", width: "26%", z: 20, anim: "float-card-c", dur: "10.5s", delay: "-3s", blur: 0.8, scale: 0.97 },
+  { left: "6%", top: "46%", width: "42%", z: 25, anim: "float-card-c", dur: "8.5s", delay: "-2s", blur: 0.4, scale: 0.99 },
+  { left: "52%", top: "44%", width: "24%", z: 35, anim: "float-card-a", dur: "8s", delay: "-4s", blur: 0, scale: 1 },
 ];
+
 
 export default function FloatingVideoGallery() {
   const [open, setOpen] = useState<HeroVideo | null>(null);
