@@ -4,8 +4,8 @@ import { heroVideos, heroVideoFallbackThumb, type HeroVideo } from "@/data/heroV
 import VideoLightbox from "./VideoLightbox";
 
 const DURATION = 5600; // autoplay do leque
-const SPREAD = 13; // graus entre cada carta
-const LIFT = 26; // deslocamento vertical por posição
+const SPREAD = 17; // graus entre cada carta
+const LIFT = 30; // deslocamento vertical por posição
 
 /**
  * Fan Card Carousel — as capas dos vídeos abrem em leque (como cartas na mão).
@@ -114,8 +114,8 @@ export default function VideoFanCarousel() {
                   marginTop: "calc(clamp(190px, 30%, 300px) * -0.62)",
                   transformOrigin: "50% 145%",
                   WebkitTransformOrigin: "50% 145%",
-                  transform: `rotate(${angle}deg) translateY(${lift}px) translateZ(${depth}px) scale(${scale})`,
-                  WebkitTransform: `rotate(${angle}deg) translateY(${lift}px) scale(${scale})`,
+                  transform: `translateX(${d * 26}%) rotate(${angle}deg) translateY(${lift}px) translateZ(${depth}px) scale(${scale})`,
+                  WebkitTransform: `translateX(${d * 26}%) rotate(${angle}deg) translateY(${lift}px) scale(${scale})`,
                   zIndex: 40 - abs,
                   opacity: abs > 2 ? 0 : 1,
                   borderColor: isActive
