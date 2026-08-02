@@ -23,8 +23,14 @@ export default function VideoCard({ video, onOpen, style, className = "" }: Prop
         alt={video.title}
         loading="lazy"
         decoding="async"
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (img.src !== heroVideoFallbackThumb) img.src = heroVideoFallbackThumb;
+        }}
         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
       />
+
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
 
