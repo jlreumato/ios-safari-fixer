@@ -56,10 +56,11 @@ export default function Hero() {
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ WebkitFilter: "grayscale(1) contrast(1.05)", filter: "grayscale(1) contrast(1.05)" }}
         />
       </picture>
 
-      {/* Vídeo colorido carrega por trás; faz cross-fade quando pronto */}
+      {/* Vídeo em preto e branco carrega por trás; faz cross-fade quando pronto */}
       {mountVideo && (
         <video
           ref={baseVideoRef}
@@ -78,10 +79,15 @@ export default function Hero() {
             if (v.currentTime >= 5) v.currentTime = 0;
           }}
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{ opacity: videoReady ? 1 : 0 }}
+          style={{
+            opacity: videoReady ? 1 : 0,
+            WebkitFilter: "grayscale(1) contrast(1.05)",
+            filter: "grayscale(1) contrast(1.05)",
+          }}
           aria-hidden="true"
         />
       )}
+
 
       {/* Legibility overlays */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0e0a1a]/80 via-[#0e0a1a]/45 to-transparent" />

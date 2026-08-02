@@ -54,18 +54,21 @@ export default function VideoLightbox({ video, onClose }: Props) {
         }}
       >
         {vertical ? (
-          // Instagram: o embed vem com cabeçalho/legenda. Ampliamos o iframe e
-          // deslocamos para enquadrar somente o vídeo.
-          <iframe
-            src={embedUrl(video)}
-            title={video.title}
-            scrolling="no"
-            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-            allowFullScreen
-            className="absolute left-0 w-full"
-            style={{ border: 0, top: "-54px", height: "calc(100% + 260px)" }}
-          />
+          // Instagram: o embed vem com cabeçalho e rodapé (curtidas/comentários).
+          // Ampliamos o iframe e deslocamos para enquadrar somente o vídeo.
+          <div className="absolute inset-0 overflow-hidden">
+            <iframe
+              src={embedUrl(video)}
+              title={video.title}
+              scrolling="no"
+              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+              allowFullScreen
+              className="absolute left-0 w-full"
+              style={{ border: 0, top: "-58px", height: "calc(100% + 520px)" }}
+            />
+          </div>
         ) : (
+
           <iframe
             src={embedUrl(video)}
             title={video.title}
