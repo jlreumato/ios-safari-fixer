@@ -1,5 +1,5 @@
 import { Play } from "lucide-react";
-import type { HeroVideo } from "@/data/heroVideos";
+import { heroVideoFallbackThumb, type HeroVideo } from "@/data/heroVideos";
 
 type Props = {
   video: HeroVideo;
