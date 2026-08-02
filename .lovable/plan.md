@@ -1,113 +1,52 @@
-## Objetivo
+# Hero com galeria flutuante de vídeos
 
-Reduzir o consumo inicial de JS, imagens e listeners de scroll no mobile carregando as seções abaixo da dobra (`About`, `Clinic`, `TreatmentsGrid`, `Procedures`, `WhatsAppForm`, `Testimonials`, `FAQ`, `CTASection`) apenas quando estiverem próximas do viewport. As animações de entrada passam a ser disparadas no momento em que cada seção entra na tela.
+Nova hero em duas camadas: o vídeo atual continua como fundo cinematográfico (escurecido), e sobre ele flutuam cards de vídeo — entrevistas e procedimentos — com parallax suave. Headline e galeria dividem o espaço 50/50.
 
-## Por que faz sentido
+## Layout (desktop)
 
-Hoje o `Index.tsx` monta todas as seções de uma só vez, mesmo as que o usuário nunca rola até. No mobile isso significa:
-
-- Todo o bundle/imagens das seções inferiores competem com o LCP.
-- Listeners de scroll das seções `Procedures` e `CTASection` são registrados logo no primeiro render.
-- O Marquee de depoimentos começa a animar fora da tela.
-
-Com lazy loading por seção, o primeiro paint fica mais leve e o usuário só paga pelo que visualiza.
-
-## O que não muda
-
-- `IntroCover`, `Header`, `Hero`, `Footer`, `WhatsAppButton` e `BackToTop` continuam eager (são críticos para a primeira experiência).
-- Navegação por âncoras (`/#tratamentos-resumo`, `#procedimentos`) continua funcionando.
-- As animações de scroll-driven (`CTASection`, `Procedures`) continuam funcionando, porque serão montadas com antecedência (`rootMargin`) para que seus cálculos de altura/progresso sejam feitos antes de ficarem visíveis.
-
-## Passos
-
-### 1. Criar hook reutilizável `src/hooks/useInView.ts`
-
-Um único `IntersectionObserver` por elemento, com parâmetros:
-
-- `threshold` padrão `0.15`
-- `rootMargin` configurável (ex: `"0px"` para reveal simples, `"300px"` para seções scroll-driven)
-- `triggerOnce` padrão `true`
-- Retorna `{ ref, inView }`
-
-Isso elimina as cópias do `useReveal` espalhadas em `About.tsx`, `Clinic.tsx` e `Testimonials.tsx`.
-
-### 2. Criar componente `src/components/LazySection.tsx`
-
-Wrapper que:
-
-1. Renderiza um placeholder `div` com altura mínima aproximada da seção (evita layout shift brusco).
-2. Observa o placeholder com `rootMargin`.
-3. Monta os `children` quando o placeholder entra na zona de pré-carregamento.
-4. Passa `inView` para os filhos via render prop, permitindo que cada seção dispare sua animação de entrada no momento certo.
-
-```tsx
-<LazySection rootMargin="300px" minHeight="100vh">
-  {(inView) => <CTASection reveal={inView} />}
-</LazySection>
+```text
+┌──────────────────────────────────────────────────────────┐
+│  CRM/RQE                          ┌──────┐               │
+│                          ┌──────┐ │ 16:9 │               │
+│  Humanidade para         │ 9:16 │ │ card │  ┌──────┐     │
+│  transformar sua DOR     │ card │ └──────┘  │ 9:16 │     │
+│  em LIBERDADE!           └──────┘           │ card │     │
+│                                  ┌──────┐   └──────┘     │
+│  [Agendar Consulta] [Conheça]    │ 16:9 │               │
+│                                  └──────┘               │
+└──────────────────────────────────────────────────────────┘
 ```
 
-### 3. Aplicar lazy loading nas seções da home
+- Coluna esquerda: badge CRM, headline (escala reduzida ~15% para o equilíbrio 50/50), subtítulo, CTAs — animações de entrada atuais preservadas.
+- Coluna direita: 4-5 cards em profundidades diferentes (escala + blur leve nos mais distantes), cantos retos, moldura de linha fina champagne, sombra suave.
+- Cada card exibe a thumbnail do vídeo + badge de duração/origem e um botão de play champagne. Legenda curta ("Entrevista TV Pajuçara", "Infiltração guiada", etc.).
 
-Em `src/pages/Index.tsx`, envolver as seções abaixo da dobra:
+## Movimento
 
-- `About` — `rootMargin="200px"`
-- `Clinic` — `rootMargin="200px"`
-- `TreatmentsGrid` — `rootMargin="200px"`
-- `Procedures` — `rootMargin="400px"` (precisa de mais margem por causa das animações scroll-driven e altura de 800vh)
-- `WhatsAppForm` — `rootMargin="200px"`
-- `Testimonials` — `rootMargin="200px"`
-- `FAQ` — `rootMargin:"200px"`
-- `CTASection` — `rootMargin="400px"` (altura 300vh, precisa montar cedo)
+- Flutuação contínua e dessincronizada (translate Y/X sutil, ~6-10s por ciclo), suavizada e desativada com `prefers-reduced-motion`.
+- Parallax leve pelo movimento do mouse (desktop apenas), com limite pequeno para não distrair.
+- Entrada em stagger junto com a headline.
 
-Cada componente receberá uma prop `reveal: boolean` e ajustará sua animação de entrada para iniciar quando `reveal` for `true`.
+## Interação
 
-### 4. Adaptar componentes para animar ao entrar na tela
+- Clique/tap em um card abre um lightbox em tela cheia com o embed real (YouTube `iframe` ou Instagram `blockquote` + script oficial), fundo escuro, fechar por X / Esc / clique fora.
+- Foco visível no teclado, `aria-label` por card, lightbox com trap de foco.
 
-- `About`, `Clinic`, `Testimonials`: substituir o `useReveal` local pelo `useInView` do hook global e/ou pela prop `reveal` vinda do `LazySection`.
-- `FAQ`: manter o stagger existente, mas iniciá-lo a partir do momento em que a seção se torna visível.
-- `TreatmentsGrid`: manter o `IntersectionObserver` dos cards, mas garantir que o container só comece a observar após o mount lazy.
-- `CTASection`: manter o scroll progress, mas adicionar uma transição de fade-in suave quando `reveal` passar de `false` para `true`.
-- `Procedures`: manter o `ArrowSliceReveal` e `JointsWheel`, mas adicionar fade-in inicial controlado por `reveal`.
+## Mobile
 
-### 5. Garantir acessibilidade e SEO
+- Sem parallax de mouse: os cards viram um carrossel horizontal `snap-x` abaixo dos CTAs, com a flutuação mantida em amplitude reduzida.
+- `touch-action: pan-x` nos cards para o scroll vertical da página continuar livre (mesmo padrão já usado em Tratamentos).
+- Vídeo de fundo continua com o loop de 5s existente e o poster estático.
 
-- O placeholder deve ter o mesmo `id` da seção (ex: `id="sobre"`) para que links de âncora funcionem mesmo antes do mount.
-- Adicionar `aria-busy="true"` no placeholder e `aria-busy="false"` após o mount.
-- Para usuários sem JavaScript, o placeholder pode conter o conteúdo estático em `noscript`.
+## Conteúdo
 
-### 6. Otimizações adicionais no mobile
-
-- No `Testimonials`, pausar o CSS animation do `MarqueeRow` enquanto a seção não estiver visível (usando `animation-play-state: paused`).
-- No `Hero`, manter a lógica atual de poster/vídeo (já otimizada).
-- Considerar desmontar seções que saíram muito do viewport? **Não recomendado** — causa perda de estado e re-renderizações caras. O plano é montar uma vez (`triggerOnce`).
-
-## Fora do escopo
-
-- Code-split de rotas internas (`Blog`, `Procedimentos`, `Tratamentos`, `TratamentoDetalhe`) — o usuário optou por não priorizar isso agora.
-- Alterar o design visual das seções.
-- Trocar imagens ou textos.
+Preciso dos links dos vídeos (Instagram/YouTube). Vou implementar com um arquivo de dados `src/data/heroVideos.ts` contendo 5 entradas de exemplo (plataforma, id/url, título, thumbnail) — assim você me envia os links e eu só troco os valores, ou você mesmo edita.
 
 ## Detalhes técnicos
 
-- `LazySection` usará `React.lazy` internamente? Não. O ganho vem do atraso do mount, não de split de chunk. Se quisermos split de chunk no futuro, basta trocar a importação do componente por `React.lazy` sem mexer no wrapper.
-- O `rootMargin` positivo faz com que o observer dispare antes do elemento estar visível, dando tempo de montar e calcular layouts.
-- Para seções scroll-driven, o placeholder precisa ter altura aproximada correta. Se a altura for dinâmica (ex: `800vh`), usamos `minHeight` igual à altura real da seção.
-
-## Verificação
-
-1. `bun run build` — sanity check de compilação.
-2. Playwright headless em viewport mobile (375×812):
-   - Medir `performance.getEntriesByType('largest-contentful-paint')` antes e depois.
-   - Verificar que `About` só monta após scroll.
-   - Verificar que animações de `CTASection` e `Procedures` ainda funcionam.
-   - Testar link de âncora `/#tratamentos-resumo` vindo de outra página.
-3. Lighthouse mobile para confirmar redução no TBT/CLS.
-
-## Riscos e mitigações
-
-| Risco | Mitigação |
-|-------|-----------|
-| Layout shift ao montar seção | Placeholder com `minHeight` igual à altura real da seção |
-| Animação scroll-driven quebra porque montou tarde | `rootMargin` maior (400px) para `Procedures` e `CTASection` |
-| Âncora não funciona antes do mount | Placeholder carrega o `id` da seção |
-| Reveal não dispara se usuário rola muito rápido | `threshold` baixo (0.05) + `rootMargin` generoso |
+- `src/components/Hero.tsx`: refatorado para grid de duas colunas; mantém poster LCP, `dvh`, prefixos `-webkit-`.
+- Novos componentes: `src/components/hero/FloatingVideoGallery.tsx`, `src/components/hero/VideoCard.tsx`, `src/components/hero/VideoLightbox.tsx`.
+- `src/data/heroVideos.ts`: fonte dos itens da galeria.
+- Thumbnails: YouTube via `i.ytimg.com`; Instagram não expõe thumb pública, então uso frames extraídos/imagens existentes salvos como assets CDN.
+- Embeds carregam só ao abrir o lightbox (nada de iframe no load inicial) — sem impacto no LCP.
+- Keyframes de flutuação em `src/index.css`, animações via CSS transform (composited) para o Safari iOS.
