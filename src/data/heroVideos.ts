@@ -1,7 +1,6 @@
 import thumbInfiltracao from "@/assets/procedures/infiltracao.jpg.asset.json";
 import thumbBloqueio from "@/assets/procedures/bloqueio.jpg.asset.json";
 import thumbPrp from "@/assets/procedures/prp.jpg.asset.json";
-import thumbConsultorio from "@/assets/clinic/consultorio.jpg.asset.json";
 import thumbAutoimune from "@/assets/procedures/autoimune.jpg.asset.json";
 
 export type HeroVideo = {
@@ -17,61 +16,58 @@ export type HeroVideo = {
   aspect: "9/16" | "16/9";
 };
 
-/**
- * Substitua `videoId` pelos IDs reais:
- * - YouTube: https://youtu.be/ABC123  ->  videoId: "ABC123"
- * - Instagram: https://instagram.com/reel/XYZ789/  ->  videoId: "XYZ789"
- */
 export const heroVideos: HeroVideo[] = [
   {
-    id: "entrevista-tv",
+    id: "yt-ErEW-kzJleY",
     platform: "youtube",
-    videoId: "dQw4w9WgXcQ",
-    title: "Entrevista: quando procurar um reumatologista",
+    videoId: "ErEW-kzJleY",
+    title: "Entrevista com a Dra. Juliana Leal",
     kind: "Entrevista",
-    thumb: thumbConsultorio.url,
+    thumb: "https://i.ytimg.com/vi/ErEW-kzJleY/hqdefault.jpg",
     aspect: "16/9",
   },
   {
-    id: "infiltracao-guiada",
+    id: "ig-DaVcHNlpusr",
     platform: "instagram",
-    videoId: "C0000000000",
-    title: "Infiltração guiada por ultrassom",
-    kind: "Procedimento",
+    videoId: "DaVcHNlpusr",
+    title: "Cuidado com a dor no dia a dia",
+    kind: "Instagram",
     thumb: thumbInfiltracao.url,
     aspect: "9/16",
   },
   {
-    id: "bloqueio",
+    id: "yt-jQ8avLicNz4",
+    platform: "youtube",
+    videoId: "jQ8avLicNz4",
+    title: "Doenças reumáticas: quando procurar ajuda",
+    kind: "Entrevista",
+    thumb: "https://i.ytimg.com/vi/jQ8avLicNz4/hqdefault.jpg",
+    aspect: "16/9",
+  },
+  {
+    id: "ig-DXfMqDXDMyV",
     platform: "instagram",
-    videoId: "C1111111111",
-    title: "Bloqueio para dor crônica",
-    kind: "Procedimento",
+    videoId: "DXfMqDXDMyV",
+    title: "Procedimento guiado no consultório",
+    kind: "Instagram",
     thumb: thumbBloqueio.url,
     aspect: "9/16",
   },
   {
-    id: "prp",
-    platform: "youtube",
-    videoId: "dQw4w9WgXcQ",
-    title: "PRP: regeneração articular",
-    kind: "Procedimento",
-    thumb: thumbPrp.url,
-    aspect: "16/9",
-  },
-  {
-    id: "autoimune",
+    id: "ig-DYiQJOYJ09g",
     platform: "instagram",
-    videoId: "C2222222222",
-    title: "Doenças autoimunes: mitos e verdades",
-    kind: "Entrevista",
-    thumb: thumbAutoimune.url,
+    videoId: "DYiQJOYJ09g",
+    title: "Tratamento da dor articular",
+    kind: "Instagram",
+    thumb: thumbPrp.url,
     aspect: "9/16",
   },
 ];
 
+export const heroVideoFallbackThumb = thumbAutoimune.url;
+
 export function embedUrl(v: HeroVideo): string {
   return v.platform === "youtube"
     ? `https://www.youtube-nocookie.com/embed/${v.videoId}?autoplay=1&rel=0&modestbranding=1`
-    : `https://www.instagram.com/reel/${v.videoId}/embed/`;
+    : `https://www.instagram.com/p/${v.videoId}/embed/`;
 }
