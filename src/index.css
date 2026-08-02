@@ -233,29 +233,24 @@
 }
 
 /* ============================================================
-   Galeria flutuante de vídeos (hero)
-   Amplitudes em % do próprio card: cards vizinhos chegam a se
-   sobrepor ~20% nos encontros do ciclo e depois se separam.
+   Galeria de vídeos do hero — Perspectiva em camadas
+   A profundidade (rotateY / translateZ) fica no wrapper posicionado;
+   estas animações cuidam apenas da flutuação/respiração de cada camada.
    ============================================================ */
-@keyframes float-card-a {
-  0%, 100% { transform: perspective(1200px) translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg) scale(1); }
-  35%      { transform: perspective(1200px) translate3d(6%, 5%, 0) rotateY(-6deg) rotateX(3deg) scale(1.03); }
-  70%      { transform: perspective(1200px) translate3d(2%, -5%, 0) rotateY(4deg) rotateX(-2deg) scale(0.99); }
+@keyframes drift-layer-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(0, -14px, 0) scale(1.012); }
 }
-@keyframes float-card-b {
-  0%, 100% { transform: perspective(1200px) translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg) scale(1); }
-  30%      { transform: perspective(1200px) translate3d(-7%, -6%, 0) rotateY(7deg) rotateX(-3deg) scale(1.04); }
-  65%      { transform: perspective(1200px) translate3d(-3%, 7%, 0) rotateY(-5deg) rotateX(2deg) scale(0.98); }
+@keyframes drift-layer-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-6px, 12px, 0) scale(0.99); }
 }
-@keyframes float-card-c {
-  0%, 100% { transform: perspective(1200px) translate3d(0, 0, 0) rotateY(0deg) rotateZ(0deg) scale(1); }
-  40%      { transform: perspective(1200px) translate3d(-5%, 8%, 0) rotateY(-8deg) rotateZ(-1.2deg) scale(1.02); }
-  75%      { transform: perspective(1200px) translate3d(5%, -4%, 0) rotateY(6deg) rotateZ(1deg) scale(0.985); }
+@keyframes drift-layer-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(6px, -9px, 0) scale(1.008); }
 }
-.float-card {
+.float-layer {
   will-change: transform;
-  -webkit-transform-style: preserve-3d;
-  transform-style: preserve-3d;
   -webkit-animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
   animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1);
   -webkit-animation-iteration-count: infinite;
@@ -264,12 +259,30 @@
   animation-direction: alternate;
 }
 
+/* Cena 3D — prefixos necessários para o Safari iOS */
+.gallery-scene {
+  -webkit-perspective: 1200px;
+  perspective: 1200px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.gallery-plane {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+/* Brilho suave do cartão em destaque */
+.card-featured-glow {
+  box-shadow: 0 0 60px -10px rgba(231, 217, 181, 0.28), 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .float-card {
+  .float-layer {
     -webkit-animation: none !important;
     animation: none !important;
   }
 }
+
 
 /* ============================================================
    Compatibilidade iOS / Safari
