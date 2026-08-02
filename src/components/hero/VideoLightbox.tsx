@@ -46,22 +46,37 @@ export default function VideoLightbox({ video, onClose }: Props) {
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full border border-[#e7d9b5]/25 bg-black shadow-[0_30px_90px_-30px_rgba(0,0,0,0.9)]"
+        className="relative w-full overflow-hidden border border-[#e7d9b5]/25 bg-black shadow-[0_30px_90px_-30px_rgba(0,0,0,0.9)]"
         style={{
           maxWidth: vertical ? "min(420px, 92vw)" : "min(960px, 94vw)",
           aspectRatio: vertical ? "9 / 16" : "16 / 9",
           maxHeight: "86dvh",
         }}
       >
-        <iframe
-          src={embedUrl(video)}
-          title={video.title}
-          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-          allowFullScreen
-          className="h-full w-full"
-          style={{ border: 0 }}
-        />
+        {vertical ? (
+          // Instagram: o embed vem com cabeçalho/legenda. Ampliamos o iframe e
+          // deslocamos para enquadrar somente o vídeo.
+          <iframe
+            src={embedUrl(video)}
+            title={video.title}
+            scrolling="no"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+            className="absolute left-0 w-full"
+            style={{ border: 0, top: "-54px", height: "calc(100% + 260px)" }}
+          />
+        ) : (
+          <iframe
+            src={embedUrl(video)}
+            title={video.title}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+            className="h-full w-full"
+            style={{ border: 0 }}
+          />
+        )}
       </div>
+
     </div>
   );
 }

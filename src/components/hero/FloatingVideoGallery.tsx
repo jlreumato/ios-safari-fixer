@@ -51,7 +51,7 @@ export default function FloatingVideoGallery() {
           return (
             <div
               key={v.id}
-              className="float-card absolute opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]"
+              className="absolute opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]"
               style={{
                 left: l.left,
                 top: l.top,
