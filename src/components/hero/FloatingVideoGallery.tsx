@@ -111,6 +111,7 @@ export default function FloatingVideoGallery() {
         ref={wrapRef}
         aria-label="Vídeos e entrevistas da Dra. Juliana Leal"
         className="gallery-scene relative hidden h-[540px] w-full lg:block xl:h-[600px]"
+        onMouseLeave={() => setHovered(null)}
       >
         <div
           className="gallery-plane absolute inset-0"
@@ -127,7 +128,7 @@ export default function FloatingVideoGallery() {
             const pos: React.CSSProperties = isHovered
               ? { left: "50%", top: "50%", right: "auto", bottom: "auto" }
               : { ...l.pos };
-            const width = isHovered ? (vertical ? "33%" : "58%") : l.width;
+            const width = isHovered ? (vertical ? "34%" : "62%") : l.width;
             const centered = isHovered || l.featured;
             return (
               <div
@@ -141,9 +142,9 @@ export default function FloatingVideoGallery() {
                   transition:
                     "left 700ms cubic-bezier(0.22,1,0.36,1), top 700ms cubic-bezier(0.22,1,0.36,1), right 700ms cubic-bezier(0.22,1,0.36,1), bottom 700ms cubic-bezier(0.22,1,0.36,1), width 700ms cubic-bezier(0.22,1,0.36,1)",
                 }}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
+                onPointerEnter={() => setHovered(i)}
               >
+
                 <div
                   className="gallery-plane"
                   style={{
