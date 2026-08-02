@@ -1,6 +1,6 @@
-import thumbIg1 from "@/assets/hero-videos/ig-DaVcHNlpusr.jpg.asset.json";
-import thumbIg2 from "@/assets/hero-videos/ig-DXfMqDXDMyV.jpg.asset.json";
-import thumbIg3 from "@/assets/hero-videos/ig-DYiQJOYJ09g.jpg.asset.json";
+import thumbIg1 from "@/assets/hero-videos/cover-DaVcHNlpusr.jpg";
+import thumbIg2 from "@/assets/hero-videos/cover-DXfMqDXDMyV.jpg";
+import thumbIg3 from "@/assets/hero-videos/cover-DYiQJOYJ09g.jpg";
 import thumbAutoimune from "@/assets/procedures/autoimune.jpg.asset.json";
 
 export type HeroVideo = {
@@ -32,7 +32,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DaVcHNlpusr",
     title: "Cuidado com a dor no dia a dia",
     kind: "Instagram",
-    thumb: thumbIg1.url,
+    thumb: thumbIg1,
     aspect: "9/16",
   },
   {
@@ -50,7 +50,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DXfMqDXDMyV",
     title: "Procedimento guiado no consultório",
     kind: "Instagram",
-    thumb: thumbIg2.url,
+    thumb: thumbIg2,
     aspect: "9/16",
   },
   {
@@ -59,7 +59,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "DYiQJOYJ09g",
     title: "Tratamento da dor articular",
     kind: "Instagram",
-    thumb: thumbIg3.url,
+    thumb: thumbIg3,
     aspect: "9/16",
   },
 ];
