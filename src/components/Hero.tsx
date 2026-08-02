@@ -1,7 +1,7 @@
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import FloatingVideoGallery from "@/components/hero/FloatingVideoGallery";
+import VideoSlideshow from "@/components/hero/VideoSlideshow";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -66,8 +66,8 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Galeria flutuante de vídeos */}
-          <FloatingVideoGallery />
+          {/* Slideshow de vídeos */}
+          <VideoSlideshow />
         </div>
 
         {/* Scroll indicator */}
