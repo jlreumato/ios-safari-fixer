@@ -70,8 +70,8 @@ const LAYERS: Layer[] = [
   },
   // Reel vertical — inferior direita, profundidade intermediária
   {
-    pos: { right: "0%", bottom: "12%" },
-    width: "29%",
+    pos: { right: "4%", bottom: "12%" },
+    width: "27%",
     rotateY: -20,
     depth: 20,
     z: 30,
@@ -79,6 +79,7 @@ const LAYERS: Layer[] = [
     dur: "8.5s",
     delay: "-2.4s",
   },
+
 ];
 
 export default function FloatingVideoGallery() {
