@@ -24,7 +24,7 @@ export default function VideoCard({
       onClick={() => onOpen(video)}
       aria-label={`Assistir: ${video.title}`}
       style={style}
-      className={`group relative block overflow-hidden bg-black/40 text-left outline-none transition-[box-shadow,border-color] duration-500 focus-visible:ring-2 focus-visible:ring-[#e7d9b5] ${
+      className={`group relative block w-full cursor-pointer overflow-hidden bg-black/40 text-left outline-none transition-[box-shadow,border-color] duration-500 focus-visible:ring-2 focus-visible:ring-[#e7d9b5] ${
         featured
           ? "card-featured-glow border border-[#e7d9b5]/85"
           : "border border-[#e7d9b5]/35 shadow-[0_18px_50px_-20px_rgba(0,0,0,0.75)] hover:border-[#e7d9b5]/75"
@@ -40,7 +40,7 @@ export default function VideoCard({
           const img = e.currentTarget;
           if (img.src !== heroVideoFallbackThumb) img.src = heroVideoFallbackThumb;
         }}
-        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+        className="pointer-events-none h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
       />
 
       <div
@@ -49,23 +49,30 @@ export default function VideoCard({
         } to-transparent`}
       />
 
+      {/* Véu que escurece levemente a capa toda ao passar o mouse */}
+      <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/25" />
+
       {/* Indicador do cartão em destaque */}
       {featured && (
         <span className="pointer-events-none absolute right-3 top-3 h-1.5 w-1.5 rounded-full bg-[#e7d9b5] animate-pulse" />
       )}
 
-      {/* Play — quadrado de linha fina champagne */}
-      <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      {/* Play — cobre toda a capa; o botão inteiro é clicável */}
+      <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3">
         <span
-          className={`flex items-center justify-center border border-[#e7d9b5]/80 bg-black/30 -webkit-backdrop-filter backdrop-filter backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 ${
-            featured ? "h-14 w-14" : "h-10 w-10"
+          className={`flex items-center justify-center border border-[#e7d9b5]/80 bg-black/35 transition-transform duration-500 group-hover:scale-110 ${
+            featured ? "h-16 w-16" : "h-12 w-12"
           }`}
         >
           <Play
-            className={`ml-0.5 fill-[#e7d9b5] text-[#e7d9b5] ${featured ? "h-5 w-5" : "h-3.5 w-3.5"}`}
+            className={`ml-0.5 fill-[#e7d9b5] text-[#e7d9b5] ${featured ? "h-6 w-6" : "h-4 w-4"}`}
           />
         </span>
+        <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#e7d9b5] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+          Assistir
+        </span>
       </span>
+
 
       <span
         className={`pointer-events-none absolute inset-x-0 bottom-0 ${featured ? "p-5" : "p-3"}`}
