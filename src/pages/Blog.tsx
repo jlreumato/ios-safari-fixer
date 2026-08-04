@@ -9,7 +9,7 @@ import Seo from "@/components/Seo";
 
 const BASE = "https://julianaleal.com.br";
 
-const BLOG_TITLE = "Blog de Reumatologia em Maceió (AL) | Dra. Juliana Leal";
+const BLOG_TITLE = "Blog de Reumatologia | Dra. Juliana Leal";
 const BLOG_DESC =
   "Artigos em português sobre artrite reumatoide, lúpus, fibromialgia, artrose, osteoporose e gota, escritos pela Dra. Juliana Leal, reumatologista em Maceió — Alagoas.";
 

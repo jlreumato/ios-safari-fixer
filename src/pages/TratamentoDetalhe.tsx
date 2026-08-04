@@ -53,8 +53,8 @@ export default function TratamentoDetalhe() {
   return (
     <>
       <Seo
-        title={`${treatment.title} — Tratamento em Maceió (AL) | Dra. Juliana Leal`}
-        description={`${treatment.shortDesc} Atendimento com a Dra. Juliana Leal, reumatologista em Maceió — Alagoas.`}
+        title={`${treatment.title} em Maceió | Dra. Juliana Leal`}
+        description={`${treatment.shortDesc.slice(0, 105)} Atendimento reumatológico em Maceió.`}
         path={`/tratamentos/${treatment.slug}`}
         type="article"
         jsonLd={{

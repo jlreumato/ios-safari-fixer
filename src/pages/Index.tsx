@@ -16,8 +16,8 @@ import LazySection from "@/components/LazySection";
 import IntroCover from "@/components/IntroCover";
 import Seo from "@/components/Seo";
 
-const HOME_TITLE = "Reumatologista em Maceió (AL) | Dra. Juliana Leal — Especialista em Dor";
-const HOME_DESC = "Reumatologista em Maceió — Alagoas. Especialista em Dor pela USP-SP. Tratamento humanizado de artrite, lúpus, fibromialgia, artrose, osteoporose e doenças autoimunes. CRM/AL 6717 · RQE 4857. Agende sua consulta.";
+const HOME_TITLE = "Reumatologista em Maceió | Dra. Juliana Leal";
+const HOME_DESC = "Reumatologista em Maceió e especialista em Dor pela USP-SP. Cuidado humanizado para artrite, lúpus, fibromialgia, artrose e osteoporose.";
 
 const FAQ_LD = {
   "@context": "https://schema.org",

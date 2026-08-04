@@ -10,7 +10,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-[100dvh] items-center justify-center bg-background">
+    <main className="flex min-h-[100dvh] items-center justify-center bg-background">
       <Helmet>
         <title>Página não encontrada | Dra. Juliana Leal — Reumatologia</title>
         <meta name="robots" content="noindex, follow" />
@@ -29,7 +29,7 @@ const NotFound = () => {
           Voltar ao início
         </a>
       </div>
-    </div>
+    </main>
   );
 };
 
