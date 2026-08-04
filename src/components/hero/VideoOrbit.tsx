@@ -49,9 +49,9 @@ export default function VideoOrbit() {
     return () => ro.disconnect();
   }, []);
 
-  const scaleFactor = windowWidth <= 480 ? 0.4 : windowWidth <= 768 ? 0.6 : 1;
-  const baseWidth = 220 * scaleFactor;
-  const gap = 20 * scaleFactor;
+  const scaleFactor = windowWidth <= 480 ? 0.5 : windowWidth <= 768 ? 0.72 : 1;
+  const baseWidth = 280 * scaleFactor;
+  const gap = 24 * scaleFactor;
   const count = heroVideos.length || 1;
 
   const itemDims = useMemo(
