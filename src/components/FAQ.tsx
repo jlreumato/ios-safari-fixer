@@ -113,7 +113,9 @@ export default function FAQ() {
             return (
               <div
                 key={i}
-                ref={(el) => (itemRefs.current[i] = el)}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
                 className="transition-all duration-700 ease-out will-change-transform"
                 style={{
                   opacity: isRevealed ? (activeIndex === -1 ? 1 : isActive ? 1 : 0.55) : 0,
