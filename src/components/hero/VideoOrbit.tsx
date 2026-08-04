@@ -242,7 +242,7 @@ export default function VideoOrbit() {
                 didDrag.current = false;
               }}
               aria-label={`Assistir: ${video.title}`}
-              className="group absolute overflow-hidden bg-[#f2e9d8] opacity-0 shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-[box-shadow,opacity] duration-300 hover:shadow-[0_28px_60px_-20px_rgba(42,34,51,0.55)] animate-[fadeIn_0.6s_ease-out_forwards]"
+              className="group absolute overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-shadow duration-300 hover:shadow-[0_28px_60px_-20px_rgba(42,34,51,0.55)]"
               style={{
                 left: "50%",
                 top: "50%",
@@ -253,7 +253,6 @@ export default function VideoOrbit() {
                 transformStyle: "preserve-3d",
                 WebkitTransformStyle: "preserve-3d",
                 willChange: "transform",
-                animationDelay: `${index * 80}ms`,
               }}
             >
               <img
