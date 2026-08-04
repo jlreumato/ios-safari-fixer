@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 /**
  * Marca do programa com animação de revelação letra por letra.
@@ -16,7 +16,7 @@ export default function TransformaDor({
   const word1 = "Transforma";
   const word2 = "DOR";
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
@@ -24,7 +24,7 @@ export default function TransformaDor({
     }),
   };
 
-  const child = {
+  const child: Variants = {
     visible: {
       opacity: 1,
       y: 0,
