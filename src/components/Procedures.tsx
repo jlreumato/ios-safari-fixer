@@ -385,101 +385,85 @@ export default function Procedures() {
 
 
 /**
- * Sticky reveal: an arrow slides from right to left, "cutting" the word DOR.
- * As it passes, the Programa TransformaDOR intro is clipped away and the
- * Etapas da Transformação grid (with its own nav menu) slides in from the right.
+ * Reveal "site girado para o lado": a sobrecapa do Programa TransformaDOR
+ * gira no eixo Y (como se a página inteira virasse de lado) e, no mesmo
+ * movimento, as Etapas da Transformação entram girando do outro lado.
  */
 function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
 
-  // Phase split: arrow slice 0→0.2, cylinder rotation 0.2→1.0.
-  const arrowP = Math.max(0, Math.min(1, progress / 0.2));
-  const cylP = Math.max(0, Math.min(1, (progress - 0.2) / 0.8));
+  // Fase 1 (0 → 0.18): giro lateral. Fase 2 (0.18 → 1): etapas.
+  const turnP = Math.max(0, Math.min(1, progress / 0.18));
+  const cylP = Math.max(0, Math.min(1, (progress - 0.18) / 0.82));
   const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
 
-  const arrowX = 100 - arrowP * 100;
-  const introClip = `inset(0 ${arrowP * 100}% 0 0)`;
-  const stepsClip = `inset(0 0 0 ${arrowX}%)`;
+  const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+  const e = ease(turnP);
+
+  const introStyle: CSSProperties = {
+    transform: `perspective(1600px) rotateY(${-e * 92}deg) translateZ(${-e * 120}px)`,
+    WebkitTransform: `perspective(1600px) rotateY(${-e * 92}deg) translateZ(${-e * 120}px)`,
+    transformOrigin: "left center",
+    WebkitTransformOrigin: "left center",
+    opacity: 1 - e * 0.9,
+    pointerEvents: turnP > 0.15 ? "none" : "auto",
+    WebkitBackfaceVisibility: "hidden",
+    backfaceVisibility: "hidden",
+  };
+
+  const stepsStyle: CSSProperties = {
+    transform: `perspective(1600px) rotateY(${(1 - e) * 88}deg) translateZ(${-(1 - e) * 120}px)`,
+    WebkitTransform: `perspective(1600px) rotateY(${(1 - e) * 88}deg) translateZ(${-(1 - e) * 120}px)`,
+    transformOrigin: "right center",
+    WebkitTransformOrigin: "right center",
+    opacity: 0.1 + e * 0.9,
+    pointerEvents: turnP > 0.85 ? "auto" : "none",
+    WebkitBackfaceVisibility: "hidden",
+    backfaceVisibility: "hidden",
+  };
 
   return (
     <div ref={ref} className="relative" style={{ height: "800vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Layer A — Programa TransformaDOR intro (revealed out) */}
+        {/* Sobrecapa — Programa TransformaDOR */}
         <div
-          className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
-          style={{ clipPath: introClip, WebkitClipPath: introClip }}
+          className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+          style={introStyle}
         >
-          <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary">
+          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
             Programa
           </p>
-          <h3
-            className="mt-4 flex flex-wrap items-baseline justify-center gap-x-3 gap-y-1 font-normal tracking-tight text-foreground"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-          >
-            <span style={{ fontSize: "clamp(3rem, 14vw, 14rem)", lineHeight: 1 }}>
-              Transforma
-            </span>
-            <span
-              className="inline-block bg-gradient-to-br from-primary via-primary/80 to-amber-500 bg-clip-text font-semibold text-transparent"
-              style={{ fontSize: "clamp(3.5rem, 18vw, 18rem)", lineHeight: 1 }}
-            >
-              DOR
-            </span>
+
+          <h3 className="mt-8">
+            <TransformaDor size="clamp(2.25rem, 11vw, 9rem)" />
           </h3>
-          <p className="mx-auto mt-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-            Da primeira consulta ao trabalho em rede com fisioterapeuta, nutricionista,
-            psicólogo e psiquiatras — cada etapa cuidadosamente conectada.
-          </p>
-          <p className="mt-10 text-sm font-semibold uppercase tracking-[0.28em] text-primary/70">
-            role para revelar →
-          </p>
-        </div>
 
-        {/* Layer B — Etapas da Transformação (revealed in from the right) */}
-        <div
-          className="absolute inset-0 overflow-hidden"
-          style={{ clipPath: stepsClip, WebkitClipPath: stepsClip }}
-        >
-          <StepsReveal steps={steps} active={activeStep} cylProgress={cylP} />
-        </div>
+          <p className="mx-auto mt-10 max-w-[34ch] text-base font-light leading-relaxed text-[#4a4152] sm:text-lg">
+            Oito etapas para transformar dor em liberdade.
+          </p>
 
-        {/* Slicing arrow — only visible during arrow phase */}
-        <div
-          className="pointer-events-none absolute inset-y-0 z-10"
-          style={{
-            left: `${arrowX}%`,
-            transform: "translateX(-50%)",
-            opacity: arrowP < 1 ? 1 : 0,
-            transition: "left 60ms linear, opacity 300ms ease",
-          }}
-        >
-          <div
-            className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2"
-            style={{
-              background:
-                "linear-gradient(180deg, transparent 0%, #a3813c 20%, #a3813c 80%, transparent 100%)",
-              boxShadow: "0 0 24px 2px rgba(163,129,60,0.45)",
-            }}
-          />
-          <div
-            className="absolute top-1/2 flex -translate-y-1/2 items-center gap-2"
-            style={{ right: "calc(50% + 6px)" }}
+          <a
+            href="/transformador"
+            className="mt-12 inline-flex items-center gap-3 border border-[#a3813c]/60 px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:bg-[#f2e9d8]"
           >
-            <span className="hidden text-[10px] font-semibold uppercase tracking-[0.32em] text-[#a3813c] sm:inline">
-              Etapas
-            </span>
-            <span
-              className="flex h-12 w-12 items-center justify-center border-2 border-[#a3813c] bg-[#faf7f2]/70 text-[#a3813c] backdrop-blur"
-              style={{ boxShadow: "0 0 30px rgba(231,217,181,0.35)" }}
-            >
-              <ChevronRight className="h-5 w-5 rotate-180" />
-            </span>
-          </div>
+            Conhecer o Programa
+            <ChevronRight className="h-3.5 w-3.5" />
+          </a>
+
+          <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.32em] text-[#a3813c]/60">
+            role para as etapas
+          </p>
+        </div>
+
+        {/* Etapas da Transformação */}
+        <div className="absolute inset-0 overflow-hidden" style={stepsStyle}>
+          <StepsReveal steps={steps} active={activeStep} cylProgress={cylP} />
         </div>
       </div>
     </div>
   );
 }
+
 
 function StepsReveal({
   steps,
