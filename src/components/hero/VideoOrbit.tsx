@@ -17,6 +17,7 @@ export default function VideoOrbit() {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const [tick, setTick] = useState(0);
+  const [hovered, setHovered] = useState<number | null>(null);
 
   const angleRef = useRef(0);
   const isDragging = useRef(false);
@@ -162,13 +163,15 @@ export default function VideoOrbit() {
 
   const sorted = [...items].sort((a, b) => a.z - b.z);
 
+  const maxHeight = Math.max(...itemDims.map((d) => d.height));
+  const containerWidth = radiusX * 2 + avgWidth + containerPadding;
+  const containerHeight = radiusY * 2 + maxHeight + containerPadding;
+
   return (
     <div
       ref={sectionRef}
-      className="relative flex w-full items-center justify-center"
-      style={{
-        minHeight: `${radiusY * 2 + Math.max(...itemDims.map((d) => d.height)) + containerPadding}px`,
-      }}
+      className="relative flex w-full items-center justify-center overflow-hidden"
+      style={{ minHeight: `${containerHeight}px` }}
     >
       <motion.div
         drag="x"
@@ -179,8 +182,8 @@ export default function VideoOrbit() {
         onDragEnd={handleDragEnd}
         className="relative cursor-grab active:cursor-grabbing"
         style={{
-          width: `${radiusX * 2 + avgWidth + containerPadding}px`,
-          height: `${radiusY * 2 + Math.max(...itemDims.map((d) => d.height)) + containerPadding}px`,
+          width: `${containerWidth}px`,
+          height: `${containerHeight}px`,
           perspective: "1200px",
           WebkitPerspective: "1200px",
           touchAction: "pan-y",
@@ -188,18 +191,21 @@ export default function VideoOrbit() {
         }}
       >
         {sorted.map((item) => {
-          const { video, dims, x, y, z, scale, depthNorm } = item;
+          const { video, dims, x, y, z, scale, depthNorm, index } = item;
+          const isHot = hovered === index;
+          const finalScale = isHot ? scale * 1.08 : scale;
           const isFront = depthNorm > 0.75;
 
           return (
             <motion.button
               key={video.id}
               type="button"
-              layoutId={video.id}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: item.index * 0.08, ease: "easeOut" }}
+              transition={{ duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
               onClick={() => setOpen(video)}
+              onMouseEnter={() => setHovered(index)}
+              onMouseLeave={() => setHovered(null)}
               aria-label={`Assistir: ${video.title}`}
               className="group absolute overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40"
               style={{
@@ -209,22 +215,19 @@ export default function VideoOrbit() {
                 height: dims.height,
                 marginLeft: -dims.width / 2,
                 marginTop: -dims.height / 2,
-                transform: `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`,
-                WebkitTransform: `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`,
+                transform: `translate3d(${x}px, ${y}px, ${z}px) scale(${finalScale})`,
+                WebkitTransform: `translate3d(${x}px, ${y}px, ${z}px) scale(${finalScale})`,
                 zIndex: Math.round(depthNorm * 100),
                 transformStyle: "preserve-3d",
                 WebkitTransformStyle: "preserve-3d",
                 transition: isDragging.current
                   ? "box-shadow 300ms ease"
-                  : "box-shadow 300ms ease, transform 80ms linear",
+                  : "box-shadow 300ms ease, transform 120ms ease-out",
                 willChange: "transform",
+                boxShadow: isHot
+                  ? "0 28px 60px -20px rgba(42,34,51,0.55)"
+                  : "0 18px 40px -20px rgba(42,34,51,0.45)",
               }}
-              whileHover={{
-                scale: scale * 1.08,
-                boxShadow: "0 28px 60px -20px rgba(42,34,51,0.55)",
-                transition: { duration: 0.25 },
-              }}
-              whileTap={{ scale: scale * 0.96 }}
             >
               <img
                 src={video.thumb || heroVideoFallbackThumb}
