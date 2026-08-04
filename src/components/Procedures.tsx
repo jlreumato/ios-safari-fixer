@@ -17,12 +17,6 @@ import TransformaDor from "@/components/TransformaDor";
 
 
 
-import quadrilImg from "@/assets/joints/quadril.jpg";
-import joelhoImg from "@/assets/joints/joelho.jpg";
-import ombroImg from "@/assets/joints/ombro.jpg";
-import maosImg from "@/assets/joints/maos.jpg";
-import pesImg from "@/assets/joints/pes.jpg";
-
 type JointLink = { label: string; slug: string };
 
 /** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
@@ -32,14 +26,12 @@ const REDUCE_FX =
 
 const joints: {
   label: string;
-  image: string;
   desc: string;
   links: JointLink[];
 }[] = [
   {
     label: "Quadril",
-    image: quadrilImg,
-    desc: "Infiltrações guiadas por ultrassom para bursites trocantéricas, tendinopatias e osteoartrose coxofemoral.",
+    desc: "Infiltrações guiadas por ultrassom para bursites, tendinopatias e osteoartrose.",
     links: [
       { label: "Infiltração Trocantérica", slug: "infiltracao-ultrassom" },
       { label: "Viscossuplementação de Quadril", slug: "viscossuplementacao" },
@@ -48,8 +40,7 @@ const joints: {
   },
   {
     label: "Joelho",
-    image: joelhoImg,
-    desc: "Viscossuplementação, corticoide e PRP para gonartrose, meniscopatias e tendinite patelar.",
+    desc: "Viscossuplementação, corticoide e PRP para gonartrose e tendinites.",
     links: [
       { label: "Viscossuplementação de Joelho", slug: "viscossuplementacao" },
       { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
@@ -58,8 +49,7 @@ const joints: {
   },
   {
     label: "Ombro",
-    image: ombroImg,
-    desc: "Infiltração subacromial e intra-articular para bursite, tendinite do manguito e capsulite adesiva.",
+    desc: "Infiltração subacromial para bursite, manguito rotador e capsulite.",
     links: [
       { label: "Infiltração Subacromial", slug: "infiltracao-ultrassom" },
       { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
@@ -68,8 +58,7 @@ const joints: {
   },
   {
     label: "Punho e Mãos",
-    image: maosImg,
-    desc: "Bloqueios para tenossinovite de De Quervain, dedo em gatilho, síndrome do túnel do carpo e rizartrose.",
+    desc: "Bloqueios para De Quervain, dedo em gatilho, túnel do carpo e rizartrose.",
     links: [
       { label: "Bloqueio do Túnel do Carpo", slug: "bloqueios-anestesicos" },
       { label: "Infiltração de Dedo em Gatilho", slug: "infiltracao-ultrassom" },
@@ -78,8 +67,7 @@ const joints: {
   },
   {
     label: "Pés e Tornozelos",
-    image: pesImg,
-    desc: "Tratamento de fascite plantar, tendinite aquiliana, esporão calcâneo e artroses do médio/retropé.",
+    desc: "Fascite plantar, tendinite aquiliana e artroses do médio e retropé.",
     links: [
       { label: "Infiltração da Fascite Plantar", slug: "infiltracao-ultrassom" },
       { label: "Bloqueio do Nervo Tibial", slug: "bloqueios-anestesicos" },
@@ -92,12 +80,17 @@ const joints: {
 const journey = journeyData;
 
 
-/** Horizontal, scroll-driven joint gallery — the active image lifts out of the row. */
+/**
+ * Áreas em evidência — sem imagens. Índice tipográfico em tela cheia:
+ * o scroll ativa uma área por vez (nome gigante em kinetic reveal) e o
+ * mouse cria um halo que segue o cursor sobre linhas finas animadas.
+ */
 function JointsWheel() {
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [hovered, setHovered] = useState(false);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const [cursor, setCursor] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     let raf = 0;
@@ -125,13 +118,11 @@ function JointsWheel() {
     };
   }, []);
 
-  const current = joints[active];
-  // Sub-progress inside the active area (0 → 1): drives the slice choreography.
+  const shown = hoverIndex ?? active;
+  const current = joints[shown];
   const localRaw = Math.max(0, Math.min(1, progress * joints.length - active));
-  // Compress the assembly into the first third so the image stays whole while reading.
-  const local = Math.min(1, localRaw / 0.34);
-  const SLICES = 6;
-
+  const local = Math.min(1, localRaw / 0.3);
+  const e = 1 - Math.pow(1 - local, 3);
 
   return (
     <div
@@ -139,218 +130,148 @@ function JointsWheel() {
       className="relative"
       style={{ height: `${joints.length * 60}vh` }}
     >
-      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        <div className="grid h-full w-full grid-cols-1 lg:grid-cols-2">
-          {/* LEFT column reserved for text */}
-          <div className="relative hidden h-full lg:block" aria-hidden />
+      <div
+        className="sticky top-0 h-[100dvh] w-full overflow-hidden"
+        onMouseMove={(ev) => {
+          const r = ev.currentTarget.getBoundingClientRect();
+          setCursor({
+            x: ((ev.clientX - r.left) / r.width) * 100,
+            y: ((ev.clientY - r.top) / r.height) * 100,
+          });
+        }}
+      >
+        {/* Halo que segue o cursor */}
+        <div
+          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+          style={{
+            background: `radial-gradient(28rem 28rem at ${cursor.x}% ${cursor.y}%, rgba(163,129,60,0.16), transparent 70%)`,
+            opacity: REDUCE_FX ? 0 : 1,
+          }}
+          aria-hidden
+        />
 
-          {/* RIGHT column — sliced kinetic image with hover-reveal links */}
-          <div
-            className="relative hidden h-full w-full overflow-hidden lg:block"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
+        {/* Linhas finas horizontais que respiram com o scroll */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden>
+          {Array.from({ length: 14 }).map((_, i) => (
+            <span
+              key={i}
+              className="absolute left-0 h-px w-full"
+              style={{
+                top: `${(i / 14) * 100}%`,
+                background:
+                  "linear-gradient(90deg, transparent, rgba(163,129,60,0.28), transparent)",
+                transform: `scaleX(${0.4 + ((Math.sin(progress * 6 + i) + 1) / 2) * 0.6})`,
+                WebkitTransform: `scaleX(${0.4 + ((Math.sin(progress * 6 + i) + 1) / 2) * 0.6})`,
+                transformOrigin: i % 2 === 0 ? "left center" : "right center",
+              }}
+            />
+          ))}
+        </div>
+
+        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-16">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c]">
+            Procedimentos · Áreas em evidência
+          </p>
+
+          {/* Nome gigante da área ativa, em kinetic reveal */}
+          <h3
+            className="mt-6 overflow-hidden text-[clamp(2.75rem,10vw,7rem)] font-normal leading-[0.95] tracking-tight text-[#2a2233]"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
-            {joints.map((j, i) => {
-              const isActive = i === active;
-              const isPrev = i === active - 1;
-              if (!isActive && !isPrev) return null;
-              return (
-                <div key={j.label} className="absolute inset-0" aria-hidden={!isActive}>
-                  {Array.from({ length: SLICES }).map((_, s) => {
-                    // Stagger: each slice enters slightly after the previous one.
-                    const span = 1 / (SLICES * 0.9);
-                    const start = (s / SLICES) * (1 - span) * 0.9;
-                    const raw = (local - start) / span;
-                    const e = 1 - Math.pow(1 - Math.max(0, Math.min(1, raw)), 3);
-                    const dir = s % 2 === 0 ? -1 : 1;
-                    // Active slice slides into place; previous one keeps sliding out.
-                    const shift = isActive ? (1 - e) * 100 * dir : -e * 100 * dir;
-                    const top = (s / SLICES) * 100;
-                    return (
-                      <div
-                        key={s}
-                        className="absolute left-0 w-full overflow-hidden"
-                        style={{
-                          top: `${top}%`,
-                          height: `${100 / SLICES + 0.15}%`,
-                          transform: `translate3d(${shift}%, 0, 0)`,
-                          opacity: isActive ? Math.min(1, e * 1.4) : Math.max(0, 1 - e * 1.4),
-                          willChange: "transform, opacity",
-                        }}
-                      >
-                        <div
-                          className="absolute left-0 w-full"
-                          style={{
-                            top: `-${s * 100}%`,
-                            height: `${100 * SLICES}%`,
-                            backgroundImage: `url(${j.image})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }}
-                        />
-                      </div>
-                    );
-
-                  })}
-                  {/* Thin champagne seams between the slices */}
-                  {Array.from({ length: SLICES - 1 }).map((_, s) => (
-                    <span
-                      key={`seam-${s}`}
-                      className="pointer-events-none absolute left-0 h-px w-full"
-                      style={{
-                        top: `${((s + 1) / SLICES) * 100}%`,
-                        background:
-                          "linear-gradient(90deg, transparent, rgba(163,129,60,0.45), transparent)",
-                        opacity: isActive ? Math.max(0, 1 - local * 2) : 0,
-                      }}
-                    />
-                  ))}
-                </div>
-              );
-            })}
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-white/50" />
-
-
-            {/* Hover overlay — procedure links, sophisticated modern (sharp edges) */}
-            <div
-              className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white/92 via-[#fbf7ee]/90 to-[#f2e9d8]/92 p-12 backdrop-blur-md transition-opacity duration-500"
-              style={{ opacity: hovered ? 1 : 0, pointerEvents: hovered ? "auto" : "none" }}
+            <span
+              key={current.label}
+              className="block"
+              style={{
+                transform: `translate3d(0, ${(1 - e) * 40}px, 0)`,
+                WebkitTransform: `translate3d(0, ${(1 - e) * 40}px, 0)`,
+                opacity: 0.25 + e * 0.75,
+                filter: `blur(${(1 - e) * 6}px)`,
+              }}
             >
-              <div className="w-full max-w-lg">
-                <div className="mb-8 flex items-center gap-4">
-                  <span className="h-px flex-1 bg-[#a3813c]/40" />
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c]">
-                    Procedimentos indicados
-                  </p>
-                  <span className="h-px flex-1 bg-[#a3813c]/40" />
-                </div>
-                <ul className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
-                  {current.links.map((l) => (
-                    <li key={l.label}>
-                      <a
-                        href={`/procedimentos#${l.slug}`}
-                        className="group/link flex items-center justify-between gap-4 py-4 transition-colors hover:text-[#a3813c]"
-                      >
-                        <span className="text-lg font-light tracking-wide text-[#4a4152]">
-                          {l.label}
-                        </span>
-                        <span className="flex items-center gap-3 text-[#a3813c]/70 transition-all group-hover/link:text-[#a3813c]">
-                          <span className="h-px w-6 bg-[#a3813c]/60 transition-all group-hover/link:w-12" />
-                          <ChevronRight className="h-4 w-4" />
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href="/procedimentos"
-                  className="mt-10 inline-flex items-center gap-3 border border-[#a3813c]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c] transition-colors hover:border-[#a3813c] hover:bg-[#a3813c]/10"
-                >
-                  Ver todos os procedimentos
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-              </div>
-            </div>
-          </div>
+              {current.label}
+            </span>
+          </h3>
 
-          {/* Mobile — snap slider with links overlaid on image */}
-          <div className="absolute inset-x-0 bottom-0 top-[40%] overflow-hidden lg:hidden">
-            <div
-              className="flex h-full w-full snap-x snap-mandatory overflow-x-auto"
-              style={{ scrollbarWidth: "none", touchAction: "pan-x" }}
-              aria-label="Áreas em evidência — arraste para navegar"
+          <p className="mt-5 max-w-[46ch] text-lg font-light leading-relaxed text-[#4a4152] sm:text-xl">
+            {current.desc}
+          </p>
+
+          {/* Índice de áreas + links dos procedimentos */}
+          <div className="mt-10 grid gap-8 lg:grid-cols-2">
+            <ul className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
+              {joints.map((j, i) => {
+                const on = i === shown;
+                return (
+                  <li key={j.label}>
+                    <button
+                      type="button"
+                      onMouseEnter={() => setHoverIndex(i)}
+                      onFocus={() => setHoverIndex(i)}
+                      onMouseLeave={() => setHoverIndex(null)}
+                      onBlur={() => setHoverIndex(null)}
+                      className="group flex w-full items-center justify-between gap-4 py-3 text-left"
+                    >
+                      <span
+                        className={`text-base font-light tracking-wide transition-all duration-300 sm:text-lg ${
+                          on ? "text-[#2a2233]" : "text-[#4a4152]/60"
+                        }`}
+                        style={{ letterSpacing: on ? "0.06em" : undefined }}
+                      >
+                        {j.label}
+                      </span>
+                      <span
+                        className="h-px bg-[#a3813c]/70 transition-all duration-300"
+                        style={{ width: on ? "3.5rem" : "1rem" }}
+                      />
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <ul
+              key={current.label}
+              className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12"
             >
-              {joints.map((j) => (
-                <div
-                  key={j.label}
-                  className="relative flex h-full w-full shrink-0 snap-center items-stretch justify-center px-4"
-                  style={{ minWidth: "100%" }}
+              {current.links.map((l, i) => (
+                <li
+                  key={l.label}
+                  style={{
+                    opacity: e,
+                    transform: `translate3d(${(1 - e) * (12 + i * 6)}px, 0, 0)`,
+                    WebkitTransform: `translate3d(${(1 - e) * (12 + i * 6)}px, 0, 0)`,
+                  }}
                 >
-                  <div
-                    className="relative h-full w-full overflow-hidden shadow-[0_24px_50px_-24px_rgba(42,34,51,0.22)] ring-1 ring-primary/25"
-                    style={{
-                      backgroundImage: `url(${j.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
+                  <a
+                    href={`/procedimentos#${l.slug}`}
+                    className="group/link flex items-center justify-between gap-4 py-3 transition-colors hover:text-[#a3813c]"
                   >
-                    {/* Links overlaid on image */}
-                    <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-white/95 via-white/70 to-transparent p-5">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[#a3813c]">
-                        {j.label} · Procedimentos
-                      </p>
-                      <ul className="mt-4 flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
-                        {j.links.map((l) => (
-                          <li key={l.label}>
-                            <a
-                              href={`/procedimentos#${l.slug}`}
-                              className="flex items-center justify-between gap-3 py-3 text-sm font-light text-[#4a4152]"
-                            >
-                              <span>{l.label}</span>
-                              <ChevronRight className="h-3.5 w-3.5 text-[#a3813c]" />
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
+                    <span className="text-base font-light tracking-wide text-[#4a4152] sm:text-lg">
+                      {l.label}
+                    </span>
+                    <span className="flex items-center gap-3 text-[#a3813c]/70 transition-all group-hover/link:text-[#a3813c]">
+                      <span className="h-px w-5 bg-[#a3813c]/60 transition-all group-hover/link:w-10" />
+                      <ChevronRight className="h-4 w-4" />
+                    </span>
+                  </a>
+                </li>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Text overlay — left aligned */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex h-[40%] items-center lg:inset-0 lg:h-full">
-          <div className="w-full lg:w-1/2 px-6 sm:px-10 lg:px-16">
-            <div className="max-w-xl text-left">
-              <div>
-                <p className="text-base font-semibold uppercase tracking-[0.24em] text-[#a3813c] ">
-                  Procedimentos · Área em evidência
-                </p>
-                <h3
-                  key={current.label}
-                  className="mt-3 text-5xl font-normal tracking-tight text-[#2a2233] sm:text-6xl lg:text-7xl animate-in fade-in duration-500 "
-                  style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-                >
-                  {current.label}
-                </h3>
-                <p
-                  key={current.desc}
-                  className="mt-5 hidden text-lg leading-relaxed text-[#4a4152] lg:block sm:text-xl "
-                >
-                  {current.desc}
-                </p>
-                <p className="mt-6 hidden text-xs font-semibold uppercase tracking-[0.24em] text-[#4a4152] lg:block">
-                  passe o mouse sobre a imagem para ver os procedimentos →
-                </p>
-                <a
-                  href="/procedimentos"
-                  className="pointer-events-auto mt-8 hidden lg:inline-flex items-center gap-3 border-2 border-[#a3813c]/70 px-7 py-3 text-xs font-semibold uppercase tracking-[0.28em] text-[#a3813c] transition-all hover:border-primary hover:bg-primary/10 hover:text-primary"
-                >
-                  Ver todos os procedimentos
-                  <ChevronRight className="h-4 w-4" />
-                </a>
-              </div>
-            </div>
+            </ul>
           </div>
 
-        </div>
-
-        {/* Mobile — "Ver todos" button */}
-        <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center lg:hidden">
           <a
             href="/procedimentos"
-            className="pointer-events-auto inline-flex items-center gap-2 border-2 border-[#a3813c]/70 bg-white/85 px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#a3813c] backdrop-blur"
+            className="mt-10 inline-flex w-fit items-center gap-3 border border-[#a3813c]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:border-[#a3813c] hover:bg-[#a3813c]/10"
           >
             Ver todos os procedimentos
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-4 w-4" />
           </a>
         </div>
       </div>
     </div>
   );
 }
+
 
 
 
