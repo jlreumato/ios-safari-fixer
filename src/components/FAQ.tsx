@@ -88,7 +88,7 @@ export default function FAQ() {
   }, []);
 
   return (
-    <section className="bg-secondary/50 py-20 lg:py-28">
+    <section className="bg-secondary/50 py-28 lg:py-40">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div
           ref={headerRef}
@@ -96,13 +96,17 @@ export default function FAQ() {
             headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          <p className="text-base font-semibold uppercase tracking-[0.18em] text-primary">Dúvidas</p>
-          <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">Dúvidas</p>
+          <h2
+            className="mt-6 text-balance text-[clamp(2.25rem,6vw,4rem)] font-normal leading-[1.05] tracking-tight text-[#2a2233]"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
             Perguntas Frequentes
           </h2>
         </div>
 
-        <Accordion type="single" collapsible className="mt-12">
+        <Accordion type="single" collapsible className="mt-16">
+
           {faqs.map((f, i) => {
             const isActive = activeIndex === i;
             const isRevealed = revealed[i];

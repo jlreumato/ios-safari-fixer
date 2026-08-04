@@ -5,7 +5,7 @@ export default function About() {
   const { ref, inView } = useInView();
 
   return (
-    <section id="sobre" className="py-20 lg:py-28">
+    <section id="sobre" className="py-28 lg:py-40">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -34,23 +34,29 @@ export default function About() {
 
           {/* Text */}
           <div className="flex-1 text-center lg:text-left">
-            <p className="text-lg font-semibold uppercase tracking-[0.18em] text-primary sm:text-xl">
+            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
               Sobre mim
             </p>
-            <h2 className="mt-3 text-balance text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+            <h2
+              className="mt-6 text-balance text-[clamp(2.25rem,6vw,4rem)] font-normal leading-[1.05] tracking-tight text-[#2a2233]"
+              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+            >
               Dra. Juliana Leal
             </h2>
-            <p className="mt-2 text-lg font-medium text-primary sm:text-xl">
-              CRM/AL: 6717 · RQE: 4857
+            <p className="mt-3 text-xs font-light uppercase tracking-[0.22em] text-[#4a4152]/70">
+              CRM/AL 6717 · RQE 4857
             </p>
-            <div className="mt-7 space-y-5 text-lg leading-relaxed text-muted-foreground lg:max-w-xl lg:text-xl">
-               <p>
-                Formada em Medicina pela FAMENE, com residência em Clínica Médica na Santa Casa de Misericórdia de Maceió e especialização em Reumatologia pelo Hospital Universitário Prof. Alberto Antunes. Com Pós-Graduação em Dor pela USP-SP, possui um olhar aprofundado para o manejo de dores crônicas e complexas.
-               </p>
-               <p>
-                Sua prática é pautada na escuta atenta e na construção de uma relação de confiança com o paciente. Acredita que o tratamento vai além dos medicamentos, envolvendo educação sobre a doença, promoção de hábitos saudáveis e um plano de cuidado individualizado para restaurar a qualidade de vida.
-               </p>
+            <div className="mt-10 space-y-6 text-lg font-light leading-relaxed text-[#4a4152]/90 lg:max-w-[46ch] lg:text-xl">
+              <p>
+                Reumatologista com pós-graduação em Dor pela USP-SP. Especialista
+                em dores crônicas e doenças autoimunes.
+              </p>
+              <p>
+                Escuta atenta, diagnóstico preciso e um plano de cuidado feito
+                para a sua vida.
+              </p>
             </div>
+
           </div>
         </div>
       </div>

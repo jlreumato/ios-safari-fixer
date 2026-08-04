@@ -9,7 +9,9 @@ import TratamentoDetalhe from "./pages/TratamentoDetalhe.tsx";
 import BlogPage from "./pages/Blog.tsx";
 import Procedimentos from "./pages/Procedimentos.tsx";
 import Tratamentos from "./pages/Tratamentos.tsx";
+import Transformador from "./pages/Transformador.tsx";
 import RouteLoader from "./components/RouteLoader.tsx";
+
 
 
 const queryClient = new QueryClient();
@@ -27,6 +29,8 @@ const App = () => (
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/procedimentos" element={<Procedimentos />} />
         <Route path="/tratamentos" element={<Tratamentos />} />
+        <Route path="/transformador" element={<Transformador />} />
+
 
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
