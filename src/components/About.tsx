@@ -5,7 +5,7 @@ export default function About() {
   const { ref, inView } = useInView();
 
   return (
-    <section id="sobre" className="py-20 lg:py-28">
+    <section id="sobre" className="py-28 lg:py-40">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
