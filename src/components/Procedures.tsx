@@ -86,48 +86,8 @@ const joints: {
 ];
 
 
-const journey = [
-  {
-    icon: ClipboardList,
-    title: "Primeira Consulta",
-    desc: "Escuta atenta, história clínica completa e exame físico minucioso para entender você por inteiro — não apenas a dor.",
-  },
-  {
-    icon: Stethoscope,
-    title: "Diagnóstico Preciso",
-    desc: "Exames laboratoriais e de imagem direcionados. Reavaliação conjunta dos resultados e plano terapêutico personalizado.",
-  },
-  {
-    icon: Syringe,
-    title: "Tratamento Individualizado",
-    desc: "Medicações modernas, infiltrações guiadas por ultrassom e procedimentos minimamente invasivos quando indicados.",
-  },
-  {
-    icon: Bone,
-    title: "Fisioterapia Integrada",
-    desc: "Trabalho em rede com fisioterapeutas parceiros para reabilitação funcional, ganho de mobilidade e força.",
-  },
-  {
-    icon: Salad,
-    title: "Nutrição Anti-inflamatória",
-    desc: "Encaminhamento a nutricionistas: controle de peso, saúde óssea e alimentação que reduz inflamação.",
-  },
-  {
-    icon: Brain,
-    title: "Suporte Psicológico",
-    desc: "Parceria com psicólogos para manejo da dor crônica, ansiedade e adesão ao tratamento — corpo e mente juntos.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Psiquiatria Colaborativa",
-    desc: "Discussão de casos com psiquiatras de confiança quando há indicação para cuidado integrado da saúde mental.",
-  },
-  {
-    icon: CheckCircle2,
-    title: "Acompanhamento Contínuo",
-    desc: "Reavaliações periódicas, ajuste fino do tratamento e celebração de cada conquista da sua transformação.",
-  },
-];
+const journey = journeyData;
+
 
 /** Horizontal, scroll-driven joint gallery — the active image lifts out of the row. */
 function JointsWheel() {
