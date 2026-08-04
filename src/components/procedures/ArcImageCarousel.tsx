@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import quadrilImage from "@/assets/treatments/musculares.jpg.asset.json";
-import joelhoImage from "@/assets/treatments/artrose.jpg.asset.json";
-import ombroImage from "@/assets/procedures/infiltracao.jpg.asset.json";
-import maosImage from "@/assets/treatments/artrite.jpg.asset.json";
-import tornozeloImage from "@/assets/procedures/bloqueio.jpg.asset.json";
+
+// Imagens específicas das articulações
+import quadrilImage from "@/assets/joints/quadril.jpg";
+import joelhoImage from "@/assets/joints/joelho.jpg";
+import ombroImage from "@/assets/joints/ombro.jpg";
+import maosImage from "@/assets/joints/maos.jpg";
+import pesImage from "@/assets/joints/pes.jpg";
 
 const areas = [
-  { label: "Quadril", image: quadrilImage.url, href: "/procedimentos#infiltracao-ultrassom" },
-  { label: "Joelho", image: joelhoImage.url, href: "/procedimentos#viscossuplementacao" },
-  { label: "Ombro", image: ombroImage.url, href: "/procedimentos#infiltracao-ultrassom" },
-  { label: "Punho e mãos", image: maosImage.url, href: "/procedimentos#bloqueios-anestesicos" },
-  { label: "Pés e tornozelos", image: tornozeloImage.url, href: "/procedimentos#prp" },
+  { label: "Quadril", image: quadrilImage, href: "/procedimentos#infiltracao-ultrassom" },
+  { label: "Joelho", image: joelhoImage, href: "/procedimentos#viscossuplementacao" },
+  { label: "Ombro", image: ombroImage, href: "/procedimentos#infiltracao-ultrassom" },
+  { label: "Punho e mãos", image: maosImage, href: "/procedimentos#bloqueios-anestesicos" },
+  { label: "Pés e tornozelos", image: pesImage, href: "/procedimentos#prp" },
 ];
 
 export default function ArcImageCarousel() {
@@ -50,10 +52,10 @@ export default function ArcImageCarousel() {
     <div ref={stageRef} className="relative h-[360dvh]">
       <div className="sticky top-0 flex h-[100dvh] flex-col overflow-hidden py-20 lg:py-24">
         <header className="mx-auto w-full max-w-6xl px-6 text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-primary">
+          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
             Procedimentos · Áreas em evidência
           </p>
-          <h3 className="mt-4 text-[clamp(2.5rem,6vw,4.75rem)] font-normal leading-none text-foreground">
+          <h3 className="mt-4 text-[clamp(2.5rem,6vw,4.75rem)] font-normal leading-none text-[#2a2233]" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
             Cuidado preciso, onde dói.
           </h3>
         </header>
@@ -73,7 +75,7 @@ export default function ArcImageCarousel() {
                 key={area.label}
                 href={area.href}
                 aria-label={`Ver procedimentos para ${area.label}`}
-                className="ios-clip absolute aspect-[4/5] w-[68vw] max-w-[22rem] overflow-hidden rounded-[2rem] bg-card shadow-[0_28px_75px_-30px_hsl(var(--foreground)/0.45)] sm:w-[42vw] lg:w-[25vw] lg:max-w-[25rem]"
+                className="ios-clip absolute aspect-[4/5] w-[68vw] max-w-[22rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_28px_75px_-30px_rgba(42,34,51,0.45)] sm:w-[42vw] lg:w-[25vw] lg:max-w-[25rem]"
                 animate={{ x: `${x}vw`, y: `${y}%`, z, rotateZ: angle * 0.16, opacity }}
                 transition={{ type: "spring", stiffness: 90, damping: 24, mass: 0.7 }}
                 style={{
@@ -84,9 +86,9 @@ export default function ArcImageCarousel() {
                 }}
               >
                 <img src={area.image} alt={`Área de ${area.label}`} className="h-full w-full object-cover" loading="lazy" />
-                <span className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent" />
-                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 text-primary-foreground sm:p-8">
-                  <span className="text-3xl font-normal sm:text-4xl">{area.label}</span>
+                <span className="absolute inset-0 bg-gradient-to-t from-[#2a2233]/80 via-transparent to-transparent" />
+                <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 text-white sm:p-8">
+                  <span className="text-3xl font-normal sm:text-4xl" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>{area.label}</span>
                   <ChevronRight className="mb-1 h-5 w-5" />
                 </span>
               </motion.a>
@@ -98,12 +100,12 @@ export default function ArcImageCarousel() {
           {areas.map((area, index) => (
             <span
               key={area.label}
-              className={`h-1 transition-all duration-300 ${index === active ? "w-10 bg-primary" : "w-4 bg-border"}`}
+              className={`h-1 transition-all duration-300 ${index === active ? "w-10 bg-[#a3813c]" : "w-4 bg-[#2a2233]/12"}`}
             />
           ))}
         </div>
 
-        <a href="/procedimentos" className="mx-auto mt-7 inline-flex items-center gap-3 border-b border-primary pb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-primary">
+        <a href="/procedimentos" className="mx-auto mt-7 inline-flex items-center gap-3 border-b border-[#a3813c] pb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#a3813c] transition-colors hover:bg-[#a3813c]/5">
           Ver todos os procedimentos
           <ChevronRight className="h-4 w-4" />
         </a>
