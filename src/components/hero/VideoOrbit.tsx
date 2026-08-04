@@ -49,9 +49,9 @@ export default function VideoOrbit() {
     return () => ro.disconnect();
   }, []);
 
-  const scaleFactor = windowWidth <= 480 ? 0.4 : windowWidth <= 768 ? 0.6 : 1;
-  const baseWidth = 220 * scaleFactor;
-  const gap = 20 * scaleFactor;
+  const scaleFactor = windowWidth <= 480 ? 0.5 : windowWidth <= 768 ? 0.72 : 1;
+  const baseWidth = 280 * scaleFactor;
+  const gap = 24 * scaleFactor;
   const count = heroVideos.length || 1;
 
   const itemDims = useMemo(
@@ -242,7 +242,7 @@ export default function VideoOrbit() {
                 didDrag.current = false;
               }}
               aria-label={`Assistir: ${video.title}`}
-              className="group absolute overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-shadow duration-300 hover:shadow-[0_28px_60px_-20px_rgba(42,34,51,0.55)]"
+              className="group absolute overflow-hidden rounded-2xl bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-shadow duration-300 hover:shadow-[0_28px_60px_-20px_rgba(42,34,51,0.55)]"
               style={{
                 left: "50%",
                 top: "50%",
