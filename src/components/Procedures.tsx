@@ -1,280 +1,19 @@
-import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import {
-  Syringe,
-  Stethoscope,
-  HeartHandshake,
-  Salad,
-  Brain,
-  Bone,
-  ClipboardList,
-  CheckCircle2,
   ChevronRight,
 } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { journey as journeyData } from "@/data/journey";
+import { journey as journeyData, type JourneyStep } from "@/data/journey";
 import TransformaDor from "@/components/TransformaDor";
 import ArcImageCarousel from "@/components/procedures/ArcImageCarousel";
 
-
-
-type JointLink = { label: string; slug: string };
-
 /** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
- *  grandes animados: reduzimos o raio e congelamos a rotação da aurora. */
+ *  grandes animados. */
 const REDUCE_FX =
   typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
 
-const joints: {
-  label: string;
-  desc: string;
-  links: JointLink[];
-}[] = [
-  {
-    label: "Quadril",
-    desc: "Infiltrações guiadas por ultrassom para bursites, tendinopatias e osteoartrose.",
-    links: [
-      { label: "Infiltração Trocantérica", slug: "infiltracao-ultrassom" },
-      { label: "Viscossuplementação de Quadril", slug: "viscossuplementacao" },
-      { label: "PRP Coxofemoral", slug: "prp" },
-    ],
-  },
-  {
-    label: "Joelho",
-    desc: "Viscossuplementação, corticoide e PRP para gonartrose e tendinites.",
-    links: [
-      { label: "Viscossuplementação de Joelho", slug: "viscossuplementacao" },
-      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
-      { label: "PRP de Joelho", slug: "prp" },
-    ],
-  },
-  {
-    label: "Ombro",
-    desc: "Infiltração subacromial para bursite, manguito rotador e capsulite.",
-    links: [
-      { label: "Infiltração Subacromial", slug: "infiltracao-ultrassom" },
-      { label: "Infiltração Intra-articular", slug: "infiltracao-ultrassom" },
-      { label: "Bloqueio do Supraescapular", slug: "bloqueios-anestesicos" },
-    ],
-  },
-  {
-    label: "Punho e Mãos",
-    desc: "Bloqueios para De Quervain, dedo em gatilho, túnel do carpo e rizartrose.",
-    links: [
-      { label: "Bloqueio do Túnel do Carpo", slug: "bloqueios-anestesicos" },
-      { label: "Infiltração de Dedo em Gatilho", slug: "infiltracao-ultrassom" },
-      { label: "Infiltração da Rizartrose", slug: "infiltracao-ultrassom" },
-    ],
-  },
-  {
-    label: "Pés e Tornozelos",
-    desc: "Fascite plantar, tendinite aquiliana e artroses do médio e retropé.",
-    links: [
-      { label: "Infiltração da Fascite Plantar", slug: "infiltracao-ultrassom" },
-      { label: "Bloqueio do Nervo Tibial", slug: "bloqueios-anestesicos" },
-      { label: "PRP do Tendão de Aquiles", slug: "prp" },
-    ],
-  },
-];
-
-
 const journey = journeyData;
-
-
-/**
- * Áreas em evidência — sem imagens. Índice tipográfico em tela cheia:
- * o scroll ativa uma área por vez (nome gigante em kinetic reveal) e o
- * mouse cria um halo que segue o cursor sobre linhas finas animadas.
- */
-function JointsWheel() {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const [cursor, setCursor] = useState({ x: 50, y: 50 });
-
-  useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      const el = stageRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = Math.max(1, el.offsetHeight - vh);
-      const p = Math.max(0, Math.min(1, -rect.top / total));
-      setProgress(p);
-      setActive(Math.min(joints.length - 1, Math.floor(p * joints.length * 0.9999)));
-    };
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const shown = hoverIndex ?? active;
-  const current = joints[shown];
-  const localRaw = Math.max(0, Math.min(1, progress * joints.length - active));
-  const local = Math.min(1, localRaw / 0.3);
-  const e = 1 - Math.pow(1 - local, 3);
-
-  return (
-    <div
-      ref={stageRef}
-      className="relative"
-      style={{ height: `${joints.length * 60}vh` }}
-    >
-      <div
-        className="sticky top-0 h-[100dvh] w-full overflow-hidden"
-        onMouseMove={(ev) => {
-          const r = ev.currentTarget.getBoundingClientRect();
-          setCursor({
-            x: ((ev.clientX - r.left) / r.width) * 100,
-            y: ((ev.clientY - r.top) / r.height) * 100,
-          });
-        }}
-      >
-        {/* Halo que segue o cursor */}
-        <div
-          className="pointer-events-none absolute inset-0 transition-opacity duration-500"
-          style={{
-            background: `radial-gradient(28rem 28rem at ${cursor.x}% ${cursor.y}%, rgba(163,129,60,0.16), transparent 70%)`,
-            opacity: REDUCE_FX ? 0 : 1,
-          }}
-          aria-hidden
-        />
-
-        {/* Linhas finas horizontais que respiram com o scroll */}
-        <div className="pointer-events-none absolute inset-0" aria-hidden>
-          {Array.from({ length: 14 }).map((_, i) => (
-            <span
-              key={i}
-              className="absolute left-0 h-px w-full"
-              style={{
-                top: `${(i / 14) * 100}%`,
-                background:
-                  "linear-gradient(90deg, transparent, rgba(163,129,60,0.28), transparent)",
-                transform: `scaleX(${0.4 + ((Math.sin(progress * 6 + i) + 1) / 2) * 0.6})`,
-                WebkitTransform: `scaleX(${0.4 + ((Math.sin(progress * 6 + i) + 1) / 2) * 0.6})`,
-                transformOrigin: i % 2 === 0 ? "left center" : "right center",
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-center px-6 sm:px-10 lg:px-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-[#a3813c]">
-            Procedimentos · Áreas em evidência
-          </p>
-
-          {/* Nome gigante da área ativa, em kinetic reveal */}
-          <h3
-            className="mt-6 overflow-hidden text-[clamp(2.75rem,10vw,7rem)] font-normal leading-[0.95] tracking-tight text-[#2a2233]"
-            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-          >
-            <span
-              key={current.label}
-              className="block"
-              style={{
-                transform: `translate3d(0, ${(1 - e) * 40}px, 0)`,
-                WebkitTransform: `translate3d(0, ${(1 - e) * 40}px, 0)`,
-                opacity: 0.25 + e * 0.75,
-                filter: `blur(${(1 - e) * 6}px)`,
-              }}
-            >
-              {current.label}
-            </span>
-          </h3>
-
-          <p className="mt-5 max-w-[46ch] text-lg font-light leading-relaxed text-[#4a4152] sm:text-xl">
-            {current.desc}
-          </p>
-
-          {/* Índice de áreas + links dos procedimentos */}
-          <div className="mt-10 grid gap-8 lg:grid-cols-2">
-            <ul className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12">
-              {joints.map((j, i) => {
-                const on = i === shown;
-                return (
-                  <li key={j.label}>
-                    <button
-                      type="button"
-                      onMouseEnter={() => setHoverIndex(i)}
-                      onFocus={() => setHoverIndex(i)}
-                      onMouseLeave={() => setHoverIndex(null)}
-                      onBlur={() => setHoverIndex(null)}
-                      className="group flex w-full items-center justify-between gap-4 py-3 text-left"
-                    >
-                      <span
-                        className={`text-base font-light tracking-wide transition-all duration-300 sm:text-lg ${
-                          on ? "text-[#2a2233]" : "text-[#4a4152]/60"
-                        }`}
-                        style={{ letterSpacing: on ? "0.06em" : undefined }}
-                      >
-                        {j.label}
-                      </span>
-                      <span
-                        className="h-px bg-[#a3813c]/70 transition-all duration-300"
-                        style={{ width: on ? "3.5rem" : "1rem" }}
-                      />
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <ul
-              key={current.label}
-              className="flex flex-col divide-y divide-[#2a2233]/10 border-y border-[#2a2233]/12"
-            >
-              {current.links.map((l, i) => (
-                <li
-                  key={l.label}
-                  style={{
-                    opacity: e,
-                    transform: `translate3d(${(1 - e) * (12 + i * 6)}px, 0, 0)`,
-                    WebkitTransform: `translate3d(${(1 - e) * (12 + i * 6)}px, 0, 0)`,
-                  }}
-                >
-                  <a
-                    href={`/procedimentos#${l.slug}`}
-                    className="group/link flex items-center justify-between gap-4 py-3 transition-colors hover:text-[#a3813c]"
-                  >
-                    <span className="text-base font-light tracking-wide text-[#4a4152] sm:text-lg">
-                      {l.label}
-                    </span>
-                    <span className="flex items-center gap-3 text-[#a3813c]/70 transition-all group-hover/link:text-[#a3813c]">
-                      <span className="h-px w-5 bg-[#a3813c]/60 transition-all group-hover/link:w-10" />
-                      <ChevronRight className="h-4 w-4" />
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <a
-            href="/procedimentos"
-            className="mt-10 inline-flex w-fit items-center gap-3 border border-[#a3813c]/60 px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:border-[#a3813c] hover:bg-[#a3813c]/10"
-          >
-            Ver todos os procedimentos
-            <ChevronRight className="h-4 w-4" />
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-
 
 export default function Procedures() {
   const { ref, inView } = useInView({ threshold: 0.05 });
@@ -299,22 +38,21 @@ export default function Procedures() {
         <ArrowSliceReveal steps={journey} />
       </div>
 
-      {/* Procedimentos — Áreas em evidência (merged) */}
+      {/* Procedimentos — Áreas em evidência (ArcImageCarousel) */}
       <ArcImageCarousel />
     </section>
   );
 }
 
-
 /**
  * Reveal "site girado para o lado": a sobrecapa do Programa TransformaDOR
- * gira no eixo Y (como se a página inteira virasse de lado) e, no mesmo
- * movimento, as Etapas da Transformação entram girando do outro lado.
+ * gira no eixo Y e as Etapas da Transformação entram do outro lado.
  */
 function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
 
-  // Fase 1 (0 → 0.18): giro lateral. Fase 2 (0.18 → 1): etapas.
+  // Fase 1 (0 → 0.25): giro lateral. Fase 2 (0.25 → 1): etapas.
+  // Espaço reduzido para 60% (480vh no pai)
   const turnP = Math.max(0, Math.min(1, progress / 0.25));
   const cylP = Math.max(0, Math.min(1, (progress - 0.25) / 0.75));
   const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
@@ -345,7 +83,7 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   };
 
   return (
-    <div ref={ref} className="relative h-[480dvh]">
+    <div ref={ref} className="relative" style={{ height: "480vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* Sobrecapa — Programa TransformaDOR */}
         <div
@@ -386,7 +124,6 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   );
 }
 
-
 function StepsReveal({
   steps,
   active,
@@ -396,21 +133,15 @@ function StepsReveal({
   active: number;
   cylProgress: number;
 }) {
-  // Diagonal deck: the cards are queued in a diagonal line (desktop) or
-  // stacked vertically (mobile). Scrolling down makes the front card slide
-  // out, revealing the next one already in place behind it.
   const isMobile = useIsMobile();
   const totalSteps = steps.length;
   const progress = cylProgress * (totalSteps - 1);
   const currentIdx = Math.min(totalSteps - 1, Math.max(0, Math.floor(progress)));
-  const t = Math.min(1, Math.max(0, progress - currentIdx)); // 0 → 1 transition
+  const t = Math.min(1, Math.max(0, progress - currentIdx));
 
-  // Fill progress for the vertical timeline (0 → 1 across all steps).
   const fillPct = totalSteps > 1 ? (active / (totalSteps - 1)) * 100 : 0;
+  const ease = (x: number) => 1 - Math.pow(1 - x, 3);
 
-  const ease = (x: number) => 1 - Math.pow(1 - x, 3); // easeOutCubic
-
-  // Mobile nav: slide the active step label into view horizontally.
   const navRef = useRef<HTMLElement>(null);
   useEffect(() => {
     const nav = navRef.current;
@@ -421,10 +152,8 @@ function StepsReveal({
     nav.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
   }, [active]);
 
-  /** rel: continuous deck position. 0 = front, negative = leaving, >0 = queued. */
   const deckStyle = (rel: number): CSSProperties => {
     if (rel < 0) {
-      // Exiting card: slides diagonally out (up-left on desktop, up on mobile).
       const e = ease(Math.min(1, -rel));
       return {
         transform: isMobile
@@ -467,7 +196,6 @@ function StepsReveal({
         }}
         aria-hidden={!isFront}
       >
-        {/* Card backdrop */}
         <div
           className="absolute inset-0"
           style={{
@@ -475,7 +203,6 @@ function StepsReveal({
               "linear-gradient(160deg, #ffffff 0%, #fbf7ee 60%, #f4ecdd 100%)",
           }}
         />
-        {/* Aurora glow */}
         <div
           className="pointer-events-none absolute -inset-24 opacity-60"
           style={
@@ -497,7 +224,6 @@ function StepsReveal({
           }
         />
 
-        {/* Corner brackets */}
         {(["tl", "tr", "bl", "br"] as const).map((c) => (
           <span
             key={c}
@@ -517,7 +243,6 @@ function StepsReveal({
           />
         ))}
 
-        {/* Giant outlined number */}
         <div
           aria-hidden
           className="pointer-events-none absolute -right-4 top-1/2 -translate-y-1/2 select-none text-[clamp(240px,40vh,480px)] font-bold leading-none tracking-tighter"
@@ -531,7 +256,6 @@ function StepsReveal({
           {num}
         </div>
 
-        {/* Content */}
         <div className="relative flex h-full w-full flex-col justify-between px-8 py-10 sm:px-10">
           <div className="flex items-center gap-4">
             <span className="relative flex h-14 w-14 items-center justify-center">
@@ -574,7 +298,6 @@ function StepsReveal({
     );
   };
 
-  // Cards currently in the deck: the leaving one plus the queued ones.
   const visible: { i: number; rel: number }[] = [];
   for (let i = Math.max(0, currentIdx - 1); i < totalSteps; i++) {
     const rel = i - currentIdx - t;
@@ -584,7 +307,6 @@ function StepsReveal({
 
   return (
     <div className="relative flex h-full w-full flex-col bg-transparent">
-      {/* Header */}
       <div className="px-6 pt-10 sm:px-10 lg:px-16 lg:pt-14">
         <p className="text-base font-semibold uppercase tracking-[0.28em] text-primary sm:text-lg">
           Etapas da Transformação
@@ -597,9 +319,7 @@ function StepsReveal({
         </h3>
       </div>
 
-      {/* Body: full-height nav + diagonal deck */}
       <div className="grid flex-1 grid-cols-1 gap-6 px-6 pb-10 pt-6 sm:px-10 lg:grid-cols-[440px_1fr] lg:gap-14 lg:px-16 lg:pb-14">
-        {/* Nav menu — vertical timeline with connecting line + filled squares */}
         <nav
           className="relative hidden lg:flex lg:flex-col lg:h-full"
           aria-label="Etapas"
@@ -651,13 +371,11 @@ function StepsReveal({
                 >
                   {s.title}
                 </span>
-
               </div>
             );
           })}
         </nav>
 
-        {/* Mobile — horizontal nav that slides to the active step */}
         <nav
           ref={navRef}
           className="flex gap-3 overflow-x-auto lg:hidden"
@@ -679,13 +397,11 @@ function StepsReveal({
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <span className="whitespace-nowrap text-base" style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>{s.title}</span>
-
               </div>
             );
           })}
         </nav>
 
-        {/* Diagonal deck stage */}
         <div className="relative flex min-h-[58vh] items-center justify-center lg:min-h-0">
           <div className="relative aspect-[4/5] h-full max-h-[540px] w-full max-w-[520px] lg:max-w-[540px]">
             {visible
@@ -698,17 +414,6 @@ function StepsReveal({
     </div>
   );
 }
-
-
-
-
-
-
-type JourneyStep = {
-  icon: ComponentType<{ className?: string }>;
-  title: string;
-  desc: string;
-};
 
 /** Reusable scroll-progress hook: 0 → 1 while element passes the viewport. */
 function useScrollProgress() {
@@ -739,7 +444,3 @@ function useScrollProgress() {
   }, []);
   return { ref, progress: p };
 }
-
-
-
-
