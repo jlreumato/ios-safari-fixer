@@ -176,14 +176,16 @@ export default function VideoOrbit() {
   const sorted = [...items].sort((a, b) => a.z - b.z);
 
   const maxHeight = Math.max(...itemDims.map((d) => d.height));
-  const containerWidth = radiusX * 2 + avgWidth + containerPadding;
-  const containerHeight = radiusY * 2 + maxHeight + containerPadding;
+  const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
+  const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
+  const fitScale = Math.min(1, (containerWidth || orbitWidth) / orbitWidth);
+  const scaledHeight = orbitHeight * fitScale;
 
   return (
     <div
       ref={sectionRef}
       className="relative flex w-full items-center justify-center overflow-hidden"
-      style={{ minHeight: `${containerHeight}px` }}
+      style={{ minHeight: `${scaledHeight}px` }}
     >
       <motion.div
         drag="x"
@@ -194,8 +196,11 @@ export default function VideoOrbit() {
         onDragEnd={handleDragEnd}
         className="relative cursor-grab active:cursor-grabbing"
         style={{
-          width: `${containerWidth}px`,
-          height: `${containerHeight}px`,
+          width: `${orbitWidth}px`,
+          height: `${orbitHeight}px`,
+          transform: `scale(${fitScale})`,
+          WebkitTransform: `scale(${fitScale})`,
+          transformOrigin: "center center",
           perspective: "1200px",
           WebkitPerspective: "1200px",
           touchAction: "pan-y",
