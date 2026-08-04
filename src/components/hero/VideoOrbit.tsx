@@ -34,16 +34,16 @@ export default function VideoOrbit() {
   return (
     <div className="relative flex items-center justify-center">
       <div
-        className="relative aspect-square w-[min(88vw,30rem)] lg:w-[34rem]"
+        className="relative aspect-square w-[min(86vw,26rem)] lg:w-[32rem]"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => {
           setPaused(false);
           setHovered(null);
         }}
       >
-        {/* anel guia */}
-        <span className="pointer-events-none absolute inset-[14%] rounded-full border border-[#b79b62]/25" />
-        <span className="pointer-events-none absolute inset-[26%] rounded-full border border-[#b79b62]/15" />
+        {/* anéis guia */}
+        <span className="pointer-events-none absolute inset-[13%] rounded-full border border-[#b79b62]/25" />
+        <span className="pointer-events-none absolute inset-[27%] rounded-full border border-[#b79b62]/15" />
 
         {/* núcleo */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
@@ -61,27 +61,28 @@ export default function VideoOrbit() {
         {heroVideos.map((v, i) => {
           const a = angle + (i * 360) / total;
           const isHot = hovered === i;
+          const vertical = v.aspect === "9/16";
           return (
-            <button
+            <div
               key={v.id}
-              type="button"
-              onClick={() => setOpen(v)}
-              onMouseEnter={() => setHovered(i)}
-              aria-label={`Assistir: ${v.title}`}
-              className="group absolute left-1/2 top-1/2 h-0 w-0"
+              className="pointer-events-none absolute inset-0"
               style={{
-                transform: `rotate(${a}deg) translateY(-42%) translateY(-0px)`,
+                transform: `rotate(${a}deg)`,
+                WebkitTransform: `rotate(${a}deg)`,
               }}
             >
-              <span
-                className="absolute block overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-transform duration-300"
+              <button
+                type="button"
+                onClick={() => setOpen(v)}
+                onMouseEnter={() => setHovered(i)}
+                aria-label={`Assistir: ${v.title}`}
+                className="group pointer-events-auto absolute left-1/2 top-0 block overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40"
                 style={{
-                  width: v.aspect === "9/16" ? "6.5rem" : "9rem",
-                  height: v.aspect === "9/16" ? "11.5rem" : "6rem",
-                  left: "50%",
-                  top: "50%",
-                  transform: `translate(-50%, -50%) rotate(${-a}deg) scale(${isHot ? 1.12 : 1})`,
-                  WebkitTransform: `translate(-50%, -50%) rotate(${-a}deg) scale(${isHot ? 1.12 : 1})`,
+                  width: vertical ? "5.5rem" : "8rem",
+                  height: vertical ? "9.5rem" : "5.4rem",
+                  transform: `translate(-50%, -35%) rotate(${-a}deg) scale(${isHot ? 1.12 : 1})`,
+                  WebkitTransform: `translate(-50%, -35%) rotate(${-a}deg) scale(${isHot ? 1.12 : 1})`,
+                  transition: "box-shadow 300ms ease",
                 }}
               >
                 <img
@@ -93,15 +94,10 @@ export default function VideoOrbit() {
                 <span className="absolute inset-0 flex items-center justify-center bg-[#2a2233]/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <Play className="h-6 w-6 text-white" fill="currentColor" />
                 </span>
-              </span>
-            </button>
+              </button>
+            </div>
           );
         })}
-
-        {/* órbita: raio via padding relativo */}
-        <style>{`
-          .group { --orbit: 0; }
-        `}</style>
       </div>
 
       <VideoLightbox video={open} onClose={() => setOpen(null)} />
