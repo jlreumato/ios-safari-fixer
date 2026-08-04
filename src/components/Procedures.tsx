@@ -315,8 +315,8 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
 
   // Fase 1 (0 → 0.18): giro lateral. Fase 2 (0.18 → 1): etapas.
-  const turnP = Math.max(0, Math.min(1, progress / 0.18));
-  const cylP = Math.max(0, Math.min(1, (progress - 0.18) / 0.82));
+  const turnP = Math.max(0, Math.min(1, progress / 0.25));
+  const cylP = Math.max(0, Math.min(1, (progress - 0.25) / 0.75));
   const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
 
   const ease = (x: number) => 1 - Math.pow(1 - x, 3);

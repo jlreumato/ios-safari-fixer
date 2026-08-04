@@ -1,68 +1,75 @@
-import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 /**
- * Marca do programa. "Transforma" + "DOR" formam uma única palavra que
- * NUNCA quebra: o tamanho é fluido (clamp em vw) para sempre caber na tela.
+ * Marca do programa com animação de revelação letra por letra.
+ * "Transforma" + "DOR" formam uma única palavra que NUNCA quebra.
  */
 export default function TransformaDor({
   size = "clamp(2rem, 10.5vw, 10rem)",
   className = "",
   serif = true,
 }: {
-  /** font-size CSS (use clamp com vw para nunca estourar a largura). */
   size?: string;
   className?: string;
   serif?: boolean;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [revealed, setRevealed] = useState(false);
+  const word1 = "Transforma";
+  const word2 = "DOR";
 
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || typeof IntersectionObserver === "undefined") {
-      setRevealed(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry?.isIntersecting) {
-        setRevealed(true);
-        observer.disconnect();
-      }
-    }, { threshold: 0.35 });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 * i },
+    }),
+  };
 
-  const letters = "TransformaDOR".split("");
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      filter: "blur(4px)",
+    },
+  };
 
   return (
-    <span
-      ref={ref}
+    <motion.span
       translate="no"
-      className={`inline-block whitespace-nowrap align-baseline tracking-tight ${className}`}
+      className={`inline-flex whitespace-nowrap align-baseline tracking-tight ${className}`}
       style={{
         fontSize: size,
         lineHeight: 1.02,
         fontFamily: serif ? "'Cormorant Garamond', Georgia, serif" : undefined,
-        hyphens: "none",
-        WebkitHyphens: "none",
-        wordBreak: "keep-all",
       }}
+      variants={container}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
     >
-      {letters.map((letter, index) => (
-        <span
-          key={`${letter}-${index}`}
-          className={`inline-block ${index < 9 ? "font-normal text-[#2a2233]" : "font-semibold text-[#a3813c]"}`}
-          style={{
-            opacity: revealed ? 1 : 0,
-            transform: revealed ? "translate3d(0,0,0) rotateY(0deg)" : "translate3d(0,0.7em,0) rotateY(75deg)",
-            WebkitTransform: revealed ? "translate3d(0,0,0) rotateY(0deg)" : "translate3d(0,0.7em,0) rotateY(75deg)",
-            transition: `opacity 420ms ease ${index * 55}ms, transform 600ms cubic-bezier(0.16,1,0.3,1) ${index * 55}ms`,
-          }}
-        >
-          {letter}
-        </span>
-      ))}
-    </span>
+      <span className="flex">
+        {word1.split("").map((letter, index) => (
+          <motion.span key={index} variants={child} className="font-normal text-[#2a2233]">
+            {letter}
+          </motion.span>
+        ))}
+      </span>
+      <span className="flex">
+        {word2.split("").map((letter, index) => (
+          <motion.span key={index} variants={child} className="font-semibold text-[#a3813c]">
+            {letter}
+          </motion.span>
+        ))}
+      </span>
+    </motion.span>
   );
 }
