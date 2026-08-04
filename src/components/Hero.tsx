@@ -34,7 +34,7 @@ export default function Hero() {
             </p>
 
             <h1
-              className="text-balance text-5xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-6xl lg:text-7xl xl:text-[5.5rem]"
+              className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl xl:text-[4.5rem]"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
               Viver com <span className="italic text-[#a3813c]">DOR</span>
