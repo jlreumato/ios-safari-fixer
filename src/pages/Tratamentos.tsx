@@ -13,8 +13,8 @@ export default function TratamentosPage() {
   return (
     <>
       <Seo
-        title="Tratamentos Reumatológicos em Maceió (AL) — Dra. Juliana Leal"
-        description="Fibromialgia, artrose, osteoporose, artrite reumatoide, gota, artrite psoriásica e outras doenças imunológicas — cuidado humanizado em Maceió, Alagoas."
+        title="Tratamentos Reumatológicos | Dra. Juliana Leal"
+        description="Tratamento humanizado para fibromialgia, artrose, osteoporose, artrite reumatoide, gota e doenças imunológicas em Maceió, Alagoas."
         path="/tratamentos"
       />
       <Header />
@@ -29,7 +29,7 @@ export default function TratamentosPage() {
         }}
       >
         {/* Intro */}
-        <section className="relative flex min-h-[55vh] items-end overflow-hidden pt-28 pb-14">
+        <section className="relative flex min-h-[55dvh] items-end overflow-hidden pt-28 pb-14">
           <div
             className="pointer-events-none absolute inset-0 opacity-40"
             style={{

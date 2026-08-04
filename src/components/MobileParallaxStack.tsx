@@ -1,4 +1,4 @@
-import { Children, ReactNode, useEffect, useRef, useState } from "react";
+import { Children, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 /**
  * Empilha os filhos em um "palco" fixo (sticky) enquanto o usuário rola a página.
@@ -17,7 +17,7 @@ export default function MobileParallaxStack({
   stepVh?: number;
   className?: string;
 }) {
-  const items = Children.toArray(children);
+  const items = useMemo(() => Children.toArray(children), [children]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [offsets, setOffsets] = useState<number[]>(() =>
     items.map((_, i) => (i === 0 ? 0 : 100))
@@ -52,7 +52,7 @@ export default function MobileParallaxStack({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [items.length, stepVh]);
+  }, [items, stepVh]);
 
   // Altura total = scroll necessário para (N-1) cards entrarem + 1 tela de "leitura" do último.
   const totalVh = (items.length - 1) * stepVh + 100;
@@ -61,7 +61,7 @@ export default function MobileParallaxStack({
     <div
       ref={containerRef}
       className={`relative ${className}`}
-      style={{ height: `${totalVh}vh` }}
+      style={{ height: `${totalVh}dvh` }}
     >
       <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         <div className="relative w-full px-4">

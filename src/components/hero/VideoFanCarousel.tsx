@@ -53,7 +53,8 @@ export default function VideoFanCarousel() {
     const dx = e.clientX - d.x;
     if (Math.abs(dx) > 45) {
       d.done = true;
-      dx < 0 ? next() : prev();
+      if (dx < 0) next();
+      else prev();
     }
   };
   const onPointerUp = () => {

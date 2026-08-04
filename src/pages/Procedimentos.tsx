@@ -157,7 +157,7 @@ export default function ProcedimentosPage() {
   return (
     <>
       <Seo
-        title="Procedimentos Reumatológicos em Maceió (AL) — Dra. Juliana Leal"
+        title="Procedimentos em Maceió | Dra. Juliana Leal"
         description="Infiltrações guiadas por ultrassom, viscossuplementação, PRP, bloqueios anestésicos e manejo de doenças autoimunes em Maceió — Alagoas."
         path="/procedimentos"
         jsonLd={[

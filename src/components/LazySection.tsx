@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 interface LazySectionProps {
   children: ReactNode | ((mounted: boolean) => ReactNode);
@@ -30,7 +30,10 @@ export default function LazySection({
   const [mounted, setMounted] = useState(false);
 
   /** True when the current URL hash points directly to this section. */
-  const hashMatches = (hash: string) => id && hash.replace("#", "") === id;
+  const hashMatches = useCallback(
+    (hash: string) => Boolean(id && hash.replace("#", "") === id),
+    [id],
+  );
 
   useEffect(() => {
     const el = ref.current;
@@ -63,7 +66,7 @@ export default function LazySection({
       obs.disconnect();
       window.removeEventListener("hashchange", onHashChange);
     };
-  }, [mounted, rootMargin, id]);
+  }, [mounted, rootMargin, hashMatches]);
 
   return (
     <div

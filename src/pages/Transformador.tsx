@@ -11,7 +11,7 @@ import ProcessSteps from "@/components/transformador/ProcessSteps";
 import { journeyHowToLd } from "@/data/journey";
 import { Bone, Brain, HeartHandshake, Salad } from "lucide-react";
 
-const TITLE = "Programa TransformaDOR | Dra. Juliana Leal — Reumatologia em Maceió";
+const TITLE = "Programa TransformaDOR | Dra. Juliana Leal";
 const DESC =
   "Programa TransformaDOR: 8 etapas conduzidas pela Dra. Juliana Leal, da primeira consulta ao cuidado multidisciplinar contínuo para controle da dor crônica em Maceió (AL).";
 
@@ -57,7 +57,7 @@ export default function Transformador() {
               Um caminho de oito etapas para devolver movimento, sono e liberdade.
             </p>
             <a
-              href="#processo-heading"
+              href="#processo"
               className="mt-14 inline-flex items-center gap-3 border border-[#a3813c]/60 px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:bg-[#f2e9d8]"
             >
               Ver as etapas

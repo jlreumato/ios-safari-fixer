@@ -30,6 +30,7 @@ function Reel({
     <button
       type="button"
       onClick={playable ? onOpen : undefined}
+      aria-disabled={!playable}
       aria-label={playable ? `Assistir depoimento de ${v.name}` : `Depoimento de ${v.name} em breve`}
       className="group relative block w-[68vw] max-w-[300px] flex-shrink-0 overflow-hidden border text-left transition-all duration-700 ease-out sm:w-[260px]"
       style={{
