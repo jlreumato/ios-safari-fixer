@@ -9,7 +9,9 @@ import TratamentoDetalhe from "./pages/TratamentoDetalhe.tsx";
 import BlogPage from "./pages/Blog.tsx";
 import Procedimentos from "./pages/Procedimentos.tsx";
 import Tratamentos from "./pages/Tratamentos.tsx";
+import Transformador from "./pages/Transformador.tsx";
 import RouteLoader from "./components/RouteLoader.tsx";
+
 
 
 const queryClient = new QueryClient();
