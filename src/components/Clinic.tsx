@@ -224,7 +224,7 @@ export default function Clinic() {
   const gridImages = [0, 1, 2, 3].map((i) => currentLocation.images[i % currentLocation.images.length]);
 
   return (
-    <section id="clinica" className="relative py-20 lg:py-28">
+    <section id="clinica" className="relative py-28 lg:py-40">
       <div
         ref={ref}
         className={`mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 transition-all duration-700 ease-out ${
@@ -235,20 +235,18 @@ export default function Clinic() {
         <div className="max-w-3xl">
           <div className="flex items-center gap-4">
             <span className="h-px w-14 bg-[#a3813c]" />
-            <p className="text-base font-semibold uppercase tracking-[0.28em] text-[#a3813c]">
+            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
               Locais de Atendimento
             </p>
           </div>
           <h2
-            className="mt-5 text-balance text-5xl font-normal tracking-tight text-foreground sm:text-6xl lg:text-7xl"
+            className="mt-7 text-balance text-[clamp(2.25rem,6vw,4.25rem)] font-normal leading-[1.05] tracking-tight text-[#2a2233]"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
-            Seu conforto é <span className="italic text-primary">nossa prioridade</span>
+            Onde você será <span className="italic text-[#a3813c]">acolhida</span>
           </h2>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Espaços pensados para oferecer acolhimento e cuidado desde o primeiro momento.
-          </p>
         </div>
+
 
         {/* Tabs + Address — modern outlined layout */}
         <div className="mt-12 flex flex-col gap-6 border-y border-[#2a2233]/12 py-6 lg:flex-row lg:items-center lg:justify-between">
