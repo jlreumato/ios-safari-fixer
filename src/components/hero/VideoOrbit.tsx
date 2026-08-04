@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, type PanInfo } from "framer-motion";
 import { Play } from "lucide-react";
 import { heroVideos, heroVideoFallbackThumb, type HeroVideo } from "@/data/heroVideos";
@@ -12,21 +12,21 @@ import VideoLightbox from "./VideoLightbox";
  */
 export default function VideoOrbit() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [open, setOpen] = useState<HeroVideo | null>(null);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const [containerWidth, setContainerWidth] = useState(0);
-  const [tick, setTick] = useState(0);
-  const [hovered, setHovered] = useState<number | null>(null);
 
   const angleRef = useRef(0);
   const isDragging = useRef(false);
-  const autoSpeed = useRef(1);
+  const didDrag = useRef(false);
+  const isVisible = useRef(true);
   const dragVelocity = useRef(0);
   const scrollVelocity = useRef(0);
 
-  const speed = 14; // segundos por volta completa
+  const speed = 14;
   const sensitivity = 0.3;
 
   // Responsividade + fit ao container
@@ -42,7 +42,8 @@ export default function VideoOrbit() {
     const el = sectionRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
-      setContainerWidth(entries[0].contentRect.width);
+      const entry = entries[0];
+      if (entry) setContainerWidth(entry.contentRect.width);
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -51,36 +52,75 @@ export default function VideoOrbit() {
   const scaleFactor = windowWidth <= 480 ? 0.4 : windowWidth <= 768 ? 0.6 : 1;
   const baseWidth = 220 * scaleFactor;
   const gap = 20 * scaleFactor;
-
   const count = heroVideos.length || 1;
 
-  const itemDims = heroVideos.map((v) => {
-    const vertical = v.aspect === "9/16";
-    const w = vertical ? baseWidth * 0.62 : baseWidth;
-    const h = vertical ? baseWidth * 0.62 * (16 / 9) : baseWidth * (9 / 16);
-    return { width: w, height: h, vertical };
-  });
+  const itemDims = useMemo(
+    () =>
+      heroVideos.map((video) => {
+        const vertical = video.aspect === "9/16";
+        const width = vertical ? baseWidth * 0.62 : baseWidth;
+        const height = vertical ? width * (16 / 9) : width * (9 / 16);
+        return { width, height };
+      }),
+    [baseWidth]
+  );
 
   const avgWidth = itemDims.reduce((s, d) => s + d.width, 0) / count;
   const radiusX = Math.max((count * (avgWidth + gap)) / (2 * Math.PI), 200 * scaleFactor);
   const radiusZ = radiusX * 0.85;
   const radiusY = 40 * scaleFactor;
   const containerPadding = windowWidth <= 480 ? 80 : 100;
+  const maxHeight = Math.max(...itemDims.map((d) => d.height));
+  const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
+  const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
+  const measuredWidth = containerWidth || windowWidth * 0.5;
+  const fitScale = Math.min(1, measuredWidth / orbitWidth);
+  const scaledHeight = orbitHeight * fitScale;
 
-  // Loop de animação contínua
+  // A órbita é atualizada diretamente no DOM para não renderizar React a 60 fps.
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    if (typeof window === "undefined") return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const degreesPerSecond = 360 / speed;
+    const applyPositions = () => {
+      heroVideos.forEach((_, index) => {
+        const element = itemRefs.current[index];
+        if (!element) return;
+
+        const itemAngle = (angleRef.current + (360 / count) * index) % 360;
+        const radians = (itemAngle * Math.PI) / 180;
+        const x = Math.sin(radians) * radiusX;
+        const z = Math.cos(radians) * radiusZ;
+        const y = -Math.cos(radians) * radiusY;
+        const depth = (z + radiusZ) / (2 * radiusZ);
+        const itemScale = 0.35 + depth * 0.65;
+        const transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${itemScale})`;
+
+        element.style.transform = transform;
+        element.style.webkitTransform = transform;
+        element.style.zIndex = String(Math.round(depth * 100));
+        element.dataset.front = depth > 0.75 ? "true" : "false";
+      });
+    };
+
+    applyPositions();
+    if (reducedMotion) return;
 
     let raf = 0;
     let lastTime: number | null = null;
 
     const animate = (time: number) => {
+      if (!isVisible.current || document.hidden) {
+        lastTime = time;
+        raf = requestAnimationFrame(animate);
+        return;
+      }
+
       if (lastTime === null) lastTime = time;
-      const dt = (time - lastTime) / 1000;
+      const dt = Math.min((time - lastTime) / 1000, 0.05);
       lastTime = time;
 
-      // Scroll velocity decay
       if (Math.abs(scrollVelocity.current) > 0.01) {
         angleRef.current = (angleRef.current + scrollVelocity.current) % 360;
         scrollVelocity.current *= 0.97;
@@ -88,26 +128,38 @@ export default function VideoOrbit() {
         scrollVelocity.current = 0;
       }
 
-      // Drag momentum + auto-rotate
       if (!isDragging.current) {
         if (Math.abs(dragVelocity.current) > 0.1) {
           angleRef.current = (angleRef.current + dragVelocity.current * dt) % 360;
           dragVelocity.current *= 0.92;
         } else {
           dragVelocity.current = 0;
-          const degreesPerSecond = 360 / speed;
-          angleRef.current =
-            (angleRef.current + degreesPerSecond * dt * autoSpeed.current) % 360;
+          angleRef.current = (angleRef.current + degreesPerSecond * dt) % 360;
         }
       }
 
-      setTick((t) => t + 1);
+      applyPositions();
       raf = requestAnimationFrame(animate);
     };
 
     raf = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(raf);
-  }, [speed]);
+  }, [count, radiusX, radiusY, radiusZ, speed]);
+
+  // Suspende o trabalho gráfico fora do viewport.
+  useEffect(() => {
+    const element = sectionRef.current;
+    if (!element || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry?.isIntersecting ?? false;
+      },
+      { rootMargin: "40% 0px" }
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   // Scroll da página influencia a rotação quando o Hero está próximo do viewport
   useEffect(() => {
@@ -134,54 +186,20 @@ export default function VideoOrbit() {
 
   const handleDragStart = useCallback(() => {
     isDragging.current = true;
-    autoSpeed.current = 0;
+    didDrag.current = false;
     dragVelocity.current = 0;
   }, []);
 
   const handleDrag = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (Math.abs(info.offset.x) > 6) didDrag.current = true;
     angleRef.current = (angleRef.current + info.delta.x * sensitivity) % 360;
     dragVelocity.current = info.delta.x * sensitivity * 60;
   }, []);
 
   const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     isDragging.current = false;
-    autoSpeed.current = 1;
     dragVelocity.current = info.velocity.x * sensitivity * 0.35;
   }, []);
-
-  const baseAngle = angleRef.current;
-
-  const items = heroVideos.map((v, i) => {
-    const dims = itemDims[i];
-    const itemAngle = (baseAngle + (360 / count) * i) % 360;
-    const rad = (itemAngle * Math.PI) / 180;
-    const x = Math.sin(rad) * radiusX;
-    const z = Math.cos(rad) * radiusZ;
-    const y = -Math.cos(rad) * radiusY;
-    const depthNorm = (z + radiusZ) / (2 * radiusZ);
-    const scale = 0.35 + depthNorm * 0.65;
-
-    return {
-      video: v,
-      dims,
-      x,
-      y,
-      z,
-      scale,
-      depthNorm,
-      index: i,
-    };
-  });
-
-  const sorted = [...items].sort((a, b) => a.z - b.z);
-
-  const maxHeight = Math.max(...itemDims.map((d) => d.height));
-  const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
-  const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
-  const measuredWidth =
-    sectionRef.current?.getBoundingClientRect().width || containerWidth || windowWidth * 0.5;
-  const fitScale = Math.min(1, measuredWidth / orbitWidth);
-  const scaledHeight = orbitHeight * fitScale;
 
   return (
     <div
@@ -209,24 +227,22 @@ export default function VideoOrbit() {
           userSelect: "none",
         }}
       >
-        {sorted.map((item) => {
-          const { video, dims, x, y, z, scale, depthNorm, index } = item;
-          const isHot = hovered === index;
-          const finalScale = isHot ? scale * 1.08 : scale;
-          const isFront = depthNorm > 0.75;
-
+        {heroVideos.map((video, index) => {
+          const dims = itemDims[index];
+          if (!dims) return null;
           return (
-            <motion.button
+            <button
               key={video.id}
+              ref={(element) => {
+                itemRefs.current[index] = element;
+              }}
               type="button"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.08, ease: "easeOut" }}
-              onClick={() => setOpen(video)}
-              onMouseEnter={() => setHovered(index)}
-              onMouseLeave={() => setHovered(null)}
+              onClick={() => {
+                if (!didDrag.current) setOpen(video);
+                didDrag.current = false;
+              }}
               aria-label={`Assistir: ${video.title}`}
-              className="group absolute overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40"
+              className="group absolute overflow-hidden bg-[#f2e9d8] shadow-[0_18px_40px_-20px_rgba(42,34,51,0.45)] ring-1 ring-[#b79b62]/40 transition-shadow duration-300 hover:shadow-[0_28px_60px_-20px_rgba(42,34,51,0.55)]"
               style={{
                 left: "50%",
                 top: "50%",
@@ -234,18 +250,9 @@ export default function VideoOrbit() {
                 height: dims.height,
                 marginLeft: -dims.width / 2,
                 marginTop: -dims.height / 2,
-                transform: `translate3d(${x}px, ${y}px, ${z}px) scale(${finalScale})`,
-                WebkitTransform: `translate3d(${x}px, ${y}px, ${z}px) scale(${finalScale})`,
-                zIndex: Math.round(depthNorm * 100),
                 transformStyle: "preserve-3d",
                 WebkitTransformStyle: "preserve-3d",
-                transition: isDragging.current
-                  ? "box-shadow 300ms ease"
-                  : "box-shadow 300ms ease, transform 120ms ease-out",
                 willChange: "transform",
-                boxShadow: isHot
-                  ? "0 28px 60px -20px rgba(42,34,51,0.55)"
-                  : "0 18px 40px -20px rgba(42,34,51,0.45)",
               }}
             >
               <img
@@ -255,14 +262,10 @@ export default function VideoOrbit() {
                 draggable={false}
                 className="h-full w-full object-cover"
               />
-              <span
-                className={`absolute inset-0 flex items-center justify-center bg-[#2a2233]/15 transition-opacity duration-300 ${
-                  isFront ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                }`}
-              >
+              <span className="absolute inset-0 flex items-center justify-center bg-[#2a2233]/15 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-data-[front=true]:opacity-100">
                 <Play className="h-6 w-6 text-white" fill="currentColor" />
               </span>
-            </motion.button>
+            </button>
           );
         })}
       </motion.div>
