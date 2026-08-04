@@ -1,9 +1,10 @@
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import VideoFanCarousel from "@/components/hero/VideoFanCarousel";
+import VideoOrbit from "@/components/hero/VideoOrbit";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
+
 
 export default function Hero() {
   return (
@@ -28,25 +29,25 @@ export default function Hero() {
       <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-8">
           <div className="max-w-2xl">
-            <p className="mb-4 inline-block rounded-full border border-[#b79b62]/40 bg-white/70 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-xs">
-              Reumatologista · CRM/AL 6717 · RQE 4857
+            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
+              Reumatologia · Especialista em Dor
             </p>
 
             <h1
-              className="text-balance text-4xl font-normal leading-[1.05] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl xl:text-7xl"
+              className="text-balance text-5xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-6xl lg:text-7xl xl:text-[5.5rem]"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              Humanidade para transformar sua{" "}
-              <span className="italic text-[#a3813c]">DOR</span>
-              <span> em </span>
-              <span className="italic text-[#a3813c]">LIBERDADE!</span>
+              Sua vida não precisa
+              <br />
+              girar em torno da{" "}
+              <span className="italic text-[#a3813c]">dor</span>.
             </h1>
 
-            <p className="mt-5 max-w-lg text-base font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-lg">
-              Dra. Juliana Leal — Especialista em Dor e pós-graduada pela USP-SP. Atendimento humanizado em doenças reumáticas e autoimunes.
+            <p className="mt-7 max-w-[38ch] text-lg font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards]">
+              Dra. Juliana Leal — cuidado humanizado em doenças reumáticas e autoimunes.
             </p>
 
-            <div className="mt-8 flex flex-col items-start gap-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
+            <div className="mt-10 flex flex-col items-start gap-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
               <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
                 <Button
                   size="lg"
@@ -66,9 +67,10 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Fan card carousel de vídeos */}
-          <VideoFanCarousel />
+          {/* Orbit rotator de vídeos */}
+          <VideoOrbit />
         </div>
+
 
         {/* Scroll indicator */}
         <a

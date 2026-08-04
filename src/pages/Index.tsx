@@ -101,11 +101,8 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <LazySection id="sobre" rootMargin="200px" minHeight="80dvh" ariaLabel="Sobre a Dra. Juliana Leal">
+        <LazySection id="sobre" rootMargin="200px" minHeight="220vh" ariaLabel="Sobre a Dra. Juliana Leal">
           <About />
-        </LazySection>
-        <LazySection id="clinica" rootMargin="200px" minHeight="100dvh" ariaLabel="Locais de atendimento">
-          <Clinic />
         </LazySection>
         <LazySection id="tratamentos-resumo" rootMargin="200px" minHeight="100dvh" ariaLabel="Tratamentos">
           <TreatmentsGrid />
@@ -119,9 +116,13 @@ const Index = () => {
         <LazySection id="depoimentos" rootMargin="200px" minHeight="80dvh" ariaLabel="Depoimentos">
           <Testimonials />
         </LazySection>
+        <LazySection id="clinica" rootMargin="200px" minHeight="100dvh" ariaLabel="Locais de atendimento">
+          <Clinic />
+        </LazySection>
         <LazySection rootMargin="200px" minHeight="80dvh" ariaLabel="Perguntas frequentes">
           <FAQ />
         </LazySection>
+
         <LazySection rootMargin="400px" minHeight="160dvh" ariaLabel="Chamada para ação">
           <CTASection />
         </LazySection>
