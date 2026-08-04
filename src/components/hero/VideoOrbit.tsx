@@ -178,7 +178,9 @@ export default function VideoOrbit() {
   const maxHeight = Math.max(...itemDims.map((d) => d.height));
   const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
   const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
-  const fitScale = Math.min(1, (containerWidth || orbitWidth) / orbitWidth);
+  const measuredWidth =
+    sectionRef.current?.getBoundingClientRect().width || containerWidth || windowWidth * 0.5;
+  const fitScale = Math.min(1, measuredWidth / orbitWidth);
   const scaledHeight = orbitHeight * fitScale;
 
   return (
