@@ -14,6 +14,7 @@ import { useInView } from "@/hooks/useInView";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { journey as journeyData } from "@/data/journey";
 import TransformaDor from "@/components/TransformaDor";
+import ArcImageCarousel from "@/components/procedures/ArcImageCarousel";
 
 
 
@@ -299,7 +300,7 @@ export default function Procedures() {
       </div>
 
       {/* Procedimentos — Áreas em evidência (merged) */}
-      <JointsWheel />
+      <ArcImageCarousel />
     </section>
   );
 }
@@ -344,7 +345,7 @@ function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
   };
 
   return (
-    <div ref={ref} className="relative" style={{ height: "800vh" }}>
+    <div ref={ref} className="relative h-[480dvh]">
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* Sobrecapa — Programa TransformaDOR */}
         <div
