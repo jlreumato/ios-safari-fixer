@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { useInView } from "@/hooks/useInView";
+import ctaImage from "@/assets/cta-liberdade.jpg";
+
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
 
@@ -88,10 +90,40 @@ export default function CTASection() {
           revealed ? "opacity-100" : "opacity-0"
         }`}
       >
+        {/* Scroll zoom reveal — a imagem nasce num quadro pequeno e abre em tela cheia */}
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          aria-hidden
+        >
+          <div
+            className="relative h-full w-full overflow-hidden"
+            style={{
+              clipPath: `inset(${(1 - zoomE) * 34}% ${(1 - zoomE) * 32}% ${(1 - zoomE) * 34}% ${(1 - zoomE) * 32}%)`,
+              WebkitClipPath: `inset(${(1 - zoomE) * 34}% ${(1 - zoomE) * 32}% ${(1 - zoomE) * 34}% ${(1 - zoomE) * 32}%)`,
+            }}
+          >
+            <img
+              src={ctaImage}
+              alt=""
+              width={1536}
+              height={1024}
+              loading="lazy"
+              className="h-full w-full object-cover"
+              style={{
+                transform: `scale(${1.28 - zoomE * 0.28})`,
+                WebkitTransform: `scale(${1.28 - zoomE * 0.28})`,
+                opacity: 0.35 + zoomE * 0.4,
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/55 to-[#f2e9d8]/80" />
+          </div>
+        </div>
+
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[#8e82b8]/15 blur-[120px]" />
           <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-[#a3813c]/12 blur-[140px]" />
         </div>
+
 
         <div className="relative mx-auto max-w-5xl px-6 text-center sm:px-8">
           <h2
