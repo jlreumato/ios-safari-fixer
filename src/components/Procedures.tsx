@@ -12,6 +12,9 @@ import {
 } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { journey as journeyData } from "@/data/journey";
+import TransformaDor from "@/components/TransformaDor";
+
 
 
 import quadrilImg from "@/assets/joints/quadril.jpg";
