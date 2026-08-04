@@ -16,6 +16,7 @@ export default function VideoOrbit() {
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
+  const [containerWidth, setContainerWidth] = useState(0);
   const [tick, setTick] = useState(0);
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -28,12 +29,23 @@ export default function VideoOrbit() {
   const speed = 14; // segundos por volta completa
   const sensitivity = 0.3;
 
-  // Responsividade
+  // Responsividade + fit ao container
   useEffect(() => {
     if (typeof window === "undefined") return;
     const onResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("ResizeObserver" in window)) return;
+    const el = sectionRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      setContainerWidth(entries[0].contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   const scaleFactor = windowWidth <= 480 ? 0.4 : windowWidth <= 768 ? 0.6 : 1;
