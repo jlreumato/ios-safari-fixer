@@ -75,6 +75,11 @@ export default function CTASection() {
 
   const buttonProgress = Math.max(0, Math.min(1, (p - phraseRange) / buttonRange));
 
+  // Zoom reveal da imagem de fundo (quadro pequeno → tela cheia)
+  const zoomT = Math.max(0, Math.min(1, p / 0.85));
+  const zoomE = 1 - Math.pow(1 - zoomT, 3);
+
+
   return (
     <section
       ref={(el) => {
