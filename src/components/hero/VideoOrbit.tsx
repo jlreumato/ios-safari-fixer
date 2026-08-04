@@ -26,7 +26,7 @@ export default function VideoOrbit() {
   const dragVelocity = useRef(0);
   const scrollVelocity = useRef(0);
 
-  const speed = 14;
+  const speed = 22;
   const sensitivity = 0.3;
 
   // Responsividade + fit ao container
@@ -176,7 +176,7 @@ export default function VideoOrbit() {
       const viewH = window.innerHeight;
       const isNearViewport = rect.bottom > -viewH * 0.5 && rect.top < viewH * 1.5;
       if (isNearViewport) {
-        scrollVelocity.current += delta * 0.15;
+        scrollVelocity.current += delta * 0.055;
       }
     };
 

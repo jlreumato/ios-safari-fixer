@@ -34,22 +34,21 @@ export default function About() {
   }, []);
 
   // 0 → centralizado · 1 → alinhado à esquerda com a foto à direita
-  const t = Math.max(0, Math.min(1, (p - 0.12) / 0.5));
+  const t = Math.max(0, Math.min(1, (p - 0.08) / 0.62));
   const e = 1 - Math.pow(1 - t, 3);
 
   return (
-    <section id="sobre" ref={stageRef} className="relative" style={{ height: "220vh" }}>
+    <section id="sobre" ref={stageRef} className="relative h-[190dvh]">
       <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-10 lg:gap-16">
+          <div className="relative flex h-[100dvh] items-center justify-center">
             {/* Texto */}
             <div
-              className="flex-1"
+              className="relative z-10 w-full text-center"
               style={{
-                textAlign: e > 0.5 ? "left" : "center",
-                transform: `translate3d(${(1 - e) * 12}%, 0, 0)`,
-                WebkitTransform: `translate3d(${(1 - e) * 12}%, 0, 0)`,
-                transition: "text-align 200ms linear",
+                opacity: 0.25 + e * 0.75,
+                transform: `translate3d(0, ${(1 - e) * 24}px, 0)`,
+                WebkitTransform: `translate3d(0, ${(1 - e) * 24}px, 0)`,
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
@@ -68,8 +67,8 @@ export default function About() {
                 className="mt-10 space-y-6 text-lg font-light leading-relaxed text-[#4a4152]/90 lg:text-xl"
                 style={{
                   maxWidth: "46ch",
-                  marginLeft: e > 0.5 ? undefined : "auto",
-                  marginRight: e > 0.5 ? undefined : "auto",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                 }}
               >
                 <p>
@@ -85,16 +84,16 @@ export default function About() {
 
             {/* Foto — surge da direita */}
             <div
-              className="hidden flex-shrink-0 lg:block"
+              className="pointer-events-none absolute inset-x-0 bottom-0 hidden justify-center lg:flex"
               style={{
                 opacity: e,
-                transform: `translate3d(${(1 - e) * 60}px, 0, 0)`,
-                WebkitTransform: `translate3d(${(1 - e) * 60}px, 0, 0)`,
-                clipPath: `inset(0 ${(1 - e) * 100}% 0 0)`,
-                WebkitClipPath: `inset(0 ${(1 - e) * 100}% 0 0)`,
+                transform: `scale(${Math.max(0.01, e)})`,
+                WebkitTransform: `scale(${Math.max(0.01, e)})`,
+                transformOrigin: "center bottom",
+                WebkitTransformOrigin: "center bottom",
               }}
             >
-              <div className="relative h-[30rem] w-96">
+              <div className="relative h-[58dvh] w-[40vw] max-w-[34rem]">
                 <img
                   src={draJulianaAbout.url}
                   alt="Dra. Juliana Leal"
@@ -112,14 +111,16 @@ export default function About() {
           </div>
 
           {/* Mobile: foto abaixo do texto */}
-          <div className="mt-10 flex justify-center lg:hidden">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center lg:hidden">
             <img
               src={draJulianaAbout.url}
               alt="Dra. Juliana Leal"
               loading="lazy"
-              className="h-[22rem] w-72 object-cover object-top"
+              className="h-[40dvh] w-[72vw] object-cover object-top"
               style={{
-                opacity: 0.35 + e * 0.65,
+                opacity: e,
+                transform: `scale(${Math.max(0.01, e)})`,
+                WebkitTransform: `scale(${Math.max(0.01, e)})`,
                 WebkitMaskImage:
                   "linear-gradient(to bottom, #000 0%, #000 65%, rgba(0,0,0,0) 100%)",
                 maskImage:
