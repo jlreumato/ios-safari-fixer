@@ -8,13 +8,14 @@ import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const navLinks = [
   { label: "Sobre Mim", href: "/#sobre" },
-  { label: "A Clínica", href: "/#clinica" },
+  { label: "Programa", href: "/transformador" },
   { label: "Procedimentos", href: "/procedimentos" },
   { label: "Tratamentos", href: "/tratamentos" },
   { label: "Depoimentos", href: "/#depoimentos" },
   { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/#contato" },
 ];
+
 
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
