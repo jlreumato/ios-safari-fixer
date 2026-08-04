@@ -49,7 +49,7 @@ export default function VideoOrbit() {
   }, []);
 
   const scaleFactor = windowWidth <= 480 ? 0.4 : windowWidth <= 768 ? 0.6 : 1;
-  const baseWidth = 300 * scaleFactor;
+  const baseWidth = 220 * scaleFactor;
   const gap = 20 * scaleFactor;
 
   const count = heroVideos.length || 1;
