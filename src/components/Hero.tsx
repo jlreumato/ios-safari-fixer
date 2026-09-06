@@ -26,7 +26,7 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-24 pb-20 sm:pt-28">
+      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-24 pb-28 sm:pt-28 sm:pb-24">
         <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
           <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
             Reumatologia · Especialista em Dor

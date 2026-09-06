@@ -51,7 +51,8 @@ export default function VideoOrbit() {
 
   const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
-  const baseWidth = 270 * scaleFactor;
+  const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
+  const baseWidth = Math.min(270 * scaleFactor, windowHeight * 0.44 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
 
