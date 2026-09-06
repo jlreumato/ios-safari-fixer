@@ -101,13 +101,13 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <LazySection id="sobre" rootMargin="200px" minHeight="220vh" ariaLabel="Sobre a Dra. Juliana Leal">
+        <LazySection id="sobre" rootMargin="200px" minHeight="190dvh" ariaLabel="Sobre a Dra. Juliana Leal">
           <About />
         </LazySection>
         <LazySection id="tratamentos-resumo" rootMargin="200px" minHeight="100dvh" ariaLabel="Tratamentos">
           <TreatmentsGrid />
         </LazySection>
-        <LazySection id="procedimentos" rootMargin="400px" minHeight="1100dvh" ariaLabel="Procedimentos e Programa TransformaDOR">
+        <LazySection id="procedimentos" rootMargin="400px" minHeight="840dvh" ariaLabel="Procedimentos e Programa TransformaDOR">
           <Procedures />
         </LazySection>
         <LazySection id="agendar" rootMargin="200px" minHeight="80dvh" ariaLabel="Agendar consulta">

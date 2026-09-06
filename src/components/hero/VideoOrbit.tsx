@@ -49,31 +49,35 @@ export default function VideoOrbit() {
     return () => ro.disconnect();
   }, []);
 
-  const scaleFactor = windowWidth <= 480 ? 0.5 : windowWidth <= 768 ? 0.72 : 1;
-  const baseWidth = 280 * scaleFactor;
-  const gap = 24 * scaleFactor;
+  const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
+  // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
+  const baseWidth = 270 * scaleFactor;
+  const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
 
   const itemDims = useMemo(
     () =>
-      heroVideos.map((video) => {
-        const vertical = video.aspect === "9/16";
-        const width = vertical ? baseWidth * 0.62 : baseWidth;
-        const height = vertical ? width * (16 / 9) : width * (9 / 16);
+      heroVideos.map(() => {
+        const width = baseWidth;
+        const height = width * (16 / 9);
         return { width, height };
       }),
     [baseWidth]
   );
 
-  const avgWidth = itemDims.reduce((s, d) => s + d.width, 0) / count;
-  const radiusX = Math.max((count * (avgWidth + gap)) / (2 * Math.PI), 200 * scaleFactor);
-  const radiusZ = radiusX * 0.85;
-  const radiusY = 40 * scaleFactor;
-  const containerPadding = windowWidth <= 480 ? 80 : 100;
+  const avgWidth = baseWidth;
+  const measuredWidth = containerWidth || windowWidth;
+  // A órbita se espalha pela largura disponível da tela.
+  const radiusX = Math.max(
+    (count * (avgWidth + gap)) / (2 * Math.PI),
+    Math.min(measuredWidth, 1700) * 0.36
+  );
+  const radiusZ = radiusX * 0.8;
+  const radiusY = 34 * scaleFactor;
+  const containerPadding = windowWidth <= 480 ? 60 : 80;
   const maxHeight = Math.max(...itemDims.map((d) => d.height));
   const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
   const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
-  const measuredWidth = containerWidth || windowWidth * 0.5;
   const fitScale = Math.min(1, measuredWidth / orbitWidth);
   const scaledHeight = orbitHeight * fitScale;
 

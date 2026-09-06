@@ -26,49 +26,47 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6 lg:px-8">
-        <div className="grid items-center gap-6 lg:grid-cols-[40%_60%] lg:gap-0">
-          <div className="max-w-2xl">
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
-              Reumatologia · Especialista em Dor
-            </p>
+      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-24 pb-20 sm:pt-28">
+        <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
+          <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
+            Reumatologia · Especialista em Dor
+          </p>
 
-            <h1
-              className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl xl:text-[4.5rem]"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              Viver com <span className="italic text-[#a3813c]">DOR</span>
-              <br />
-              não é NORMAL.
-            </h1>
+          <h1
+            className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL.
+          </h1>
 
-            <p className="mt-7 max-w-[38ch] text-base font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-lg">
-              Dra. Juliana Leal · CRM/AL 6717 · RQE 4857
-              <span className="mt-1 block">Pós-graduada em Dor Crônica pela USP — São Paulo</span>
-            </p>
+          <p className="mx-auto mt-5 max-w-[42ch] text-sm font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-base">
+            Dra. Juliana Leal · CRM/AL 6717 · RQE 4857
+            <span className="mt-1 block">Pós-graduada em Dor Crônica pela USP — São Paulo</span>
+          </p>
+        </div>
 
-            <div className="mt-10 flex flex-col items-start gap-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
-              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-                <Button
-                  size="lg"
-                  className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
-                >
-                  <WhatsAppIcon size={20} />
-                  Agendar Consulta
-                </Button>
-              </a>
-
-              <a
-                href="#sobre"
-                className="inline-flex items-center gap-2 rounded-full border border-[#2a2233]/25 bg-white/60 px-5 py-2.5 text-base font-medium text-[#2a2233] transition-colors hover:bg-white"
-              >
-                Conheça a Dra. Juliana
-              </a>
-            </div>
-          </div>
-
-          {/* Orbit rotator de vídeos */}
+        {/* Orbit rotator de vídeos — largura total da tela */}
+        <div className="mt-4 w-full sm:mt-6">
           <VideoOrbit />
+        </div>
+
+        <div className="mx-auto mt-6 flex flex-col items-center gap-4 px-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
+          <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+            <Button
+              size="lg"
+              className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
+            >
+              <WhatsAppIcon size={20} />
+              Agendar Consulta
+            </Button>
+          </a>
+
+          <a
+            href="#sobre"
+            className="inline-flex items-center gap-2 rounded-full border border-[#2a2233]/25 bg-white/60 px-5 py-2.5 text-base font-medium text-[#2a2233] transition-colors hover:bg-white"
+          >
+            Conheça a Dra. Juliana
+          </a>
         </div>
 
 
