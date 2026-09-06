@@ -26,7 +26,7 @@ export default function Hero() {
       />
 
       {/* Content */}
-      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-24 pb-28 sm:pt-28 sm:pb-24">
+      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-20 pb-28 sm:pt-24 sm:pb-24">
         <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
           <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
             Reumatologia · Especialista em Dor
@@ -46,11 +46,11 @@ export default function Hero() {
         </div>
 
         {/* Orbit rotator de vídeos — largura total da tela */}
-        <div className="mt-4 w-full sm:mt-6">
+        <div className="mt-2 w-full">
           <VideoOrbit />
         </div>
 
-        <div className="mx-auto mt-6 flex flex-col items-center gap-4 px-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
+        <div className="mx-auto mt-2 flex flex-col items-center gap-4 px-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
