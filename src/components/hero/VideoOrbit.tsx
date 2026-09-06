@@ -52,7 +52,7 @@ export default function VideoOrbit() {
   const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
-  const baseWidth = Math.min(270 * scaleFactor, windowHeight * 0.44 * (9 / 16));
+  const baseWidth = Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
 
@@ -226,8 +226,8 @@ export default function VideoOrbit() {
           transform: `scale(${fitScale})`,
           WebkitTransform: `scale(${fitScale})`,
           transformOrigin: "center center",
-          perspective: "1200px",
-          WebkitPerspective: "1200px",
+          perspective: "2400px",
+          WebkitPerspective: "2400px",
           touchAction: "pan-y",
           userSelect: "none",
         }}
