@@ -41,7 +41,7 @@ export default function About() {
     <section id="sobre" ref={stageRef} className="relative h-[190dvh]">
       <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="relative flex h-[100dvh] items-center justify-center">
+          <div className="relative flex h-[100dvh] flex-col items-center justify-center pb-[40dvh] pt-20 lg:pb-0 lg:pt-0">
             {/* Texto */}
             <div
               className="relative z-10 w-full text-center"
@@ -55,7 +55,7 @@ export default function About() {
                 Sobre mim
               </p>
               <h2
-                className="mt-6 text-balance text-[clamp(2.25rem,6vw,4rem)] font-normal leading-[1.05] tracking-tight text-[#2a2233]"
+                className="mt-4 text-balance text-[clamp(2rem,6vw,4rem)] font-normal leading-[1.05] tracking-tight text-[#2a2233] lg:mt-6"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
               >
                 Dra. Juliana Leal
@@ -64,7 +64,7 @@ export default function About() {
                 CRM/AL 6717 · RQE 4857
               </p>
               <div
-                className="mt-10 space-y-6 text-lg font-light leading-relaxed text-[#4a4152]/90 lg:text-xl"
+                className="mt-6 space-y-4 text-base font-light leading-relaxed text-[#4a4152]/90 sm:text-lg lg:mt-10 lg:space-y-6 lg:text-xl"
                 style={{
                   maxWidth: "46ch",
                   marginLeft: "auto",
@@ -116,7 +116,7 @@ export default function About() {
               src={draJulianaAbout.url}
               alt="Dra. Juliana Leal"
               loading="lazy"
-              className="h-[40dvh] w-[72vw] object-cover object-top"
+              className="h-[38dvh] w-[72vw] object-cover object-top"
               style={{
                 opacity: e,
                 transform: `scale(${Math.max(0.01, e)})`,
