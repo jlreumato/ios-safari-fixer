@@ -7,6 +7,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { journey as journeyData, type JourneyStep } from "@/data/journey";
 import TransformaDor from "@/components/TransformaDor";
 import ArcImageCarousel from "@/components/procedures/ArcImageCarousel";
+import introVideo from "@/assets/hero-video-slowmo.mp4.asset.json";
+
 
 /** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
  *  grandes animados. */
