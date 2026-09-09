@@ -33,9 +33,9 @@ export default function Procedures() {
         `,
       }}
     >
-      {/* Programa TransformaDOR — arrow slices DOR while Etapas slide in from the right */}
+      {/* Programa TransformaDOR — as 8 etapas sobem em parallax vertical */}
       <div id="protocolo" className="relative">
-        <ArrowSliceReveal steps={journey} />
+        <VerticalRiseReveal steps={journey} />
       </div>
 
       {/* Procedimentos — Áreas em evidência (ArcImageCarousel) */}
@@ -45,84 +45,102 @@ export default function Procedures() {
 }
 
 /**
- * Reveal "site girado para o lado": a sobrecapa do Programa TransformaDOR
- * gira no eixo Y e as Etapas da Transformação entram do outro lado.
+ * A sobrecapa do Programa TransformaDOR (com vídeo de fundo) permanece fixa
+ * enquanto o painel das Etapas da Transformação sobe de baixo para cima em
+ * parallax, sobrepondo a capa.
  */
-function ArrowSliceReveal({ steps }: { steps: JourneyStep[] }) {
+function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
 
-  // Fase 1 (0 → 0.25): giro lateral. Fase 2 (0.25 → 1): etapas.
-  // Espaço reduzido para 60% (480vh no pai)
-  const turnP = Math.max(0, Math.min(1, progress / 0.25));
+  // Fase 1 (0 → 0.25): subida do painel. Fase 2 (0.25 → 1): etapas.
+  const riseP = Math.max(0, Math.min(1, progress / 0.25));
   const cylP = Math.max(0, Math.min(1, (progress - 0.25) / 0.75));
   const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
 
   const ease = (x: number) => 1 - Math.pow(1 - x, 3);
-  const e = ease(turnP);
+  const e = ease(riseP);
 
   const introStyle: CSSProperties = {
-    transform: `perspective(1600px) rotateY(${-e * 92}deg) translateZ(${-e * 120}px)`,
-    WebkitTransform: `perspective(1600px) rotateY(${-e * 92}deg) translateZ(${-e * 120}px)`,
-    transformOrigin: "left center",
-    WebkitTransformOrigin: "left center",
-    opacity: 1 - e * 0.9,
-    pointerEvents: turnP > 0.15 ? "none" : "auto",
-    WebkitBackfaceVisibility: "hidden",
-    backfaceVisibility: "hidden",
+    // parallax: a capa sobe mais devagar que o painel
+    transform: `translate3d(0, ${-e * 22}%, 0) scale(${1 - e * 0.05})`,
+    WebkitTransform: `translate3d(0, ${-e * 22}%, 0) scale(${1 - e * 0.05})`,
+    opacity: 1 - e * 0.85,
+    pointerEvents: riseP > 0.15 ? "none" : "auto",
   };
 
   const stepsStyle: CSSProperties = {
-    transform: `perspective(1600px) rotateY(${(1 - e) * 88}deg) translateZ(${-(1 - e) * 120}px)`,
-    WebkitTransform: `perspective(1600px) rotateY(${(1 - e) * 88}deg) translateZ(${-(1 - e) * 120}px)`,
-    transformOrigin: "right center",
-    WebkitTransformOrigin: "right center",
-    opacity: 0.1 + e * 0.9,
-    pointerEvents: turnP > 0.85 ? "auto" : "none",
-    WebkitBackfaceVisibility: "hidden",
-    backfaceVisibility: "hidden",
+    transform: `translate3d(0, ${(1 - e) * 100}%, 0)`,
+    WebkitTransform: `translate3d(0, ${(1 - e) * 100}%, 0)`,
+    pointerEvents: riseP > 0.85 ? "auto" : "none",
+    boxShadow: e > 0.02 ? "0 -40px 80px -30px rgba(42,34,51,0.35)" : undefined,
   };
 
   return (
     <div ref={ref} className="relative" style={{ height: "480vh" }}>
       <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
-        {/* Sobrecapa — Programa TransformaDOR */}
+        {/* Sobrecapa — Programa TransformaDOR com vídeo de fundo */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
           style={introStyle}
         >
-          <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
-            Programa
-          </p>
+          <video
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            src={introVideo.url}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
+            }}
+          />
 
-          <h3 className="mt-8">
-            <TransformaDor size="clamp(2.25rem, 11vw, 9rem)" />
-          </h3>
+          <div className="relative">
+            <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
+              Programa
+            </p>
 
-          <p className="mx-auto mt-10 max-w-[34ch] text-base font-light leading-relaxed text-[#4a4152] sm:text-lg">
-            Oito etapas para transformar dor em liberdade.
-          </p>
+            <h3 className="mt-8">
+              <TransformaDor size="clamp(2.25rem, 11vw, 9rem)" />
+            </h3>
 
-          <a
-            href="/transformador"
-            className="mt-12 inline-flex items-center gap-3 border border-[#a3813c]/60 px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:bg-[#f2e9d8]"
-          >
-            Conhecer o Programa
-            <ChevronRight className="h-3.5 w-3.5" />
-          </a>
+            <p className="mx-auto mt-10 max-w-[34ch] text-base font-light leading-relaxed text-[#4a4152] sm:text-lg">
+              Oito etapas para transformar dor em liberdade.
+            </p>
 
-          <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.32em] text-[#a3813c]/60">
-            role para as etapas
-          </p>
+            <a
+              href="/transformador"
+              className="mt-12 inline-flex items-center gap-3 border border-[#a3813c]/60 bg-white/50 px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c] transition-colors hover:bg-[#f2e9d8]"
+            >
+              Conhecer o Programa
+              <ChevronRight className="h-3.5 w-3.5" />
+            </a>
+
+            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.32em] text-[#a3813c]/60">
+              role para as etapas
+            </p>
+          </div>
         </div>
 
-        {/* Etapas da Transformação */}
-        <div className="absolute inset-0 overflow-hidden" style={stepsStyle}>
+        {/* Etapas da Transformação — sobem de baixo para cima */}
+        <div
+          className="absolute inset-0 overflow-hidden bg-[#faf7f2]"
+          style={stepsStyle}
+        >
           <StepsReveal steps={steps} active={activeStep} cylProgress={cylP} />
         </div>
       </div>
     </div>
   );
 }
+
 
 function StepsReveal({
   steps,
