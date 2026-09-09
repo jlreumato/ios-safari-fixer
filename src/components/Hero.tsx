@@ -27,17 +27,18 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-20 pb-28 sm:pt-24 sm:pb-24">
-        <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6">
+        <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6 lg:max-w-6xl">
           <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
             Reumatologia · Especialista em Dor
           </p>
 
           <h1
-            className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:text-6xl"
+            className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.25s_forwards] sm:text-5xl lg:whitespace-nowrap lg:text-6xl"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL.
           </h1>
+
 
           <p className="mx-auto mt-5 max-w-[42ch] text-sm font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-base">
             Dra. Juliana Leal · CRM/AL 6717 · RQE 4857

@@ -1,6 +1,12 @@
 import thumbIg1 from "@/assets/hero-videos/cover-DaVcHNlpusr.jpg";
 import thumbIg2 from "@/assets/hero-videos/cover-DXfMqDXDMyV.jpg";
 import thumbIg3 from "@/assets/hero-videos/cover-DYiQJOYJ09g.jpg";
+import thumbIg4 from "@/assets/hero-videos/cover-DcPO6dpJDDO.jpg";
+import thumbIg5 from "@/assets/hero-videos/cover-Dc6vovFpJPM.jpg";
+import thumbIg6 from "@/assets/hero-videos/cover-DcNBS2mNhvC.jpg";
+import thumbIg7 from "@/assets/hero-videos/cover-Dca1P6PpXXK.jpg";
+import thumbEntrevista1 from "@/assets/hero-videos/cover-jl-entrevista-1.jpg";
+import thumbEntrevista2 from "@/assets/hero-videos/cover-jl-entrevista-2.jpg";
 import thumbAutoimune from "@/assets/procedures/autoimune.jpg.asset.json";
 
 export type HeroVideo = {
@@ -23,7 +29,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "ErEW-kzJleY",
     title: "Entrevista com a Dra. Juliana Leal",
     kind: "Entrevista",
-    thumb: "https://i.ytimg.com/vi/ErEW-kzJleY/maxresdefault.jpg",
+    thumb: thumbEntrevista1,
     aspect: "16/9",
   },
   {
@@ -41,7 +47,7 @@ export const heroVideos: HeroVideo[] = [
     videoId: "jQ8avLicNz4",
     title: "Doenças reumáticas: quando procurar ajuda",
     kind: "Entrevista",
-    thumb: "https://i.ytimg.com/vi/jQ8avLicNz4/maxresdefault.jpg",
+    thumb: thumbEntrevista2,
     aspect: "16/9",
   },
   {
@@ -60,6 +66,42 @@ export const heroVideos: HeroVideo[] = [
     title: "Tratamento da dor articular",
     kind: "Instagram",
     thumb: thumbIg3,
+    aspect: "9/16",
+  },
+  {
+    id: "ig-DcPO6dpJDDO",
+    platform: "instagram",
+    videoId: "DcPO6dpJDDO",
+    title: "Orientações sobre dor crônica",
+    kind: "Instagram",
+    thumb: thumbIg4,
+    aspect: "9/16",
+  },
+  {
+    id: "ig-Dc6vovFpJPM",
+    platform: "instagram",
+    videoId: "Dc6vovFpJPM",
+    title: "Reumatologia na prática",
+    kind: "Instagram",
+    thumb: thumbIg5,
+    aspect: "9/16",
+  },
+  {
+    id: "ig-DcNBS2mNhvC",
+    platform: "instagram",
+    videoId: "DcNBS2mNhvC",
+    title: "Cuidado humanizado no consultório",
+    kind: "Instagram",
+    thumb: thumbIg6,
+    aspect: "9/16",
+  },
+  {
+    id: "ig-Dca1P6PpXXK",
+    platform: "instagram",
+    videoId: "Dca1P6PpXXK",
+    title: "Dicas para viver sem dor",
+    kind: "Instagram",
+    thumb: thumbIg7,
     aspect: "9/16",
   },
 ];
