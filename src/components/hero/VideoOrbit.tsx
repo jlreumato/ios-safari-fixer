@@ -10,7 +10,7 @@ import VideoLightbox from "./VideoLightbox";
  * Os itens (vídeos) orbitam em um círculo 3D inclinado, com profundidade real,
  * drag/touch com momentum, rotação automática e influência do scroll da página.
  */
-export default function VideoOrbit() {
+export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [open, setOpen] = useState<HeroVideo | null>(null);
@@ -52,7 +52,9 @@ export default function VideoOrbit() {
   const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
-  const baseWidth = Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
+  const baseWidth = fill
+    ? Math.min(360 * scaleFactor, windowHeight * 0.52 * (9 / 16))
+    : Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
 
@@ -71,7 +73,7 @@ export default function VideoOrbit() {
   // A órbita se espalha pela largura disponível da tela.
   const radiusX = Math.max(
     (count * (avgWidth + gap)) / (2 * Math.PI),
-    Math.min(measuredWidth, 1700) * 0.36
+    Math.min(measuredWidth, fill ? 2000 : 1700) * (fill ? 0.42 : 0.36)
   );
   const radiusZ = radiusX * 0.8;
   const radiusY = 34 * scaleFactor;
@@ -209,8 +211,12 @@ export default function VideoOrbit() {
   return (
     <div
       ref={sectionRef}
-      className="relative flex w-full items-center justify-center overflow-hidden"
-      style={{ minHeight: `${scaledHeight}px` }}
+      className={
+        fill
+          ? "relative flex h-full w-full items-center justify-center overflow-hidden"
+          : "relative flex w-full items-center justify-center overflow-hidden"
+      }
+      style={fill ? undefined : { minHeight: `${scaledHeight}px` }}
     >
       <motion.div
         drag="x"
