@@ -160,15 +160,15 @@
 
 .btn-glow-ring {
   position: relative;
-  border-radius: 9999px !important;
+  border-radius: 3px !important;
   isolation: isolate;
 }
 .btn-glow-ring::before,
 .btn-glow-ring::after {
   content: '';
   position: absolute;
-  inset: -3px;
-  border-radius: 9999px;
+  inset: -2px;
+  border-radius: 4px;
   padding: 3px;
   background: conic-gradient(
     /* fallback 0deg: iOS Safari < 16.4 não suporta @property (anel fica estático) */
@@ -200,7 +200,10 @@
   color: #6b5a2a !important;
   background: linear-gradient(135deg, #ffffff 0%, #fbf3df 45%, #e7d3a3 100%) !important;
   border: 1px solid rgba(190, 160, 100, 0.55) !important;
-  border-radius: 9999px !important;
+  border-radius: 3px !important;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.9),
     inset 0 -1px 0 rgba(180, 140, 70, 0.25),
@@ -320,4 +323,15 @@
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: none;
   }
+}
+
+/* Trilha de carrossel sem barra de rolagem visível */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
