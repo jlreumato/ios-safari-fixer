@@ -10,7 +10,7 @@ import VideoLightbox from "./VideoLightbox";
  * Os itens (vídeos) orbitam em um círculo 3D inclinado, com profundidade real,
  * drag/touch com momentum, rotação automática e influência do scroll da página.
  */
-export default function VideoOrbit() {
+export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [open, setOpen] = useState<HeroVideo | null>(null);
