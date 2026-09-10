@@ -25,9 +25,22 @@ export default function Hero() {
         }}
       />
 
-      {/* Content */}
-      <div className="relative flex min-h-[100dvh] w-full flex-col justify-center pt-20 pb-28 sm:pt-24 sm:pb-24">
-        <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6 lg:max-w-6xl">
+      {/* Carrossel em tela cheia */}
+      <div className="absolute inset-0 h-full w-full">
+        <VideoOrbit fill />
+      </div>
+
+      {/* Conteúdo sobreposto na parte inferior */}
+      <div className="pointer-events-none relative z-10 flex min-h-[100dvh] w-full flex-col justify-end pb-10 sm:pb-14">
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[62%]"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(255,253,248,0.97) 0%, rgba(255,253,248,0.88) 42%, rgba(255,253,248,0) 100%)",
+          }}
+        />
+
+        <div className="pointer-events-auto relative mx-auto w-full max-w-3xl px-4 text-center sm:px-6 lg:max-w-6xl">
           <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] opacity-0 animate-[fadeInUp_0.6s_ease-out_0.1s_forwards] sm:text-[11px]">
             Reumatologia · Especialista em Dor
           </p>
@@ -39,42 +52,35 @@ export default function Hero() {
             Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL.
           </h1>
 
-
           <p className="mx-auto mt-5 max-w-[42ch] text-sm font-light leading-relaxed text-[#4a4152] opacity-0 animate-[fadeInUp_0.7s_ease-out_0.45s_forwards] sm:text-base">
             Dra. Juliana Leal · CRM/AL 6717 · RQE 4857
             <span className="mt-1 block">Pós-graduada em Dor Crônica pela USP — São Paulo</span>
           </p>
         </div>
 
-        {/* Orbit rotator de vídeos — largura total da tela */}
-        <div className="mt-2 w-full">
-          <VideoOrbit />
-        </div>
-
-        <div className="mx-auto mt-2 flex flex-col items-center gap-4 px-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
+        <div className="pointer-events-auto relative mx-auto mt-7 flex flex-col items-center gap-4 px-4 opacity-0 animate-[fadeInUp_0.7s_ease-out_0.6s_forwards] sm:flex-row sm:items-center">
           <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
             <Button
               size="lg"
-              className="btn-champagne btn-glow-ring gap-2 px-8 text-base active:scale-[0.97]"
+              className="btn-champagne btn-glow-ring group gap-2 px-8 text-base active:scale-[0.97]"
             >
               <WhatsAppIcon size={20} />
-              Agendar Consulta
+              <RollingText>Agendar Consulta</RollingText>
             </Button>
           </a>
 
           <a
             href="#sobre"
-            className="inline-flex items-center gap-2 rounded-full border border-[#2a2233]/25 bg-white/60 px-5 py-2.5 text-base font-medium text-[#2a2233] transition-colors hover:bg-white"
+            className="group inline-flex items-center gap-2 rounded-sm border border-[#2a2233]/25 bg-white/70 px-6 py-3 text-base font-medium text-[#2a2233] transition-colors hover:bg-white"
           >
-            Conheça a Dra. Juliana
+            <RollingText>Conheça a Dra. Juliana</RollingText>
           </a>
         </div>
-
 
         {/* Scroll indicator */}
         <a
           href="#sobre"
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-2 text-base font-medium uppercase tracking-[0.2em] text-[#6b6076] transition-colors hover:text-[#2a2233]"
+          className="pointer-events-auto relative mx-auto mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#6b6076] transition-colors hover:text-[#2a2233]"
         >
           Role para explorar
           <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
