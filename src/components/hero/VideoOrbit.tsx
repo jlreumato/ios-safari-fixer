@@ -211,8 +211,12 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   return (
     <div
       ref={sectionRef}
-      className="relative flex w-full items-center justify-center overflow-hidden"
-      style={{ minHeight: `${scaledHeight}px` }}
+      className={
+        fill
+          ? "relative flex h-full w-full items-center justify-center overflow-hidden"
+          : "relative flex w-full items-center justify-center overflow-hidden"
+      }
+      style={fill ? undefined : { minHeight: `${scaledHeight}px` }}
     >
       <motion.div
         drag="x"
