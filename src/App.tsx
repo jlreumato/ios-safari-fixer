@@ -11,6 +11,7 @@ import Procedimentos from "./pages/Procedimentos.tsx";
 import Tratamentos from "./pages/Tratamentos.tsx";
 import Transformador from "./pages/Transformador.tsx";
 import RouteLoader from "./components/RouteLoader.tsx";
+import ScrollToTop from "./components/ScrollToTop.tsx";
 
 
 
@@ -22,6 +23,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <ScrollToTop />
         <RouteLoader />
         <Routes>
         <Route path="/" element={<Index />} />
