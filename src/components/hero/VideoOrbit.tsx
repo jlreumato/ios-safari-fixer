@@ -74,7 +74,7 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   // A órbita se espalha pela largura disponível da tela.
   const radiusX = Math.max(
     (count * (avgWidth + gap)) / (2 * Math.PI),
-    Math.min(measuredWidth, fill ? 2000 : 1700) * (fill ? 0.42 : 0.36)
+    Math.min(measuredWidth, fill ? 2000 : 1700) * (fill ? (isMobile ? 0.62 : 0.42) : 0.36)
   );
   const radiusZ = radiusX * 0.8;
   const radiusY = 34 * scaleFactor;
