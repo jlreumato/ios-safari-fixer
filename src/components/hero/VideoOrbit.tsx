@@ -232,8 +232,8 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
         style={{
           width: `${orbitWidth}px`,
           height: `${orbitHeight}px`,
-          transform: `translateY(${fill && isMobile ? "-14%" : "0"}) scale(${fitScale})`,
-          WebkitTransform: `translateY(${fill && isMobile ? "-14%" : "0"}) scale(${fitScale})`,
+          transform: `translateY(${fill && isMobile ? "-20%" : "0"}) scale(${fitScale})`,
+          WebkitTransform: `translateY(${fill && isMobile ? "-20%" : "0"}) scale(${fitScale})`,
           transformOrigin: "center center",
           perspective: "2400px",
           WebkitPerspective: "2400px",
