@@ -49,11 +49,12 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
     return () => ro.disconnect();
   }, []);
 
-  const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
+  const isMobile = windowWidth <= 768;
+  const scaleFactor = windowWidth <= 480 ? 0.9 : windowWidth <= 768 ? 1 : 1;
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
   const baseWidth = fill
-    ? Math.min(360 * scaleFactor, windowHeight * 0.52 * (9 / 16))
+    ? Math.min(360 * scaleFactor, windowHeight * (isMobile ? 0.68 : 0.52) * (9 / 16))
     : Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
