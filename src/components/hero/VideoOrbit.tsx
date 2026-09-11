@@ -49,11 +49,12 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
     return () => ro.disconnect();
   }, []);
 
-  const scaleFactor = windowWidth <= 480 ? 0.55 : windowWidth <= 768 ? 0.75 : 1;
+  const isMobile = windowWidth <= 768;
+  const scaleFactor = windowWidth <= 480 ? 0.9 : windowWidth <= 768 ? 1 : 1;
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
   const baseWidth = fill
-    ? Math.min(360 * scaleFactor, windowHeight * 0.52 * (9 / 16))
+    ? Math.min(360 * scaleFactor, windowHeight * (isMobile ? 0.4 : 0.52) * (9 / 16))
     : Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
@@ -73,7 +74,7 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   // A órbita se espalha pela largura disponível da tela.
   const radiusX = Math.max(
     (count * (avgWidth + gap)) / (2 * Math.PI),
-    Math.min(measuredWidth, fill ? 2000 : 1700) * (fill ? 0.42 : 0.36)
+    Math.min(measuredWidth, fill ? 2000 : 1700) * (fill ? (isMobile ? 0.62 : 0.42) : 0.36)
   );
   const radiusZ = radiusX * 0.8;
   const radiusY = 34 * scaleFactor;
@@ -81,7 +82,9 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   const maxHeight = Math.max(...itemDims.map((d) => d.height));
   const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
   const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
-  const fitScale = Math.min(1, measuredWidth / orbitWidth);
+  // No mobile permitimos que a órbita extrapole a largura (capas cortadas nas laterais)
+  const rawFitScale = Math.min(1, measuredWidth / orbitWidth);
+  const fitScale = fill && isMobile ? Math.max(rawFitScale, 1.02) : rawFitScale;
   const scaledHeight = orbitHeight * fitScale;
 
   // A órbita é atualizada diretamente no DOM para não renderizar React a 60 fps.
@@ -229,8 +232,8 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
         style={{
           width: `${orbitWidth}px`,
           height: `${orbitHeight}px`,
-          transform: `scale(${fitScale})`,
-          WebkitTransform: `scale(${fitScale})`,
+          transform: `translateY(${fill && isMobile ? "-20%" : "0"}) scale(${fitScale})`,
+          WebkitTransform: `translateY(${fill && isMobile ? "-20%" : "0"}) scale(${fitScale})`,
           transformOrigin: "center center",
           perspective: "2400px",
           WebkitPerspective: "2400px",
