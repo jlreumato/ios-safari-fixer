@@ -54,7 +54,7 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   // Todas as capas usam o mesmo formato vertical (9:16) — inclusive os vídeos horizontais.
   const windowHeight = typeof window !== "undefined" ? window.innerHeight : 900;
   const baseWidth = fill
-    ? Math.min(360 * scaleFactor, windowHeight * (isMobile ? 0.68 : 0.52) * (9 / 16))
+    ? Math.min(360 * scaleFactor, windowHeight * (isMobile ? 0.6 : 0.52) * (9 / 16))
     : Math.min(270 * scaleFactor, windowHeight * 0.36 * (9 / 16));
   const gap = 28 * scaleFactor;
   const count = heroVideos.length || 1;
@@ -84,7 +84,7 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
   // No mobile permitimos que a órbita extrapole a largura (capas cortadas nas laterais)
   const rawFitScale = Math.min(1, measuredWidth / orbitWidth);
-  const fitScale = fill && isMobile ? Math.max(rawFitScale, 1.35) : rawFitScale;
+  const fitScale = fill && isMobile ? Math.max(rawFitScale, 1.08) : rawFitScale;
   const scaledHeight = orbitHeight * fitScale;
 
   // A órbita é atualizada diretamente no DOM para não renderizar React a 60 fps.
