@@ -82,7 +82,9 @@ export default function VideoOrbit({ fill = false }: { fill?: boolean }) {
   const maxHeight = Math.max(...itemDims.map((d) => d.height));
   const orbitWidth = radiusX * 2 + avgWidth + containerPadding;
   const orbitHeight = radiusY * 2 + maxHeight + containerPadding;
-  const fitScale = Math.min(1, measuredWidth / orbitWidth);
+  // No mobile permitimos que a órbita extrapole a largura (capas cortadas nas laterais)
+  const rawFitScale = Math.min(1, measuredWidth / orbitWidth);
+  const fitScale = fill && isMobile ? Math.max(rawFitScale, 1.35) : rawFitScale;
   const scaledHeight = orbitHeight * fitScale;
 
   // A órbita é atualizada diretamente no DOM para não renderizar React a 60 fps.
