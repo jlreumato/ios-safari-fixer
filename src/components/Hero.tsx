@@ -26,9 +26,9 @@ export default function Hero() {
         }}
       />
 
-      {/* Carrossel em tela cheia */}
+      {/* Mosaico de capas em tela cheia */}
       <div className="absolute inset-0 h-full w-full">
-        <VideoOrbit fill />
+        <VideoMosaic />
       </div>
 
       {/* Conteúdo sobreposto na parte inferior */}
