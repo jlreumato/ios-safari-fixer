@@ -32,7 +32,7 @@ export default function Hero() {
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
           className="h-full w-full object-cover"
-          src={heroReel.url}
+          src={heroReel}
           autoPlay
           muted
           loop
