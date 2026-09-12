@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroReel from "@/assets/hero-reel.mp4.asset.json";
+import heroReel from "@/assets/hero-reel-juliana.mp4";
 import RollingText from "@/components/ui/RollingText";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
@@ -32,7 +32,7 @@ export default function Hero() {
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
           className="h-full w-full object-cover"
-          src={heroReel.url}
+          src={heroReel}
           autoPlay
           muted
           loop
