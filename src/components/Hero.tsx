@@ -2,84 +2,110 @@ import { useEffect, useState } from "react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import heroReel from "@/assets/hero-reel-juliana.mp4";
 import RollingText from "@/components/ui/RollingText";
+import CoverBackdrop from "@/components/hero/CoverBackdrop";
+import CoverMedia from "@/components/hero/CoverMedia";
 
-const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
+const WHATSAPP_URL =
+  "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
+
+const TITLE_WORDS = ["Viver", "com", "DOR", "não", "é", "NORMAL."];
 
 export default function Hero() {
-  const [revealed, setRevealed] = useState(false);
+  const [entered, setEntered] = useState(false);
+  const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    if (window.scrollY > 8) {
-      setRevealed(true);
-      return;
-    }
-    const reveal = () => setRevealed(true);
-    window.addEventListener("scroll", reveal, { passive: true });
-    window.addEventListener("wheel", reveal, { passive: true });
-    window.addEventListener("touchmove", reveal, { passive: true });
+    const t = requestAnimationFrame(() => setEntered(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
+
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        setOffset(window.scrollY);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
-      window.removeEventListener("scroll", reveal);
-      window.removeEventListener("wheel", reveal);
-      window.removeEventListener("touchmove", reveal);
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
     };
   }, []);
 
+  const rise = (delay: number) => ({
+    opacity: entered ? 1 : 0,
+    transform: entered ? "translateY(0)" : "translateY(28px)",
+    transition: `opacity 900ms ease-out ${delay}ms, transform 900ms cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
+  });
+
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden bg-[#faf7f2]">
-      {/* Vídeo em tela cheia */}
-      <div className="absolute inset-0 h-full w-full overflow-hidden">
-        <video
-          className="h-full w-full object-cover"
-          src={heroReel}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-[#2a2233]/10" />
-      </div>
+    <section className="relative min-h-[100dvh] w-full overflow-hidden bg-[#fdfaf3]">
+      <CoverBackdrop offset={offset} />
 
-      {/* Conteúdo sobreposto na parte inferior */}
-      <div className="pointer-events-none relative z-10 flex min-h-[100dvh] w-full flex-col justify-end pb-10 sm:pb-14">
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] transition-opacity duration-700"
-          style={{
-            opacity: revealed ? 1 : 0,
-            background:
-              "linear-gradient(to top, rgba(255,253,248,0.98) 0%, rgba(255,253,248,0.9) 45%, rgba(255,253,248,0) 100%)",
-          }}
-        />
+      <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-7xl grid-cols-1 items-center gap-6 px-5 pb-12 pt-24 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pb-16 lg:pt-28">
+        {/* Mídia — no mobile vem primeiro, no desktop fica à direita */}
+        <div className="order-1 h-[42dvh] w-full sm:h-[46dvh] lg:order-2 lg:col-span-5 lg:col-start-8 lg:h-[74dvh]">
+          <CoverMedia offset={offset} />
+        </div>
 
-        <div
-          className="pointer-events-auto relative transition-all duration-[900ms] ease-out"
-          style={{
-            opacity: revealed ? 1 : 0,
-            transform: revealed ? "translateY(0)" : "translateY(48px)",
-          }}
-        >
-          <div className="mx-auto w-full max-w-3xl px-4 text-center sm:px-6 lg:max-w-6xl">
-            <p className="mb-4 text-[10px] font-medium uppercase tracking-[0.28em] text-[#8a6f38] sm:text-[11px]">
-              Reumatologia · Especialista em Dor
-            </p>
+        {/* Tipografia */}
+        <div className="order-2 w-full text-center lg:order-1 lg:col-span-6 lg:text-left">
+          <p
+            className="text-[10px] font-medium uppercase tracking-[0.32em] text-[#8a6f38] sm:text-[11px]"
+            style={rise(120)}
+          >
+            Reumatologia · Especialista em Dor
+          </p>
 
-            <h1
-              className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] sm:text-5xl lg:whitespace-nowrap lg:text-6xl"
-              style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-            >
-              Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL.
-            </h1>
+          <h1
+            className="mt-5 text-balance text-4xl font-normal leading-[1.03] tracking-tight text-[#2a2233] sm:text-5xl lg:text-[4.2rem]"
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
+          >
+            {TITLE_WORDS.map((word, i) => (
+              <span key={word + i} className="inline-block overflow-hidden align-bottom">
+                <span
+                  className="inline-block"
+                  style={{
+                    opacity: entered ? 1 : 0,
+                    transform: entered ? "translateY(0)" : "translateY(100%)",
+                    transition: `opacity 700ms ease-out ${260 + i * 110}ms, transform 900ms cubic-bezier(0.22,1,0.36,1) ${260 + i * 110}ms`,
+                  }}
+                >
+                  {word === "DOR" ? (
+                    <span className="italic text-[#a3813c]">DOR</span>
+                  ) : (
+                    word
+                  )}
+                </span>
+                {i < TITLE_WORDS.length - 1 ? <span>&nbsp;</span> : null}
+              </span>
+            ))}
+          </h1>
 
-            <p className="mx-auto mt-5 max-w-[42ch] text-sm font-light leading-relaxed text-[#4a4152] sm:text-base">
-              Dra. Juliana Leal · CRM/AL 6717 · RQE 4857
-              <span className="mt-1 block">Pós-graduada em Dor Crônica pela USP — São Paulo</span>
-            </p>
-          </div>
+          <div
+            className="mx-auto mt-6 h-px w-24 bg-gradient-to-r from-transparent via-[#a3813c]/60 to-transparent lg:mx-0 lg:via-[#a3813c]/70"
+            style={rise(880)}
+          />
 
-          <div className="mx-auto mt-7 flex flex-col items-center gap-4 px-4 sm:flex-row sm:justify-center">
+          <p
+            className="mx-auto mt-6 max-w-[44ch] text-sm font-light leading-relaxed text-[#4a4152] sm:text-base lg:mx-0"
+            style={rise(960)}
+          >
+            <span className="block font-normal uppercase tracking-[0.14em] text-[#2a2233]">
+              Dra. Juliana Leal
+            </span>
+            <span className="mt-1 block">CRM/AL 6717 · RQE 4857</span>
+            <span className="block">Pós-graduada em Dor Crônica pela USP — São Paulo</span>
+          </p>
+
+          <div
+            className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start"
+            style={rise(1080)}
+          >
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
               <Button
                 size="lg"
@@ -97,16 +123,16 @@ export default function Hero() {
               <RollingText>Conheça a Dra. Juliana</RollingText>
             </a>
           </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <a
-          href="#sobre"
-          className="pointer-events-auto relative mx-auto mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#6b6076] transition-colors hover:text-[#2a2233]"
-        >
-          Role para explorar
-          <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
-        </a>
+          <a
+            href="#sobre"
+            className="mt-8 inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-[#6b6076] transition-colors hover:text-[#2a2233]"
+            style={rise(1200)}
+          >
+            Role para explorar
+            <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
+          </a>
+        </div>
       </div>
     </section>
   );
