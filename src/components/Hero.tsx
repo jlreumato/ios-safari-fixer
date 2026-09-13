@@ -10,20 +10,10 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
 export default function Hero() {
   const [revealed, setRevealed] = useState(false);
 
+  // Texto e botões sobem automaticamente e permanecem sobre o vídeo
   useEffect(() => {
-    if (window.scrollY > 8) {
-      setRevealed(true);
-      return;
-    }
-    const reveal = () => setRevealed(true);
-    window.addEventListener("scroll", reveal, { passive: true });
-    window.addEventListener("wheel", reveal, { passive: true });
-    window.addEventListener("touchmove", reveal, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", reveal);
-      window.removeEventListener("wheel", reveal);
-      window.removeEventListener("touchmove", reveal);
-    };
+    const t = window.setTimeout(() => setRevealed(true), 900);
+    return () => window.clearTimeout(t);
   }, []);
 
   return (
@@ -31,7 +21,8 @@ export default function Hero() {
       {/* Vídeo em tela cheia */}
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover lg:object-fill"
+          style={{ imageRendering: "auto", WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}
           src={heroReel}
           autoPlay
           muted
