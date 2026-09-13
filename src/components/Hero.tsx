@@ -46,11 +46,12 @@ export default function Hero() {
     <section className="relative min-h-[100dvh] w-full overflow-hidden bg-[#fdfaf3]">
       <CoverBackdrop offset={offset} />
 
-      <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-7xl grid-cols-1 items-center gap-6 px-5 pb-12 pt-24 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pb-16 lg:pt-28">
+      <div className="relative z-10 mx-auto grid min-h-[100dvh] w-full max-w-7xl grid-cols-1 items-center gap-4 px-5 pb-8 pt-20 sm:gap-6 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:pb-16 lg:pt-28">
         {/* Mídia — no mobile vem primeiro, no desktop fica à direita */}
-        <div className="order-1 h-[42dvh] w-full sm:h-[46dvh] lg:order-2 lg:col-span-5 lg:col-start-8 lg:h-[74dvh]">
+        <div className="order-1 h-[30dvh] w-full sm:h-[38dvh] lg:order-2 lg:col-span-5 lg:col-start-8 lg:h-[74dvh]">
           <CoverMedia offset={offset} />
         </div>
+
 
         {/* Tipografia */}
         <div className="order-2 w-full text-center lg:order-1 lg:col-span-6 lg:text-left">
