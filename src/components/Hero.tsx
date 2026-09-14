@@ -9,11 +9,17 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
 
 export default function Hero() {
   const [revealed, setRevealed] = useState(false);
+  const [colorized, setColorized] = useState(false);
 
   // Texto e botões sobem automaticamente e permanecem sobre o vídeo
   useEffect(() => {
     const t = window.setTimeout(() => setRevealed(true), 900);
-    return () => window.clearTimeout(t);
+    // Começa em preto e branco e ganha cor em 1,5s
+    const c = window.setTimeout(() => setColorized(true), 400);
+    return () => {
+      window.clearTimeout(t);
+      window.clearTimeout(c);
+    };
   }, []);
 
   return (
@@ -21,8 +27,13 @@ export default function Hero() {
       {/* Vídeo em tela cheia */}
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
-          className="h-full w-full origin-center object-cover grayscale lg:scale-[1.28]"
-          style={{ imageRendering: "auto" }}
+          className="h-full w-full origin-center object-cover lg:scale-[1.28]"
+          style={{
+            imageRendering: "auto",
+            filter: colorized ? "grayscale(0)" : "grayscale(1)",
+            WebkitFilter: colorized ? "grayscale(0)" : "grayscale(1)",
+            transition: "filter 1500ms ease-out, -webkit-filter 1500ms ease-out",
+          }}
           src={heroReel}
           autoPlay
           muted
