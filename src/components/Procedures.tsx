@@ -105,8 +105,9 @@ function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
-              background:
-                "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
+              background: isMobile
+                ? "linear-gradient(160deg, rgba(255,255,255,0.62) 0%, rgba(251,247,238,0.55) 50%, rgba(242,233,216,0.62) 100%)"
+                : "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
             }}
           />
 
