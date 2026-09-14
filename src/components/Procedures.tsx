@@ -53,10 +53,16 @@ export default function Procedures() {
  */
 function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
+  const isMobile = useIsMobile();
 
-  // Fase 1 (0 → 0.25): subida do painel. Fase 2 (0.25 → 1): etapas.
-  const riseP = Math.max(0, Math.min(1, progress / 0.25));
-  const cylP = Math.max(0, Math.min(1, (progress - 0.25) / 0.75));
+  // No mobile, a capa do vídeo fica travada por ~1 scroll antes das etapas subirem.
+  const hold = isMobile ? 0.14 : 0;
+  const riseStart = hold;
+  const riseEnd = hold + 0.25;
+
+  // Fase 1: subida do painel. Fase 2: etapas.
+  const riseP = Math.max(0, Math.min(1, (progress - riseStart) / (riseEnd - riseStart)));
+  const cylP = Math.max(0, Math.min(1, (progress - riseEnd) / (1 - riseEnd)));
   const activeStep = Math.min(steps.length - 1, Math.floor(cylP * steps.length * 0.9999));
 
   const ease = (x: number) => 1 - Math.pow(1 - x, 3);
@@ -99,8 +105,9 @@ function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
             aria-hidden
             className="pointer-events-none absolute inset-0"
             style={{
-              background:
-                "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
+              background: isMobile
+                ? "linear-gradient(160deg, rgba(255,255,255,0.62) 0%, rgba(251,247,238,0.55) 50%, rgba(242,233,216,0.62) 100%)"
+                : "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
             }}
           />
 
