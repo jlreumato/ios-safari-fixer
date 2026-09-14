@@ -21,8 +21,8 @@ export default function Hero() {
       {/* Vídeo em tela cheia */}
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
-          className="h-full w-full object-cover lg:object-fill"
-          style={{ imageRendering: "auto", WebkitTransform: "translateZ(0)", transform: "translateZ(0)" }}
+          className="h-full w-full origin-center object-cover lg:scale-x-[1.2] lg:scale-y-[1.06]"
+          style={{ imageRendering: "auto" }}
           src={heroReel}
           autoPlay
           muted
