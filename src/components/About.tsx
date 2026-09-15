@@ -33,22 +33,24 @@ export default function About() {
     };
   }, []);
 
-  // 0 → centralizado · 1 → alinhado à esquerda com a foto à direita
-  const t = Math.max(0, Math.min(1, (p - 0.08) / 0.62));
-  const e = 1 - Math.pow(1 - t, 3);
+  // O texto ocupa primeiro a cena; a foto só começa a surgir após o scroll.
+  const textT = Math.max(0, Math.min(1, (p - 0.04) / 0.34));
+  const textEase = 1 - Math.pow(1 - textT, 3);
+  const photoT = Math.max(0, Math.min(1, (p - 0.4) / 0.42));
+  const photoEase = 1 - Math.pow(1 - photoT, 3);
 
   return (
-    <section id="sobre" ref={stageRef} className="relative h-[190dvh]">
+    <section id="sobre" ref={stageRef} className="relative h-[210dvh]">
       <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="relative flex h-[100dvh] flex-col items-center justify-center pb-[40dvh] pt-20 lg:pb-0 lg:pt-0">
+          <div className="relative h-[100dvh]">
             {/* Texto */}
             <div
-              className="relative z-10 w-full text-center"
+              className="absolute left-1/2 top-1/2 z-10 w-[min(94vw,72rem)] text-center"
               style={{
-                opacity: 0.25 + e * 0.75,
-                transform: `translate3d(0, ${(1 - e) * 24}px, 0)`,
-                WebkitTransform: `translate3d(0, ${(1 - e) * 24}px, 0)`,
+                opacity: 0.5 + textEase * 0.5,
+                transform: `translate3d(-50%, calc(-50% - ${textEase * 27}dvh), 0)`,
+                WebkitTransform: `translate3d(-50%, calc(-50% - ${textEase * 27}dvh), 0)`,
               }}
             >
               <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-[#a3813c]">
@@ -64,9 +66,9 @@ export default function About() {
                 CRM/AL 6717 · RQE 4857
               </p>
               <div
-                className="mt-6 space-y-4 text-base font-light leading-relaxed text-[#4a4152]/90 sm:text-lg lg:mt-10 lg:space-y-6 lg:text-xl"
+                className="mt-6 space-y-3 text-base font-light leading-relaxed text-[#4a4152]/90 sm:text-lg lg:mt-8 lg:space-y-4 lg:text-xl"
                 style={{
-                  maxWidth: "46ch",
+                  maxWidth: "62ch",
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
@@ -82,18 +84,18 @@ export default function About() {
               </div>
             </div>
 
-            {/* Foto — surge da direita */}
+            {/* Foto — só aparece depois que o texto conclui seu movimento */}
             <div
               className="pointer-events-none absolute inset-x-0 bottom-0 hidden justify-center lg:flex"
               style={{
-                opacity: e,
-                transform: `scale(${Math.max(0.01, e)})`,
-                WebkitTransform: `scale(${Math.max(0.01, e)})`,
+                opacity: photoEase,
+                transform: `scale(${Math.max(0.01, photoEase)})`,
+                WebkitTransform: `scale(${Math.max(0.01, photoEase)})`,
                 transformOrigin: "center bottom",
                 WebkitTransformOrigin: "center bottom",
               }}
             >
-              <div className="relative h-[58dvh] w-[40vw] max-w-[34rem]">
+              <div className="relative h-[54dvh] w-[40vw] max-w-[34rem]">
                 <img
                   src={draJulianaAbout.url}
                   alt="Dra. Juliana Leal"
@@ -110,17 +112,17 @@ export default function About() {
             </div>
           </div>
 
-          {/* Mobile: foto abaixo do texto */}
+          {/* Mobile: foto abaixo do texto, com a mesma entrada tardia */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center lg:hidden">
             <img
               src={draJulianaAbout.url}
               alt="Dra. Juliana Leal"
               loading="lazy"
-              className="h-[38dvh] w-[72vw] object-cover object-top"
+              className="h-[42dvh] w-[78vw] object-cover object-top"
               style={{
-                opacity: e,
-                transform: `scale(${Math.max(0.01, e)})`,
-                WebkitTransform: `scale(${Math.max(0.01, e)})`,
+                opacity: photoEase,
+                transform: `scale(${Math.max(0.01, photoEase)})`,
+                WebkitTransform: `scale(${Math.max(0.01, photoEase)})`,
                 WebkitMaskImage:
                   "linear-gradient(to bottom, #000 0%, #000 65%, rgba(0,0,0,0) 100%)",
                 maskImage:

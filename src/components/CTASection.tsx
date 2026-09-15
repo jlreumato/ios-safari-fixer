@@ -12,7 +12,13 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
  * no próprio vídeo, com o botão de agendamento sempre ativo sobre a cena.
  */
 export default function CTASection() {
-  const { ref, inView } = useInView<HTMLElement>({ threshold: 0.05 });
+  const { ref, inView } = useInView<HTMLElement>({ threshold: 0.28 });
+
+  const phraseParts = [
+    { text: "Vou transformar", from: "-translate-x-16 -translate-y-10" },
+    { text: "sua dor", from: "translate-x-14 -translate-y-12" },
+    { text: "em liberdade!", from: "-translate-x-10 translate-y-14" },
+  ];
 
   return (
     <section
@@ -41,20 +47,26 @@ export default function CTASection() {
         }}
       />
 
-      <div
-        className={`absolute inset-x-0 bottom-0 flex flex-col items-center px-6 pb-14 text-center transition-all duration-700 ease-out sm:pb-20 ${
-          inView ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0"
-        }`}
-      >
-        <h2
-          className="max-w-[22ch] text-balance text-3xl font-normal uppercase leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
-        >
-          Vou transformar sua <em className="italic text-[#e7d9b5]">dor</em> em{" "}
-          <em className="italic text-[#e7d9b5]">liberdade!</em>
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
+        <h2 className="flex max-w-[18ch] flex-wrap justify-center gap-x-[0.22em] text-balance text-[clamp(2.5rem,7vw,6.75rem)] font-normal uppercase leading-[0.95] text-white [text-shadow:0_3px_28px_rgba(42,34,51,0.45)]">
+          {phraseParts.map((part, index) => (
+            <span
+              key={part.text}
+              className={`inline-block transition-all duration-1000 ease-out ${
+                inView ? "translate-x-0 translate-y-0 opacity-100" : `${part.from} opacity-0`
+              } ${index > 0 ? "italic text-[#e7d9b5]" : ""}`}
+              style={{ transitionDelay: `${index * 180}ms` }}
+            >
+              {part.text}
+            </span>
+          ))}
         </h2>
 
-        <p className="mx-auto mt-6 max-w-[46ch] text-base font-light leading-relaxed text-white/85 sm:text-lg">
+        <p
+          className={`mx-auto mt-7 max-w-[46ch] text-base font-light leading-relaxed text-white/90 transition-all delay-700 duration-700 sm:text-xl ${
+            inView ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          }`}
+        >
           Agende sua consulta e dê o primeiro passo rumo a uma vida com menos dor.
         </p>
 
@@ -62,7 +74,9 @@ export default function CTASection() {
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="group mt-9 inline-block"
+          className={`group mt-9 inline-block transition-all delay-1000 duration-700 ease-out ${
+            inView ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"
+          }`}
         >
           <Button
             size="lg"
