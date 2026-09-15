@@ -106,8 +106,8 @@ function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
             className="pointer-events-none absolute inset-0"
             style={{
               background: isMobile
-                ? "linear-gradient(160deg, rgba(255,255,255,0.62) 0%, rgba(251,247,238,0.55) 50%, rgba(242,233,216,0.62) 100%)"
-                : "linear-gradient(160deg, rgba(255,255,255,0.90) 0%, rgba(251,247,238,0.86) 50%, rgba(242,233,216,0.90) 100%)",
+                ? "linear-gradient(160deg, rgba(255,255,255,0.42) 0%, rgba(251,247,238,0.35) 50%, rgba(242,233,216,0.42) 100%)"
+                : "linear-gradient(160deg, rgba(255,255,255,0.70) 0%, rgba(251,247,238,0.66) 50%, rgba(242,233,216,0.70) 100%)",
             }}
           />
 
