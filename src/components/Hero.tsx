@@ -45,7 +45,7 @@ export default function Hero() {
             WebkitFilter: colorized ? "grayscale(0)" : "grayscale(1)",
             transition: "filter 1500ms ease-out, -webkit-filter 1500ms ease-out",
           }}
-          src={heroReel}
+          src={isDesktop ? heroReelDesktop.url : heroReel}
           autoPlay
           muted
           loop
