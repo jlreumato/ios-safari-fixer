@@ -3,6 +3,7 @@ import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroReel from "@/assets/hero-reel-juliana.mp4";
+import heroReelDesktop from "@/assets/hero-reel-juliana-desktop.mp4.asset.json";
 import RollingText from "@/components/ui/RollingText";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
@@ -10,6 +11,15 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
 export default function Hero() {
   const [revealed, setRevealed] = useState(false);
   const [colorized, setColorized] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   // Texto e botões sobem automaticamente e permanecem sobre o vídeo
   useEffect(() => {
@@ -27,14 +37,15 @@ export default function Hero() {
       {/* Vídeo em tela cheia */}
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
-          className="h-full w-full origin-center object-cover lg:scale-[1.28]"
+          key={isDesktop ? "desktop" : "mobile"}
+          className="h-full w-full origin-center object-cover"
           style={{
             imageRendering: "auto",
             filter: colorized ? "grayscale(0)" : "grayscale(1)",
             WebkitFilter: colorized ? "grayscale(0)" : "grayscale(1)",
             transition: "filter 1500ms ease-out, -webkit-filter 1500ms ease-out",
           }}
-          src={heroReel}
+          src={isDesktop ? heroReelDesktop.url : heroReel}
           autoPlay
           muted
           loop
