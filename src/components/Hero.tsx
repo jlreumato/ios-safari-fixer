@@ -37,7 +37,8 @@ export default function Hero() {
       {/* Vídeo em tela cheia */}
       <div className="absolute inset-0 h-full w-full overflow-hidden">
         <video
-          className="h-full w-full origin-center object-cover lg:scale-[1.28]"
+          key={isDesktop ? "desktop" : "mobile"}
+          className="h-full w-full origin-center object-cover"
           style={{
             imageRendering: "auto",
             filter: colorized ? "grayscale(0)" : "grayscale(1)",
