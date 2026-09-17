@@ -11,6 +11,15 @@ const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar
 export default function Hero() {
   const [revealed, setRevealed] = useState(false);
   const [colorized, setColorized] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const apply = () => setIsDesktop(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
 
   // Texto e botões sobem automaticamente e permanecem sobre o vídeo
   useEffect(() => {
