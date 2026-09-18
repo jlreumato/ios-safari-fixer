@@ -10,7 +10,6 @@ import BlogPage from "./pages/Blog.tsx";
 import Procedimentos from "./pages/Procedimentos.tsx";
 import Tratamentos from "./pages/Tratamentos.tsx";
 import Transformador from "./pages/Transformador.tsx";
-import Admin from "./pages/Admin.tsx";
 import RouteLoader from "./components/RouteLoader.tsx";
 import ScrollToTop from "./components/ScrollToTop.tsx";
 
@@ -33,7 +32,6 @@ const App = () => (
         <Route path="/procedimentos" element={<Procedimentos />} />
         <Route path="/tratamentos" element={<Tratamentos />} />
         <Route path="/transformador" element={<Transformador />} />
-        <Route path="/admin" element={<Admin />} />
 
 
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

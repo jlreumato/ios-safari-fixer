@@ -8,8 +8,6 @@ import { journey as journeyData, type JourneyStep } from "@/data/journey";
 import TransformaDor from "@/components/TransformaDor";
 import ArcImageCarousel from "@/components/procedures/ArcImageCarousel";
 import introVideo from "@/assets/hero-video-slowmo.mp4.asset.json";
-import MontageStage from "@/components/transformador/MontageStage";
-import { useMontage } from "@/hooks/useMontage";
 
 
 /** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
@@ -56,7 +54,6 @@ export default function Procedures() {
 function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
   const { ref, progress } = useScrollProgress();
   const isMobile = useIsMobile();
-  const { clips, settings } = useMontage();
 
   // No mobile, a capa do vídeo fica travada por ~1 scroll antes das etapas subirem.
   const hold = isMobile ? 0.14 : 0;
@@ -94,10 +91,15 @@ function VerticalRiseReveal({ steps }: { steps: JourneyStep[] }) {
           className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
           style={introStyle}
         >
-          <MontageStage
-            clips={clips}
-            settings={settings}
-            fallbackSrc={introVideo.url}
+          <video
+            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+            src={introVideo.url}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden
           />
           <div
             aria-hidden
