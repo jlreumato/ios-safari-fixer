@@ -233,7 +233,7 @@ function AdminPanel() {
     toast({ title: "Vídeos adicionados à montagem" });
   };
 
-  const patch = async (id: string, values: Record<string, unknown>) => {
+  const patch = async (id: string, values: { active?: boolean; position?: number }) => {
     const { error } = await supabase
       .from("transformador_videos")
       .update(values)
