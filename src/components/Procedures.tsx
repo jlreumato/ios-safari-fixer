@@ -8,6 +8,8 @@ import { journey as journeyData, type JourneyStep } from "@/data/journey";
 import TransformaDor from "@/components/TransformaDor";
 import ArcImageCarousel from "@/components/procedures/ArcImageCarousel";
 import introVideo from "@/assets/hero-video-slowmo.mp4.asset.json";
+import MontageStage from "@/components/transformador/MontageStage";
+import { useMontage } from "@/hooks/useMontage";
 
 
 /** Dispositivos de toque (iOS Safari incluso) não lidam bem com blurs
