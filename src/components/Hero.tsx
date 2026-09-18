@@ -3,7 +3,7 @@ import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroReel from "@/assets/hero-reel-juliana.mp4";
-import heroReelDesktop from "@/assets/hero-reel-juliana-desktop.mp4.asset.json";
+import heroReelDesktop from "@/assets/hero-cinematic-desktop.mp4.asset.json";
 import RollingText from "@/components/ui/RollingText";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
