@@ -3,7 +3,7 @@ import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import heroReel from "@/assets/hero-reel-juliana.mp4";
-import heroReelDesktop from "@/assets/hero-single-fullscreen-desktop.mp4.asset.json";
+import heroReelDesktop from "@/assets/hero-focal-fullscreen-desktop.mp4.asset.json";
 import RollingText from "@/components/ui/RollingText";
 
 const WHATSAPP_URL = "https://wa.me/5582999872509?text=Olá! Gostaria de agendar uma consulta com a Dra. Juliana Leal.";
@@ -83,7 +83,7 @@ export default function Hero() {
               className="text-balance text-4xl font-normal leading-[1.02] tracking-tight text-[#2a2233] sm:text-5xl lg:whitespace-nowrap lg:text-6xl"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
             >
-              Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL.
+              Viver com <span className="italic text-[#a3813c]">DOR</span> não é NORMAL
             </h1>
 
             <p className="mx-auto mt-5 max-w-[42ch] text-sm font-light leading-relaxed text-[#4a4152] sm:text-base">
